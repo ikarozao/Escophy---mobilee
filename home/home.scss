@@ -5,7 +5,9 @@
 body{
     background:linear-gradient(#E6DE01, #E6DE01);
     display: flex;
-    justify-content: center;
+    justify-content: center;    
+    flex-direction: column;
+    align-items: center;
 }
 
 nav{
@@ -22,4 +24,12 @@ nav{
         font-family: "Staatliches", sans-serif;
         transform: translateX(10%);
     }
+}
+
+.ultimo_treino{
+    background-attachment: aliceblue;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
