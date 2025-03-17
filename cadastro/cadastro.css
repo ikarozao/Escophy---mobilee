@@ -83,7 +83,7 @@ body {
   font-size: 16px;
   box-sizing: border-box;
 }
-.cadastro button[type=submit] a {
+.cadastro button[type=submit] {
   width: 80%; /* Reduzir a largura para mais centralização */
   height: 7vh;
   background-color: #E69B01;
@@ -93,6 +93,6 @@ body {
   border-radius: 10px;
   cursor: pointer;
 }
-.cadastro button[type=submit] a:hover {
+.cadastro button[type=submit]:hover {
   background-color: #E68B01;
 }/*# sourceMappingURL=cadastro.css.map */
