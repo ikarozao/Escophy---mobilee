@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eschorphy - Cadastro</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Eschorphy - Cadastro de Email</title>
+    <link rel="stylesheet" href="cadastro/cadastro.css"> <!-- Agora referenciamos o CSS compilado -->
 </head>
 <body>
     <div class="cadastro">
         <h1>Seu esporte na <br> 
             palma da mão</h1>
 
-        <h2>Conheça a comunidade do seu esporte <br>
-            e tenha sua motivação garantida</h2>
+        <h2>Entre com seu e-mail</h2>
+
+        <form action="" method="post">
+            <input type="email" name="email" placeholder="Digite seu e-mail" required>
+        <a href=""><button type="submit">Cadastrar</button></a> 
+        </form>
 
         <p>Já é inscrito? <b>Fazer login </b></p>
 
@@ -25,10 +29,9 @@
                 <img src="img/apple.png" alt="">
                 <p>Cadastre-se com a Apple</p>
             </button>
-            <!-- Aqui usamos uma tag <a> para redirecionar -->
-            <a href="cadastro-email.html">
+            <a href="index.html">
                 <button>
-                    <p>Cadastre-se com seu email</p>
+                    <p>Voltar</p>
                 </button>
             </a>
         </div>

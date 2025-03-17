@@ -49,10 +49,15 @@ body{
         height: 7vh;
         border-radius: 15px;
         margin-bottom: 1vh;
+        background-color: #f0f0f0;
+        border: 0px;
+        box-shadow: 1px 1px 1px rgb(199, 199, 199);
+        cursor: pointer;
     }
     button img{
         height: 2.5vh;
-        width: 2vh;
+        width: 2.5vh;
+        transform:translateX(-2vh);
     }
 
     p{
@@ -63,3 +68,6 @@ body{
         text-decoration: underline;
     }
 }
+
+
+
