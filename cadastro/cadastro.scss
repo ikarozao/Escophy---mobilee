@@ -93,8 +93,7 @@ body {
   }
 
   button[type="submit"] {
-    a{
-      width: 80%; /* Reduzir a largura para mais centralização */
+    width: 80%; /* Reduzir a largura para mais centralização */
     height: 7vh;
     background-color: #E69B01;
     border: none;
@@ -106,7 +105,9 @@ body {
     &:hover {
       background-color: #E68B01;
     }
-    }
   }
+  
 }
+
+
 
