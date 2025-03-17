@@ -91,8 +91,18 @@ body {
     font-size: 16px;
     box-sizing: border-box;
   }
+  input[type="password"] {
+    width: 80%; /* Reduzir a largura para mais centralização */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-family: "Sora", sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
 
-  button[type="submit"] {
+button[type="submit"]  {
     width: 80%; /* Reduzir a largura para mais centralização */
     height: 7vh;
     background-color: #E69B01;
@@ -104,6 +114,19 @@ body {
 
     &:hover {
       background-color: #E68B01;
+    }
+    
+    a{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      font-family: "Sora", sans-serif;
+      color: #f0f0f0;
+      text-shadow: 2px 2px 2px rgba(132, 132, 132, 0.467);
+      text-decoration: none;
     }
   }
   
