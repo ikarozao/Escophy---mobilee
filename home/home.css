@@ -260,4 +260,65 @@ nav {
   width: 30%;
   background-color: #4caf50;
   border-radius: 5px;
+}
+
+.botaomais-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: "Staatliches", sans-serif;
+}
+
+.botaomais {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #ff6f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 55px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-shadow: 3px 3px 6px rgb(255, 128, 38);
+  transition: background 0.3s;
+  font-family: "Staatliches", sans-serif;
+}
+
+.botaomais:hover {
+  background-color: #e65c00;
+}
+
+.menu-opcoes {
+  display: none;
+  flex-direction: column;
+  background: white;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-family: "Staatliches", sans-serif;
+}
+
+.menu-opcoes button {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  font-family: "Staatliches", sans-serif;
+  font-weight: 200;
+}
+
+.menu-opcoes button:hover {
+  background: #f0f0f0;
+  border-radius: 20px;
 }/*# sourceMappingURL=home.css.map */
