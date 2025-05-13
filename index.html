@@ -1,54 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eschorphy - Cadastro</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Cadastro</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="cadastro">
-        <h1>Seu esporte na <br> 
-            palma da mão</h1>
-
-        <h2>Conheça a comunidade do seu esporte <br>
-            e tenha sua motivação garantida</h2>
-
-        <p>Já é inscrito? <b>Fazer login </b></p>
-
-        <div class="gg">
-            <button id="google">
-                <img src="img/google.png" alt="">
-                <p>Cadastre-se com o Google</p>
-            </button>
-            <button>
-                <img src="img/apple.png" alt="">
-                <p>Cadastre-se com a Apple</p>
-            </button>
-            <!-- Aqui usamos uma tag <a> para redirecionar -->
-            <a href="cadastro-email.html">
-                <button>
-                    <p>Cadastre-se com seu email</p>
-                </button>
-            </a>
-        </div>
+  <div class="container" id="container">
+    <!-- Painel de Cadastro -->
+    <div class="form-container sign-up-container">
+      <form action="#" id="signup-form">
+        <h1>Cadastro</h1>
+        <input type="text" id="signup-name" placeholder="Nome" required />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Senha" required />
+        <button type="submit" id="signup-button">Cadastrar</button>
+      </form>
     </div>
 
-    <script >
-        // Aguarda o carregamento completo da página
-document.addEventListener("DOMContentLoaded", function() {
-    // Obtém o elemento com id 'google'
-    const googleButton = document.getElementById("google");
+    <!-- Painel de Login -->
+    <div class="form-container sign-in-container">
+      <form action="#" id="login-form">
+        <h1>Login</h1>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Senha" required />
+        <button type="submit" id="login-button">Entrar</button>
+      </form>
+    </div>
 
-    // Adiciona o evento de clique ao botão
-    googleButton.addEventListener("click", function() {
-        // URL de login do Google (a URL de autenticação pode variar conforme as configurações)
-        const googleLoginUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=token&scope=email";
+    <!-- Overlay (Painel de transição) -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Bem-vindo de volta!</h1>
+          <p>Para continuar conectado, faça login com suas credenciais</p>
+          <button class="ghost" id="signIn">Login</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Olá, visitante!</h1>
+          <p>Crie uma conta e entre para o nosso mundo</p>
+          <button class="ghost" id="signUp">Cadastro</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Redireciona para o login do Google
-        window.location.href = googleLoginUrl;
+  <!-- Script para alternar e validar -->
+  <script>
+    // Elementos para alternar painéis
+    const container = document.getElementById("container");
+    const body = document.body;
+    const signUpButtonToggle = document.getElementById("signUp");
+    const signInButtonToggle = document.getElementById("signIn");
+
+    // Elementos do formulário de Login
+    const loginForm = document.getElementById('login-form');
+    const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+
+    // Elementos do formulário de Cadastro
+    const signupForm = document.getElementById('signup-form');
+    const signupNameInput = document.getElementById('signup-name');
+    const signupEmailInput = document.getElementById('signup-email');
+    const signupPasswordInput = document.getElementById('signup-password');
+
+    // --- Lógica para alternar painéis (existente) ---
+    signUpButtonToggle.addEventListener("click", () => {
+      container.classList.add("right-panel-active");
+      body.classList.add("right-panel-active");
     });
-});
-    </script>
+
+    signInButtonToggle.addEventListener("click", () => {
+      container.classList.remove("right-panel-active");
+      body.classList.remove("right-panel-active");
+    });
+
+    // --- Lógica de validação e redirecionamento (sem alerts de sucesso) ---
+
+    // Validação do Login no SUBMIT do formulário
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const email = loginEmailInput.value.trim();
+      const password = loginPasswordInput.value.trim();
+
+      if (email === '' || password === '') {
+        // Mantém o alerta se os campos estiverem vazios
+        alert('Por favor, preencha o email e a senha para entrar.');
+      } else {
+        // REMOVIDO: alert('Login realizado com sucesso! Redirecionando...');
+        // Redireciona diretamente
+        window.location.href = 'home.html';
+      }
+    });
+
+    // Validação do Cadastro no SUBMIT do formulário
+    signupForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = signupNameInput.value.trim();
+      const email = signupEmailInput.value.trim();
+      const password = signupPasswordInput.value.trim();
+
+      if (name === '' || email === '' || password === '') {
+         // Mantém o alerta se os campos estiverem vazios
+        alert('Por favor, preencha todos os campos para se cadastrar.');
+      } else {
+        // REMOVIDO: alert('Cadastro realizado com sucesso! Redirecionando...');
+        // Redireciona diretamente
+        window.location.href = 'home.html';
+      }
+    });
+
+  </script>
 </body>
 </html>
