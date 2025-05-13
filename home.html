@@ -1,127 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escorphy</title>
-    <link rel="stylesheet" href="home/home.css"> <!-- Certifique-se que o caminho para o CSS está correto -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home/home.css">
+    <link rel="stylesheet" href="home/botao.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <!-- HERO SECTION AGORA É O CAROUSEL CONTAINER -->
-        <div class="hero-section carousel-container">
-            <div class="carousel-slide">
-                <div class="carousel-item">
-                    <img src="img/emagracer-correndo.jpg" alt="Pessoa correndo ao ar livre em um dia nublado">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/Trilha-Maresias-Pauba-Foto-MaresiasTur-Divulgacao.webp" alt="Outra imagem de esporte">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/download.jpeg" alt="Mais uma imagem relacionada">
-                </div>
-                <!-- Adicione mais .carousel-item com imgs conforme necessário -->
+
+
+    <nav>
+        <div class="bar_n">Escorphy</div>
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" placeholder="Pesquisar...">
             </div>
         </div>
-        <nav> <!-- ESTE ELEMENTO DEVE SE TORNAR STICKY -->
-            <div class="nav-container">
-                <a href="home.html" class="nav-button">home</a>
-                <a href="perfil.html" class="nav-button">perfil</a>
-                <span class="logo">Escorphy</span>
-                <a href="contato.html" class="nav-button">contato</a>
-                <a href="ajuda.html" class="nav-button">ajuda</a>
+    </nav>
+    
+    
+    <section class="container">
+        <article class="ultimo_treino">
+            <div>
+                <h2>Último treino</h2>
             </div>
-        </nav>
-    </header>
+            <div class="bike">
+                <img src="img/bike.png" alt="Imagem do treino">
+            </div>
+            <div>
+                <p>Ciclismo</p>
+            </div>
+            <div class="foto_upload">
+                <input type="file" id="upload" hidden multiple> 
+                <label for="upload" class="upload-btn">Adicionar Foto</label>
+                <div class="preview" id="preview"></div>
+            </div>
 
-    <main>
-       <div class="posts">
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-        <h1>post</h1>
-        <p>post</p>
-       </div>
-    </main>
+            <article class="metas">
+                <h2>Metas Semanais</h2>
+                <p>Meta: 12 km de corrida</p>
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <p>4 km alcançados de 12 km</p>
+            </article>
+        </article>
 
-    <button class="fab" aria-label="Adicionar novo item">
-        +
-    </button>
+        
+        
+        <section class="feed">
+            <h2>Últimas Publicações</h2>
 
-    <!-- SCRIPT EMBUTIDO DIRETAMENTE NO HTML -->
+            <article class="post">
+                <h3>Pedro Silva</h3>
+                <p>Ciclismo nas montanhas</p>
+                <img src="img/Tudo-o-que-voce-precisa-saber-sobre-ciclismo.jpg" alt="Publicação">
+                <div class="detalhes">
+                    <span>🏅 Esporte: Ciclismo</span>
+                    <span>📏 Distância: 25 km</span>
+                    <span>⛰️ Elevação: 500 m</span>
+                    <span>⏱️ Tempo: 1h 30min</span>
+                    <span>🔥 Calorias: 800 kcal</span>
+                </div>
+            </article>
+
+            <article class="post">
+                <h3>Ana Souza</h3>
+                <p>Corrida matinal na praia</p>
+                <img src="img/images.jpeg" alt="Publicação">
+                <div class="detalhes">
+                    <span>🏃‍♂️ Esporte: Corrida</span>
+                    <span>📏 Distância: 10 km</span>
+                    <span>⏱️ Tempo: 50 min</span>
+                    <span>🔥 Calorias: 600 kcal</span>
+                </div>
+            </article>
+        </section>
+    </section>
+    
+    <div class="botaomais-container">
+        <div class="menu-opcoes" id="menuOpcoes">
+            <button onclick="alert('Adicionar Treino')">Adicionar Treino</button>
+            <button onclick="alert('Último Treino')">Último Treino</button>
+        </div>
+        <button class="botaomais" id="botaoMais">+</button>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const carouselSlide = document.querySelector('.carousel-slide');
-            const carouselItems = document.querySelectorAll('.carousel-item');
-
-            if (!carouselItems || carouselItems.length === 0) {
-                // console.warn("Carrossel: Nenhum item encontrado.");
-                return;
-            }
-
-            let currentIndex = 0;
-            const totalItems = carouselItems.length;
-            const intervalTime = 4000;
-            let slideInterval;
-
-            function moveToSlide(index) {
-                const offset = -index * 100;
-                if (carouselSlide) {
-                    carouselSlide.style.transform = `translateX(${offset}%)`;
-                } else {
-                    // console.error("Carrossel: Elemento .carousel-slide não encontrado.");
-                }
-            }
-
-            function nextSlide() {
-                currentIndex = (currentIndex + 1) % totalItems;
-                moveToSlide(currentIndex);
-            }
-
-            function startSlideShow() {
-                clearInterval(slideInterval);
-                if (totalItems > 1) {
-                    slideInterval = setInterval(nextSlide, intervalTime);
-                }
-            }
-
-            moveToSlide(currentIndex);
-            startSlideShow();
-
-            const carouselContainer = document.querySelector('.carousel-container');
-            if (carouselContainer && totalItems > 1) {
-                carouselContainer.addEventListener('mouseenter', () => {
-                    clearInterval(slideInterval);
-                });
-
-                carouselContainer.addEventListener('mouseleave', () => {
-                    startSlideShow();
-                });
+        document.getElementById("botaoMais").addEventListener("click", function() {
+            const menu = document.getElementById("menuOpcoes");
+            if (menu.style.display === "flex") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
             }
         });
     </script>
-    <!-- FIM DO SCRIPT EMBUTIDO -->
+    
+    <script>
+        document.getElementById('upload').addEventListener('change', function(event) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';  
+            const files = event.target.files;  
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.height = '100px';
+                        img.style.borderRadius = '10px';
+                        img.style.margin = '5px'; 
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,222 +1,331 @@
-/* Reset básico e fonte */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Importante para sticky: ancestrais não devem ter overflow:hidden que impeça a rolagem */
-html, body {
-    overflow-x: hidden; /* Previne rolagem horizontal acidental, mas permite vertical */
-}
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff;
-    color: #333;
-    min-height: 100vh;
-    position: relative; /* Contexto de posicionamento para elementos filhos se necessário */
-    /* REMOVA QUALQUER PADDING-TOP ADICIONADO ANTERIORMENTE PARA NAV FIXA */
-}
-
-header {
-    width: 100%;
-    /* Certifique-se que o header não tem 'overflow: hidden', 'scroll' ou 'auto'
-       que possa estar limitando o contexto de rolagem da nav.
-       Por padrão, <header> é display: block e não tem overflow definido. */
-}
-
-/* ESTILOS DO CAROUSEL */
-.carousel-container {
-    height: 300px;
-    overflow: hidden; /* Este overflow:hidden é para o conteúdo INTERNO do carrossel, OK */
-    position: relative;
-    background-color: #f0f0f0;
-}
-
-.carousel-container::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: linear-gradient( to top, #ffffff 25%, rgba(255, 255, 255, 0) 100% );
-    z-index: 2;
-    pointer-events: none;
-}
-
-.carousel-slide {
+    background: linear-gradient(#E6DE01, #E6DE01);
     display: flex;
-    height: 100%;
-    transition: transform 0.7s ease-in-out;
-    position: relative;
-    z-index: 1;
-}
-
-.carousel-item {
-    min-width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-}
-
-.carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
-/* ESTILOS DA BARRA DE NAVEGAÇÃO STICKY */
-nav {
-    background-color: #fff;
-    padding: 15px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para quando estiver sticky */
-
-    /* Propriedades para o efeito "sticky" */
-    position: -webkit-sticky; /* Para Safari mais antigo */
-    position: sticky;
-    top: 0; /* Colar no topo quando o topo da nav atingir o topo da viewport */
-    width: 100%; /* Ocupar toda a largura */
-    z-index: 1000; /* Ficar acima de outros conteúdos quando sticky */
-}
-
-.nav-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    padding: 0 20px;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.nav-button {
-    background-color: rgb(255, 102, 0);
-    color: white;
-    padding: 10px 25px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+/* Navbar */
+nav {
+    background-color: aliceblue;
+    width: 90%;
+    max-width: 1200px;
+    height: 50px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 1%;
 }
 
-.nav-button:hover {
-    background-color: rgb(230, 90, 0);
+/* Estiliza a parte direita da navbar */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre os itens */
 }
 
-.logo {
-    color: rgb(255, 102, 0);
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 15px;
-}
-
-/* ESTILOS DO CONTEÚDO PRINCIPAL E POSTS */
-main {
-    padding-top: 20px; /* Um pequeno espaço acima dos posts, não para compensar nav */
-}
-
-.posts {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.posts h1 {
-    color: #333;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-.posts h1:first-child {
-    margin-top: 0;
-}
-
-.posts p {
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* ESTILOS DO BOTÃO FLUTUANTE (FAB) */
-.fab {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: rgb(255, 102, 0);
-    color: white;
-    border: none;
-    width: 60px;
-    height: 60px;
+/* Perfil */
+.perfil img {
+    width: 6vh; /* Ajuste conforme necessário */
+    height: 100%;
     border-radius: 50%;
-    font-size: 30px;
-    font-weight: 500;
+
+}
+
+/* Estiliza a barra de pesquisa */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    height: 100%;
+
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 8px #e6de01;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+}
+
+.bar_n {
+    font-size: 40px;
+    font-family: "Staatliches", sans-serif;
+    display: flex;
+}
+
+/* Último treino */
+.ultimo_treino {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.bike {
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    border-radius: 50%;
+    margin: 10px 0;
+}
+
+.bike img {
+    width: 80%;
+    height: 80%;
+    transform: translateY(1vh);
+}
+
+/* Container principal */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.ultimas_publicacoes {
+    background-color: white;
+    width: 48%;
+    max-width: 600px;
+    padding: 0px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Botão para adicionar foto */
+.upload-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #E6DE01;
+    color: black;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: #c5be00;
+}
+
+/* Pré-visualização da imagem adicionada */
+.preview {
+    margin-top: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    z-index: 1001; /* Acima da nav sticky */
+    flex-wrap: wrap;
 }
 
-.fab:hover {
-    background-color: rgb(230, 90, 0);
-    transform: scale(1.05);
+.preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin: 5px;
 }
 
-/* AJUSTES PARA TELAS MENORES (MEDIA QUERIES) */
+/* Responsividade */
 @media (max-width: 768px) {
-    .carousel-container {
-        height: 200px;
-    }
-    .carousel-container::after {
-        height: 60px;
-        background: linear-gradient( to top, #ffffff 15%, rgba(255, 255, 255, 0) 100% );
-    }
-
-    nav {
-        padding: 10px 0;
-    }
-
-    .nav-container {
+    .container {
         flex-direction: column;
-        gap: 10px;
+        align-items: center;
     }
 
-    .logo {
-        font-size: 28px;
-        margin-top: 0;
-        order: -1;
-    }
-
-    .nav-button {
-        padding: 8px 20px;
-        font-size: 14px;
-        width: 80%;
-        text-align: center;
-    }
-
-    .fab {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        bottom: 20px;
-        right: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav-container {
-        padding: 0 10px;
-    }
-    .nav-button {
+    .ultimas_publicacoes, .ultimo_treino {
         width: 90%;
     }
+
+    .nav-right {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .search-box {
+        flex: 1;
+        max-width: 150px;
+    }
+}
+
+/* Feed */
+.feed {
+    width: 60%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilizando cada post */
+.post {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.post p {
+    font-size: 14px;
+    color: #666;
+}
+
+.post img {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.detalhes {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+.detalhes span {
+    background: #fffbcc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Estilo do artigo 'Metas' */
+.metas {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.metas h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.metas p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+/* Estilo da barra de progresso */
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 30%;
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+.botaomais-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaomais {
+    width: 6vh;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ff6f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 55px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(255, 128, 38);
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaomais:hover {
+    background-color: #e65c00;
+}
+
+.menu-opcoes {
+    display: none;
+    flex-direction: column;
+    background: white;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    font-family: "Staatliches", sans-serif;
+}
+
+.menu-opcoes button {
+    background: none;
+    border: none;
+    padding: 10px;
+    text-align: right;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    font-family: "Staatliches", sans-serif;
+    font-weight: 200;
+   
+}
+
+.menu-opcoes button:hover {
+    background: #f0f0f0;
+    border-radius: 20px;
 }
