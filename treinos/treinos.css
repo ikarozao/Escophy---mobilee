@@ -1,19 +1,18 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap");
 body {
-  background-color: #E6DE01;
+  background: #044700;
   display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
-  align-content: space-around;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
+  padding: 0%;
+  margin: 0%;
+  flex-direction: column;
 }
 
 nav {
-  background-color: aliceblue;
+  background-color: rgb(255, 255, 255);
   width: 90%;
   max-width: 1200px;
   height: 50px;
@@ -26,27 +25,21 @@ nav {
   margin-top: 1%;
 }
 
+/* Estiliza a parte direita da navbar */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 15px;
-}
-
-.perfil img {
-  width: 6vh;
-  height: 100%;
-  border-radius: 50%;
+  gap: 15px; /* Espaço entre os itens */
 }
 
 .search-box {
   display: flex;
   align-items: center;
-  background: white;
+  background: rgb(234, 234, 234);
   padding: 5px 10px;
   border-radius: 20px;
   height: 100%;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
 }
 
 .search-box input {
@@ -54,13 +47,7 @@ nav {
   outline: none;
   padding: 5px;
   font-size: 14px;
-}
-
-.search-box input:focus {
-  box-shadow: 0 0 8px #e6de01;
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
+  background: rgb(234, 234, 234);
 }
 
 .bar_n {
@@ -69,122 +56,18 @@ nav {
   display: flex;
 }
 
-.usuario {
-  background-color: aliceblue;
-  width: 100%;
+.treinos {
+  width: 80%;
   height: 100%;
-  max-width: 900px;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.amarelo {
-  background-color: #E4BA22;
-  width: 50%;
-  height: 50%;
+  margin-top: 2vh;
   border-radius: 30px;
+  background-color: white;
 }
-
-.amarelo img {
-  width: 70%;
-  height: 70%;
-  max-width: 400px;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-.app {
-  max-width: 400px;
-  margin: auto;
-  background-color: #ffffff;
-  border: 2px solid #f5c400;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-header {
-  background-color: #f5c400;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-header h1 {
-  font-weight: bold;
-  margin: 0;
-}
-header i {
-  font-size: 1.2rem;
-}
-
-main {
-  flex: 1;
-  overflow-y: auto;
-}
-main .card {
-  padding: 1rem;
-}
-main .card .image-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-main .card .image-container img {
-  border-radius: 1rem;
-  border: 5px solid #f5c400;
-  width: 200px;
-  height: 200px;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-main .card .info {
+.treinos .cima {
   text-align: center;
+  font-family: "Staatliches", sans-serif;
 }
-main .card .info .label {
-  margin: 0.5rem 0;
-  color: #333;
-}
-main .card .info .label .highlight {
-  background-color: #f5c400;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
-  margin-right: 0.5rem;
-}
-main .card .info p {
-  margin: 0.2rem 0 1rem;
-  font-weight: bold;
-}
-main .card .map {
-  text-align: center;
-  margin-top: 1rem;
-}
-main .card .map img {
-  border: 5px solid #f5c400;
-  border-radius: 0.5rem;
-  width: 100%;
-  max-width: 300px;
-}
-main .card .map p {
-  color: #ff6600;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
-footer {
-  background-color: #f5c400;
-  padding: 0.75rem;
-  display: flex;
-  justify-content: space-around;
-}
-footer i {
-  font-size: 1.5rem;
+.treinos .cima h1 {
+  font-weight: 500;
+  font-size: 40px;
 }/*# sourceMappingURL=treinos.css.map */
