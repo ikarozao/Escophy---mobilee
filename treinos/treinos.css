@@ -1,41 +1,45 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap");
-:root {
-  --corpri1: #044700;
-  --corsec: #00b40c;
-  --corpri2: #3eeb4a;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--corpri1);
+  background: #044700;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 0;
-  margin: 0;
+  font-family: "Poppins", sans-serif;
 }
 
 nav {
   background-color: #fff;
   width: 90%;
   max-width: 1200px;
-  height: 50px;
+  height: 60px;
   border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
   padding: 10px 20px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 1%;
+  margin-top: 1vh;
 }
-
-.nav-right {
+nav .bar_n {
+  font-size: 40px;
+  font-family: "Staatliches", sans-serif;
+  white-space: nowrap;
+}
+nav .nav-right {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-wrap: nowrap;
 }
-
-.search-box {
+nav .search-box {
   display: flex;
   align-items: center;
   background: rgb(234, 234, 234);
@@ -44,48 +48,40 @@ nav {
   height: 100%;
   box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
 }
-
-.search-box input {
+nav .search-box input {
   border: none;
   outline: none;
   padding: 5px;
   font-size: 14px;
   background: rgb(234, 234, 234);
-}
-
-.bar_n {
-  font-size: 40px;
-  font-family: "Staatliches", sans-serif;
-  display: flex;
+  width: 150px;
+  min-width: 120px;
 }
 
 .treinos {
   width: 80%;
-  height: 100%;
+  max-width: 1200px;
   margin-top: 2vh;
   border-radius: 30px;
   background-color: #fff;
-  padding: 30px 0;
+  padding: 30px 20px;
 }
-
 .treinos .cima {
   text-align: center;
   font-family: "Staatliches", sans-serif;
 }
-
 .treinos .cima h1 {
   font-weight: 500;
   font-size: 40px;
 }
-
-.icon-container {
+.treinos .icon-container {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  flex-wrap: wrap;
+  gap: 40px;
   margin-top: 30px;
 }
-
-.circle {
+.treinos .icon-container .circle {
   background-color: rgb(230, 230, 230);
   width: 100px;
   height: 100px;
@@ -97,16 +93,77 @@ nav {
   cursor: pointer;
   border: 6px solid transparent;
 }
-
-.circle:hover {
+.treinos .icon-container .circle:hover {
   transform: scale(1.1);
 }
-
-.circle.active {
-  border-color: var(--corsec);
+.treinos .icon-container .circle.active {
+  border-color: #00b40c;
 }
-
-.circle img {
+.treinos .icon-container .circle img {
   width: 50px;
   height: 50px;
+}
+
+@media (max-width: 1024px) {
+  nav .bar_n {
+    font-size: 32px;
+  }
+  nav .search-box input {
+    width: 130px;
+  }
+  .treinos .cima h1 {
+    font-size: 36px;
+  }
+}
+@media (max-width: 768px) {
+  nav {
+    padding: 8px 16px;
+    height: auto;
+  }
+  nav .bar_n {
+    font-size: 28px;
+  }
+  nav .search-box input {
+    width: 120px;
+  }
+  .treinos {
+    width: 95%;
+    padding: 20px 10px;
+  }
+  .treinos .cima h1 {
+    font-size: 32px;
+  }
+  .treinos .icon-container {
+    gap: 30px;
+  }
+  .treinos .icon-container .circle {
+    width: 80px;
+    height: 80px;
+  }
+  .treinos .icon-container .circle img {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 480px) {
+  nav .bar_n {
+    font-size: 24px;
+  }
+  nav .search-box input {
+    width: 100px;
+  }
+  .treinos .cima h1 {
+    font-size: 26px;
+  }
+  .icon-container {
+    gap: 20px;
+  }
+  .icon-container .circle {
+    width: 70px;
+    height: 70px;
+  }
+  .icon-container .circle img {
+    width: 35px;
+    height: 35px;
+  }
 }/*# sourceMappingURL=treinos.css.map */
