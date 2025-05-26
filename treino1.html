@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treinos</title>
+    <title>Treinos | Escorphy</title>
     <link rel="stylesheet" href="treinos/treinos.css">
 </head>
 <body>
-   <nav>
+
+    <nav>
         <div class="bar_n">Escorphy</div>
         <div class="nav-right">
             <div class="search-box">
@@ -20,7 +21,24 @@
         <div class="cima">
             <h1>Treino</h1>
         </div>
-        inp
+
+        <div class="icon-container">
+            <div class="circle"><img src="img/run.png" alt="Icone 1"></div>
+            <div class="circle"><img src="img/bike copy.png" alt="Icone 2"></div>
+            <div class="circle"><img src="img/dumbbell.png" alt="Icone 3"></div>
+        </div>
     </div>
+
+    <script>
+        const circles = document.querySelectorAll('.circle');
+
+        circles.forEach(circle => {
+            circle.addEventListener('click', () => {
+                circles.forEach(c => c.classList.remove('active'));
+                circle.classList.add('active');
+            });
+        });
+    </script>
+    
 </body>
 </html>

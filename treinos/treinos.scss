@@ -1,22 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap');
 
-
-
-$corpri1:#044700;
-$corsec: #00b40c;
-$corpri2:#3eeb4a;
-body{
-  background: #044700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0%;
-  margin: 0%;
-  flex-direction: column;
+:root {
+    --corpri1: #044700;
+    --corsec: #00b40c;
+    --corpri2: #3eeb4a;
 }
+
+body {
+    background: var(--corpri1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
 nav {
-    background-color: rgb(255, 255, 255);
+    background-color: #fff;
     width: 90%;
     max-width: 1200px;
     height: 50px;
@@ -29,13 +30,11 @@ nav {
     margin-top: 1%;
 }
 
-/* Estiliza a parte direita da navbar */
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espaço entre os itens */
+    gap: 15px;
 }
-
 
 .search-box {
     display: flex;
@@ -44,9 +43,7 @@ nav {
     padding: 5px 10px;
     border-radius: 20px;
     height: 100%;
-
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
-
 }
 
 .search-box input {
@@ -57,27 +54,61 @@ nav {
     background: rgb(234, 234, 234);
 }
 
-
 .bar_n {
     font-size: 40px;
     font-family: "Staatliches", sans-serif;
     display: flex;
 }
 
-.treinos{
-  width: 80%;
-  height: 100%;
-  margin-top: 2vh;
-  border-radius: 30px;
-  background-color: #ffff;
+.treinos {
+    width: 80%;
+    height: 100%;
+    margin-top: 2vh;
+    border-radius: 30px;
+    background-color: #fff;
+    padding: 30px 0;
+}
 
-  .cima{
+.treinos .cima {
     text-align: center;
     font-family: "Staatliches", sans-serif;
-    
-    h1{
-      font-weight: 500;
-      font-size: 40px;
-    }
-  }
+}
+
+.treinos .cima h1 {
+    font-weight: 500;
+    font-size: 40px;
+    -webkit-mask-attachment: ;aa
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 30px;
+}
+
+.circle {
+    background-color: rgb(230, 230, 230);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    border: 6px solid transparent;
+}
+
+.circle:hover {
+    transform: scale(1.1);
+}
+
+.circle.active {
+    border-color: var(--corsec);
+}
+
+.circle img {
+    width: 50px;
+    height: 50px;
 }
