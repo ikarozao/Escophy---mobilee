@@ -1,19 +1,20 @@
+@charset "UTF-8";
+/* Importa fontes Google */
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap");
-* {
-  box-sizing: border-box;
+/* Reset e configurações base */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
 }
 
 body {
-  background: #044700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  background: #044700; /* cor equivalente a $cor-pri1 */
   font-family: "Poppins", sans-serif;
+  /* removido display:flex para não quebrar altura do mapa */
 }
 
+/* Nav */
 nav {
   background-color: #fff;
   width: 90%;
@@ -23,31 +24,32 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
   padding: 10px 20px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 1vh;
+  margin: 1vh auto;
 }
+
 nav .bar_n {
   font-size: 40px;
   font-family: "Staatliches", sans-serif;
   white-space: nowrap;
 }
+
 nav .nav-right {
   display: flex;
   align-items: center;
   gap: 15px;
-  flex-wrap: nowrap;
 }
+
 nav .search-box {
   display: flex;
   align-items: center;
-  background: rgb(234, 234, 234);
+  background: rgb(234, 234, 234); /* cor equivalente $bg-search */
   padding: 5px 10px;
   border-radius: 20px;
-  height: 100%;
   box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
 }
+
 nav .search-box input {
   border: none;
   outline: none;
@@ -58,31 +60,38 @@ nav .search-box input {
   min-width: 120px;
 }
 
+/* Treinos container */
 .treinos {
   width: 80%;
   max-width: 1200px;
-  margin-top: 2vh;
+  margin: 2vh auto;
   border-radius: 30px;
   background-color: #fff;
   padding: 30px 20px;
 }
+
+/* Título */
 .treinos .cima {
   text-align: center;
   font-family: "Staatliches", sans-serif;
 }
+
 .treinos .cima h1 {
   font-weight: 500;
   font-size: 40px;
 }
-.treinos .icon-container {
+
+/* Icones treino */
+.icon-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
   margin-top: 30px;
 }
-.treinos .icon-container .circle {
-  background-color: rgb(230, 230, 230);
+
+.circle {
+  background-color: rgb(230, 230, 230); /* cor equivalente $bg-circle */
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -93,17 +102,30 @@ nav .search-box input {
   cursor: pointer;
   border: 6px solid transparent;
 }
-.treinos .icon-container .circle:hover {
+
+.circle:hover {
   transform: scale(1.1);
 }
-.treinos .icon-container .circle.active {
-  border-color: #00b40c;
+
+.circle.active {
+  border-color: #00b40c; /* cor equivalente $cor-sec */
 }
-.treinos .icon-container .circle img {
+
+.circle img {
   width: 50px;
   height: 50px;
 }
 
+/* Mapa */
+#map {
+  width: 100%;
+  height: 400px;
+  border-radius: 20px;
+  margin-top: 30px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividade */
 @media (max-width: 1024px) {
   nav .bar_n {
     font-size: 32px;
@@ -133,16 +155,19 @@ nav .search-box input {
   .treinos .cima h1 {
     font-size: 32px;
   }
-  .treinos .icon-container {
+  .icon-container {
     gap: 30px;
   }
-  .treinos .icon-container .circle {
+  .circle {
     width: 80px;
     height: 80px;
   }
-  .treinos .icon-container .circle img {
+  .circle img {
     width: 40px;
     height: 40px;
+  }
+  #map {
+    height: 300px;
   }
 }
 @media (max-width: 480px) {
@@ -158,12 +183,15 @@ nav .search-box input {
   .icon-container {
     gap: 20px;
   }
-  .icon-container .circle {
+  .circle {
     width: 70px;
     height: 70px;
   }
-  .icon-container .circle img {
+  .circle img {
     width: 35px;
     height: 35px;
+  }
+  #map {
+    height: 250px;
   }
 }/*# sourceMappingURL=treinos.css.map */

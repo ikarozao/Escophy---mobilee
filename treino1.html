@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Treinos | Escorphy</title>
-    <link rel="stylesheet" href="treinos/treinos.css">
+    
+    <!-- Seu CSS -->
+    <link rel="stylesheet" href="treinos/treinos.css" />
+    
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs="
+      crossorigin=""
+    />
 </head>
 <body>
 
@@ -12,7 +22,7 @@
         <div class="bar_n">Escorphy</div>
         <div class="nav-right">
             <div class="search-box">
-                <input type="text" placeholder="Pesquisar...">
+                <input type="text" placeholder="Pesquisar..." />
             </div>
         </div>
     </nav>
@@ -23,22 +33,43 @@
         </div>
 
         <div class="icon-container">
-            <div class="circle"><img src="img/run.png" alt="Icone 1"></div>
-            <div class="circle"><img src="img/bike copy.png" alt="Icone 2"></div>
-            <div class="circle"><img src="img/dumbbell.png" alt="Icone 3"></div>
+            <div class="circle"><img src="img/run.png" alt="Ícone Corrida" /></div>
+            <div class="circle"><img src="img/bike copy.png" alt="Ícone Bicicleta" /></div>
+            <div class="circle"><img src="img/dumbbell.png" alt="Ícone Musculação" /></div>
         </div>
+
+        <!-- Mapa -->
+        <div id="map"></div>
     </div>
 
-    <script>
-        const circles = document.querySelectorAll('.circle');
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0="
+      crossorigin=""
+    ></script>
 
+    <script>
+        // Ativar seleção de treino
+        const circles = document.querySelectorAll('.circle');
         circles.forEach(circle => {
             circle.addEventListener('click', () => {
                 circles.forEach(c => c.classList.remove('active'));
                 circle.classList.add('active');
             });
         });
+
+        // Inicializar mapa
+        const map = L.map('map').setView([-23.55052, -46.633308], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+        }).addTo(map);
+
+        L.marker([-23.55052, -46.633308])
+            .addTo(map)
+            .bindPopup('Você está aqui.')
+            .openPopup();
     </script>
-    
 </body>
 </html>
