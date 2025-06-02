@@ -38,13 +38,15 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  overflow: hidden;
+  padding: 20px;
 }
 
 /* ===== CONTAINER E FORMULÁRIOS ===== */
 .container {
   position: relative;
-  width: 420px;
-  height: auto;
+  width: 100%;
+  max-width: 420px;
 }
 
 .form {
@@ -53,9 +55,9 @@ body {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
   width: 100%;
-  background-color: rgba(4, 71, 0, 0.504);
-  border: 1px solid rgba(255, 255, 255, 0.421);
-  border-radius: 10px;
+  background-color: rgba(4, 71, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
   color: #fff;
   padding: 30px 40px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -87,7 +89,7 @@ body {
 
 /* ===== TITULO ===== */
 .form h1 {
-  font-size: 36px;
+  font-size: clamp(24px, 5vw, 36px);
   text-align: center;
 }
 
@@ -96,7 +98,7 @@ body {
   position: relative;
   width: 100%;
   height: 50px;
-  margin: 30px 0;
+  margin: 25px 0;
 }
 
 .input-box input {
@@ -131,7 +133,9 @@ body {
 .remember-forgot {
   display: flex;
   justify-content: space-between;
-  margin: -15px 0 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -10px 0 10px;
 }
 
 .remember-forgot label input {
@@ -159,19 +163,19 @@ body {
   font-weight: 600;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   margin-top: 20px;
+  transition: all 0.5s ease;
 }
 
 .login:hover {
   background-color: transparent;
   border: 2px solid #fff;
   color: #fff;
-  transition: 0.5s;
 }
 
 .register-link {
   text-align: center;
   font-size: 14px;
-  margin: 20px 0 15px;
+  margin: 20px 0 10px;
 }
 
 .register-link a {
@@ -184,16 +188,15 @@ body {
   text-decoration: underline;
 }
 
-/* ===== RESPONSIVO ===== */
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
+/* ===== RESPONSIVO FLEXÍVEL ===== */
+@media (max-width: 1024px) {
+  .form {
+    padding: 25px 35px;
   }
+}
+@media (max-width: 768px) {
   .form {
     padding: 20px 30px;
-  }
-  .form h1 {
-    font-size: 28px;
   }
   .input-box input {
     padding: 15px 40px 15px 15px;
@@ -203,16 +206,9 @@ body {
   }
 }
 @media (max-width: 480px) {
-  .container {
-    width: 100%;
-    padding: 0 10px;
-  }
   .form {
     padding: 15px 20px;
-    border-radius: 8px;
-  }
-  .form h1 {
-    font-size: 24px;
+    border-radius: 10px;
   }
   .input-box {
     margin: 20px 0;
@@ -222,16 +218,13 @@ body {
   }
   .login {
     font-size: 14px;
-    height: 40px;
+    height: 42px;
   }
   .remember-forgot {
     flex-direction: column;
     align-items: flex-start;
   }
   .remember-forgot a {
-    margin-top: 10px;
+    margin-top: 8px;
   }
-}
-body {
-  overflow: hidden;
 }/*# sourceMappingURL=style.css.map */
