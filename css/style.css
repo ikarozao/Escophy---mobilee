@@ -53,8 +53,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(4, 71, 0, 0.504);
+  border: 1px solid rgba(255, 255, 255, 0.421);
   border-radius: 10px;
   color: #fff;
   padding: 30px 40px;
@@ -231,4 +231,7 @@ body {
   .remember-forgot a {
     margin-top: 10px;
   }
+}
+body {
+  overflow: hidden;
 }/*# sourceMappingURL=style.css.map */
