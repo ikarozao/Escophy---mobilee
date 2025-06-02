@@ -39,7 +39,9 @@
         </div>
 
         <!-- Mapa -->
-        <div id="map"></div>
+        <div id="map">
+
+        </div>
     </div>
 
     <!-- Leaflet JS -->
@@ -50,6 +52,41 @@
     ></script>
 
     <script>
+        import OsmRequest from 'osm-request';
+
+const conf = {
+  scope: 'read_prefs write_api', // To customize
+  client_id: "	CRrI_krAehqa7zSjONV0jebLOq-OHmXP1HCZMf0NqzI",
+  redirect_uri: '',
+  url: 'https://www.openstreetmap.org',
+  apiUrl: 'https://api.openstreetmap.org',
+  auto: true,
+  singlepage: true
+};
+
+const osmRequest = new OsmRequest(conf);
+
+async function start() {
+  let element = await osmRequest.fetchElement('node/3683625932');
+  element = osmRequest.setTag(element, 'key', 'value');
+  element = osmRequest.setTags(element, {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+  });
+  element = osmRequest.removeTag(element, 'key2');
+  element = osmRequest.setTimestampToNow(element);
+  element = osmRequest.setCoordinates(element, 1.234, 0.456);
+
+  const changesetId = await osmRequest.createChangeset('Created by me', 'My changeset comment');
+  const isChangesetStillOpen = await osmRequest.isChangesetStillOpen(changesetId);
+  const newElementVersion = await osmRequest.sendElement(element, changesetId);
+  element = osmRequest.setVersion(element, newElementVersion);
+}
+
+start();
+
+
         // Ativar seleção de treino
         const circles = document.querySelectorAll('.circle');
         circles.forEach(circle => {
