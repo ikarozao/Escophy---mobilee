@@ -10,8 +10,10 @@ body {
     align-items: center;
     font-family: "Poppins", sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px; /* Espaço nas laterais e no topo/baixo */
+    box-sizing: border-box;
 }
+
 
 /* ===== NAVBAR ===== */
 nav {
