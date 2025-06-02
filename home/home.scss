@@ -1,77 +1,143 @@
-/* Reset */
-* {
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
+
+/* ===== BASE ===== */
+body {
+    background: #044700;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 10px; /* Espaço nas laterais e no topo/baixo */
     box-sizing: border-box;
 }
-
-body {
-    background-color: #044700;
-    font-family: "Poppins", sans-serif;
-}
-
-.main-content {
-    padding: 20px;
-}
-
-/* NAVBAR */
+/* Nav */
 nav {
-    background-color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  background-color: #fff;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  /*margin: 1vh auto;*/
+  /*margin-left: -15px; */
+  margin-left: -2%;
 }
 
-.bar_n {
-    font-weight: 800;
-    font-size: 24px;
+
+nav .bar_n {
+  font-size: 40px;
+  font-family: "Staatliches", sans-serif;
+  white-space: nowrap;
 }
 
-.search-box input {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    outline: none;
+nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-/* CONTAINER PRINCIPAL */
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+nav .search-box {
+  display: flex;
+  align-items: center;
+  background: rgb(234, 234, 234); /* cor equivalente $bg-search */
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
 }
 
-/* ÚLTIMO TREINO */
+nav .search-box input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  background: rgb(234, 234, 234);
+  width: 150px;
+  min-width: 120px;
+}
+
+
+/* ===== ÚLTIMO TREINO ===== */
 .ultimo_treino {
     background-color: white;
+    width: 40%; /* Mantido para desktop */
+    max-width: 500px;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
-.ultimo_treino h2 {
-    margin-bottom: 10px;
-}
-
-.bike img {
+.bike {
     width: 100px;
-}
-
-.foto_upload {
+    height: 100px;
+    background-color: rgb(240, 251, 235);
+    border-radius: 50%;
     margin: 10px 0;
 }
 
+.bike img {
+    width: 80%;
+    height: 80%;
+    transform: translateY(1vh);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 20px;
+    flex-wrap: wrap; /* Adicionado para melhor responsividade */
+}
+
+/* ===== PUBLICAÇÕES ===== */
+.ultimas_publicacoes {
+    background-color: white;
+    width: 48%; /* Ajustado para desktop */
+    max-width: 600px;
+    padding: 0px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Botão de upload */
 .upload-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 15px;
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: rgb(73, 202, 73);
+    color: black;
+    font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
-    display: inline-block;
-    font-weight: bold;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: rgb(85, 246, 85);
+}
+
+/* Preview da imagem */
+.preview {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .preview img {
@@ -81,86 +147,196 @@ nav {
     margin: 5px;
 }
 
-/* METAS */
-.metas {
-    background-color: #e9ffe9;
-    padding: 15px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-.progress-container {
-    background-color: #ddd;
-    border-radius: 20px;
-    overflow: hidden;
-    height: 10px;
-    margin: 10px 0;
-}
-
-.progress-bar {
-    background-color: #4CAF50;
-    width: 33%;
-    height: 100%;
-}
-
-/* FEED */
+/* ===== FEED ===== */
 .feed {
-    background-color: white;
+    width: 48%; /* Ajustado para desktop */
+    max-width: 600px;
+    background: white;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .post {
-    background-color: #f9f9f9;
+    background: #faf9f9;
+    border-radius: 10px;
     padding: 15px;
-    border-radius: 15px;
-    margin-top: 15px;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.post p {
+    font-size: 14px;
+    color: #666;
 }
 
 .post img {
     width: 100%;
     border-radius: 10px;
-    margin: 10px 0;
+    margin-top: 10px;
 }
 
 .detalhes {
+    margin-top: 10px;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 5px;
+    font-size: 12px;
+    color: #555;
 }
 
-/* BOTÃO + */
+.detalhes span {
+    background: rgb(240, 251, 235);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* ===== METAS ===== */
+.metas {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(240, 251, 235);
+    width: 80%; /* Ajustado para desktop */
+    max-width: 500px;
+    text-align: center;
+}
+
+.metas h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.metas p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 30%;
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+/* ===== BOTÃO FLUTUANTE ===== */
 .botaomais-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .botaomais {
-    background-color: #4CAF50;
-    color: white;
-    font-size: 30px;
-    border: none;
+    width: 60px; /* Ajustado para melhor visualização */
+    height: 60px; /* Ajustado para melhor visualização */
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px; /* Ajustado para melhor visualização */
+    font-weight: 500;
+    border: none;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
 }
 
-/* RESPONSIVO */
-@media (max-width: 600px) {
+.botaomais:hover {
+    background-color: #6fe600;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
     nav {
+        width: 90%; /* Ajustado para 90% */
+        height: auto;
         flex-direction: column;
+        padding: 10px;
         gap: 10px;
-        align-items: flex-start;
+    }
+
+    .nav-right {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: none;
     }
 
     .bar_n {
-        font-size: 20px;
+        font-size: 30px; /* Ajustado para melhor visualização */
     }
 
-    .search-box input {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ultimas_publicacoes,
+    .ultimo_treino,
+    .feed {
+        width: 90%; /* Ajustado para 90% */
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        width: 90%; /* Ajustado para 90% */
+        height: auto;
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .nav-right {
+        flex-direction: row;
+        justify-content: center;
         width: 100%;
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: none;
+    }
+
+    .bar_n {
+        font-size: 28px; /* Ajustado para melhor visualização */
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ultimas_publicacoes,
+    .ultimo_treino,
+    .feed {
+        width: 95%; /* Ajustado para 95% */
     }
 }
