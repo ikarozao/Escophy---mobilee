@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Custom map element with accessible map</title>
+    <link rel="stylesheet" href="node_modules/node_modules.css">
+    <style>
+      .map {
+        width: 100%;
+        height: 400px;
+      }
+      #map:focus {
+        outline: 0.15em solid #4A74A8;
+      }
+    </style>
+  </head>
+  <body>
+    <ol-map id="map" class="map" tabindex="0"></ol-map>
+
+    <script type="module" src="main.js  "></script>
+  </body>
+</html>
