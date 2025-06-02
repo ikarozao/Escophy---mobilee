@@ -2,24 +2,21 @@
 /* Importa fontes Google */
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap");
 /* Reset e configurações base */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   background: #044700; /* cor equivalente a $cor-pri1 */
   font-family: "Poppins", sans-serif;
   /* removido display:flex para não quebrar altura do mapa */
 }
 
+section {
+  width: 100%;
+  height: 100%;
+}
+
 /* Nav */
 nav {
   background-color: #fff;
   width: 90%;
-  max-width: 1200px;
-  height: 60px;
   border-radius: 30px;
   display: flex;
   align-items: center;

@@ -10,48 +10,56 @@ body {
     align-items: center;
     font-family: "Poppins", sans-serif;
     margin: 0;
-    padding: 20px; /* Espaço nas laterais e no topo/baixo */
+    padding: 10px; /* Espaço nas laterais e no topo/baixo */
     box-sizing: border-box;
 }
-
-/* ===== NAVBAR ===== */
+/* Nav */
 nav {
-    background-color: rgb(255, 255, 255);
-    width: 90%;
-    max-width: 1200px;
-    height: auto; /* Alterado para auto */
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px; /* Ajustado o padding */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 1%;
+  background-color: #fff;
+  width: 100%;
+  max-width: 1200px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  margin: 1vh auto;
 }
 
-.bar_n {
-    font-size: 40px; /* Mantido para desktop */
-    font-family: "Staatliches", sans-serif;
-    display: flex;
+
+nav .bar_n {
+  font-size: 40px;
+  font-family: "Staatliches", sans-serif;
+  white-space: nowrap;
 }
 
-/* Parte direita da navbar */
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Mantido o gap */
+nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.search-box {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    height: 100%;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
+nav .search-box {
+  display: flex;
+  align-items: center;
+  background: rgb(234, 234, 234); /* cor equivalente $bg-search */
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
 }
+
+nav .search-box input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  background: rgb(234, 234, 234);
+  width: 150px;
+  min-width: 120px;
+}
+
 
 /* ===== ÚLTIMO TREINO ===== */
 .ultimo_treino {
