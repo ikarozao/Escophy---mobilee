@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Treinos | Escorphy</title>
-    
+
     <!-- Seu CSS -->
     <link rel="stylesheet" href="treinos/treinos.css" />
-    
+
     <!-- Leaflet CSS -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs="
-      crossorigin=""
-    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin="" />
     <link rel="icon" type="image/png" href="img/a.png">
 </head>
+
 <body>
 
     <nav>
@@ -34,58 +32,108 @@
         </div>
 
         <div class="icon-container">
-            <div class="circle"><img src="img/run.png" alt="Ícone Corrida" /></div>
-            <div class="circle"><img src="img/bike copy.png" alt="Ícone Bicicleta" /></div>
-            <div class="circle"><img src="img/dumbbell.png" alt="Ícone Musculação" /></div>
+            <div onclick="mostrarFormulario()" class="circle"><img src="img/run.png" alt="Ícone Corrida" /></div>
+            <div onclick="mostrarFormulario()" class="circle"><img src="img/bike copy.png" alt="Ícone Bicicleta" /></div>
+            <div onclick="mostrarFormulario()" class="circle"><img src="img/dumbbell.png" alt="Ícone Musculação" />
+            </div>
         </div>
 
         <!-- Mapa -->
         <div id="map">
 
         </div>
+
+        <article id="infos_treinos" class="infos_treinos" style="display: none;">
+
+            <h1>Informações da atividade</h1>
+
+            <div class="titulo">
+                <p>Título da corrida:</p>
+                <input type="text" name="text" placeholder="" required>
+
+            </div>
+
+            <div class="descricao">
+                <p>Descrição da corrida:</p>
+                <input type="text" name="text" placeholder="" required>
+            </div>
+
+
+            <div class="tipo">
+                <p>Tipo de corrida:</p>
+                <a href="#" role="menuitem" tabindex="0">Treino</a>
+                <a href="#" role="menuitem" tabindex="0">Prova</a>
+                <a href="#" role="menuitem" tabindex="0">Longão</a>
+            </div>
+
+            <div class="nivel">
+                <p>Nível de esforço : 1-10</p>
+                <input type="text" name="text" placeholder="" required>
+            </div>
+
+            <div class="visibilidade">
+                <p>Visibilidade do Treino:</p>
+                <a href="#" role="menuitem" tabindex="0">Privado</a>
+                <a href="#" role="menuitem" tabindex="0">Público</a>
+            </div>
+
+
+            <div class="acessorio">
+
+                <p>Adicione o tipo de acessório:</p>
+                <a onclick="opcaoAcessorio(event)" href="#" role="menuitem" tabindex="0">Relógio</a>
+                <a onclick="opcaoAcessorio(event)" href="#" role="menuitem" tabindex="0">Tênis</a>
+
+            </div>
+
+             <div  id="tipo_acessorio" class="acessorio" style="display: none;">
+
+                <p>Adicione especificações (modelo) do acessório:</p>
+                <input type="text" name="text" placeholder="" required>
+
+            </div>
+
+
+        </article>
+
     </div>
 
     <!-- Leaflet JS -->
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0="
-      crossorigin=""
-    ></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0=" crossorigin=""></script>
 
     <script>
-        import OsmRequest from 'osm-request';
 
-const conf = {
-  scope: 'read_prefs write_api', // To customize
-  client_id: "	CRrI_krAehqa7zSjONV0jebLOq-OHmXP1HCZMf0NqzI",
-  redirect_uri: '',
-  url: 'https://www.openstreetmap.org',
-  apiUrl: 'https://api.openstreetmap.org',
-  auto: true,
-  singlepage: true
-};
+        function mostrarFormulario() {
+            const form = document.getElementById("infos_treinos");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
 
-const osmRequest = new OsmRequest(conf);
+        function opcaoAcessorio(event) {
+            event.preventDefault();
+            const form = document.getElementById("tipo_acessorio");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
 
-async function start() {
-  let element = await osmRequest.fetchElement('node/3683625932');
-  element = osmRequest.setTag(element, 'key', 'value');
-  element = osmRequest.setTags(element, {
-    key1: 'value1',
-    key2: 'value2',
-    key3: 'value3',
-  });
-  element = osmRequest.removeTag(element, 'key2');
-  element = osmRequest.setTimestampToNow(element);
-  element = osmRequest.setCoordinates(element, 1.234, 0.456);
+        async function start() {
+            let element = await osmRequest.fetchElement('node/3683625932');
+            element = osmRequest.setTag(element, 'key', 'value');
+            element = osmRequest.setTags(element, {
+                key1: 'value1',
+                key2: 'value2',
+                key3: 'value3',
+            });
+            element = osmRequest.removeTag(element, 'key2');
+            element = osmRequest.setTimestampToNow(element);
+            element = osmRequest.setCoordinates(element, 1.234, 0.456);
 
-  const changesetId = await osmRequest.createChangeset('Created by me', 'My changeset comment');
-  const isChangesetStillOpen = await osmRequest.isChangesetStillOpen(changesetId);
-  const newElementVersion = await osmRequest.sendElement(element, changesetId);
-  element = osmRequest.setVersion(element, newElementVersion);
-}
+            const changesetId = await osmRequest.createChangeset('Created by me', 'My changeset comment');
+            const isChangesetStillOpen = await osmRequest.isChangesetStillOpen(changesetId);
+            const newElementVersion = await osmRequest.sendElement(element, changesetId);
+            element = osmRequest.setVersion(element, newElementVersion);
+        }
 
-start();
+        start();
 
 
         // Ativar seleção de treino
@@ -108,6 +156,8 @@ start();
             .addTo(map)
             .bindPopup('Você está aqui.')
             .openPopup();
+
     </script>
 </body>
+
 </html>

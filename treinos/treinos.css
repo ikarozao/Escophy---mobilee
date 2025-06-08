@@ -191,4 +191,79 @@ nav .search-box input {
   #map {
     height: 250px;
   }
+}
+.acessorio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.acessorio p {
+  font-size: large;
+  font-weight: bold;
+}
+.acessorio a {
+  text-decoration: none;
+  color: black;
+  padding: 0.5rem 0.5rem;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+.acessorio a:hover {
+  background-color: #d5ffd7;
+}
+
+.titulo p {
+  font-size: large;
+  font-weight: bold;
+}
+
+.descricao p {
+  font-size: large;
+  font-weight: bold;
+}
+
+.nivel p {
+  font-size: large;
+  font-weight: bold;
+}
+
+.tipo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 0.5rem;
+}
+.tipo p {
+  font-size: large;
+  font-weight: bold;
+}
+.tipo a {
+  text-decoration: none;
+  color: black;
+  padding: 0.5rem 0.5rem;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+.tipo a:hover {
+  background-color: #d5ffd7;
+}
+
+.visibilidade {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.visibilidade p {
+  font-size: large;
+  font-weight: bold;
+}
+.visibilidade a {
+  text-decoration: none;
+  color: black;
+  padding: 0.5rem 0.5rem;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+.visibilidade a:hover {
+  background-color: #d5ffd7;
 }/*# sourceMappingURL=treinos.css.map */

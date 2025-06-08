@@ -209,3 +209,96 @@ nav .search-box input {
     height: 250px;
   }
 }
+
+.acessorio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  p {
+    font-size: large;
+    font-weight:bold;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    
+  }
+
+  a:hover {
+    background-color: #d5ffd7;
+  }
+
+}
+
+.titulo {
+   p {
+    font-size: large;
+    font-weight:bold;
+  }
+}
+
+.descricao {
+   p {
+    font-size: large;
+    font-weight:bold;
+  }
+}
+
+.nivel {
+   p {
+    font-size: large;
+    font-weight:bold;
+  }
+}
+
+.tipo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 0.5rem;
+
+  p {
+    font-size: large;
+    font-weight:bold;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  a:hover {
+    background-color: #d5ffd7;
+  }
+}
+
+.visibilidade {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  p {
+    font-size: large;
+    font-weight:bold;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  a:hover {
+    background-color: #d5ffd7;
+  }
+}
