@@ -398,4 +398,21 @@ nav .search-box input {
 
 .botaoperfil:hover {
   background-color: #6fe600;
+}
+
+#mensagem-flutuante {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(4, 71, 0, 0.85);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 9999;
 }/*# sourceMappingURL=home.css.map */

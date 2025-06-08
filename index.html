@@ -2,41 +2,40 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Login - Escorphy</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="img/a.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="img/a.png" />
 </head>
 
 <body>
     <!-- Background Carousel -->
     <div class="background-carousel">
-        <img class="bg-img active" src="img/inicio1.jpg" alt="Imagem 1">
-        <img class="bg-img" src="img/inicio2.jpg" alt="Imagem 2">
-        <img class="bg-img" src="img/inicio3.jpg" alt="Imagem 3">
-        <img class="bg-img" src="img/inicio4.jpg" alt="Imagem 4">
+        <img class="bg-img active" src="img/inicio1.jpg" alt="Imagem 1" />
+        <img class="bg-img" src="img/inicio2.jpg" alt="Imagem 2" />
+        <img class="bg-img" src="img/inicio3.jpg" alt="Imagem 3" />
+        <img class="bg-img" src="img/inicio4.jpg" alt="Imagem 4" />
     </div>
 
     <!-- Container Principal -->
     <main class="container">
-
         <!-- Formulário de Login -->
         <form id="login-form" class="form active">
             <h1>Login</h1>
             <div class="input-box">
-                <input placeholder="Email" type="email" required>
+                <input placeholder="Email" type="email" required />
                 <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Senha" type="password" required>
+                <input placeholder="Senha" type="password" required />
                 <i class="bx bx-lock-alt"></i>
             </div>
 
             <div class="remember-forgot">
                 <label>
-                    <input type="checkbox">
+                    <input type="checkbox" />
                     Lembrar senha
                 </label>
                 <a href="#">Esqueci a senha</a>
@@ -53,15 +52,15 @@
         <form id="register-form" class="form">
             <h1>Cadastro</h1>
             <div class="input-box">
-                <input placeholder="Nome" type="text" required>
+                <input id="nome-cadastro" placeholder="Nome" type="text" required />
                 <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Email" type="email" required>
+                <input placeholder="Email" type="email" required />
                 <i class="bx bx-envelope"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Senha" type="password" required>
+                <input placeholder="Senha" type="password" required />
                 <i class="bx bx-lock-alt"></i>
             </div>
 
@@ -71,7 +70,6 @@
                 <p>Já tem uma conta? <a href="#" id="show-login">Login</a></p>
             </div>
         </form>
-
     </main>
 
     <!-- JavaScript -->
@@ -110,12 +108,19 @@
             window.location.href = "home.html";
         });
 
+        // Cadastro: salvar nome no localStorage e redirecionar
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const nomeInput = document.getElementById('nome-cadastro');
+            const nome = nomeInput.value.trim();
+
+            if (nome) {
+                localStorage.setItem('nomeUsuario', nome);
+            }
+
             window.location.href = "home.html";
         });
     </script>
-    
 </body>
 
 </html>

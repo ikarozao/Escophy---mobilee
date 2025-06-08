@@ -180,7 +180,31 @@
 
 </div> <!-- Fecha main-content -->
 
+<!-- Coloque isso dentro do <body>, no final -->
+
+<div id="mensagem-flutuante"></div>
+
 <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const nomeUsuario = localStorage.getItem('nomeUsuario');
+        const mensagem = document.getElementById('mensagem-flutuante');
+
+        if (nomeUsuario) {
+            mensagem.textContent = `Olá, ${nomeUsuario}!`;
+            mensagem.style.opacity = '1';
+            mensagem.style.pointerEvents = 'auto';
+
+            // Esconde a mensagem depois de 4 segundos
+            setTimeout(() => {
+                mensagem.style.opacity = '0';
+                mensagem.style.pointerEvents = 'none';
+            }, 4000);
+        }
+    });
+</script>
+
+<script>
+    
     // Preview das imagens no upload
     document.getElementById('upload').addEventListener('change', function(event) {
         const preview = document.getElementById('preview');
