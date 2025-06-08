@@ -326,3 +326,90 @@ nav .search-box input {
         width: 95%;
     }
 }
+
+/*perfis sugeridos*/
+
+/*.cs2{
+    margin-right: 25px
+}
+
+.sugeridos {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    margin-top: 5px 
+    
+    h2 {
+        font-size: 30px;
+        letter-spacing: 2px;
+        margin-top: 3%;
+        font-family:"Staatliches", sans-serif;
+    }
+
+    .contas_sugeridas {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+}
+
+.foto_perfil {
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    border-radius: 20%;
+    margin: 10px 0;
+}
+
+.foto_perfil img {
+    width: 80%;
+    height: 80%;
+    transform: translateY(1vh);
+} 
+
+/* ===== BOTÃO perfil ===== */
+.botaoperfil-container {
+    position: fixed;
+    bottom: 20px;
+    right: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.botaoperfil {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);*/
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaoperfil:hover {
+    background-color: #6fe600;
+}
