@@ -17,57 +17,39 @@ section {
 
 /* ===== NAVBAR ===== */
 nav {
+    position: fixed; 
+    top: 0;          
+    left: 0;          
+    width: 100%; 
+    height: 5vh;     
     background-color: #fff;
+<<<<<<< HEAD
     width: 90%;
     
     border-radius: 30px;
+=======
+>>>>>>> b0c94d83d980f1cc9c40d3ce56bbd2cc92715089
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 1vh auto; /* Centraliza horizontalmente e dá margem vertical */
-}
+    z-index: 1000;    /* Garante que fique acima dos outros elementos */
 
-nav .bar_n {
-    font-size: 40px;
-    font-family: "Staatliches", sans-serif;
-    white-space: nowrap;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-}
-
-nav .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-nav .search-box {
-    display: flex;
-    align-items: center;
-    background: rgb(234, 234, 234);
-    padding: 5px 10px;
-    border-radius: 20px;
-    box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
-}
-
-nav .search-box input {
-    border: none;
-    outline: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    background: rgb(234, 234, 234);
-    width: 150px;
-    min-width: 120px;
-    border-radius: 25px;
-    transition: box-shadow 0.3s ease;
-}
-
-nav .search-box input:focus {
+    input{
+        width: 70%;
+        height: 4vh;
+        border-radius: 2px;
+        border: solid 1px gainsboro;
+        box-shadow: 1px 1px 5px rgb(235, 235, 235);
+        padding: 5px 10px 5px 20px; /* aumentou o padding-left */
+    input:focus {
     box-shadow: 0 0 8px #00b40c;
+    border: solid 1px #00b40c;
 }
+    
+}
+
 
 /* ===== HOME PAGE SPECIFIC STYLES ===== */
 
