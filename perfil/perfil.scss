@@ -1,3 +1,522 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap");
+
+/*body {
+  background-color: #044700;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}*/
+
+body {
+    background: #044700;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 10px; /* Espaço nas laterais e no topo/baixo */
+    box-sizing: border-box;
+}
+
+
+/*nav {
+  background-color: #fff;
+  width: 90%;
+  max-width: 1200px;
+  height: 50px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 1%;
+}
+
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+}*/
+
+/*nav {
+  background-color: #fff;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  /*margin: 1vh auto;*/
+  /*margin-left: -15px; 
+  margin-left: 0.5%;
+}
+
+
+nav .bar_n {
+  font-size: 40px;
+  font-family: "Staatliches", sans-serif;
+  white-space: nowrap;
+}
+
+nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+nav .search-box {
+  display: flex;
+  align-items: center;
+  background: rgb(234, 234, 234); /* cor equivalente $bg-search 
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
+}
+
+nav .search-box input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  background: rgb(234, 234, 234);
+  width: 150px;
+  min-width: 120px;
+} */
+
+nav {
+    background-color: #fff;
+    width: 90%;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    margin: 1vh auto;
+}
+
+nav .bar_n {
+    font-size: 40px;
+    font-family: "Staatliches", sans-serif;
+    white-space: nowrap;
+}
+
+nav .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+nav .search-box {
+    display: flex;
+    align-items: center;
+    background: rgb(234, 234, 234);
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
+}
+
+nav .search-box input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+    background: rgb(234, 234, 234);
+    width: 150px;
+    min-width: 120px;
+}
+
+.perfil img {
+  width: 6vh; 
+  height: 100%;
+  border-radius: 50%;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  height: 100%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  box-shadow: 0 0 8px #e6de01;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+}
+
+.bar_n {
+  font-size: 40px;
+  font-family: "Staatliches", sans-serif;
+  display: flex;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+
+.usuario {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+    h2 {
+        font-size:large;
+    }
+}
+
+.foto_perfil {
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    border-radius: 20%;
+    margin: 10px 0;
+}
+
+.foto_perfil img {
+    width: 80%;
+    height: 80%;
+    transform: translateY(1vh);
+}
+
+.info_usua {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px;
+    margin-top: 5%;
+} 
+
+.info_usua2 {
+    display: grid;
+    grid-template-columns: repeat(4, 100px); 
+    gap: 10px;
+} 
+
+.publi_usua {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    img {
+        width: 70%;
+        height: 70%;
+        border-radius: 30px;
+    }
+
+    h2 {
+        font-size: 30px;
+        letter-spacing: 2px;
+        margin-top: 3%;
+        font-family:"Staatliches", sans-serif;
+    }
+}
+
+.post {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post img {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.detalhes {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+.detalhes span {
+    background: #a3d3b1;
+    padding: 5px;
+    border-radius: 30px;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin-top: -43%;
+    gap: 20px;
+
+}
+
+
+.treinos {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    
+    h2 {
+        font-size: 30px;
+        letter-spacing: 2px;
+        margin-top: 3%;
+        font-family:"Staatliches", sans-serif;
+    }
+
+    ul {
+        margin-top: 1%;
+        font-size: large;
+        line-height: 250%;
+    }
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+}
+
+.atividade {
+    font-weight: bold;
+}
+
+.data {
+    font-style: italic;
+    color: gray;
+}
+
+.cs2{
+    margin-right: 25px
+}
+
+.sugeridos {
+    background-color: white;
+    width: 40%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    
+    h2 {
+        font-size: 30px;
+        letter-spacing: 2px;
+        margin-top: 3%;
+        font-family:"Staatliches", sans-serif;
+    }
+
+    .contas_sugeridas {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* ===== BOTÃO FLUTUANTE ===== */
+.botaomais-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.botaomais {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaomais:hover {
+    background-color: #6fe600;
+}
+
+
+/* ===== BOTÃO home ===== */
+.botaohome-container {
+    position: fixed;
+    bottom: 20px;
+    right: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.botaohome {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);*/
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaohome:hover {
+    background-color: #6fe600;
+}
+
+/*.botaomais-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.botaomais {
+    width: 6vh;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 55px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif;
+}
+
+.botaomais:hover {
+    background-color: #6fe600;
+}*/
+
+/*.menu-opcoes {
+    display: none;
+    flex-direction: column;
+    background: white;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    font-family: "Staatliches", sans-serif;
+}
+
+.menu-opcoes button {
+    background: none;
+    border: none;
+    padding: 10px;
+    text-align: right;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    font-family: "Staatliches", sans-serif;
+    font-weight: 200;
+   
+}
+
+.menu-opcoes button:hover {
+    background: #f0f0f0;
+    border-radius: 20px;
+}*/
+
 // ======= RESPONSIVIDADE =======
 
 // Telas até 1024px (tablets)
