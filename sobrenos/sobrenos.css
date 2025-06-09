@@ -89,6 +89,10 @@ nav .search-box input:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
 }
+.card-border p {
+  color: black; /* mantém legível com fundo claro */
+  font-family: "Poppins", sans-serif;
+}
 
 .card-border {
   transition: transform 0.5s ease, background 0.5s ease, color 0.5s ease;
@@ -96,11 +100,12 @@ nav .search-box input:focus {
 
 .card-border:hover {
   transform: scale(1.03);
-  background: linear-gradient(135deg, #095700, #a3e6a5);
-  color: white; /* mantém legível com fundo claro */
+  background: linear-gradient(135deg, #f2fdf1, #f0f7f0);
+  color: black; /* mantém legível com fundo claro */
 }
 .card-border:hover p {
-  color: white; /* mantém legível com fundo claro */
+  color: black; /* mantém legível com fundo claro */
+  font-family: "Poppins", sans-serif;
 }
 
 .card-border {
@@ -119,7 +124,7 @@ nav .search-box input:focus {
 .card-name {
   font-size: 30px;
   margin: 10px 0;
-  font-family: "Birthstone Bounce";
+  font-family: "Staatliches", sans-serif;
   font-weight: normal;
 }
 
@@ -137,7 +142,7 @@ nav .search-box input:focus {
   width: 50px;
   height: 50px;
   margin-top: 15px;
-  background: linear-gradient(45deg, #a8d5e2, #b8e4ec, #d6f4f8, #b8e4ec);
+  background: linear-gradient(45deg, #ffffff, #f3f3f3, #e5e5e5, #ffffff);
   background-size: 300% 300%;
   border: none;
   border-radius: 50%;
