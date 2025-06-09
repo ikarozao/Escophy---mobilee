@@ -266,4 +266,50 @@ nav .search-box input {
 }
 .visibilidade a:hover {
   background-color: #d5ffd7;
+}
+
+.botao-salvar {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.botao-salvar button {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #00b40c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.botao-salvar button:hover {
+  background-color: #008e09;
+}
+
+/* Estilo da mensagem flutuante */
+.mensagem-flutuante {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(4, 71, 0, 0.85);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 9999;
+}
+
+.mensagem-flutuante.show {
+  opacity: 1;
+  pointer-events: auto;
 }/*# sourceMappingURL=treinos.css.map */

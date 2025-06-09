@@ -66,10 +66,25 @@
                 <a href="#" role="menuitem" tabindex="0">Longão</a>
             </div>
 
-            <div class="nivel">
-                <p>Nível de esforço : 1-10</p>
-                <input type="text" name="text" placeholder="" required>
-            </div>
+            <div class="nivel" style="width: 100%; max-width: 300px;">
+    <p>Nível de esforço: 1-10</p>
+    <input type="range" min="1" max="10" step="1" style="width: 100%;">
+
+    <!-- Números de 1 a 10 abaixo do range -->
+    <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 0 2px;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+        <span>10</span>
+    </div>
+</div>
+
 
             <div class="visibilidade">
                 <p>Visibilidade do Treino:</p>
@@ -93,6 +108,17 @@
 
             </div>
 
+            <div class="botao-salvar">
+  <button id="salvarBtn">Salvar</button>
+</div>
+
+<div id="mensagemSalvo" class="mensagem-flutuante">
+  Salvo com sucesso!
+</div>
+
+
+    </div>
+
 
         </article>
 
@@ -100,10 +126,31 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0=" crossorigin=""></script>
+        integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0=" crossorigin="">
+    
+    
+    
+    </script>
+<script>
+  const salvarBtn = document.getElementById('salvarBtn');
+  const mensagemSalvo = document.getElementById('mensagemSalvo');
+
+  salvarBtn.addEventListener('click', () => {
+    // Aqui você pode colocar o código de salvamento real se tiver (ex: salvar no localStorage ou enviar pra um servidor)
+
+    // Exibe a mensagem de sucesso
+    mensagemSalvo.style.display = 'block';
+
+    // Oculta a mensagem depois de 2 segundos (opcional)
+    setTimeout(() => {
+      mensagemSalvo.style.display = 'none';
+    }, 2000);
+  });
+</script>
 
     <script>
 
+        
         function mostrarFormulario() {
             const form = document.getElementById("infos_treinos");
             form.style.display = form.style.display === "none" ? "block" : "none";
