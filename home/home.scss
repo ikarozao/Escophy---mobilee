@@ -242,10 +242,16 @@ nav .search-box input:focus {
 }
 
 
-/* ===== BOTÃO MAIS ===== */
+/* --- BOTÕES FLUTUANTES --- */
+/* ... (código existente) ... */
+
+.floating-buttons-container a { /* Aplica o estilo a todos os links dentro do container */
+    text-decoration: none; /* Remove o sublinhado */
+    color: inherit; /* Garante que a cor do texto seja herdada, se necessário */
+}
+
 .botaomais-container {
-    /* Removido position, bottom, right daqui */
-    display: flex; /* Mantido para centralizar o '+' se for texto */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -258,13 +264,13 @@ nav .search-box input:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: white; /* Garante que o "+" seja branco */
     font-size: 40px;
     font-weight: 500;
     border: none;
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 3px 3px 6px rgb(45, 255, 38);
+    /* Removido o text-shadow aqui na iteração anterior */
     transition: background 0.3s;
     font-family: "Staatliches", sans-serif;
 }
@@ -272,6 +278,8 @@ nav .search-box input:focus {
 .botaomais:hover {
     background-color: #6fe600;
 }
+
+/* ... (o restante do seu código CSS) ... */
 
 /* ===== BOTÃO PERFIL ===== */
 .botaoperfil-container {

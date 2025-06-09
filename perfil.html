@@ -10,200 +10,169 @@
 </head>
 
 <body>
-    
-<!--
     <nav>
         <div class="bar_n">Escorphy</div>
         <div class="nav-right">
             <div class="search-box">
-                <input type="text" placeholder="Pesquisar...">
-            </div>
-            <div class="perfil">
-                <img src="img/perfil-removebg-preview.png" alt="Perfil">
+                <input type="text" placeholder="Pesquisar..." />
             </div>
         </div>
     </nav>
--->
 
-     <!--<nav>
-            <div class="bar_n">ESCORPHY</div>
-            <div class="nav-right">
-                <div class="search-box">
-                    <input type="text" placeholder="Pesquisar...">
+    <div class="main-content-perfil"> 
+        <div class="column left-column">
+            <article class="usuario">
+                <div>
+                    <h2>@usuario1</h2>
                 </div>
-            </div>
-        </nav>
+                <div class="foto_perfil">
+                    <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+                </div>
+                <div class="foto_upload">
+                    <input type="file" id="upload" hidden multiple>
+                    <label for="upload" class="upload-btn">Adicionar Foto</label>
+                    <div class="preview" id="preview"></div>
+                </div>
 
-    -->
+                <article class="info_usua">
+                    <span>Treinos</span>
+                    <span>Publicações</span>
+                    <span>Seguidores</span>
+                    <span>Seguindo</span>
+                </article>
 
-    <nav>
-    <div class="bar_n">Escorphy</div>
-    <div class="nav-right">
-        <div class="search-box">
-            <input type="text" placeholder="Pesquisar..." />
+                <article class="info_usua2">
+                    <span>3</span>
+                    <span>2</span>
+                    <span>50</span>
+                    <span>20</span>
+                </article>
+            </article>
+
+            <article class="treinos">
+                <div>
+                    <h2>Treinos Realizados</h2>
+                </div>
+                <div>
+                    <ul>
+                        <a href="treino1.html">
+                            <li><span class="atividade">Ciclismo</span> <span class="data">23/03/2025</span></li>
+                        </a>
+                        <li><span class="atividade">Corrida</span> <span class="data">20/03/2025</span></li>
+                        <li><span class="atividade">Caminhada</span> <span class="data">17/03/2025</span></li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+
+        <div class="column right-column">
+            <article class="publi_usua">
+                <div>
+                    <h2>Suas Publicações</h2>
+                </div>
+                <div class="post">
+                    <img src="img/Tudo-o-que-voce-precisa-saber-sobre-ciclismo.jpg" alt="">
+                    <div class="detalhes">
+                        <span>🏅 Esporte: Ciclismo</span>
+                        <span>📏 Distância: 25 km</span>
+                        <span>⛰️ Elevação: 500 m</span>
+                        <span>⏱️ Tempo: 1h 30min</span>
+                        <span>🔥 Calorias: 800 kcal</span>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src="img/images.jpeg" alt="">
+                    <div class="detalhes">
+                        <span>🏃‍♂️ Esporte: Corrida</span>
+                        <span>📏 Distância: 10 km</span>
+                        <span>⏱️ Tempo: 50 min</span>
+                        <span>🔥 Calorias: 600 kcal</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="sugeridos">
+                <div>
+                    <h2>Contas Sugeridas</h2>
+                </div>
+                <article class="contas_sugeridas">
+                    <div class="cs2">
+                        <div class="foto_perfil">
+                            <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+                        </div>
+                        <div class="foto_upload">
+                            <label for="upload" class="upload-btn-sugerido">@valeria</label>
+                        </div>
+                    </div>
+                    <div class="cs2">
+                        <div class="foto_perfil">
+                            <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+                        </div>
+                        <div class="foto_upload">
+                            <label for="upload" class="upload-btn-sugerido">@almeida</label>
+                        </div>
+                    </div>
+                    <div class="cs2">
+                        <div class="foto_perfil">
+                            <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+                        </div>
+                        <div class="foto_upload">
+                            <label for="upload" class="upload-btn-sugerido">@spatona</label>
+                        </div>
+                    </div>
+                    <div class="cs2">
+                        <div class="foto_perfil">
+                            <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+                        </div>
+                        <div class="foto_upload">
+                            <label for="upload" class="upload-btn-sugerido">@itsme</label>
+                        </div>
+                    </div>
+                </article>
+            </article>
         </div>
     </div>
-</nav>
 
-    <section class="container">
-
-        <article class="usuario">
-            <div>
-                <h2>@usuario1</h2>
+    <div class="floating-buttons-container">
+        <a href="home.html">
+            <div class="botaoperfil-container">
+                <button class="botaoperfil" id="botaoperfil">
+                    <img src="img/home.png" alt="Ícone Perfil">
+                </button>
             </div>
-            <div class="foto_perfil">
-                <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
+        </a>
+        <a href="treino1.html">
+            <div class="botaomais-container">
+                <button class="botaomais" id="botaoMais">+</button>
             </div>
-            <div class="foto_upload">
-                <input type="file" id="upload" hidden multiple> <!-- 'multiple' adicionado -->
-                <label for="upload" class="upload-btn">Adicionar Foto</label>
-                <div class="preview" id="preview"></div>
-            </div>
+        </a>
+    </div>
 
-            <article class="info_usua">
-                <span>Treinos</span>
-                <span>Publicações</span>
-                <span>Seguidores</span>
-                <span>Seguindo</span>
-            </article>
+    <script>
+        document.getElementById('upload').addEventListener('change', function(event) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            const files = event.target.files;
 
-            <article class="info_usua2">
-                <span>3</span>
-                <span>2</span>
-                <span>50</span>
-                <span>20</span>
-            </article>
-        </article>
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
 
-        <article class="publi_usua">
-
-            <div>
-                <h2>Suas Publicações</h2>
-            </div>
-
-            <div class="post">
-                <img src="img/Tudo-o-que-voce-precisa-saber-sobre-ciclismo.jpg" alt="">
-                <div class="detalhes">
-                    <span>🏅 Esporte: Ciclismo</span>
-                    <span>📏 Distância: 25 km</span>
-                    <span>⛰️ Elevação: 500 m</span>
-                    <span>⏱️ Tempo: 1h 30min</span>
-                    <span>🔥 Calorias: 800 kcal</span>
-                </div>
-            </div>
-            <div class=" post">
-                <img src="img/images.jpeg" alt="">
-                <div class="detalhes">
-                    <span>🏃‍♂️ Esporte: Corrida</span>
-                    <span>📏 Distância: 10 km</span>
-                    <span>⏱️ Tempo: 50 min</span>
-                    <span>🔥 Calorias: 600 kcal</span>
-                </div>
-            </div>
-        </article>
-
-
-
-
-
-    </section>
-
-
-    <section class="container2">
-
-        <article class="treinos">
-            <div>
-                <h2>Treinos Realizados</h2>
-            </div>
-            <div>
-                <ul>
-                    <a href="treino1.html">
-                        <li><span class="atividade">Ciclismo</span> <span class="data">23/03/2025</span></li>
-                    </a>
-                    <li><span class="atividade">Corrida</span> <span class="data">20/03/2025</span></li>
-                    <li><span class="atividade">Caminhada</span> <span class="data">17/03/2025</span></li>
-                </ul>
-            </div>
-
-        </article>
-
-        <article class="sugeridos">
-
-            <div>
-                <h2>Contas Sugeridas</h2>
-            </div>
-
-            <article class="contas_sugeridas">
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@valeria</label>
-                    </div>
-
-                </div>
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@almeida</label>
-                    </div>
-
-                </div>
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@spatona</label>
-                    </div>
-
-                </div>
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@itsme</label>
-                    </div>
-
-                </div>
-
-            </article>
-
-        </article>
-
-    </section>
-
-    <a href="treino1.html">
-        <div class="botaomais-container">
-            <button class="botaomais" id="botaoMais">+</button>
-        </div>
-    </a>
-
-     <a href="home.html">
-        <div class="botaohome-container">
-            <button class="botaohome" id="botaohome"><img src="img/perfil-removebg-preview.png" alt=""></button>
-        </div>
-    </a>
-
-
-
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.height = '100px';
+                        img.style.borderRadius = '10px';
+                        img.style.margin = '5px';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    </script>
 </body>
-
 
 </html>
