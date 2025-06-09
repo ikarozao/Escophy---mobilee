@@ -1,25 +1,13 @@
 @charset "UTF-8";
-/* Possivelmente estas linhas foram introduzidas por mim e podem ser removidas ou ajustadas */
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap");
 
-body {
-    /* ... outras propriedades ... */
-    font-family: "Poppins", sans-serif; /* Possivelmente esta linha mudou sua fonte principal */
-}
-
-/* E talvez aqui também */
-nav .bar_n {
-    font-size: 40px;
-    font-family: "Staatliches", sans-serif; /* Esta pode ter mudado a fonte do seu título Escorphy */
-    /* ... outras propriedades ... */
-}
 /* ===== BASE ===== */
 body {
     background: #044700;
     display: flex;
     flex-direction: column; 
-    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; 
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 10px; 
@@ -85,11 +73,11 @@ nav .search-box input:focus {
 
 /* ===== CONTÊINER PRINCIPAL DO CONTEÚDO (main-content-perfil) ===== */
 .main-content-perfil {
-    display: flex; /* Agora este é o container que fará as duas colunas ficarem lado a lado */
-    flex-wrap: wrap; /* Permite que as colunas quebrem a linha em telas menores */
-    justify-content: center; /* Centraliza as colunas */
-    align-items: flex-start; /* Alinha as colunas pelo topo */
-    gap: 20px; /* Espaço entre as duas colunas */
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: flex-start; 
+    gap: 20px; 
     width: 90%; 
     max-width: 1200px; 
     padding-bottom: 80px; 
@@ -98,21 +86,21 @@ nav .search-box input:focus {
 /* Estilo para as colunas (esquerda e direita) */
 .column {
     display: flex;
-    flex-direction: column; /* Conteúdo dentro de cada coluna fica empilhado verticalmente */
-    gap: 20px; /* Espaço entre os articles dentro de cada coluna */
-    flex-grow: 1; /* Permite que as colunas cresçam */
-    flex-shrink: 1; /* Permite que as colunas encolham */
-    min-width: 300px; /* Largura mínima para cada coluna antes de quebrar a linha */
+    flex-direction: column; 
+    gap: 20px; 
+    flex-grow: 1; 
+    flex-shrink: 1; 
+    min-width: 300px; 
 }
 
 .left-column {
-    flex-basis: 40%; /* Largura base de 40% para a coluna esquerda */
-    max-width: 500px; /* Limite máximo para a coluna esquerda */
+    flex-basis: 40%; 
+    max-width: 500px; 
 }
 
 .right-column {
-    flex-basis: 60%; /* Largura base de 60% para a coluna direita */
-    max-width: 680px; /* Limite máximo para a coluna direita */
+    flex-basis: 60%; 
+    max-width: 680px; 
 }
 
 /* ===== BLOCOS DE CONTEÚDO (articles) ===== */
@@ -124,8 +112,8 @@ nav .search-box input:focus {
     padding: 20px;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ocupa 100% da largura de sua coluna pai */
-    box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
+    width: 100%; 
+    box-sizing: border-box; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,7 +207,7 @@ nav .search-box input:focus {
     font-size: 30px;
     letter-spacing: 2px;
     margin-top: 3%;
-    font-family: "Staatliches", sans-serif;
+    font-family: "Staatliches", sans-serif; /* Mantendo Staatliches para os títulos */
     width: 100%;
 }
 
@@ -394,7 +382,6 @@ a {
     border-radius: 50%;
 }
 
-
 /* ===== RESPONSIVIDADE GERAL ===== */
 
 /* Tablets (769px a 1024px) */
@@ -412,16 +399,16 @@ a {
     }
 
     .main-content-perfil {
-        flex-direction: column; /* Colunas principais se empilham */
+        flex-direction: column; 
         align-items: center;
         width: 95%; 
     }
 
     .column {
-        flex-basis: auto; /* Remove a largura base fixa */
-        width: 90%; /* Ocupa 90% da largura do pai */
-        max-width: 600px; /* Limita o tamanho máximo */
-        margin: 0 auto; /* Centraliza */
+        flex-basis: auto; 
+        width: 90%; 
+        max-width: 600px; 
+        margin: 0 auto; 
     }
 
     .info_usua,
@@ -511,12 +498,11 @@ a {
     }
 
     .column {
-        width: 100%; /* Ocupa a largura total disponível */
-        padding: 0; /* Remove padding extra se houver */
+        width: 100%; 
+        padding: 0; 
         gap: 10px;
     }
 
-    /* Reduz padding dos articles para telas muito pequenas */
     .usuario,
     .publi_usua,
     .treinos,
