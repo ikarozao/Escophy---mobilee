@@ -1,349 +1,541 @@
-/* Importa fontes Google */
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap');
 
-/* Reset e configurações base */
-
 body {
-  background: #044700; /* cor equivalente a $cor-pri1 */
-  font-family: "Poppins", sans-serif;
-  /* removido display:flex para não quebrar altura do mapa */
+    background: #044700;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #222;
 }
-section{
-  width: 100%;
-  height: 100%;
+
+section {
+    width: 100%;
+    height: 100%;
 }
-/* Nav */
+
 nav {
-  background-color: #fff;
-  width: 90%;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-  margin: 1vh auto;
+    background-color: #fff;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 1vh auto; /* Centraliza horizontalmente e dá margem vertical */
 }
 
 nav .bar_n {
-  font-size: 40px;
-  font-family: "Staatliches", sans-serif;
-  white-space: nowrap;
+    font-size: 40px;
+    font-family: "Staatliches", sans-serif;
+    white-space: nowrap;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
 }
 
 nav .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 nav .search-box {
-  display: flex;
-  align-items: center;
-  background: rgb(234, 234, 234); /* cor equivalente $bg-search */
-  padding: 5px 10px;
-  border-radius: 20px;
-  box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
+    display: flex;
+    align-items: center;
+    background: rgb(234, 234, 234);
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
 }
 
 nav .search-box input {
-  border: none;
-  outline: none;
-  padding: 5px;
-  font-size: 14px;
-  background: rgb(234, 234, 234);
-  width: 150px;
-  min-width: 120px;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    background: rgb(234, 234, 234);
+    width: 150px;
+    min-width: 120px;
+    border-radius: 25px;
+    transition: box-shadow 0.3s ease;
 }
 
-/* Treinos container */
+nav .search-box input:focus {
+    box-shadow: 0 0 8px #00b40c;
+}
+
 .treinos {
-  width: 80%;
-  max-width: 1200px;
-  margin: 2vh auto;
-  border-radius: 30px;
-  background-color: #fff;
-  padding: 30px 20px;
+    width: 80%;
+    max-width: 1200px;
+    margin: 2vh auto; /* Centraliza horizontalmente e dá margem vertical */
+    border-radius: 30px;
+    background-color: #fff;
+    padding: 30px 30px 50px 30px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Título */
 .treinos .cima {
-  text-align: center;
-  font-family: "Staatliches", sans-serif;
+    text-align: center; /* Centraliza o conteúdo (título) */
+    font-family: "Staatliches", sans-serif;
 }
 
 .treinos .cima h1 {
-  font-weight: 500;
-  font-size: 40px;
+    font-weight: 500;
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #044700;
 }
 
-/* Icones treino */
 .icon-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin-top: 30px;
+    display: flex;
+    justify-content: center; /* Centraliza os ícones */
+    flex-wrap: wrap; /* Permite que os ícones quebrem a linha */
+    gap: 40px;
+    margin-top: 30px;
 }
 
 .circle {
-  background-color: rgb(230, 230, 230); /* cor equivalente $bg-circle */
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease, border 0.3s ease;
-  cursor: pointer;
-  border: 6px solid transparent;
+    background-color: rgb(230, 230, 230);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    border: 6px solid transparent;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .circle:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
+    border-color: #8fce67;
 }
 
 .circle.active {
-  border-color: #00b40c; /* cor equivalente $cor-sec */
+    border-color: #00b40c;
+    box-shadow: 0 0 12px #00b40c;
 }
 
 .circle img {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
+    user-select: none;
+    pointer-events: none;
 }
 
-/* Mapa */
+/* Inputs de texto - Centralizados e Responsivos */
+.treinos input[type="text"] {
+    width: 100%; /* Ocupa a largura total do seu contêiner pai */
+    max-width: 300px; /* Limita a largura máxima para não ficar muito largo */
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 2px solid #00b40c;
+    box-shadow: 2px 2px 6px rgba(0, 180, 12, 0.3);
+    font-size: 16px;
+    outline: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    margin: 8px auto; /* Centraliza o input e adiciona margem vertical */
+    box-sizing: border-box;
+    display: block; /* Garante que o input ocupe sua própria linha */
+    text-align: center; /* Opcional: centraliza o texto digitado dentro do input */
+}
+
+.treinos input[type="text"]:focus {
+    box-shadow: 0 0 10px #00b40c;
+    border-color: #008e09;
+}
+
+/* Container geral para cada grupo de opções (tipo, visibilidade, acessório) */
+.grupo-opcoes {
+    margin-bottom: 25px; /* Espaçamento entre os grupos */
+    width: 100%; /* Garante que ocupe a largura total disponível */
+    box-sizing: border-box; /* Inclui padding e borda na largura */
+    display: flex; /* Adiciona flexbox */
+    flex-direction: column; /* Coloca título e botões em coluna */
+    align-items: center; /* Centraliza título e botões */
+}
+
+/* Título de cada grupo */
+.grupo-opcoes > p {
+    font-weight: 700;
+    font-size: 18px;
+    color: #044700;
+    margin-bottom: 10px;
+    text-align: center; /* Garante que o texto do título também esteja centralizado */
+}
+
+/* Container das opções (links/botões) - ESSENCIAIS PARA CENTRALIZAÇÃO E LAYOUT DOS BOTÕES */
+.tipo,
+.visibilidade,
+.acessorio {
+    display: flex; /* Habilita flexbox */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha se não houver espaço */
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    gap: 12px; /* Espaço entre os botões */
+    width: 100%; /* Ocupa a largura total do .grupo-opcoes */
+    box-sizing: border-box;
+}
+
+/* Estilo para os links que atuam como botões de seleção */
+.tipo a,
+.visibilidade a,
+.acessorio a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #e7e7e7;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-weight: 500;
+    white-space: nowrap; /* Evita que o texto dentro do botão quebre linha */
+}
+
+.tipo a:hover,
+.visibilidade a:hover,
+.acessorio a:hover {
+    background-color: #d5ffd7;
+    border-color: #8fce67;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Link ativo / selecionado */
+a.active-option,
+a.selecionado {
+    background-color: #00b40c !important;
+    color: white !important;
+    border-color: #008e09 !important;
+    box-shadow: 0 0 10px #00b40c !important;
+}
+
+/* Botão salvar */
+.botao-salvar {
+    display: flex;
+    justify-content: center; /* Centraliza o botão */
+    margin-top: 30px;
+    width: 100%; /* Garante que o contêiner do botão ocupe a largura total */
+}
+
+.botao-salvar button {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #00b40c;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.botao-salvar button:hover {
+    background-color: #008e09;
+}
+
+/* Mensagem flutuante salva */
+.mensagem-flutuante {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    background-color: rgba(0, 180, 12, 0.85);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+}
+
+.mensagem-flutuante.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Range slider */
+.range-container { /* Container para o slider e os números */
+    width: 80%; /* Ajuste a largura conforme necessário */
+    max-width: 500px; /* Largura máxima para o slider */
+    margin: 0 auto; /* CENTRALIZA O CONTAINER DO SLIDER */
+    text-align: center; /* Centraliza o texto dos números */
+}
+
+.rangezi {
+    display: flex;
+    justify-content: space-between; /* Distribui os números uniformemente */
+    font-size: 12px;
+    padding: 0 2px;
+    position: relative;
+    margin-top: 5px;
+    width: 100%; /* Ocupa a largura total do .range-container */
+}
+
+.rangezao {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #ccc;
+    border-radius: 5px;
+    outline: none;
+    margin-top: 10px;
+}
+
+.rangezao::-webkit-slider-runnable-track {
+    background: rgba(4, 71, 0, 0.85);
+    height: 8px;
+    border-radius: 5px;
+}
+
+.rangezao::-moz-range-track {
+    background: rgba(4, 71, 0, 0.85);
+    height: 8px;
+    border-radius: 5px;
+}
+
+.rangezao::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid rgba(4, 71, 0, 0.85);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+    transition: background-color 0.3s ease;
+}
+
+.rangezao::-webkit-slider-thumb:hover {
+    background-color: #e6ffe6;
+}
+
+.rangezao::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid rgba(4, 71, 0, 0.85);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    cursor: default;
+}
+
+.tooltip .tip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.tooltip:hover .tip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Form container styles - Centraliza o formulário principal */
+.infos_treinos {
+    display: flex;
+    flex-direction: column; /* Organiza os filhos em coluna */
+    align-items: center; /* Centraliza todos os filhos horizontalmente */
+    width: 80%;
+    max-width: 900px;
+    margin: 20px auto 40px; /* Centraliza o formulário principal na página */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.infos_treinos h1 {
+    font-family: "Staatliches", sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin-bottom: 25px;
+    color: #044700;
+    text-align: center;
+}
+
+/* Divs internas dentro de .infos_treinos - Para alinhar cada seção de conteúdo */
+.infos_treinos > div {
+    margin-bottom: 20px; /* Espaçamento entre as seções */
+    width: 100%; /* Ocupa a largura total do .infos_treinos */
+    display: flex; /* Habilita flexbox para centralizar conteúdo interno */
+    flex-direction: column; /* Conteúdo em coluna (p e input/botões) */
+    align-items: center; /* Centraliza horizontalmente o conteúdo de cada div */
+}
+
+.infos_treinos p {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #044700;
+    text-align: center; /* Garante que o texto dos parágrafos esteja centralizado */
+}
+
 #map {
-  width: 100%;
-  height: 400px;
-  border-radius: 20px;
-  margin-top: 30px;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    height: 400px;
+    margin: 30px auto; /* CENTRALIZA O MAPA HORIZONTALMENTE */
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 100%; /* Garante que o mapa ocupe a largura total */
+    max-width: 600px; /* Limita a largura máxima do mapa */
+    display: block; /* Garante que ele se comporte como um bloco para margin:auto funcionar */
+}
+
+/* Estilos para o novo campo de especificações de acessórios */
+.acessorio-specs {
+    margin-top: 15px; /* Espaço acima do campo de especificações */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Inicialmente escondido, será exibido via JavaScript */
+    display: none;
+    transition: opacity 0.3s ease, height 0.3s ease; /* Adiciona transição para uma aparição suave */
+    overflow: hidden; /* Garante que não haja rolagem durante a transição de altura */
+    opacity: 0;
+    height: 0;
+}
+
+.acessorio-specs.show {
+    display: flex; /* Mostra o contêiner */
+    opacity: 1;
+    height: auto; /* Permite que a altura se ajuste ao conteúdo */
 }
 
 /* Responsividade */
 @media (max-width: 1024px) {
-  nav .bar_n {
-    font-size: 32px;
-  }
+    nav .bar_n {
+        font-size: 32px;
+    }
 
-  nav .search-box input {
-    width: 130px;
-  }
+    nav .search-box input {
+        width: 130px;
+    }
 
-  .treinos .cima h1 {
-    font-size: 36px;
-  }
+    .treinos .cima h1 {
+        font-size: 36px;
+    }
 }
 
 @media (max-width: 768px) {
-  nav {
-    padding: 8px 16px;
-    height: auto;
-  }
+    nav {
+        padding: 8px 16px;
+        height: auto;
+    }
 
-  nav .bar_n {
-    font-size: 28px;
-  }
+    nav .bar_n {
+        font-size: 28px;
+    }
 
-  nav .search-box input {
-    width: 120px;
-  }
+    nav .search-box input {
+        width: 120px;
+    }
 
-  .treinos {
-    width: 95%;
-    padding: 20px 10px;
-  }
+    .treinos {
+        width: 95%;
+        padding: 20px 15px 40px 15px;
+    }
 
-  .treinos .cima h1 {
-    font-size: 32px;
-  }
+    .treinos .cima h1 {
+        font-size: 32px;
+    }
 
-  .icon-container {
-    gap: 30px;
-  }
+    .icon-container {
+        gap: 30px;
+    }
 
-  .circle {
-    width: 80px;
-    height: 80px;
-  }
+    .circle {
+        width: 80px;
+        height: 80px;
+    }
 
-  .circle img {
-    width: 40px;
-    height: 40px;
-  }
+    .circle img {
+        width: 40px;
+        height: 40px;
+    }
 
-  #map {
-    height: 300px;
-  }
+    #map {
+        height: 300px;
+        margin: 25px auto; /* Centraliza o mapa em telas menores */
+        border-radius: 20px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .infos_treinos {
+        padding: 15px;
+    }
 }
 
 @media (max-width: 480px) {
-  nav .bar_n {
-    font-size: 24px;
-  }
+    nav .bar_n {
+        font-size: 24px;
+    }
 
-  nav .search-box input {
-    width: 100px;
-  }
+    nav .search-box input {
+        width: 100px;
+    }
 
-  .treinos .cima h1 {
-    font-size: 26px;
-  }
+    .treinos .cima h1 {
+        font-size: 26px;
+    }
 
-  .icon-container {
-    gap: 20px;
-  }
+    .icon-container {
+        gap: 20px;
+    }
 
-  .circle {
-    width: 70px;
-    height: 70px;
-  }
+    .circle {
+        width: 70px;
+        height: 70px;
+    }
 
-  .circle img {
-    width: 35px;
-    height: 35px;
-  }
+    .circle img {
+        width: 35px;
+        height: 35px;
+    }
 
-  #map {
-    height: 250px;
-  }
-}
+    #map {
+        height: 250px;
+        margin: 20px auto; /* Centraliza o mapa em telas muito pequenas */
+    }
 
-.acessorio {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    .infos_treinos {
+        width: 95%;
+    }
 
-  p {
-    font-size: large;
-    font-weight:bold;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-    
-  }
-
-  a:hover {
-    background-color: #d5ffd7;
-  }
-
-}
-
-.titulo {
-   p {
-    font-size: large;
-    font-weight:bold;
-  }
-}
-
-.descricao {
-   p {
-    font-size: large;
-    font-weight:bold;
-  }
-}
-
-.nivel {
-   p {
-    font-size: large;
-    font-weight:bold;
-  }
-}
-
-.tipo {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 0.5rem;
-
-  p {
-    font-size: large;
-    font-weight:bold;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-  }
-
-  a:hover {
-    background-color: #d5ffd7;
-  }
-}
-
-.visibilidade {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  p {
-    font-size: large;
-    font-weight:bold;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-  }
-
-  a:hover {
-    background-color: #d5ffd7;
-  }
-}
-.botao-salvar {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.botao-salvar button {
-  padding: 12px 30px;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: #00b40c;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.botao-salvar button:hover {
-  background-color: #008e09;
-}
-
-/* Estilo da mensagem flutuante */
-.mensagem-flutuante {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(4, 71, 0, 0.85);
-  color: white;
-  padding: 15px 30px;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 9999;
-}
-
-.mensagem-flutuante.show {
-  opacity: 1;
-  pointer-events: auto;
+    .tipo a,
+    .visibilidade a,
+    .acessorio a {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 }

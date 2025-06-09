@@ -6,22 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Treinos | Escorphy</title>
 
-    <!-- Seu CSS -->
     <link rel="stylesheet" href="treinos/treinos.css" />
 
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin="" />
+    
     <link rel="icon" type="image/png" href="img/a.png">
 </head>
 
 <body>
 
     <nav>
-        <div class="bar_n">Escorphy</div>
+        <a href="home.html" class="bar_n" style="text-decoration:none; color:black; cursor:pointer;">Escorphy</a>
         <div class="nav-right">
             <div class="search-box">
-                <input type="text" placeholder="Pesquisar..." />
+                <input class="input-rounded" type="text" placeholder="Pesquisar..." />
             </div>
         </div>
     </nav>
@@ -34,14 +33,10 @@
         <div class="icon-container">
             <div onclick="mostrarFormulario()" class="circle"><img src="img/run.png" alt="Ícone Corrida" /></div>
             <div onclick="mostrarFormulario()" class="circle"><img src="img/bike copy.png" alt="Ícone Bicicleta" /></div>
-            <div onclick="mostrarFormulario()" class="circle"><img src="img/dumbbell.png" alt="Ícone Musculação" />
-            </div>
+            <div onclick="mostrarFormulario()" class="circle"><img src="img/dumbbell.png" alt="Ícone Musculação" /></div>
         </div>
 
-        <!-- Mapa -->
-        <div id="map">
-
-        </div>
+        <div id="map"></div>
 
         <article id="infos_treinos" class="infos_treinos" style="display: none;">
 
@@ -49,162 +44,211 @@
 
             <div class="titulo">
                 <p>Título da corrida:</p>
-                <input type="text" name="text" placeholder="" required>
-
+                <input class="input-rounded" type="text" name="titulo" placeholder="" required>
             </div>
 
             <div class="descricao">
                 <p>Descrição da corrida:</p>
-                <input type="text" name="text" placeholder="" required>
+                <input class="input-rounded" type="text" name="descricao" placeholder="" required>
             </div>
 
-
-            <div class="tipo">
+            <div class="grupo-opcoes">
                 <p>Tipo de corrida:</p>
-                <a href="#" role="menuitem" tabindex="0">Treino</a>
-                <a href="#" role="menuitem" tabindex="0">Prova</a>
-                <a href="#" role="menuitem" tabindex="0">Longão</a>
+                <div class="tipo">
+                    <a href="#" role="menuitem" tabindex="0">Treino</a>
+                    <a href="#" role="menuitem" tabindex="0">Prova</a>
+                    <a href="#" role="menuitem" tabindex="0">Longão</a>
+                </div>
             </div>
 
-            <div class="nivel" style="width: 100%; max-width: 300px;">
-    <p>Nível de esforço: 1-10</p>
-    <input type="range" min="1" max="10" step="1" style="width: 100%;">
+            <div class="grupo-opcoes"> 
+                <p>Nível de intensidade</p>
+                <div class="range-container">
+                    <input type="range" class="rangezao" min="1" max="10" step="1">
+                    <div class="rangezi">
+                        <span class="tooltip">
+                            1
+                            <span class="tip">Pouco</span>
+                        </span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span class="tooltip">
+                            5
+                            <span class="tip">Médio</span>
+                        </span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span class="tooltip">
+                            10
+                            <span class="tip">Muito</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Números de 1 a 10 abaixo do range -->
-    <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 0 2px;">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span>7</span>
-        <span>8</span>
-        <span>9</span>
-        <span>10</span>
-    </div>
-</div>
-
-
-            <div class="visibilidade">
+            <div class="grupo-opcoes">
                 <p>Visibilidade do Treino:</p>
-                <a href="#" role="menuitem" tabindex="0">Privado</a>
-                <a href="#" role="menuitem" tabindex="0">Público</a>
+                <div class="visibilidade">
+                    <a href="#" role="menuitem" tabindex="0">Privado</a>
+                    <a href="#" role="menuitem" tabindex="0">Público</a>
+                </div>
             </div>
 
-
-            <div class="acessorio">
-
+            <div class="grupo-opcoes">
                 <p>Adicione o tipo de acessório:</p>
-                <a onclick="opcaoAcessorio(event)" href="#" role="menuitem" tabindex="0">Relógio</a>
-                <a onclick="opcaoAcessorio(event)" href="#" role="menuitem" tabindex="0">Tênis</a>
+                <div class="acessorio">
+                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Relógio</a>
+                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Fones</a>
+                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Pulseira</a>
+                    </div>
 
-            </div>
-
-             <div  id="tipo_acessorio" class="acessorio" style="display: none;">
-
-                <p>Adicione especificações (modelo) do acessório:</p>
-                <input type="text" name="text" placeholder="" required>
-
+                <div class="acessorio-specs">
+                    <p>Especificações dos acessórios:</p>
+                    <input type="text" id="especificacoesAcessorios" placeholder="Ex: Marca, modelo, cor, tipo de pisada, etc.">
+                </div>
             </div>
 
             <div class="botao-salvar">
-  <button id="salvarBtn">Salvar</button>
-</div>
+                <button id="salvarBtn">Salvar</button>
+            </div>
 
-<div id="mensagemSalvo" class="mensagem-flutuante">
-  Salvo com sucesso!
-</div>
-
-
-    </div>
-
+            <div id="mensagemSalvo" class="mensagem-flutuante">
+                Salvo com sucesso!
+            </div>
 
         </article>
-
     </div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-pM0I+T+E+Qa/Y2DGSTsG6xkAnG4Imrc/Y5yzS2jYxP0=" crossorigin="">
+        integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
     
-    
-    
-    </script>
-<script>
-  const salvarBtn = document.getElementById('salvarBtn');
-  const mensagemSalvo = document.getElementById('mensagemSalvo');
-
-  salvarBtn.addEventListener('click', () => {
-    // Aqui você pode colocar o código de salvamento real se tiver (ex: salvar no localStorage ou enviar pra um servidor)
-
-    // Exibe a mensagem de sucesso
-    mensagemSalvo.style.display = 'block';
-
-    // Oculta a mensagem depois de 2 segundos (opcional)
-    setTimeout(() => {
-      mensagemSalvo.style.display = 'none';
-    }, 2000);
-  });
-</script>
-
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Funções de Seleção de Botões (Single Select) ---
+            function setupSingleSelection(containerSelector) {
+                const container = document.querySelector(containerSelector);
+                if (!container) return;
 
-        
-        function mostrarFormulario() {
-            const form = document.getElementById("infos_treinos");
-            form.style.display = form.style.display === "none" ? "block" : "none";
-        }
+                const links = container.querySelectorAll('a');
+                links.forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        // Remove active-option de todos os links no mesmo container
+                        links.forEach(l => l.classList.remove('active-option'));
+                        // Adiciona active-option no clicado
+                        link.classList.add('active-option');
+                    });
+                });
+            }
 
-        function opcaoAcessorio(event) {
-            event.preventDefault();
-            const form = document.getElementById("tipo_acessorio");
-            form.style.display = form.style.display === "none" ? "block" : "none";
-        }
+            // Ativa seleção única para Tipo de corrida e Visibilidade
+            setupSingleSelection('.tipo');
+            setupSingleSelection('.visibilidade');
 
-        async function start() {
-            let element = await osmRequest.fetchElement('node/3683625932');
-            element = osmRequest.setTag(element, 'key', 'value');
-            element = osmRequest.setTags(element, {
-                key1: 'value1',
-                key2: 'value2',
-                key3: 'value3',
+            // --- Seleção de Acessórios (Múltipla Seleção) e Mostrar/Esconder Input de Especificações ---
+            const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
+            const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
+            const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
+
+            function toggleAcessorioSpecsVisibility() {
+                let anyAccessorySelected = false;
+                accessoryOptions.forEach(option => {
+                    // Verifica se alguma opção de acessório está ativa (selecionada)
+                    if (option.classList.contains('active-option')) {
+                        anyAccessorySelected = true;
+                    }
+                });
+
+                if (anyAccessorySelected) {
+                    acessorioSpecsContainer.style.display = 'flex'; // Torna visível usando flexbox
+                    // Força um reflow para que a transição de opacidade e altura funcione corretamente
+                    // (Isso é uma pequena "hack" para garantir que o navegador "perceba" a mudança de display antes de animar)
+                    acessorioSpecsContainer.offsetHeight; 
+                    acessorioSpecsContainer.style.opacity = '1';
+                    acessorioSpecsContainer.style.height = 'auto'; // Permite que a altura se ajuste ao conteúdo
+                } else {
+                    acessorioSpecsContainer.style.opacity = '0';
+                    acessorioSpecsContainer.style.height = '0'; // Encolhe para esconder
+                    especificacoesAcessoriosInput.value = ''; // Limpa o input quando escondido
+                    // Esconde completamente (display: none) só depois da transição de opacidade/altura
+                    setTimeout(() => {
+                        acessorioSpecsContainer.style.display = 'none';
+                    }, 300); // O tempo deve ser igual ou maior que a duração da transição no CSS
+                }
+            }
+
+            // Adiciona o event listener para cada opção de acessório
+            accessoryOptions.forEach(option => {
+                option.addEventListener('click', function(event) {
+                    event.preventDefault(); // Impede que o link navegue para #
+                    // Alterna a classe 'active-option' para permitir seleção múltipla
+                    this.classList.toggle('active-option');
+                    // Chama a função para verificar e mostrar/esconder o input de especificações
+                    toggleAcessorioSpecsVisibility(); 
+                });
             });
-            element = osmRequest.removeTag(element, 'key2');
-            element = osmRequest.setTimestampToNow(element);
-            element = osmRequest.setCoordinates(element, 1.234, 0.456);
 
-            const changesetId = await osmRequest.createChangeset('Created by me', 'My changeset comment');
-            const isChangesetStillOpen = await osmRequest.isChangesetStillOpen(changesetId);
-            const newElementVersion = await osmRequest.sendElement(element, changesetId);
-            element = osmRequest.setVersion(element, newElementVersion);
-        }
+            // Chama a função ao carregar a página para definir o estado inicial do input de especificações
+            toggleAcessorioSpecsVisibility();
 
-        start();
-
-
-        // Ativar seleção de treino
-        const circles = document.querySelectorAll('.circle');
-        circles.forEach(circle => {
-            circle.addEventListener('click', () => {
-                circles.forEach(c => c.classList.remove('active'));
-                circle.classList.add('active');
+            // --- Animação dos Círculos de Ícones (seleção única) ---
+            const circles = document.querySelectorAll('.circle');
+            circles.forEach(circle => {
+                circle.addEventListener('click', () => {
+                    circles.forEach(c => {
+                        c.classList.remove('active');
+                        // Reseta a animação para garantir que ela sempre comece do zero
+                        c.style.animation = 'none';
+                        c.offsetHeight; // Força reflow
+                        c.style.animation = null;
+                    });
+                    circle.classList.add('active');
+                });
             });
+
+            // --- Mostrar/Esconder Formulário Principal (`#infos_treinos`) ---
+            function mostrarFormulario() {
+                const form = document.getElementById("infos_treinos");
+                // Alterna a propriedade 'display' para mostrar/esconder
+                form.style.display = form.style.display === "none" ? "block" : "none";
+                // IMPORTANTE: Se você quiser transições suaves para 'mostrarFormulario',
+                // precisaria usar classes CSS (como 'show-form') e transições de opacity/height
+                // em vez de alternar 'display' diretamente.
+            }
+            // Torna a função `mostrarFormulario` acessível globalmente (para os onclicks no HTML)
+            window.mostrarFormulario = mostrarFormulario;
+
+
+            // --- Salvar e Mostrar Mensagem Flutuante ---
+            const salvarBtn = document.getElementById('salvarBtn');
+            const mensagemSalvo = document.getElementById('mensagemSalvo');
+
+            salvarBtn.addEventListener('click', () => {
+                mensagemSalvo.classList.add('show');
+
+                // Esconde a mensagem após 2 segundos
+                setTimeout(() => {
+                    mensagemSalvo.classList.remove('show');
+                }, 2000);
+            });
+
+            // --- Inicialização do Mapa Leaflet ---
+            // A biblioteca Leaflet.js já deve estar carregada neste ponto.
+            const map = L.map('map').setView([-23.55052, -46.633308], 13); // Define a posição inicial do mapa
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap', // Atribuição para o OpenStreetMap
+            }).addTo(map); // Adiciona a camada de tiles ao mapa
+
+            L.marker([-23.55052, -46.633308]) // Adiciona um marcador na posição inicial
+                .addTo(map)
+                .bindPopup('Você está aqui.') // Adiciona um popup ao marcador
+                .openPopup(); // Abre o popup automaticamente
         });
-
-        // Inicializar mapa
-        const map = L.map('map').setView([-23.55052, -46.633308], 13);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap',
-        }).addTo(map);
-
-        L.marker([-23.55052, -46.633308])
-            .addTo(map)
-            .bindPopup('Você está aqui.')
-            .openPopup();
-
     </script>
+
 </body>
 
 </html>
