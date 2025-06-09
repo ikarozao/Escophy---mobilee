@@ -14,19 +14,23 @@ body {
 nav {
     background-color: #fff;
     width: 90%;
+    max-width: 1200px; /* Adicionado max-width para navbar (igual ao de treinos.scss) */
     border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-    margin: 1vh auto;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 1vh auto; /* Centraliza horizontalmente e dá margem vertical */
 }
 
 nav .bar_n {
     font-size: 40px;
     font-family: "Staatliches", sans-serif;
     white-space: nowrap;
+    text-decoration: none; /* Adicionado (era do treinos.scss) */
+    color: black; /* Adicionado (era do treinos.scss) */
+    cursor: pointer; /* Adicionado (era do treinos.scss) */
 }
 
 nav .nav-right {
@@ -41,17 +45,23 @@ nav .search-box {
     background: rgb(234, 234, 234);
     padding: 5px 10px;
     border-radius: 20px;
-    box-shadow: 1px 2px 6px rgba(119,119,119,0.1);
+    box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
 }
 
 nav .search-box input {
     border: none;
     outline: none;
-    padding: 5px;
+    padding: 5px 10px; /* Ajustado (era do treinos.scss) */
     font-size: 14px;
     background: rgb(234, 234, 234);
     width: 150px;
     min-width: 120px;
+    border-radius: 25px; /* Adicionado (era do treinos.scss) */
+    transition: box-shadow 0.3s ease; /* Adicionado (era do treinos.scss) */
+}
+
+nav .search-box input:focus {
+    box-shadow: 0 0 8px #00b40c; /* Adicionado (era do treinos.scss) */
 }
 
 /* ===== ÚLTIMO TREINO ===== */
@@ -93,6 +103,9 @@ nav .search-box input {
     margin-top: 20px;
     gap: 20px;
     flex-wrap: wrap;
+    /* Adicionado para centralizar o container principal em telas maiores */
+    margin-left: auto; 
+    margin-right: auto;
 }
 
 /* ===== FEED ===== */
@@ -324,9 +337,10 @@ nav .search-box input {
     }
 }
 
-/*perfis sugeridos*/
+/*perfis sugeridos (comentado no seu código original) */
 
-/*.cs2{
+/*
+.cs2{
     margin-right: 25px
 }
 
@@ -373,7 +387,7 @@ nav .search-box input {
     transform: translateY(1vh);
 } 
 
-/* ===== BOTÃO perfil ===== */
+// ===== BOTÃO perfil ===== 
 .botaoperfil-container {
     position: fixed;
     bottom: 20px;
@@ -401,8 +415,8 @@ nav .search-box input {
     font-weight: 500;
     border: none;
     cursor: pointer;
-    /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 3px 3px 6px rgb(45, 255, 38);*/
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);
     transition: background 0.3s;
     font-family: "Staatliches", sans-serif;
 }
@@ -426,4 +440,4 @@ nav .search-box input {
     transition: opacity 0.5s ease;
     z-index: 9999;
 }
-    
+*/
