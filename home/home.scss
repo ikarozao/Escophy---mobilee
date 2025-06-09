@@ -33,9 +33,9 @@ nav .bar_n {
     font-size: 40px;
     font-family: "Staatliches", sans-serif;
     white-space: nowrap;
-    text-decoration: none; /* Adicionado (era do treinos.scss) */
-    color: black; /* Adicionado (era do treinos.scss) */
-    cursor: pointer; /* Adicionado (era do treinos.scss) */
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
 }
 
 nav .nav-right {
@@ -56,17 +56,17 @@ nav .search-box {
 nav .search-box input {
     border: none;
     outline: none;
-    padding: 5px 10px; /* Ajustado (era do treinos.scss) */
+    padding: 5px 10px;
     font-size: 14px;
     background: rgb(234, 234, 234);
     width: 150px;
     min-width: 120px;
-    border-radius: 25px; /* Adicionado (era do treinos.scss) */
-    transition: box-shadow 0.3s ease; /* Adicionado (era do treinos.scss) */
+    border-radius: 25px;
+    transition: box-shadow 0.3s ease;
 }
 
 nav .search-box input:focus {
-    box-shadow: 0 0 8px #00b40c; /* Adicionado (era do treinos.scss) */
+    box-shadow: 0 0 8px #00b40c;
 }
 
 /* ===== HOME PAGE SPECIFIC STYLES ===== */
@@ -229,14 +229,25 @@ nav .search-box input:focus {
     border-radius: 5px;
 }
 
-/* ===== BOTÃO FLUTUANTE ===== */
-.botaomais-container {
+/* ===== CONTÊINER DE BOTÕES FLUTUANTES (NOVO) ===== */
+.floating-buttons-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    display: flex; /* Para alinhar os botões lado a lado */
+    flex-direction: row; /* Alinha na horizontal */
+    gap: 10px; /* Espaçamento entre os botões */
+    align-items: center;
+    z-index: 1000; /* Garante que fiquem acima de outros elementos */
+}
+
+
+/* ===== BOTÃO MAIS ===== */
+.botaomais-container {
+    /* Removido position, bottom, right daqui */
+    display: flex; /* Mantido para centralizar o '+' se for texto */
+    justify-content: center;
+    align-items: center;
 }
 
 .botaomais {
@@ -259,6 +270,43 @@ nav .search-box input:focus {
 }
 
 .botaomais:hover {
+    background-color: #6fe600;
+}
+
+/* ===== BOTÃO PERFIL ===== */
+.botaoperfil-container {
+    /* Removido position, bottom, right daqui */
+    display: flex; /* Para alinhar a imagem dentro do botão */
+    justify-content: center;
+    align-items: center;
+}
+
+.botaoperfil-container img {
+    width: 40px;
+    height: 40px;
+    /* Considerar object-fit: cover; se as imagens distorcerem */
+}
+
+.botaoperfil {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(64, 182, 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px; /* Se for usar texto no botão de perfil, caso contrário não faz diferença */
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgb(45, 255, 38); /* Se for usar texto no botão de perfil */
+    transition: background 0.3s;
+    font-family: "Staatliches", sans-serif; /* Se for usar texto no botão de perfil */
+}
+
+.botaoperfil:hover {
     background-color: #6fe600;
 }
 
@@ -733,6 +781,12 @@ a.selecionado {
         padding: 10px 15px; /* Ajusta o padding dos botões */
         font-size: 15px; /* Ajusta o tamanho da fonte dos botões */
     }
+
+    .floating-buttons-container {
+        bottom: 15px;
+        right: 15px;
+        gap: 8px; /* Ajusta o espaçamento entre botões para tablets */
+    }
 }
 
 /* Responsividade para celulares (até 480px) */
@@ -822,108 +876,20 @@ a.selecionado {
         width: 90%; /* Ajusta largura da mensagem flutuante */
         box-sizing: border-box;
     }
-}
 
-/* Comentados (perfis sugeridos e botão de perfil) - Se forem reativados, devem ter suas próprias regras de responsividade */
-/*
-.cs2 {
-    margin-right: 25px;
-}
-
-.sugeridos {
-    background-color: white;
-    width: 40%;
-    max-width: 500px;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: center;
-    margin-top: 5px;
-
-    h2 {
-        font-size: 30px;
-        letter-spacing: 2px;
-        margin-top: 3%;
-        font-family: "Staatliches", sans-serif;
+    .floating-buttons-container {
+        bottom: 10px;
+        right: 10px;
+        gap: 6px; /* Ajusta o espaçamento entre botões para celulares */
     }
 
-    .contas_sugeridas {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
+    .botaomais,
+    .botaoperfil {
+        width: 50px; /* Reduz o tamanho dos botões flutuantes em celular */
+        height: 50px;
+    }
+    .botaoperfil-container img {
+        width: 30px; /* Ajusta o tamanho da imagem de perfil */
+        height: 30px;
     }
 }
-
-.foto_perfil {
-    width: 100px;
-    height: 100px;
-    background-color: lightgray;
-    border-radius: 20%;
-    margin: 10px 0;
-}
-
-.foto_perfil img {
-    width: 80%;
-    height: 80%;
-    transform: translateY(1vh);
-}
-
-// ===== BOTÃO perfil =====
-.botaoperfil-container {
-    position: fixed;
-    bottom: 20px;
-    right: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-.botaoperfil {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: rgb(64, 182, 64);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 40px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 3px 3px 6px rgb(45, 255, 38);
-    transition: background 0.3s;
-    font-family: "Staatliches", sans-serif;
-}
-
-.botaoperfil:hover {
-    background-color: #6fe600;
-}
-
-#mensagem-flutuante {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(4, 71, 0, 0.85);
-    color: white;
-    padding: 15px 30px;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-    z-index: 9999;
-}
-*/

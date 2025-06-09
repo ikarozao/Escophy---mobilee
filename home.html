@@ -78,7 +78,6 @@
                 <button class="btn-curtir">❤️</button>
             </article>
 
-            <!-- Novos posts adicionados -->
             <article class="post">
                 <h3>Lucas Pereira</h3>
                 <p>Trilha na floresta</p>
@@ -107,82 +106,20 @@
         </section>
     </section>
 
-    <!--<article class ="sugeridos">
+    <div class="floating-buttons-container">
+        <a href="perfil.html">
+            <div class="botaoperfil-container">
+                <button class="botaoperfil" id="botaoperfil"><img src="img/perfil-removebg-preview.png" alt=""></button>
+            </div>
+        </a>
+        <a href="treino1.html">
+            <div class="botaomais-container">
+                <button class="botaomais" id="botaoMais">+</button>
+            </div>
+        </a>
+    </div>
 
-    <article class="contas_sugeridas">
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@valeria</label>
-                    </div>
-
-                </div>
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@almeida</label>
-                    </div>
-
-                </div>
-
-                <div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@spatona</label>
-                    </div>
-
-                </div> -->
-
-    <a href="treino1.html">
-        <div class="botaomais-container">
-            <button class="botaomais" id="botaoMais">+</button>
-        </div>
-    </a>
-
-    <a href="perfil.html">
-        <div class="botaoperfil-container">
-            <button class="botaoperfil" id="botaoperfil"><img src="img/perfil-removebg-preview.png" alt=""></button>
-        </div>
-    </a>
-
-
-
-            <!--<div class="cs2">
-
-                    <div class="foto_perfil">
-                        <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                    </div>
-
-                    <div class="foto_upload">
-                        <label for="upload" class="upload-btn">@itsme</label>
-                    </div>
-
-                </div>
-
-            </article>-->
-
-        </article>
-
-
-</div> <!-- Fecha main-content -->
-
-<!-- Coloque isso dentro do <body>, no final -->
-
-<div id="mensagem-flutuante"></div>
+</div> <div id="mensagem-flutuante"></div>
 
 <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -204,7 +141,6 @@
 </script>
 
 <script>
-    
     // Preview das imagens no upload
     document.getElementById('upload').addEventListener('change', function(event) {
         const preview = document.getElementById('preview');
