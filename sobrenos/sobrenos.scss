@@ -6,8 +6,12 @@ body {
     margin: 0;
     padding: 0;
     color: #222;
-     margin: 0;
+    margin: 0;
     padding-top: 70px; /* altura da navbar para não sobrepor conteúdo */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 section {
@@ -188,4 +192,16 @@ nav .search-box input:focus {
   /* Proporção da imagem no botão */
   height: auto;
   object-fit: cover;
+ }
+
+ .artigo {
+  background-color: white;
+  width: 80%;
+  border-radius: 30px;
+
+  h1 {
+    font-size: large;
+    font-family: "Poppins", sans-serif;
+    margin-left: 2%;
+  }
  }
