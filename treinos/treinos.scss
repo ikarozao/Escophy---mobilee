@@ -6,6 +6,8 @@ body {
     margin: 0;
     padding: 0;
     color: #222;
+    margin: 0;
+    padding-top: 70px; /* altura da navbar para não sobrepor conteúdo */
 }
 
 section {
@@ -13,7 +15,7 @@ section {
     height: 100%;
 }
 
-nav {
+/*nav {
     background-color: #fff;
     width: 90%;
     max-width: 1200px;
@@ -23,7 +25,25 @@ nav {
     justify-content: space-between;
     padding: 10px 20px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 1vh auto; /* Centraliza horizontalmente e dá margem vertical */
+    margin: 1vh auto; /* Centraliza horizontalmente e dá margem vertical 
+}*/
+
+nav {
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    /* Remove margem que estava causando problema */
+    margin: 0;
 }
 
 nav .bar_n {
@@ -48,6 +68,9 @@ nav .search-box {
     padding: 5px 10px;
     border-radius: 20px;
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
+    padding: 8px 16px;
+    outline: none;
+    margin-right: 40px;
 }
 
 nav .search-box input {
