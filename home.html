@@ -153,20 +153,7 @@
 
 
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const nomeUsuario = localStorage.getItem('nomeUsuario');
-        const mensagem = document.getElementById('mensagem-flutuante');
-
-        if (nomeUsuario) {
-            mensagem.textContent = `Olá, ${nomeUsuario}!`;
-            mensagem.classList.add('mostrar');
-
-            setTimeout(() => {
-                mensagem.classList.add('esconder');
-                mensagem.classList.remove('mostrar');
-            }, 4000);
-        }
-    });
+    
 </script>
 
 <script>

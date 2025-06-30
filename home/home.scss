@@ -58,7 +58,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 10px 10px ;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     position: fixed;
@@ -90,11 +90,16 @@ nav .search-box {
     align-items: center;
     background: rgb(234, 234, 234);
     /*padding: 5px 10px;*/
-    padding: 8px 16px;
+    padding: 8px 20px;
     outline: none;
+    margin-right: 2vh;
+    margin-left: 2vh;
     border-radius: 20px;
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
-    margin-right: 40px;
+    width: 100%;
+    max-width: 400px; /* limite para telas maiores */
+    
+    
 }
 
 nav .search-box input {
@@ -773,7 +778,7 @@ a.selecionado {
         padding: 8px 16px;
         flex-direction: column;
         gap: 10px;
-        width: 95%; /* Ajuste a largura da navbar para tablets */
+        width: 95%; 
     }
 
     nav .bar_n {
@@ -787,7 +792,8 @@ a.selecionado {
     }
 
     nav .search-box {
-        width: 100%;
+        width: 90%;
+        
     }
 
     nav .search-box input {
@@ -946,4 +952,29 @@ a.selecionado {
         width: 30px; /* Ajusta o tamanho da imagem de perfil */
         height: 30px;
     }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4CAF50;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #388E3C;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4CAF50 #e0e0e0;
 }
