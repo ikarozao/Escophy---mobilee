@@ -50,10 +50,17 @@ nav .search-box {
     display: flex;
     align-items: center;
     background: rgb(234, 234, 234);
-    padding: 8px 16px;
+    /*padding: 5px 10px;*/
+    padding: 8px 20px;
+    outline: none;
+    margin-right: 2vh;
+    margin-left: 2vh;
     border-radius: 20px;
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
-    margin-right: 40px;
+    width: 100%;
+    max-width: 400px; /* limite para telas maiores */
+    
+    
 }
 
 nav .search-box input {
