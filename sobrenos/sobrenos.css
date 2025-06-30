@@ -93,6 +93,47 @@ nav .search-box input:focus {
   box-shadow: 0 0 8px #00b40c;
 }
 
+.hist {
+  background-color: white;
+  width: 80%;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 3%;
+}
+.hist h1 {
+  font-size: large;
+  font-family: "Poppins", sans-serif;
+  margin-left: 2%;
+}
+.hist p {
+  color: black;
+  margin-left: 2%;
+}
+
+.titulo {
+  background-color: white;
+  width: 40%;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 3%;
+}
+
+.artigo {
+  background-color: white;
+  width: 80%;
+  border-radius: 30px;
+  margin-top: 3%;
+}
+.artigo h1 {
+  font-size: large;
+  font-family: "Poppins", sans-serif;
+  margin-left: 2%;
+}
+
 .cards-section {
   display: flex;
   flex-wrap: wrap;
@@ -189,17 +230,6 @@ nav .search-box input:focus {
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
-}
-
-.artigo {
-  background-color: white;
-  width: 80%;
-  border-radius: 30px;
-}
-.artigo h1 {
-  font-size: large;
-  font-family: "Poppins", sans-serif;
-  margin-left: 2%;
 }
 
 ::-webkit-scrollbar {
