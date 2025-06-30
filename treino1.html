@@ -46,7 +46,7 @@
             <button class="arrow right" onclick="moverDireita()">❯</button>
         </div>
 
-        <div id="map"><img src="img/mapa bpk.png" alt=""></div>
+        <div id="map"></div>
 
         <article id="infos_treinos" class="infos_treinos" style="display: none;">
 
@@ -256,6 +256,33 @@
   });
 
     </script>
+    <!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Inicializa o mapa
+  const map = L.map('map').setView([-24.740387, -53.767403], 16); 
+
+
+  // Adiciona o tile do OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:
+      '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  // Adiciona marcador (opcional)
+  L.marker([-23.5505, -46.6333])
+    .addTo(map)
+    .bindPopup('Estamos aqui!')
+    .openPopup();
+</script>
+
     
 <footer class="footer">
     <div class="footer-container">
