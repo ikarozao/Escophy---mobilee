@@ -257,6 +257,16 @@ nav .search-box input:focus {
   scrollbar-color: #4CAF50 #e0e0e0;
 }
 
+.ajuda {
+  background-color: white;
+  width: 40%;
+  border-radius: 30px;
+  display: flex;
+  align-items: self-start;
+  flex-direction: column;
+  margin-top: 3%;
+}
+
 .footer {
   background-color: #f9f9f9;
   padding: 40px 20px;
