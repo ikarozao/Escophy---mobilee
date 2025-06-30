@@ -8,35 +8,6 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
     <link rel="icon" type="image/png" href="img/a.png">
 
-    <style>
-        #mensagem-flutuante {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            padding: 12px 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        #mensagem-flutuante.mostrar {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        #mensagem-flutuante.esconder {
-            opacity: 0;
-            transform: translateX(-50%) translateY(20px);
-        }
-    </style>
 </head>
 <body>
 <nav>
