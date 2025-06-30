@@ -1,56 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
 
 /* ===== BASE ===== */
 body {
-    background: #044700;
+    background: #044700; /* Seu fundo verde original */
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     color: #222;
-    margin: 0;
     padding-top: 70px; /* altura da navbar para não sobrepor conteúdo */
 }
 
 section {
     width: 100%;
-    height: 100%;
+    /* Removido height: 100%; para evitar problemas de altura e scroll inesperados */
 }
-
-/* ===== NAVBAR ===== */
-/*nav {
-    position: fixed; 
-    top: 0;          
-    left: 0;          
-    width: 100%; 
-    height: 5vh;     
-    background-color: #fff;
-<<<<<<< HEAD
-    width: 90%;
-    
-    border-radius: 30px;
-=======
->>>>>>> b0c94d83d980f1cc9c40d3ce56bbd2cc92715089
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;    /* Garante que fique acima dos outros elementos */
-
-    /*input{
-        width: 70%;
-        height: 4vh;
-        border-radius: 2px;
-        border: solid 1px gainsboro;
-        box-shadow: 1px 1px 5px rgb(235, 235, 235);
-        padding: 5px 10px 5px 20px;  aumentou o padding-left 
-    input:focus {
-    box-shadow: 0 0 8px #00b40c;
-    border: solid 1px #00b40c;
-}
-    
-}*/
 
 nav {
     background-color: #fff;
@@ -58,7 +21,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 10px ;
+    padding: 10px 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     position: fixed;
@@ -98,6 +61,7 @@ nav .search-box {
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
     width: 100%;
     max-width: 400px; /* limite para telas maiores */
+    margin-right: 4vh; 
 }
 
 nav .search-box input {
@@ -117,14 +81,42 @@ nav .search-box input:focus {
 }
 
 
-
 /* ===== HOME PAGE SPECIFIC STYLES ===== */
+
+/* Contêiner principal do conteúdo - agora sem cor de fundo para usar o do body */
+.main-content {
+    padding: 20px;
+    min-height: calc(100vh - 70px - 150px); /* Ajusta altura mínima considerando navbar e footer */
+    box-sizing: border-box; /* Garante que padding não adicione à altura */
+}
+
+/* Contêiner das duas colunas (Último Treino/Vídeo e Feed) */
+.container {
+    display: flex;
+    justify-content: space-between; /* Distribui o espaço entre as colunas */
+    align-items: flex-start; /* Alinha o topo das colunas */
+    width: 100%;
+    max-width: 1200px; /* Largura máxima do conteúdo central */
+    margin: 20px auto; /* Centraliza o container */
+    gap: 20px; /* Espaçamento entre as colunas */
+    flex-wrap: wrap; /* Permite que as colunas quebrem para a próxima linha em telas menores */
+}
+
+/* NOVO WRAPPER para a coluna da esquerda (Último Treino + Vídeo) */
+.left-column-wrapper {
+    display: flex;
+    flex-direction: column; /* Para empilhar o treino e o vídeo */
+    gap: 20px; /* Espaço entre o bloco do treino e o vídeo */
+    width: 38%; /* Largura da coluna da esquerda. Ajuste conforme necessário (e.g., 35%, 40%) */
+    min-width: 300px; /* Largura mínima para evitar que fique muito fino */
+    max-width: 450px; /* Largura máxima para não esticar demais */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+}
 
 /* ===== ÚLTIMO TREINO ===== */
 .ultimo_treino {
     background-color: white;
-    width: 40%;
-    max-width: 500px;
+    width: 100%; /* Ocupa 100% da largura do seu pai (.left-column-wrapper) */
     padding: 20px;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -132,6 +124,7 @@ nav .search-box input:focus {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    box-sizing: border-box; /* Inclui padding na largura total */
 }
 
 .bike {
@@ -140,37 +133,122 @@ nav .search-box input:focus {
     background-color: rgb(240, 251, 235);
     border-radius: 50%;
     margin: 10px 0;
+    display: flex; /* Para centralizar a imagem dentro do círculo */
+    justify-content: center;
+    align-items: center;
 }
 
 .bike img {
     width: 80%;
     height: 80%;
-    transform: translateY(1vh);
 }
 
-/* ===== CONTAINER ===== */
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
+/* ===== FOTO UPLOAD (para o bloco Último Treino) ===== */
+.foto_upload {
     margin-top: 20px;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* ===== FEED ===== */
+.foto_upload .upload-btn {
+    display: inline-block;
+    background-color: #008e09;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.foto_upload .upload-btn:hover {
+    background-color: #0056b3;
+}
+
+.foto_upload .preview {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.foto_upload .preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* ===== METAS (dentro do Último Treino) ===== */
+.metas {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(240, 251, 235);
+    width: 100%; /* Ocupa 100% da largura do seu pai (.ultimo_treino) */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.metas h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.metas p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 30%; /* Exemplo: 4km de 12km. Ajuste via JS para dinâmico. */
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+/* ===== ESTILO PARA O VÍDEO DO YOUTUBE ===== */
+.youtube-video-container {
+    width: 100%; /* Ocupa 100% da largura do seu pai (.left-column-wrapper) */
+    max-width: 560px; /* Mantém a largura máxima do vídeo para proporção 16:9 */
+    margin: 0 auto; /* Centraliza o vídeo dentro do seu wrapper */
+    border-radius: 15px;
+    overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white; /* Para seguir o design do site */
+    padding: 10px; /* Espaçamento interno */
+    box-sizing: border-box; /* Inclui padding na largura total */
+    display: block; /* Garante que ele se comporte como um bloco para margin:auto funcionar */
+}
+
+.youtube-video-container iframe {
+    width: 100%;
+    height: 315px; /* Altura padrão para 16:9 em 560px de largura. Será ajustada pela responsividade. */
+    border: none;
+    border-radius: 10px; /* Arredonda as bordas do iframe */
+}
+
+/* ===== FEED DE PUBLICAÇÕES ===== */
 .feed {
-    width: 48%;
-    max-width: 600px;
+    width: 58%; /* Largura da coluna do feed. Ajuste conforme necessário (e.g., 60%, 55%) */
+    max-width: 700px; /* Limita a largura do feed em telas muito largas */
     background: white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box; /* Inclui padding na largura total */
 }
 
 .post {
@@ -242,43 +320,7 @@ nav .search-box input:focus {
     box-shadow: 0 0 8px #FF8C00;
 }
 
-/* ===== METAS ===== */
-.metas {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgb(240, 251, 235);
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
-}
-
-.metas h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.metas p {
-    font-size: 1em;
-    margin-bottom: 5px;
-}
-
-.progress-container {
-    width: 100%;
-    height: 10px;
-    background-color: #e6e6e6;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 30%;
-    background-color: #4caf50;
-    border-radius: 5px;
-}
-
-/* ===== CONTÊINER DE BOTÕES FLUTUANTES (NOVO) ===== */
+/* ===== CONTÊINER DE BOTÕES FLUTUANTES ===== */
 .floating-buttons-container {
     position: fixed;
     bottom: 20px;
@@ -289,10 +331,6 @@ nav .search-box input:focus {
     align-items: center;
     z-index: 1000; /* Garante que fiquem acima de outros elementos */
 }
-
-
-/* --- BOTÕES FLUTUANTES --- */
-/* ... (código existente) ... */
 
 .floating-buttons-container a { /* Aplica o estilo a todos os links dentro do container */
     text-decoration: none; /* Remove o sublinhado */
@@ -319,7 +357,6 @@ nav .search-box input:focus {
     border: none;
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    /* Removido o text-shadow aqui na iteração anterior */
     transition: background 0.3s;
     font-family: "Staatliches", sans-serif;
 }
@@ -328,11 +365,8 @@ nav .search-box input:focus {
     background-color: #6fe600;
 }
 
-/* ... (o restante do seu código CSS) ... */
-
 /* ===== BOTÃO PERFIL ===== */
 .botaoperfil-container {
-    /* Removido position, bottom, right daqui */
     display: flex; /* Para alinhar a imagem dentro do botão */
     justify-content: center;
     align-items: center;
@@ -341,7 +375,6 @@ nav .search-box input:focus {
 .botaoperfil-container img {
     width: 40px;
     height: 40px;
-    /* Considerar object-fit: cover; se as imagens distorcerem */
 }
 
 .botaoperfil {
@@ -353,27 +386,26 @@ nav .search-box input:focus {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 40px; /* Se for usar texto no botão de perfil, caso contrário não faz diferença */
+    font-size: 40px;
     font-weight: 500;
     border: none;
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 3px 3px 6px rgb(45, 255, 38); /* Se for usar texto no botão de perfil */
+    text-shadow: 3px 3px 6px rgb(45, 255, 38);
     transition: background 0.3s;
-    font-family: "Staatliches", sans-serif; /* Se for usar texto no botão de perfil */
+    font-family: "Staatliches", sans-serif;
 }
 
 .botaoperfil:hover {
     background-color: #6fe600;
 }
 
-
-/* ===== TREINOS PAGE SPECIFIC STYLES ===== */
+/* ===== TREINOS PAGE SPECIFIC STYLES (manter estes, pois são para outras páginas) ===== */
 
 .treinos {
     width: 80%;
     max-width: 1200px;
-    margin: 2vh auto; /* Centraliza horizontalmente e dá margem vertical */
+    margin: 2vh auto;
     border-radius: 30px;
     background-color: #fff;
     padding: 30px 30px 50px 30px;
@@ -382,7 +414,7 @@ nav .search-box input:focus {
 }
 
 .treinos .cima {
-    text-align: center; /* Centraliza o conteúdo (título) */
+    text-align: center;
     font-family: "Staatliches", sans-serif;
 }
 
@@ -395,8 +427,8 @@ nav .search-box input:focus {
 
 .icon-container {
     display: flex;
-    justify-content: center; /* Centraliza os ícones */
-    flex-wrap: wrap; /* Permite que os ícones quebrem a linha */
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 40px;
     margin-top: 30px;
 }
@@ -434,8 +466,8 @@ nav .search-box input:focus {
 
 /* Inputs de texto - Centralizados e Responsivos */
 .treinos input[type="text"] {
-    width: 100%; /* Ocupa a largura total do seu contêiner pai */
-    max-width: 300px; /* Limita a largura máxima para não ficar muito largo */
+    width: 100%;
+    max-width: 300px;
     padding: 10px 15px;
     border-radius: 25px;
     border: 2px solid #00b40c;
@@ -443,10 +475,10 @@ nav .search-box input:focus {
     font-size: 16px;
     outline: none;
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    margin: 8px auto; /* Centraliza o input e adiciona margem vertical */
+    margin: 8px auto;
     box-sizing: border-box;
-    display: block; /* Garante que o input ocupe sua própria linha */
-    text-align: center; /* Opcional: centraliza o texto digitado dentro do input */
+    display: block;
+    text-align: center;
 }
 
 .treinos input[type="text"]:focus {
@@ -456,12 +488,12 @@ nav .search-box input:focus {
 
 /* Container geral para cada grupo de opções (tipo, visibilidade, acessório) */
 .grupo-opcoes {
-    margin-bottom: 25px; /* Espaçamento entre os grupos */
-    width: 100%; /* Garante que ocupe a largura total disponível */
-    box-sizing: border-box; /* Inclui padding e borda na largura */
-    display: flex; /* Adiciona flexbox */
-    flex-direction: column; /* Coloca título e botões em coluna */
-    align-items: center; /* Centraliza título e botões */
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Título de cada grupo */
@@ -470,18 +502,18 @@ nav .search-box input:focus {
     font-size: 18px;
     color: #044700;
     margin-bottom: 10px;
-    text-align: center; /* Garante que o texto do título também esteja centralizado */
+    text-align: center;
 }
 
 /* Container das opções (links/botões) - ESSENCIAIS PARA CENTRALIZAÇÃO E LAYOUT DOS BOTÕES */
 .tipo,
 .visibilidade,
 .acessorio {
-    display: flex; /* Habilita flexbox */
-    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha se não houver espaço */
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    gap: 12px; /* Espaço entre os botões */
-    width: 100%; /* Ocupa a largura total do .grupo-opcoes */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -500,7 +532,7 @@ nav .search-box input:focus {
     border: 2px solid transparent;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     font-weight: 500;
-    white-space: nowrap; /* Evita que o texto dentro do botão quebre linha */
+    white-space: nowrap;
 }
 
 .tipo a:hover,
@@ -523,9 +555,9 @@ a.selecionado {
 /* Botão salvar */
 .botao-salvar {
     display: flex;
-    justify-content: center; /* Centraliza o botão */
+    justify-content: center;
     margin-top: 30px;
-    width: 100%; /* Garante que o contêiner do botão ocupe a largura total */
+    width: 100%;
 }
 
 .botao-salvar button {
@@ -550,7 +582,7 @@ a.selecionado {
     position: fixed;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Centraliza horizontalmente */
+    transform: translateX(-50%);
     background-color: rgba(0, 180, 12, 0.85);
     color: white;
     padding: 15px 30px;
@@ -569,21 +601,21 @@ a.selecionado {
 }
 
 /* Range slider */
-.range-container { /* Container para o slider e os números */
-    width: 80%; /* Ajuste a largura conforme necessário */
-    max-width: 500px; /* Largura máxima para o slider */
-    margin: 0 auto; /* CENTRALIZA O CONTAINER DO SLIDER */
-    text-align: center; /* Centraliza o texto dos números */
+.range-container {
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .rangezi {
     display: flex;
-    justify-content: space-between; /* Distribui os números uniformemente */
+    justify-content: space-between;
     font-size: 12px;
     padding: 0 2px;
     position: relative;
     margin-top: 5px;
-    width: 100%; /* Ocupa a largura total do .range-container */
+    width: 100%;
 }
 
 .rangezao {
@@ -667,11 +699,11 @@ a.selecionado {
 /* Form container styles - Centraliza o formulário principal */
 .infos_treinos {
     display: flex;
-    flex-direction: column; /* Organiza os filhos em coluna */
-    align-items: center; /* Centraliza todos os filhos horizontalmente */
+    flex-direction: column;
+    align-items: center;
     width: 80%;
     max-width: 900px;
-    margin: 20px auto 40px; /* Centraliza o formulário principal na página */
+    margin: 20px auto 40px;
     padding: 20px;
     box-sizing: border-box;
     background-color: #fff;
@@ -690,57 +722,56 @@ a.selecionado {
 
 /* Divs internas dentro de .infos_treinos - Para alinhar cada seção de conteúdo */
 .infos_treinos > div {
-    margin-bottom: 20px; /* Espaçamento entre as seções */
-    width: 100%; /* Ocupa a largura total do .infos_treinos */
-    display: flex; /* Habilita flexbox para centralizar conteúdo interno */
-    flex-direction: column; /* Conteúdo em coluna (p e input/botões) */
-    align-items: center; /* Centraliza horizontalmente o conteúdo de cada div */
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .infos_treinos p {
     font-weight: 600;
     margin-bottom: 8px;
     color: #044700;
-    text-align: center; /* Garante que o texto dos parágrafos esteja centralizado */
+    text-align: center;
 }
 
 #map {
     height: 400px;
-    margin: 30px auto; /* CENTRALIZA O MAPA HORIZONTALMENTE */
+    margin: 30px auto;
     border-radius: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    width: 100%; /* Garante que o mapa ocupe a largura total */
-    max-width: 600px; /* Limita a largura máxima do mapa */
-    display: block; /* Garante que ele se comporte como um bloco para margin:auto funcionar */
+    width: 100%;
+    max-width: 600px;
+    display: block;
 }
 
 /* Estilos para o novo campo de especificações de acessórios */
 .acessorio-specs {
-    margin-top: 15px; /* Espaço acima do campo de especificações */
+    margin-top: 15px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Inicialmente escondido, será exibido via JavaScript */
     display: none;
-    transition: opacity 0.3s ease, height 0.3s ease; /* Adiciona transição para uma aparição suave */
-    overflow: hidden; /* Garante que não haja rolagem durante a transição de altura */
+    transition: opacity 0.3s ease, height 0.3s ease;
+    overflow: hidden;
     opacity: 0;
     height: 0;
 }
 
 .acessorio-specs.show {
-    display: flex; /* Mostra o contêiner */
+    display: flex;
     opacity: 1;
-    height: auto; /* Permite que a altura se ajuste ao conteúdo */
+    height: auto;
 }
 
 /* ===== RESPONSIVIDADE GERAL ===== */
 
 /* Responsividade para telas grandes (maior que 1024px, se necessário ajustar ainda mais) */
 @media (min-width: 1201px) {
-    /* Pode adicionar ajustes específicos para desktops muito grandes aqui, se os estilos base não forem suficientes */
+    /* Ajustes finos para desktops grandes, se os valores padrão não forem suficientes */
 }
 
 /* Responsividade para tablets (769px a 1024px) */
@@ -758,15 +789,21 @@ a.selecionado {
     }
 
     .container {
-        flex-direction: column;
-        align-items: center;
-        width: 95%;
+        flex-direction: column; /* Empilha as colunas em telas menores */
+        align-items: center; /* Centraliza os itens empilhados */
+        width: 95%; /* Ocupa mais da largura disponível */
+        gap: 30px; /* Mais espaço entre os blocos empilhados */
     }
 
-    .ultimo_treino,
+    .left-column-wrapper,
     .feed {
-        width: 95%;
-        max-width: 600px; /* Mantém um max-width para não esticar demais em tablets */
+        width: 95%; /* Ocupa mais largura em telas menores, mas com max-width */
+        max-width: 600px; /* Limita a largura para não esticar muito em tablets */
+    }
+    /* O vídeo já está definido para 'display: none !important;' em telas menores,
+       então esta regra de media query garante que essa regra seja aplicada. */
+    .youtube-video-container {
+        display: none !important; /* Esconde o vídeo em telas menores que 1024px */
     }
 }
 
@@ -776,7 +813,8 @@ a.selecionado {
         padding: 8px 16px;
         flex-direction: column;
         gap: 10px;
-        width: 95%; 
+        width: 100%; /* Ajustado para 100% para evitar barra de rolagem horizontal */
+        box-sizing: border-box; /* Inclui padding na largura */
     }
 
     nav .bar_n {
@@ -791,11 +829,14 @@ a.selecionado {
 
     nav .search-box {
         width: 90%;
-        
+        margin-right: unset; /* Remove margens que podem atrapalhar no mobile */
+        margin-left: unset;
+        max-width: none; /* Permite que ocupe a largura do pai */
     }
 
     nav .search-box input {
-        width: 120px;
+        width: 100%; /* Ocupa a largura do search-box */
+        min-width: unset;
     }
 
     .treinos {
@@ -823,62 +864,71 @@ a.selecionado {
 
     #map {
         height: 300px;
-        margin: 25px auto; /* Centraliza o mapa em telas menores */
+        margin: 25px auto;
         border-radius: 20px;
         box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
     }
 
     .infos_treinos {
         padding: 15px;
-        width: 95%; /* Ajusta a largura do formulário de treinos */
+        width: 95%;
     }
 
     .tipo a,
     .visibilidade a,
     .acessorio a {
-        padding: 10px 15px; /* Ajusta o padding dos botões */
-        font-size: 15px; /* Ajusta o tamanho da fonte dos botões */
+        padding: 10px 15px;
+        font-size: 15px;
     }
 
     .floating-buttons-container {
         bottom: 15px;
         right: 15px;
-        gap: 8px; /* Ajusta o espaçamento entre botões para tablets */
+        gap: 8px;
     }
 }
 
 /* Responsividade para celulares (até 480px) */
 @media (max-width: 480px) {
     nav {
-        width: 95%;
+        width: 100%; /* Garantir 100% */
         padding: 10px;
+        box-sizing: border-box;
     }
 
     nav .bar_n {
         font-size: 24px;
     }
 
+    nav .search-box {
+        width: 100%; /* Ocupa toda a largura do nav-right */
+        padding: 8px 15px; /* Ajusta padding */
+    }
+
     nav .search-box input {
-        width: 100px;
-        min-width: unset; /* Remove min-width para mais flexibilidade */
+        width: 100%;
+        min-width: unset;
     }
 
     .container {
         width: 98%;
-        margin-left: 1%;
-        margin-right: 1%;
+        margin-left: auto; /* Centraliza */
+        margin-right: auto;
+        gap: 20px; /* Ajusta gap para telas menores */
     }
 
-    .ultimo_treino,
+    .left-column-wrapper,
+    .ultimo_treino, /* Garantir que o treino se ajuste ao wrapper */
     .feed {
-        width: 98%;
-        margin-left: 1%;
-        margin-right: 1%;
-        padding: 15px; /* Reduz padding para telas muito pequenas */
+        width: 100%; /* Ocupa 100% do container em mobile */
+        max-width: none; /* Remove max-width para celular */
+        margin-left: 0;
+        margin-right: 0;
+        padding: 15px; /* Ajusta padding para mobile */
     }
 
     .post {
-        margin-left: unset; /* Remove margens extras se houver */
+        margin-left: unset;
         margin-right: unset;
     }
 
@@ -892,21 +942,21 @@ a.selecionado {
     }
 
     .icon-container {
-        gap: 15px; /* Reduz o espaçamento entre os ícones */
+        gap: 15px;
     }
 
     .circle {
-        width: 65px; /* Reduz o tamanho dos círculos */
+        width: 65px;
         height: 65px;
     }
 
     .circle img {
-        width: 30px; /* Reduz o tamanho das imagens nos círculos */
+        width: 30px;
         height: 30px;
     }
 
     #map {
-        height: 200px; /* Altura menor para o mapa em celulares */
+        height: 200px;
         margin: 15px auto;
     }
 
@@ -920,8 +970,8 @@ a.selecionado {
     .acessorio a {
         padding: 8px 12px;
         font-size: 13px;
-        flex-grow: 1; /* Permite que os botões cresçam para ocupar espaço */
-        text-align: center; /* Centraliza o texto dentro do botão */
+        flex-grow: 1; /* Permite que eles cresçam para ocupar espaço */
+        text-align: center;
     }
 
     .range-container {
@@ -931,151 +981,207 @@ a.selecionado {
     .mensagem-flutuante {
         padding: 10px 20px;
         font-size: 1rem;
-        width: 90%; /* Ajusta largura da mensagem flutuante */
+        width: 90%;
         box-sizing: border-box;
     }
 
     .floating-buttons-container {
         bottom: 10px;
         right: 10px;
-        gap: 6px; /* Ajusta o espaçamento entre botões para celulares */
+        gap: 6px;
     }
 
     .botaomais,
     .botaoperfil {
-        width: 50px; /* Reduz o tamanho dos botões flutuantes em celular */
+        width: 50px;
         height: 50px;
     }
     .botaoperfil-container img {
-        width: 30px; /* Ajusta o tamanho da imagem de perfil */
+        width: 30px;
         height: 30px;
     }
 }
 
+/* ===== SCROLLBAR STYLES ===== */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 8px;
+    width: 12px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #e0e0e0;
-  border-radius: 10px;
+    background: #e0e0e0;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #4CAF50;
-  border-radius: 10px;
-  border: 2px solid #e0e0e0;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #388E3C;
+    background-color: #388E3C;
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #4CAF50 #e0e0e0;
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #e0e0e0;
 }
 
-
-
+/* ===== FOOTER STYLES ===== */
 .footer {
-  background-color: #f9f9f9;
-  padding: 40px 20px;
-  color: #333;
-  margin-top: 3vh;
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+    color: #333;
+    margin-top: 3vh;
+}
 
-  h1{
+/* Ajuste para o h1 dentro do footer, como está no seu código. */
+.footer h1 {
     font-family: "Staatliches", sans-serif;
-  }
-  
+    font-size: 24px; /* Garante um tamanho base, se não houver outro */
 }
 
 .footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
 }
 
-
-
 .footer-logo h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
-  transform: translateX(-10vh);
-  margin-top: 3vh;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 3vh;
+    /* Reintroduzindo o transform para desktop */
+    transform: translateX(-10vh);
 }
 
 .footer-logo p {
-  font-size: 14px;
-  margin-top: 8px;
-  color: #666;
-  transform: translateX(-10vh);
+    font-size: 14px;
+    margin-top: 8px;
+    color: #666;
+    /* Reintroduzindo o transform para desktop */
+    transform: translateX(-10vh);
 }
 
 .footer-column {
-  flex: 1 1 150px;
-  min-width: 150px;
+    flex: 1 1 150px;
+    min-width: 150px;
 }
 
 .footer-column h3 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
 }
 
 .footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .footer-column ul li {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .footer-column ul li a {
-  color: #555;
-  text-decoration: none;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.3s;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s;
 }
 
 .footer-column ul li a:hover {
-  color: #000;
+    color: #000;
 }
 
 .social-icons i {
-  font-size: 16px;
+    font-size: 16px;
 }
 
-/* RESPONSIVO */
+/* RESPONSIVO FOOTER */
 @media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column;
-    gap: 40px;
-  }
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
+    }
 
-  .footer-column {
-    flex: 1 1 100%;
-  }
+    .footer-column {
+        flex: 1 1 100%;
+    }
 
-  .footer-logo {
-    text-align: center;
-  }
+    .footer-logo {
+        text-align: center; /* Centraliza o logo no mobile */
+    }
+    /* Remove os transforms para telas menores */
+    .footer-logo h1,
+    .footer-logo p {
+        transform: none; /* Garante que não haja deslocamento em mobile */
+    }
 
-  .footer-column h3 {
-    text-align: center;
-  }
+    .footer-column h3 {
+        text-align: center;
+    }
 
-  .footer-column ul {
-    text-align: center;
-  }
+    .footer-column ul {
+        text-align: center;
+    }
 }
+
+.youtube-video-container {
+            width: 100%;
+            max-width: 560px; /* Largura máxima para o vídeo */
+            margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
+            border-radius: 15px;
+            overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: white; /* Para seguir o design do site */
+            padding: 10px; /* Espaçamento interno */
+            box-sizing: border-box; /* Inclui padding na largura total */
+            /* Garante que ele se comporte como um bloco para margin:auto funcionar e ocupar sua própria linha */
+            display: block; 
+        }
+
+        .youtube-video-container iframe {
+            width: 100%;
+            height: 315px; /* Altura padrão para 16:9 em 560px de largura */
+            border: none;
+            border-radius: 10px; /* Arredonda as bordas do iframe */
+        }
+
+        /* Esconde o vídeo em telas menores que 768px (celulares e alguns tablets) */
+        @media (max-width: 768px) {
+            .youtube-video-container {
+                display: none !important; /* Usar !important para garantir que sobreponha o display: block */
+            }
+        }
+
+        /* Ajuste do layout da section .container para acomodar o vídeo abaixo do .ultimo_treino em desktop */
+        @media (min-width: 769px) {
+            .container {
+                /* Se .container for um flexbox com justify-content: space-between,
+                   e você quer o vídeo abaixo do .ultimo_treino e não ao lado do .feed,
+                   pode precisar de um wrapper ou ajustar a ordem.
+                   Uma abordagem simples é deixar o vídeo fluir naturalmente se
+                   o .ultimo_treino tiver uma largura definida e não estiver em um flex-flow: row-reverse etc. */
+                flex-direction: row; /* Volta a ser linha para desktop se foi alterado para coluna */
+                align-items: flex-start; /* Alinhamento superior */
+            }
+
+            /* Para que o vídeo apareça abaixo do 'Último treino' e não ao lado do 'Feed' */
+            .left-column-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 20px; /* Espaçamento entre o 'Último treino' e o vídeo */
+                width: 40%; /* Mesma largura do .ultimo_treino */
+                max-width: 500px; /* Mesma max-width do .ultimo_treino */
+            }
+        }
