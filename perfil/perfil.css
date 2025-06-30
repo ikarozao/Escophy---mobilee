@@ -82,6 +82,7 @@ nav .search-box {
   box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
   width: 100%;
   max-width: 400px; /* limite para telas maiores */
+  margin-right: 4vh;
 }
 
 nav .search-box input {
@@ -270,11 +271,11 @@ nav .search-box input:focus {
   flex-wrap: wrap;
   gap: 5px;
   font-size: 12px;
-  color: #555;
+  color: #1b1b1b;
 }
 
 .detalhes span {
-  background: #a3d3b1;
+  background: #e0dfdf;
   padding: 5px;
   border-radius: 30px;
 }
@@ -552,4 +553,28 @@ a {
   .botaomais {
     font-size: 32px;
   }
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4CAF50;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #388E3C;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4CAF50 #e0e0e0;
 }/*# sourceMappingURL=perfil.css.map */
