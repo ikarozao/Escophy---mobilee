@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap');
 
 body {
-    background: #bfbfbf;
+    background: #e9e9e9;
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
@@ -102,15 +102,16 @@ nav .search-box input:focus {
 
 .hist {
   background-color: white;
-  width: 80%;
+  width: 70%;
   border-radius: 30px;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   margin-top: 3%;
 
   h1 {
-    font-size: large;
+    font-size: 21px;
     font-family: "Poppins", sans-serif;
     margin-left: 2%;
   }
@@ -118,8 +119,28 @@ nav .search-box input:focus {
   p {
     color: black;
     margin-left: 2%;
+    font-size: 18px;
+    text-align: justify;
+    margin-right: 3%;
+  }
+
+  img {
+    height: 40%;
+    width: 40%;
+    border-radius: 30px;
+    padding: 2%
   }
 }
+
+.textttt {
+  padding: 2%;
+}
+
+.hist:hover {
+    transform: scale(1.03);
+    transition: transform 0.5s ease;
+} 
+
 
 .titulo {
   background-color: white;
@@ -278,6 +299,14 @@ nav .search-box input:focus {
   align-items: self-start;
   flex-direction: column;
   margin-top: 3%;
+  
+  h1 {
+    font-size: 21px;
+  };
+
+  p {
+    font-size: 18px
+  }
 }
 
 .footer {
