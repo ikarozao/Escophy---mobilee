@@ -8,6 +8,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="img/a.png" />
+    <!-- Importa Supabase só uma vez -->
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
 </head>
 
 <body>
@@ -25,11 +27,11 @@
         <form id="login-form" class="form active">
             <h1>Login</h1>
             <div class="input-box">
-                <input placeholder="Email" type="email" required />
+                <input id="email-login" placeholder="Email" type="email" required />
                 <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Senha" type="password" required />
+                <input id="senha-login" placeholder="Senha" type="password" required />
                 <i class="bx bx-lock-alt"></i>
             </div>
 
@@ -56,11 +58,11 @@
                 <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Email" type="email" required />
+                <input id="email-cadastro" placeholder="Email" type="email" required />
                 <i class="bx bx-envelope"></i>
             </div>
             <div class="input-box">
-                <input placeholder="Senha" type="password" required />
+                <input id="senha-cadastro" placeholder="Senha" type="password" required />
                 <i class="bx bx-lock-alt"></i>
             </div>
 
@@ -105,54 +107,41 @@
         // Simular redirecionamento após login
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            // Aqui você pode colocar a lógica de login com Supabase futuramente
             window.location.href = "home.html";
         });
 
-        // Cadastro: salvar nome no localStorage e redirecionar
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nomeInput = document.getElementById('nome-cadastro');
-            const nome = nomeInput.value.trim();
+        // Supabase config
+        const SUPABASE_URL = 'https://szachxclixfketavlkyv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
 
-            if (nome) {
-                localStorage.setItem('nomeUsuario', nome);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Cadastro: enviar dados para Supabase
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome-cadastro').value.trim();
+            const email = document.getElementById('email-cadastro').value.trim();
+            const senha = document.getElementById('senha-cadastro').value.trim();
+
+            if (!nome || !email || !senha) {
+                alert('Por favor, preencha todos os campos!');
+                return;
             }
 
-            window.location.href = "home.html";
+            const { data, error } = await supabaseClient
+                .from('usuarios')
+                .insert([{ nome, email, senha }]);
+
+            if (error) {
+                alert('Erro ao cadastrar: ' + error.message);
+            } else {
+                alert('Cadastro realizado com sucesso!');
+                window.location.href = 'home.html';
+            }
         });
     </script>
-
-
-
-
-<!-- SUPABASE -->
-         <!-- SDK do Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<!-- Importa a biblioteca do Supabase -->
-<script src="https://unpkg.com/@supabase/supabase-js"></script>
-
-<script>
-    const SUPABASE_URL = 'https://szachxclixfketavlkyv.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
-
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    document.getElementById('enviar').addEventListener('click', async () => {
-      const { data, error } = await supabaseClient
-        .from('usuarios')
-        .insert([{ nome: 'Teste Botão', email: 'teste@botao.com', senha: '123456' }]);
-
-      if (error) {
-        console.error('Erro:', error);
-        alert('Erro: ' + error.message);
-      } else {
-        console.log('Sucesso:', data);
-        alert('Registro inserido!');
-      }
-    });
-  </script>
-
 </body>
 
 </html>

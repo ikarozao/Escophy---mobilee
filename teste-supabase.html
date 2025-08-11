@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste Supabase</title>
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+</head>
+<body>
+  <h1>Teste Supabase</h1>
+  <button id="enviar">Inserir registro</button>
+
+  <script>
+    const SUPABASE_URL = 'https://szachxclixfketavlkyv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('enviar').addEventListener('click', async () => {
+      const { data, error } = await supabaseClient
+        .from('usuarios')
+        .insert([{ nome: 'Teste Botão', email: 'teste@botao.com', senha: '123456' }]);
+
+      if (error) {
+        console.error('Erro:', error);
+        alert('Erro: ' + error.message);
+      } else {
+        console.log('Sucesso:', data);
+        alert('Registro inserido!');
+      }
+    });
+  </script>
+</body>
+</html>
