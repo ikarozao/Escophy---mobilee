@@ -121,14 +121,20 @@ nav .search-box input:focus {
   border-radius: 30px;
   padding: 2%;
 }
+.hist #Clique {
+  font-size: 18px;
+}
 
 .textttt {
   padding: 2%;
 }
 
+.hist {
+  transition: transform 0.5s ease-in-out;
+}
+
 .hist:hover {
   transform: scale(1.03);
-  transition: transform 0.5s ease;
 }
 
 .titulo {
@@ -143,9 +149,11 @@ nav .search-box input:focus {
 
 .artigo {
   background-color: white;
-  width: 80%;
+  width: 70%;
   border-radius: 30px;
   margin-top: 3%;
+  display: flex;
+  justify-content: center;
 }
 .artigo h1 {
   font-size: large;
@@ -157,7 +165,7 @@ nav .search-box input:focus {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 5vw;
   padding: 20px;
 }
 
