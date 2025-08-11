@@ -129,12 +129,15 @@
          <!-- SDK do Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<!-- Código JS -->
+<!-- Importa a biblioteca do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js"></script>
+
 <script>
   const SUPABASE_URL = 'https://szachxclixfketavlkyv.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
 
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Cria o cliente do Supabase
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const registerForm = document.getElementById('register-form');
 
@@ -150,7 +153,7 @@
       return;
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('usuarios')
       .insert([{ nome, email, senha }]);
 
@@ -164,6 +167,7 @@
     }
   });
 </script>
+
 
 </body>
 
