@@ -275,8 +275,8 @@
   const map = L.map('map').setView([-24.740387, -53.767403], 16); 
 
   
-  
-  // Recupera rota salva no localStorage (ou array vazio se não existir)
+
+  /*// Recupera rota salva no localStorage (ou array vazio se não existir)
   let route = JSON.parse(localStorage.getItem("route")) || [];
 
   // Adiciona polyline e marcador
@@ -360,7 +360,70 @@
     }
   });
 
-  map.addControl(new clearControl());
+  map.addControl(new clearControl());*/
+
+
+
+  navigator.geolocation.watchPosition(
+  (pos) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const accuracy = pos.coords.accuracy; // em metros
+
+    // Ignora pontos ruins
+    if (accuracy > 30) {
+      console.log("Ponto descartado (precisão baixa):", accuracy);
+      return;
+    }
+
+    let newPoint = [lat, lng];
+
+    // 🔥 Suavização (média móvel com últimos 2 pontos)
+    if (route.length >= 2) {
+      const p1 = route[route.length - 1];
+      const p2 = route[route.length - 2];
+      newPoint = [
+        (p1[0] + p2[0] + lat) / 3,
+        (p1[1] + p2[1] + lng) / 3
+      ];
+    }
+
+    // Ignora variações pequenas (ex: < 5m)
+    if (lastPoint) {
+      const dist = haversine(lastPoint, newPoint);
+      if (dist < 5) return;
+      totalDistance += dist;
+    }
+
+    lastPoint = newPoint;
+    route.push(newPoint);
+
+    // Salva rota
+    localStorage.setItem("route", JSON.stringify(route));
+
+    // Atualiza polyline
+    polyline.setLatLngs(route);
+
+    // Atualiza marcador
+    if (!marker) {
+      marker = L.marker(newPoint).addTo(map);
+    } else {
+      marker.setLatLng(newPoint);
+    }
+
+    // Atualiza estatísticas
+    const speed = pos.coords.speed ? pos.coords.speed * 3.6 : 0;
+    updateStats(speed);
+
+    // Centraliza na primeira posição
+    if (route.length === 1) {
+      map.setView(newPoint, 17);
+    }
+  },
+  (err) => console.error(err),
+  { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+);
+
 
 
 
