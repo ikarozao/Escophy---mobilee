@@ -175,6 +175,20 @@
     });
     window.location.href = "https://escorphy.netlify.app/home.html";
 
+    // Verifica se o usuário já está logado
+    async function checkLogin() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+  
+    if (session) {
+    // Usuário já logado, redireciona para home
+    window.location.href = "home.html";
+     } 
+  
+}
+
+checkLogin();
+
+
   </script>
 </body>
 </html>
