@@ -23,7 +23,8 @@
         <div class="column left-column">
             <article class="usuario">
                 <div>
-                    <h2>@usuario1</h2>
+                    <h2 id="nomeUsuario">@usuario1</h2>
+
                 </div>
                 <div class="foto_perfil">
                     <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
@@ -149,30 +150,40 @@
     </div>
 
     <script>
-        document.getElementById('upload').addEventListener('change', function(event) {
-            const preview = document.getElementById('preview');
-            preview.innerHTML = '';
-            const files = event.target.files;
+  const usuario = localStorage.getItem("usuarioLogado");
+if (usuario && usuario.trim() !== "") {
+  document.getElementById("nomeUsuario").textContent = `@${usuario.trim()}`;
+} else {
+  window.location.href = "index.html";
+}
 
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
 
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.width = '100px';
-                        img.style.height = '100px';
-                        img.style.borderRadius = '10px';
-                        img.style.margin = '5px';
-                        preview.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        });
-    </script>
+  // preview das imagens do upload
+  document.getElementById('upload').addEventListener('change', function(event) {
+    const preview = document.getElementById('preview');
+    preview.innerHTML = '';
+    const files = event.target.files;
+
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '100px';
+          img.style.height = '100px';
+          img.style.borderRadius = '10px';
+          img.style.margin = '5px';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  });
+</script>
+
     
 <footer class="footer">
     <div class="footer-container">

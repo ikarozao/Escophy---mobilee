@@ -122,13 +122,21 @@
       });
 
       if (error) {
-        console.error('Erro no login:', error);
-        alert('Erro no login: ' + error.message);
-      } else {
-        console.log('Login OK:', data);
-        // Redireciona para home
-        window.location.href = "home.html";
-      }
+  console.error('Erro no login:', error);
+  alert('Erro no login: ' + error.message);
+} else {
+  console.log('Login OK:', data);
+
+  // pega o nome do usuário salvo no metadata do Supabase
+  const nome = data.user?.user_metadata?.nome || "usuario";
+
+  // guarda no localStorage
+  localStorage.setItem("usuarioLogado", nome);
+
+  // Redireciona para home
+  window.location.href = "home.html";
+}
+
     });
 
     // =========================
@@ -163,6 +171,10 @@
         const { error: insertError } = await supabaseClient
           .from("usuarios")
           .insert([{ id: authData.user.id, nome: nome, email: email }]);
+
+          if (authData.user) {
+    localStorage.setItem("usuarioLogado", nome);
+}
 
         if (insertError) {
           console.error("Erro ao salvar na tabela usuarios:", insertError);
