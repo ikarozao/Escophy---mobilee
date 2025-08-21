@@ -23,7 +23,7 @@
         <div class="column left-column">
             <article class="usuario">
                 <div>
-                    <h2 id="nomeUsuario">usuario1</h2>
+                    <h2 id="nomeUsuario">@usuario1</h2>
 
                 </div>
                 <div class="foto_perfil">
@@ -152,7 +152,7 @@
     <script>
   const usuario = localStorage.getItem("usuarioLogado");
 if (usuario && usuario.trim() !== "") {
-  document.getElementById("nomeUsuario").textContent = `@${usuario.trim()}`;
+  document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
 } else {
   window.location.href = "index.html";
 }
