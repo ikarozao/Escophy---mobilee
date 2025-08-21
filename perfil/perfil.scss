@@ -174,12 +174,12 @@ nav .search-box input {
     overflow: hidden;
 }
 
-.foto_perfil img {
-    width: 80%;
-    height: 80%;
-    object-fit: cover;
-    border-radius: 50%;
-}
+// .foto_perfil img {
+//     width: 80%;
+//     height: 80%;
+//     object-fit: cover;
+//     border-radius: 50%;
+// }
 
 .foto_upload {
     margin-top: 10px;
@@ -724,3 +724,17 @@ button#botaoMais{
     text-align: center;
   }
 }
+#fotoPerfil {
+    cursor: pointer;  /* deixa a div clicável */
+    display: inline-block;
+    position: relative;
+}
+
+#fotoPerfil img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease-in-out;
+}
+

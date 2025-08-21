@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 
 <body>
     <nav>
-        <div class="bar_n">Escorphy</div>
+       <a href="home.html"><div class="bar_n">Escorphy</div></a> 
         <div class="nav-right">
             <div class="search-box">
                 <input type="text" placeholder="Pesquisar..." />
@@ -19,16 +19,22 @@
         </div>
     </nav>
 
-    <div class="main-content-perfil"> 
+    <div class="main-content-perfil">
         <div class="column left-column">
             <article class="usuario">
                 <div>
-                    <h2 id="nomeUsuario">@usuario1</h2>
+                    <h2 id="nomeUsuario">Olá, usuario</h2>
+                </div>
 
+                <!-- Foto de perfil clicável -->
+                <div class="foto_perfil" id="fotoPerfil">
+                    <img src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
                 </div>
-                <div class="foto_perfil">
-                    <img src="img/perfil-removebg-preview.png" alt="Imagem do treino">
-                </div>
+
+                <!-- Input escondido para trocar a foto de perfil -->
+                <input type="file" id="inputPerfil" accept="image/*" hidden>
+
+                <!-- Área para futuros posts -->
                 <div class="foto_upload">
                     <input type="file" id="upload" hidden multiple>
                     <label for="upload" class="upload-btn">Adicionar Foto</label>
@@ -150,86 +156,89 @@
     </div>
 
     <script>
-  const usuario = localStorage.getItem("usuarioLogado");
-if (usuario && usuario.trim() !== "") {
-  document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-} else {
-  window.location.href = "index.html";
-}
+        // Configuração do Supabase
+        const supabaseUrl = 'https://SEU-PROJETO.supabase.co';
+        const supabaseKey = 'SUA-CHAVE-ANON';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // Nome do usuário e email
+        const usuario = localStorage.getItem("usuarioLogado");
+        const usuarioEmail = localStorage.getItem("usuarioEmail"); // Salve o email no login
 
-  // preview das imagens do upload
-  document.getElementById('upload').addEventListener('change', function(event) {
-    const preview = document.getElementById('preview');
-    preview.innerHTML = '';
-    const files = event.target.files;
+        if (usuario && usuario.trim() !== "") {
+            document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
+        }
 
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
+        // Foto de perfil clicável
+        const fotoPerfil = document.getElementById("fotoPerfil");
+        const inputPerfil = document.getElementById("inputPerfil");
 
-        reader.onload = function(e) {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.style.width = '100px';
-          img.style.height = '100px';
-          img.style.borderRadius = '10px';
-          img.style.margin = '5px';
-          preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  });
-</script>
+        fotoPerfil.addEventListener("click", () => inputPerfil.click());
 
-    
-<footer class="footer">
-    <div class="footer-container">
-      <div class="footer-logo">
-        <h1>ESCORPHY</h1>
-        <p>© 2025 Escorphy</p>
-      </div>
+        inputPerfil.addEventListener("change", async function () {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const reader = new FileReader();
 
-      <div class="footer-column">
-        <h3>Sobre</h3>
-        <ul>
-          <li><a href="sobrenos.html">Nossa História</a></li>
-          <li><a href="sobrenos.html">Missão</a></li>
-          <li><a href="sobrenos.html">Equipe</a></li>
-          <li><a href="#">Privacidade</a></li>
-        </ul>
-      </div>
+                reader.onload = function (e) {
+                    fotoPerfil.querySelector("img").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
 
-      <div class="footer-column">
-        <h3>Explorar</h3>
-        <ul>
-          <li><a href="#">Funcionalidades</a></li>
-          <li><a href="#">Planos</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
+                // Upload para Supabase Storage
+                const fileName = `${Date.now()}_${file.name}`;
+                const { data, error: uploadError } = await supabaseClient.storage
+                    .from('perfil') // Nome do bucket
+                    .upload(fileName, file);
 
-      <div class="footer-column">
-        <h3>Redes</h3>
-        <ul class="social-icons">
-          <li><a href="https://www.instagram.com/escorphy"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
+                if (uploadError) {
+                    console.error('Erro ao enviar arquivo:', uploadError);
+                    return;
+                }
 
-        </ul>
-      </div>
+                // Gerar URL pública
+                const { publicUrl } = supabaseClient
+                    .storage
+                    .from('perfil')
+                    .getPublicUrl(fileName);
 
-      <div class="footer-column">
-        <h3>Ajuda</h3>
-        <ul>
-          <li><a href="#">Suporte</a></li>
-          <li><a href="#">Fale Conosco</a></li>
-          <li><a href="#">Central de Ajuda</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
+                // Atualizar usuário no Supabase
+                const { error: updateError } = await supabaseClient
+                    .from('usuarios')
+                    .update({ foto_perfil: publicUrl })
+                    .eq('email', usuarioEmail);
+
+                if (updateError) {
+                    console.error('Erro ao atualizar perfil:', updateError);
+                } else {
+                    console.log('Foto de perfil atualizada com sucesso!');
+                }
+            }
+        });
+
+        // Preview das imagens do upload de post
+        document.getElementById('upload').addEventListener('change', function (event) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            const files = event.target.files;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.borderRadius = '10px';
+                    img.style.margin = '5px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 
 </html>
