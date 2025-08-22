@@ -131,7 +131,9 @@
   const nome = data.user?.user_metadata?.nome || "usuario";
 
   // guarda no localStorage
-  localStorage.setItem("usuarioLogado", nome);
+localStorage.setItem("usuarioLogado", nome);
+localStorage.setItem("usuarioEmail", email); // <-- adicionar
+
 
   // Redireciona para home
   window.location.href = "home.html";
@@ -173,7 +175,11 @@
           .insert([{ id: authData.user.id, nome: nome, email: email }]);
 
           if (authData.user) {
-    localStorage.setItem("usuarioLogado", nome);
+    if (authData.user) {
+  localStorage.setItem("usuarioLogado", nome);
+  localStorage.setItem("usuarioEmail", email); // <-- adicionar
+}
+
 }
 
         if (insertError) {

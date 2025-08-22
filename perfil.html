@@ -161,13 +161,13 @@
         const supabaseKey = 'SUA-CHAVE-ANON';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Nome do usuário e email
         const usuario = localStorage.getItem("usuarioLogado");
-        const usuarioEmail = localStorage.getItem("usuarioEmail"); // Salve o email no login
+    const usuarioEmail = localStorage.getItem("usuarioEmail"); 
 
-        if (usuario && usuario.trim() !== "") {
-            document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-        }
+    if (usuario && usuario.trim() !== "") {
+    document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
+}
+
 
         // Foto de perfil clicável
         const fotoPerfil = document.getElementById("fotoPerfil");
