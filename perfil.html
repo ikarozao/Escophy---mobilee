@@ -26,12 +26,11 @@
                     <h2 id="nomeUsuario">Olá, usuario</h2>
                 </div>
 
-                <!-- Foto de perfil clicável -->
                 <div class="foto_perfil" id="fotoPerfil">
-                    <img src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
+                 <img id="imgPerfil" src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
                 </div>
 
-                <!-- Input escondido para trocar a foto de perfil -->
+                
                 <input type="file" id="inputPerfil" accept="image/*" hidden>
 
                 <!-- Área para futuros posts -->
@@ -155,90 +154,114 @@
         </a>
     </div>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    <script>
-        // Configuração do Supabase
-        const supabaseUrl = 'https://SEU-PROJETO.supabase.co';
-        const supabaseKey = 'SUA-CHAVE-ANON';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+<script>
+  // Configuração do Supabase
+  const supabaseUrl = 'https://SEU-PROJETO.supabase.co';
+  const supabaseKey = 'SUA-CHAVE-ANON';
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        const usuario = localStorage.getItem("usuarioLogado");
-    const usuarioEmail = localStorage.getItem("usuarioEmail"); 
+  // Seletores
+  const inputPerfil = document.getElementById("inputPerfil");
+  const imgPerfil = document.getElementById("imgPerfil");
+  const fotoPerfil = document.getElementById("fotoPerfil");
 
-    if (usuario && usuario.trim() !== "") {
+  const usuario = localStorage.getItem("usuarioLogado");
+  const usuarioEmail = localStorage.getItem("usuarioEmail");
+
+  // Mostra o nome do usuário
+  if (usuario && usuario.trim() !== "") {
     document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-}
+  }
 
+  // Ao clicar na foto abre o input de arquivo
+  fotoPerfil.addEventListener("click", () => inputPerfil.click());
 
-        // Foto de perfil clicável
-        const fotoPerfil = document.getElementById("fotoPerfil");
-        const inputPerfil = document.getElementById("inputPerfil");
+  // Função para carregar a foto salva no banco
+  async function carregarFotoPerfil() {
+    if (!usuarioEmail) return;
 
-        fotoPerfil.addEventListener("click", () => inputPerfil.click());
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("foto_perfil")
+      .eq("email", usuarioEmail)
+      .single();
 
-        inputPerfil.addEventListener("change", async function () {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                const reader = new FileReader();
+    if (error) {
+      console.error("Erro ao buscar foto de perfil:", error);
+      return;
+    }
 
-                reader.onload = function (e) {
-                    fotoPerfil.querySelector("img").src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+    if (data && data.foto_perfil) {
+      imgPerfil.src = data.foto_perfil; // mostra a foto salva
+    }
+  }
 
-                // Upload para Supabase Storage
-                const fileName = `${Date.now()}_${file.name}`;
-                const { data, error: uploadError } = await supabaseClient.storage
-                    .from('perfil') // Nome do bucket
-                    .upload(fileName, file);
+  // Upload da nova foto
+  inputPerfil.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file || !usuarioEmail) return;
 
-                if (uploadError) {
-                    console.error('Erro ao enviar arquivo:', uploadError);
-                    return;
-                }
+    // Nome único para o arquivo
+    const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
 
-                // Gerar URL pública
-                const { publicUrl } = supabaseClient
-                    .storage
-                    .from('perfil')
-                    .getPublicUrl(fileName);
+    // Upload para o bucket "perfil"
+    const { data, error: uploadError } = await supabaseClient.storage
+      .from("perfil")
+      .upload(fileName, file, { upsert: true });
 
-                // Atualizar usuário no Supabase
-                const { error: updateError } = await supabaseClient
-                    .from('usuarios')
-                    .update({ foto_perfil: publicUrl })
-                    .eq('email', usuarioEmail);
+    if (uploadError) {
+      console.error("Erro ao enviar imagem:", uploadError);
+      return;
+    }
 
-                if (updateError) {
-                    console.error('Erro ao atualizar perfil:', updateError);
-                } else {
-                    console.log('Foto de perfil atualizada com sucesso!');
-                }
-            }
-        });
+    // Pegar URL pública
+    const { data: publicUrlData } = supabaseClient
+      .storage
+      .from("perfil")
+      .getPublicUrl(fileName);
 
-        // Preview das imagens do upload de post
-        document.getElementById('upload').addEventListener('change', function (event) {
-            const preview = document.getElementById('preview');
-            preview.innerHTML = '';
-            const files = event.target.files;
+    const publicUrl = publicUrlData.publicUrl;
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
+    // Atualizar no banco de dados
+    const { error: updateError } = await supabaseClient
+      .from("usuarios")
+      .update({ foto_perfil: publicUrl })
+      .eq("email", usuarioEmail);
 
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100px';
-                    img.style.height = '100px';
-                    img.style.borderRadius = '10px';
-                    img.style.margin = '5px';
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+    if (updateError) {
+      console.error("Erro ao atualizar URL da foto:", updateError);
+    } else {
+      imgPerfil.src = publicUrl; // já mostra a nova foto
+    }
+  });
+
+  // Executa quando abre a página
+  carregarFotoPerfil();
+
+  // Preview das imagens de post
+  document.getElementById('upload').addEventListener('change', function (event) {
+    const preview = document.getElementById('preview');
+    preview.innerHTML = '';
+    const files = event.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '100px';
+        img.style.height = '100px';
+        img.style.borderRadius = '10px';
+        img.style.margin = '5px';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+
 </body>
 
 </html>
