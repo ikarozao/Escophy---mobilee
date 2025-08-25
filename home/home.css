@@ -817,8 +817,7 @@ a.selecionado {
     width: 50%;
     margin-right: unset; /* Remove margens que podem atrapalhar no mobile */
     margin-left: unset;
-    max-width: none; /* Permite que ocupe a largura do pai */
-    margin-right: -22vh;
+    max-width: 50%; /* Permite que ocupe a largura do pai */
   }
   nav .search-box input {
     width: 100%; /* Ocupa a largura do search-box */
