@@ -819,10 +819,11 @@ a.selecionado {
     }
 
     nav .search-box {
-        width: 90%;
+        width: 50%;
         margin-right: unset; /* Remove margens que podem atrapalhar no mobile */
         margin-left: unset;
         max-width: none; /* Permite que ocupe a largura do pai */
+        margin-right: -22vh;
     }
 
     nav .search-box input {
