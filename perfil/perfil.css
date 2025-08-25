@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
   /*overflow: hidden;*/
   margin: 0;
-  padding-top: 70px; /* altura da navbar para não sobrepor conteúdo */
+  padding-top: 70px;
 }
 
 /* ===== NAVBAR ===== */
@@ -495,6 +495,7 @@ button#botaoMais {
 @media (max-width: 480px) {
   body {
     padding: 2px;
+    padding-top: 70px;
   }
   nav {
     width: 98%;
