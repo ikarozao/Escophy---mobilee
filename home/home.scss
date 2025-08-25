@@ -84,24 +84,24 @@ nav .search-box input {
 /* Contêiner das duas colunas (Último Treino/Vídeo e Feed) */
 .container {
     display: flex;
-    justify-content: space-between; /* Distribui o espaço entre as colunas */
-    align-items: flex-start; /* Alinha o topo das colunas */
+    justify-content: space-between; 
+    align-items: flex-start;
     width: 100%;
-    max-width: 1200px; /* Largura máxima do conteúdo central */
-    margin: 20px auto; /* Centraliza o container */
-    gap: 20px; /* Espaçamento entre as colunas */
-    flex-wrap: wrap; /* Permite que as colunas quebrem para a próxima linha em telas menores */
+    max-width: 1200px; 
+    margin: 5px auto; 
+    gap: 20px;
+    flex-wrap: wrap; 
 }
 
-/* NOVO WRAPPER para a coluna da esquerda (Último Treino + Vídeo) */
+
 .left-column-wrapper {
     display: flex;
-    flex-direction: column; /* Para empilhar o treino e o vídeo */
-    gap: 20px; /* Espaço entre o bloco do treino e o vídeo */
-    width: 38%; /* Largura da coluna da esquerda. Ajuste conforme necessário (e.g., 35%, 40%) */
-    min-width: 300px; /* Largura mínima para evitar que fique muito fino */
-    max-width: 450px; /* Largura máxima para não esticar demais */
-    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+    flex-direction: column; 
+    gap: 20px; 
+    width: 38%;
+    min-width: 300px;
+    max-width: 450px;
+    box-sizing: border-box; 
 }
 
 /* ===== ÚLTIMO TREINO ===== */
@@ -905,7 +905,7 @@ a.selecionado {
         width: 98%;
         margin-left: auto; /* Centraliza */
         margin-right: auto;
-        gap: 20px; /* Ajusta gap para telas menores */
+        gap: 10px; /* Ajusta gap para telas menores */
     }
 
     .left-column-wrapper,
