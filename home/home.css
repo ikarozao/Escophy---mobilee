@@ -79,13 +79,14 @@ nav .search-box input {
   margin-top: -2.5vh;
 }
 
+/* Contêiner das duas colunas (Último Treino/Vídeo e Feed) */
 .container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   max-width: 1200px;
-  margin: 1px auto;
+  margin: 20px auto;
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -885,7 +886,6 @@ a.selecionado {
     margin-right: auto;
     gap: 10px; /* Ajusta gap para telas menores */
   }
-  .left-column-wrapper,
   .ultimo_treino,
   .feed {
     width: 100%; /* Ocupa 100% do container em mobile */
@@ -893,6 +893,13 @@ a.selecionado {
     margin-left: 0;
     margin-right: 0;
     padding: 15px; /* Ajusta padding para mobile */
+  }
+  .left-column-wrapper {
+    width: 100%; /* Ocupa 100% do container em mobile */
+    max-width: none; /* Remove max-width para celular */
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1px;
   }
   .post {
     margin-left: unset;
