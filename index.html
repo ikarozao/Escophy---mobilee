@@ -156,7 +156,8 @@ localStorage.setItem("usuarioEmail", email); // <-- adicionar
         email: email,
         password: senha,
         options: {
-          data: { nome: nome }
+          data: { nome: nome },
+          emailRedirectTo: "https://escorphy.netlify.app/verificado.html"
         }
       });
 
