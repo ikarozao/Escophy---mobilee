@@ -31,9 +31,10 @@
         <i class="bx bx-user"></i>
       </div>
       <div class="input-box">
-        <input id="senha-login" placeholder="Senha" type="password" required />
-        <i class="bx bx-lock-alt"></i>
-      </div>
+      <input id="senha-login" placeholder="Senha" type="password" required />
+      
+      <i class="bx bx-show toggle-password" data-target="senha-login"></i>
+</div>
 
       <button class="login" type="submit">Login</button>
 
@@ -54,9 +55,10 @@
         <i class="bx bx-envelope"></i>
       </div>
       <div class="input-box">
-        <input id="senha-cadastro" placeholder="Senha" type="password" required />
-        <i class="bx bx-lock-alt"></i>
-      </div>
+      <input id="senha-cadastro" placeholder="Senha" type="password" required />
+      
+      <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
+</div>
 
       <button class="login" type="submit">Cadastrar</button>
 
@@ -206,6 +208,22 @@ localStorage.setItem("usuarioEmail", email); // <-- adicionar
 
 checkLogin();
 
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+  icon.addEventListener("click", () => {
+    const inputId = icon.getAttribute("data-target");
+    const input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.remove("bx-show");
+      icon.classList.add("bx-hide");
+    } else {
+      input.type = "password";
+      icon.classList.remove("bx-hide");
+      icon.classList.add("bx-show");
+    }
+  });
+});
 
   </script>
 </body>

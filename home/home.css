@@ -800,7 +800,7 @@ a.selecionado {
 @media (max-width: 768px) {
   nav {
     padding: 8px 16px;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
     width: 100%; /* Ajustado para 100% para evitar barra de rolagem horizontal */
     box-sizing: border-box; /* Inclui padding na largura */
