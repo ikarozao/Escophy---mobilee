@@ -102,49 +102,106 @@ nav .search-box input:focus {
   flex-direction: row;
   justify-content: space-around;
   margin-top: 3%;
+  transition: transform 0.5s ease-in-out;
+  flex-wrap: wrap; /* ajuda no mobile */
+  box-sizing: border-box; /* importante para respeitar o width */
+  overflow-x: hidden;
 }
+
 .hist h1 {
   font-size: 21px;
   font-family: "Poppins", sans-serif;
   margin-left: 2%;
 }
+
 .hist p {
   color: black;
   margin-left: 2%;
   font-size: 18px;
   text-align: justify;
   margin-right: 3%;
+  word-break: break-word; /* quebra palavras grandes se necessário */
 }
+
 .hist img {
-  height: 40%;
+  height: auto;
   width: 40%;
+  max-width: 300px;
   border-radius: 30px;
   padding: 2%;
 }
+
 .hist #Clique {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .textttt {
   padding: 2%;
 }
 
-.hist {
-  transition: transform 0.5s ease-in-out;
-}
-
 .hist:hover {
   transform: scale(1.03);
 }
 
+/* Responsividade */
+@media (max-width: 1024px) {
+  .hist {
+    width: 85%;
+    flex-direction: column; /* empilha os elementos */
+    text-align: center;
+    padding: 4%;
+  }
+  .hist h1 {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+  .hist p {
+    font-size: 16px;
+    margin: 10px 5%;
+    text-align: justify;
+  }
+  .hist img {
+    width: 80%;
+    max-width: 400px;
+    margin-bottom: 15px;
+  }
+}
+@media (max-width: 600px) {
+  .hist {
+    width: 95%;
+    padding: 5%;
+  }
+  .hist h1 {
+    font-size: 18px;
+  }
+  .hist p {
+    font-size: 15px;
+  }
+  .hist img {
+    width: 100%;
+    max-width: 100%;
+  }
+}
 .titulo {
   background-color: white;
-  width: 40%;
-  border-radius: 30px;
+  width: 65%; /* igual ao .artigo */
+  border-radius: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  margin-top: 3%;
+  margin-top: 6%;
+  padding: 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.titulo h1 {
+  margin: 0;
+  font-family: "Staatliches", sans-serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: #222;
 }
 
 .artigo {
