@@ -2,288 +2,250 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Treinos | Escorphy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward" />
+  <title>Treinos | Escorphy</title>
 
-    <link rel="stylesheet" href="treinos/treinos.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin="" />
-    
-    <link rel="icon" type="image/png" href="img/a.png">
+  <link rel="stylesheet" href="treinos/treinos.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin="" />
+
+  <link rel="icon" type="image/png" href="img/a.png">
 </head>
 
 <body>
 
-    <nav>
-        <a href="home.html" class="bar_n" style="text-decoration:none; color:black; cursor:pointer;">Escorphy</a>
-        <div class="nav-right">
-            <div class="search-box">
-                <input class="input-rounded" type="text" placeholder="Pesquisar..." />
-            </div>
-        </div>
-    </nav>
+  <nav>
+    <a href="home.html" class="bar_n" style="text-decoration:none; color:black; cursor:pointer;">Escorphy</a>
+    <div class="nav-right">
+      <div class="search-box">
+        <input class="input-rounded" type="text" placeholder="Pesquisar..." />
+      </div>
+    </div>
+  </nav>
 
-    <div class="treinos">
-        <div class="cima">
-            <h1>Registre seu treino!</h1>
-        </div>
-
-        <div class="carousel-wrapper">
-            <button class="arrow left" onclick="moverEsquerda()">❮</button>
-
-            <div class="carousel">
-                <div class="icon-container" id="carouselContainer">
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/image.png" alt="Ícone Corrida" /></div>
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/bike copy.png" alt="Ícone Bicicleta" /></div>
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/run.png" alt="Ícone Musculação" /></div>
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/dumbbell.png" alt="Ícone Yoga" /></div>
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/exercise.png" alt="Ícone Natação" /></div>
-                    <div onclick="mostrarFormulario()" class="circle"><img src="img/hiking.png" alt="Ícone Caminhada" /></div>
-                </div>
-            </div>
-
-            <button class="arrow right" onclick="moverDireita()">❯</button>
-        </div>
-
-        <div id="map"></div>
-
-        <div id="controls">
-    <button id="startBtn">Iniciar Rota</button>
-    <button id="endBtn">Finalizar Rota</button>
-  </div>
-
-        <article id="infos_treinos" class="infos_treinos" style="display: none;">
-
-            <h1>Informações da atividade</h1>
-
-            <div class="titulo">
-                <p>Título do treino:</p>
-                <input class="input-rounded" type="text" name="titulo" placeholder="" required>
-            </div>
-
-            <div class="descricao">
-                <p>Descrição do treino:</p>
-                <input class="input-rounded" type="text" name="descricao" placeholder="" required>
-            </div>
-
-            <div class="grupo-opcoes">
-                <p>Tipo de treino:</p>
-                <div class="tipo">
-                    <a href="#" role="menuitem" tabindex="0">Treino</a>
-                    <a href="#" role="menuitem" tabindex="0">Prova</a>
-                    <a href="#" role="menuitem" tabindex="0">Longão</a>
-                </div>
-            </div>
-
-            <div class="grupo-opcoes"> 
-                <p>Nível de intensidade</p>
-                <div class="range-container">
-                    <input type="range" class="rangezao" min="1" max="10" step="1">
-                    <div class="rangezi">
-                        <span class="tooltip">1<span class="tip">Pouco</span></span>
-                        <span>2</span><span>3</span><span>4</span>
-                        <span class="tooltip">5<span class="tip">Médio</span></span>
-                        <span>6</span><span>7</span><span>8</span><span>9</span>
-                        <span class="tooltip">10<span class="tip">Muito</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grupo-opcoes">
-                <p>Visibilidade do Treino:</p>
-                <div class="visibilidade">
-                    <a href="#" role="menuitem" tabindex="0">Privado</a>
-                    <a href="#" role="menuitem" tabindex="0">Público</a>
-                </div>
-            </div>
-
-            <div class="grupo-opcoes">
-                <p>Adicione o tipo de acessório:</p>
-                <div class="acessorio">
-                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Relógio</a>
-                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Fones</a>
-                    <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Pulseira</a>
-                </div>
-
-                <div class="acessorio-specs">
-                    <p>Especificações dos acessórios:</p>
-                    <input type="text" id="especificacoesAcessorios" placeholder="Ex: Marca, modelo, cor, tipo de pisada, etc.">
-                </div>
-            </div>
-
-            <div class="botao-salvar">
-                <button id="salvarBtn">Salvar</button>
-            </div>
-
-            <div id="mensagemSalvo" class="mensagem-flutuante">
-                Salvo com sucesso!
-            </div>
-
-        </article>
+  <div class="treinos">
+    <div class="cima">
+      <h1>Registre seu treino!</h1>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
+    <div class="carousel-wrapper">
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            function setupSingleSelection(containerSelector) {
-                const container = document.querySelector(containerSelector);
-                if (!container) return;
+      <div class="carousel">
+        <div class="icon-container" id="carouselContainer">
+          <ul class="card-list">
+            <li class="card-item">
+              <a href="#" class="card-link">
+                <img src="img/exercise.png" alt="card image" class="card-image">
+                <button class="material-symbols-rounded">
+                  arrow_forward
+                </button>
+               </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-                const links = container.querySelectorAll('a');
-                links.forEach(link => {
-                    link.addEventListener('click', e => {
-                        e.preventDefault();
-                        links.forEach(l => l.classList.remove('active-option'));
-                        link.classList.add('active-option');
-                    });
-                });
-            }
 
-            setupSingleSelection('.tipo');
-            setupSingleSelection('.visibilidade');
+    </div>
 
-            const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
-            const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
-            const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
+    <div id="map"></div>
 
-            function toggleAcessorioSpecsVisibility() {
-                let anyAccessorySelected = false;
-                accessoryOptions.forEach(option => {
-                    if (option.classList.contains('active-option')) {
-                        anyAccessorySelected = true;
-                    }
-                });
+    <div id="controls">
+      <button id="startBtn">Iniciar Rota</button>
+      <button id="endBtn">Finalizar Rota</button>
+    </div>
 
-                if (anyAccessorySelected) {
-                    acessorioSpecsContainer.style.display = 'flex';
-                    acessorioSpecsContainer.offsetHeight;
-                    acessorioSpecsContainer.style.opacity = '1';
-                    acessorioSpecsContainer.style.height = 'auto';
-                } else {
-                    acessorioSpecsContainer.style.opacity = '0';
-                    acessorioSpecsContainer.style.height = '0';
-                    especificacoesAcessoriosInput.value = '';
-                    setTimeout(() => {
-                        acessorioSpecsContainer.style.display = 'none';
-                    }, 300);
-                }
-            }
+    <article id="infos_treinos" class="infos_treinos" style="display: none;">
 
-            accessoryOptions.forEach(option => {
-                option.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    this.classList.toggle('active-option');
-                    toggleAcessorioSpecsVisibility();
-                });
-            });
+      <h1>Informações da atividade</h1>
 
-            toggleAcessorioSpecsVisibility();
+      <div class="titulo">
+        <p>Título do treino:</p>
+        <input class="input-rounded" type="text" name="titulo" placeholder="" required>
+      </div>
 
-            const circles = document.querySelectorAll('.circle');
-            circles.forEach(circle => {
-                circle.addEventListener('click', () => {
-                    circles.forEach(c => {
-                        c.classList.remove('active');
-                        c.style.animation = 'none';
-                        c.offsetHeight;
-                        c.style.animation = null;
-                    });
-                    circle.classList.add('active');
-                });
-            });
+      <div class="descricao">
+        <p>Descrição do treino:</p>
+        <input class="input-rounded" type="text" name="descricao" placeholder="" required>
+      </div>
 
-            window.mostrarFormulario = function () {
-                const form = document.getElementById("infos_treinos");
-                form.style.display = form.style.display === "none" ? "block" : "none";
-            }
+      <div class="grupo-opcoes">
+        <p>Tipo de treino:</p>
+        <div class="tipo">
+          <a href="#" role="menuitem" tabindex="0">Treino</a>
+          <a href="#" role="menuitem" tabindex="0">Prova</a>
+          <a href="#" role="menuitem" tabindex="0">Longão</a>
+        </div>
+      </div>
 
-            const salvarBtn = document.getElementById('salvarBtn');
-            const mensagemSalvo = document.getElementById('mensagemSalvo');
+      <div class="grupo-opcoes">
+        <p>Nível de intensidade</p>
+        <div class="range-container">
+          <input type="range" class="rangezao" min="1" max="10" step="1">
+          <div class="rangezi">
+            <span class="tooltip">1<span class="tip">Pouco</span></span>
+            <span>2</span><span>3</span><span>4</span>
+            <span class="tooltip">5<span class="tip">Médio</span></span>
+            <span>6</span><span>7</span><span>8</span><span>9</span>
+            <span class="tooltip">10<span class="tip">Muito</span></span>
+          </div>
+        </div>
+      </div>
 
-            salvarBtn.addEventListener('click', () => {
-                mensagemSalvo.classList.add('show');
-                setTimeout(() => {
-                    mensagemSalvo.classList.remove('show');
-                }, 2000);
-            });
+      <div class="grupo-opcoes">
+        <p>Visibilidade do Treino:</p>
+        <div class="visibilidade">
+          <a href="#" role="menuitem" tabindex="0">Privado</a>
+          <a href="#" role="menuitem" tabindex="0">Público</a>
+        </div>
+      </div>
 
-            const map = L.map('map').setView([-23.55052, -46.633308], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap',
-            }).addTo(map);
+      <div class="grupo-opcoes">
+        <p>Adicione o tipo de acessório:</p>
+        <div class="acessorio">
+          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Relógio</a>
+          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Fones</a>
+          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Pulseira</a>
+        </div>
 
-            L.marker([-23.55052, -46.633308])
-                .addTo(map)
-                .bindPopup('Você está aqui.')
-                .openPopup();
+        <div class="acessorio-specs">
+          <p>Especificações dos acessórios:</p>
+          <input type="text" id="especificacoesAcessorios" placeholder="Ex: Marca, modelo, cor, tipo de pisada, etc.">
+        </div>
+      </div>
+
+      <div class="botao-salvar">
+        <button id="salvarBtn">Salvar</button>
+      </div>
+
+      <div id="mensagemSalvo" class="mensagem-flutuante">
+        Salvo com sucesso!
+      </div>
+
+    </article>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function setupSingleSelection(containerSelector) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            links.forEach(l => l.classList.remove('active-option'));
+            link.classList.add('active-option');
+          });
+        });
+      }
+
+      setupSingleSelection('.tipo');
+      setupSingleSelection('.visibilidade');
+
+      const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
+      const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
+      const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
+
+      function toggleAcessorioSpecsVisibility() {
+        let anyAccessorySelected = false;
+        accessoryOptions.forEach(option => {
+          if (option.classList.contains('active-option')) {
+            anyAccessorySelected = true;
+          }
         });
 
-        
-       /* let posicao = 0;
-  const container = document.getElementById("carouselContainer");
-  const circles = document.querySelectorAll(".circle");
-  const totalItens = circles.length;
-  const larguraItem = 140; // largura + gap aproximado
-  const maxPosicao = totalItens - 3; // exibe 3 por vez
+        if (anyAccessorySelected) {
+          acessorioSpecsContainer.style.display = 'flex';
+          acessorioSpecsContainer.offsetHeight;
+          acessorioSpecsContainer.style.opacity = '1';
+          acessorioSpecsContainer.style.height = 'auto';
+        } else {
+          acessorioSpecsContainer.style.opacity = '0';
+          acessorioSpecsContainer.style.height = '0';
+          especificacoesAcessoriosInput.value = '';
+          setTimeout(() => {
+            acessorioSpecsContainer.style.display = 'none';
+          }, 300);
+        }
+      }
 
-  function moverDireita() {
-    if (posicao < maxPosicao) {
-      posicao++;
-      atualizarCarrossel();
-    }
-  }
+      accessoryOptions.forEach(option => {
+        option.addEventListener('click', function (event) {
+          event.preventDefault();
+          this.classList.toggle('active-option');
+          toggleAcessorioSpecsVisibility();
+        });
+      });
 
-  function moverEsquerda() {
-    if (posicao > 0) {
-      posicao--;
-      atualizarCarrossel();
-    }
-  }
+      toggleAcessorioSpecsVisibility();
 
-  function atualizarCarrossel() {
-    const deslocamento = -(posicao * larguraItem);
-    container.style.transform = translateX(${deslocamento}px);
-  }
+      const circles = document.querySelectorAll('.circle');
+      circles.forEach(circle => {
+        circle.addEventListener('click', () => {
+          circles.forEach(c => {
+            c.classList.remove('active');
+            c.style.animation = 'none';
+            c.offsetHeight;
+            c.style.animation = null;
+          });
+          circle.classList.add('active');
+        });
+      });
 
-  function mostrarFormulario() {
-    document.querySelector(".infos_treinos")?.scrollIntoView({ behavior: 'smooth' });
-  }
+      window.mostrarFormulario = function () {
+        const form = document.getElementById("infos_treinos");
+        form.style.display = form.style.display === "none" ? "block" : "none";
+      }
 
-  // Ativação visual dos círculos
-  document.querySelectorAll(".circle").forEach(circle => {
-    circle.addEventListener("click", function () {
-      document.querySelectorAll(".circle").forEach(c => c.classList.remove("active"));
-      this.classList.add("active");
+      const salvarBtn = document.getElementById('salvarBtn');
+      const mensagemSalvo = document.getElementById('mensagemSalvo');
+
+      salvarBtn.addEventListener('click', () => {
+        mensagemSalvo.classList.add('show');
+        setTimeout(() => {
+          mensagemSalvo.classList.remove('show');
+        }, 2000);
+      });
+
+      const map = L.map('map').setView([-23.55052, -46.633308], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap',
+      }).addTo(map);
+
+      L.marker([-23.55052, -46.633308])
+        .addTo(map)
+        .bindPopup('Você está aqui.')
+        .openPopup();
     });
-  });*/
 
-  //rota
-
-  
+  </script>
 
 
-    </script>
-    <!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-  // Inicializa o mapa
-  const map = L.map('map').setView([-24.740387, -53.767403], 16); 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-  
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  //polyline mapa 
+  <script>
+    // Inicializa o mapa
+    const map = L.map('map').setView([-24.740387, -53.767403], 16);
 
-  //const map = L.map('map');
+
+
+    //polyline mapa 
+
+    //const map = L.map('map');
     const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
       subdomains: 'abcd',
       minZoom: 0,
@@ -307,7 +269,7 @@
         if (endMarker) endMarker.remove();
 
         watchId = navigator.geolocation.watchPosition(
-          function(position) {
+          function (position) {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
@@ -329,7 +291,7 @@
               polyline = L.polyline(userPositions, { color: '#F00' }).addTo(map);
             }
           },
-          function(error) {
+          function (error) {
             console.error("Erro ao obter localização:", error);
             map.setView([0, 0], 2);
           },
@@ -360,17 +322,17 @@
 
 
 
-  // Adiciona o tile do OpenStreetMap
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:
-      '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-  }).addTo(map);
+    // Adiciona o tile do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    }).addTo(map);
 
- 
-</script>
 
-    
-<footer class="footer">
+  </script>
+
+
+  <footer class="footer">
     <div class="footer-container">
       <div class="footer-logo">
         <h1>ESCORPHY</h1>
@@ -416,79 +378,79 @@
     </div>
   </footer>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
-<script>
-  // Configuração Supabase
-  const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
-  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+  <script>
+    // Configuração Supabase
+    const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // Seletores
-  const salvarBtn = document.getElementById("salvarBtn");
-  const mensagemSalvo = document.getElementById("mensagemSalvo");
+    // Seletores
+    const salvarBtn = document.getElementById("salvarBtn");
+    const mensagemSalvo = document.getElementById("mensagemSalvo");
 
-  salvarBtn.addEventListener("click", async () => {
-    const usuarioEmail = localStorage.getItem("usuarioEmail");
-    if (!usuarioEmail) {
-      alert("Usuário não logado!");
-      return;
-    }
+    salvarBtn.addEventListener("click", async () => {
+      const usuarioEmail = localStorage.getItem("usuarioEmail");
+      if (!usuarioEmail) {
+        alert("Usuário não logado!");
+        return;
+      }
 
-    // Pega valores do formulário
-    const titulo = document.querySelector("input[name='titulo']").value;
-    const descricao = document.querySelector("input[name='descricao']").value;
-    const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
-    const intensidade = document.querySelector(".rangezao").value;
-    const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
-    const acessorios = document.querySelector(".acessorio .active-option")?.innerText || "";
-    const especificacoes = document.getElementById("especificacoesAcessorios").value;
+      // Pega valores do formulário
+      const titulo = document.querySelector("input[name='titulo']").value;
+      const descricao = document.querySelector("input[name='descricao']").value;
+      const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
+      const intensidade = document.querySelector(".rangezao").value;
+      const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
+      const acessorios = document.querySelector(".acessorio .active-option")?.innerText || "";
+      const especificacoes = document.getElementById("especificacoesAcessorios").value;
 
-    try {
-      const { error } = await supabaseClient
-        .from("atividades")
-        .insert([{
-          email_usuario: usuarioEmail,
-          titulo,
-          descricao,
-          tipo,
-          intensidade: parseInt(intensidade),
-          visibilidade,
-          acessorios: acessorios + " " + especificacoes
-        }]);
+      try {
+        const { error } = await supabaseClient
+          .from("atividades")
+          .insert([{
+            email_usuario: usuarioEmail,
+            titulo,
+            descricao,
+            tipo,
+            intensidade: parseInt(intensidade),
+            visibilidade,
+            acessorios: acessorios + " " + especificacoes
+          }]);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      // Mostra mensagem de sucesso
-      mensagemSalvo.classList.add("show");
-      setTimeout(() => mensagemSalvo.classList.remove("show"), 2000);
+        // Mostra mensagem de sucesso
+        mensagemSalvo.classList.add("show");
+        setTimeout(() => mensagemSalvo.classList.remove("show"), 2000);
 
-      console.log("✅ Treino salvo no Supabase!");
-    } catch (err) {
-      console.error("Erro ao salvar treino:", err.message);
-      alert("Erro ao salvar treino: " + err.message);
-    }
-  });
+        console.log("✅ Treino salvo no Supabase!");
+      } catch (err) {
+        console.error("Erro ao salvar treino:", err.message);
+        alert("Erro ao salvar treino: " + err.message);
+      }
+    });
 
-  // Pega o ID do treino da URL
-const urlParams = new URLSearchParams(window.location.search);
-const treinoId = urlParams.get("id");
+    // Pega o ID do treino da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const treinoId = urlParams.get("id");
 
-if (treinoId) {
-    const { data: treino, error } = await supabaseClient
+    if (treinoId) {
+      const { data: treino, error } = await supabaseClient
         .from("atividades")
         .select("*")
         .eq("id", treinoId)
         .single();
 
-    if (error) console.error("Erro ao carregar treino:", error.message);
-    else {
+      if (error) console.error("Erro ao carregar treino:", error.message);
+      else {
         // Preencher campos do treino com os dados
         document.querySelector('input[name="titulo"]').value = treino.titulo;
         document.querySelector('input[name="descricao"]').value = treino.descricao;
         // Aqui você pode preencher tipo, intensidade, visibilidade e acessórios
+      }
     }
-}
 
-</script>
+  </script>
 
 </body>
 

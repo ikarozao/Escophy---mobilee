@@ -226,6 +226,37 @@ nav .search-box input:focus {
   pointer-events: none;
 }
 
+.card-list .card-item {
+  list-style: none;
+}
+
+.card-list .card-item .card-link {
+  width: 10%;
+  display: block;
+  background: white;
+  padding: 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-list .card-link .card-image {
+  width: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.card-list .card-link .material-symbols-rounded {
+  height: 35px;
+  width: 35px;
+  background-color: #d7ffda;
+  border-radius: 50%;
+  margin: 30px 0 5px;
+  background: none;
+  cursor: pointer;
+  border: 2px solid #014405;
+}
+
 /* Inputs de texto - Centralizados e Responsivos */
 .treinos input[type=text] {
   width: 100%;
@@ -746,9 +777,9 @@ a.selecionado {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  font-family: "Poppins", sans-serif;
 }
-
-button {
+#controls button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -757,7 +788,6 @@ button {
   background: #388E3C;
   color: white;
 }
-
-button:hover {
+#controls button:hover {
   background: #388E3C;
 }/*# sourceMappingURL=treinos.css.map */
