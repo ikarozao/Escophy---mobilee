@@ -184,7 +184,7 @@ nav .search-box input:focus {
 }
 .titulo {
   background-color: white;
-  width: 65%; /* igual ao .artigo */
+  width: 70%; /* igual ao .artigo */
   border-radius: 20px;
   display: flex;
   align-items: center;

@@ -11,7 +11,7 @@
 
 <body>
     <nav>
-       <a href="home.html"><div class="bar_n">Escorphy</div></a> 
+        <a href="home.html"><div class="bar_n">Escorphy</div></a>
         <div class="nav-right">
             <div class="search-box">
                 <input type="text" placeholder="Pesquisar..." />
@@ -27,18 +27,10 @@
                 </div>
 
                 <div class="foto_perfil" id="fotoPerfil">
-                 <img id="imgPerfil" src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
+                    <img id="imgPerfil" src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
                 </div>
 
-                
                 <input type="file" id="inputPerfil" accept="image/*" hidden>
-
-                <!-- Área para futuros posts -->
-                <div class="foto_upload">
-                    <input type="file" id="upload" hidden multiple>
-                    <label for="upload" class="upload-btn">Adicionar Foto</label>
-                    <div class="preview" id="preview"></div>
-                </div>
 
                 <article class="info_usua">
                     <span>Treinos</span>
@@ -48,55 +40,34 @@
                 </article>
 
                 <article class="info_usua2">
-                    <span>3</span>
-                    <span>2</span>
+                    <span id="contTreinos">0</span>
+                    <span id="contPublicacoes">0</span>
                     <span>50</span>
                     <span>20</span>
                 </article>
             </article>
 
+            <!-- Treinos Realizados -->
             <article class="treinos">
                 <div>
                     <h2>Treinos Realizados</h2>
                 </div>
                 <div>
-                    <ul>
-                        <a href="treino1.html">
-                            <li><span class="atividade">Ciclismo</span> <span class="data">23/03/2025</span></li>
-                        </a>
-                        <li><span class="atividade">Corrida</span> <span class="data">20/03/2025</span></li>
-                        <li><span class="atividade">Caminhada</span> <span class="data">17/03/2025</span></li>
-                    </ul>
+                    <ul id="listaTreinos"></ul>
                 </div>
             </article>
         </div>
 
         <div class="column right-column">
+            <!-- Publicações do usuário -->
             <article class="publi_usua">
                 <div>
                     <h2>Suas Publicações</h2>
                 </div>
-                <div class="post">
-                    <img src="img/Tudo-o-que-voce-precisa-saber-sobre-ciclismo.jpg" alt="">
-                    <div class="detalhes">
-                        <span>🏅 Esporte: Ciclismo</span>
-                        <span>📏 Distância: 25 km</span>
-                        <span>⛰️ Elevação: 500 m</span>
-                        <span>⏱️ Tempo: 1h 30min</span>
-                        <span>🔥 Calorias: 800 kcal</span>
-                    </div>
-                </div>
-                <div class="post">
-                    <img src="img/images.jpeg" alt="">
-                    <div class="detalhes">
-                        <span>🏃‍♂️ Esporte: Corrida</span>
-                        <span>📏 Distância: 10 km</span>
-                        <span>⏱️ Tempo: 50 min</span>
-                        <span>🔥 Calorias: 600 kcal</span>
-                    </div>
-                </div>
+                <div id="listaPublicacoes"></div>
             </article>
 
+            <!-- Contas Sugeridas -->
             <article class="sugeridos">
                 <div>
                     <h2>Contas Sugeridas</h2>
@@ -153,136 +124,117 @@
             </div>
         </a>
     </div>
+
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-<script>
-  // ================================
-  // Configuração do Supabase
-  // ================================
-  const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    <script>
+        const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // ================================
-  // Seletores
-  // ================================
-  const inputPerfil = document.getElementById("inputPerfil");
-  const imgPerfil = document.getElementById("imgPerfil");
-  const fotoPerfil = document.getElementById("fotoPerfil");
-  const uploadPost = document.getElementById('upload');
-  const preview = document.getElementById('preview');
+        const inputPerfil = document.getElementById("inputPerfil");
+        const imgPerfil = document.getElementById("imgPerfil");
+        const fotoPerfil = document.getElementById("fotoPerfil");
+        const usuario = localStorage.getItem("usuarioLogado");
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
 
-  const usuario = localStorage.getItem("usuarioLogado");
-  const usuarioEmail = localStorage.getItem("usuarioEmail");
+        // Nome do usuário
+        if (usuario && usuario.trim() !== "") {
+            document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
+        }
 
-  // ================================
-  // Mostrar nome do usuário
-  // ================================
-  if (usuario && usuario.trim() !== "") {
-    document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-  }
+        // Clique na foto abre input
+        fotoPerfil.addEventListener("click", () => inputPerfil.click());
 
-  // ================================
-  // Clique na foto abre input
-  // ================================
-  fotoPerfil.addEventListener("click", () => inputPerfil.click());
+        // Carregar foto do perfil
+        async function carregarFotoPerfil() {
+            if (!usuarioEmail) return;
 
-  // ================================
-  // Função para carregar foto do banco
-  // ================================
-  async function carregarFotoPerfil() {
-    if (!usuarioEmail) return;
+            const { data, error } = await supabaseClient
+                .from("usuarios")
+                .select("foto_perfil")
+                .eq("email", usuarioEmail)
+                .single();
 
-    try {
-      const { data, error } = await supabaseClient
-        .from("usuarios")
-        .select("foto_perfil")
-        .eq("email", usuarioEmail)
-        .single();
+            if (error) return console.error("Erro ao buscar foto de perfil:", error.message);
+            if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
+        }
 
-      if (error) throw error;
+        // Upload de nova foto
+        inputPerfil.addEventListener("change", async (event) => {
+            const file = event.target.files[0];
+            if (!file || !usuarioEmail) return;
 
-      if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
-    } catch (err) {
-      console.error("Erro ao buscar foto de perfil:", err.message);
-    }
-  }
+            const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
+            try {
+                await supabaseClient.storage.from("perfil").upload(fileName, file, { upsert: true });
+                const { data: publicUrlData } = supabaseClient.storage.from("perfil").getPublicUrl(fileName);
+                const publicUrl = publicUrlData.publicUrl;
+                await supabaseClient.from("usuarios").update({ foto_perfil: publicUrl }).eq("email", usuarioEmail);
+                imgPerfil.src = publicUrl;
+            } catch (err) {
+                console.error("Erro no upload de perfil:", err.message);
+            }
+        });
 
-  // ================================
-  // Upload de nova foto
-  // ================================
-  inputPerfil.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file || !usuarioEmail) return console.error("Arquivo ou email não encontrados.");
+        // ================================
+        // Carregar Treinos e Publicações
+        // ================================
+        async function carregarTreinosEPub() {
+            if (!usuarioEmail) return;
 
-    const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
+            // Treinos realizados
+            const { data: treinos, error: treinosError } = await supabaseClient
+                .from("atividades")
+                .select("*")
+                .eq("email_usuario", usuarioEmail)
+                .order("data", { ascending: false });
 
-    try {
-      // Upload para o bucket "perfil"
-      const { error: uploadError } = await supabaseClient
-        .storage
-        .from("perfil")
-        .upload(fileName, file, { upsert: true });
+            if (treinosError) return console.error("Erro ao buscar treinos:", treinosError.message);
 
-      if (uploadError) throw uploadError;
+            const listaTreinos = document.getElementById("listaTreinos");
+            listaTreinos.innerHTML = "";
+            treinos.forEach(t => {
+                const li = document.createElement("li");
+                const link = document.createElement("a");
+                link.href = `treino1.html?id=${t.id}`;
+                link.innerHTML = `<span class="atividade">${t.titulo}</span> <span class="data">${new Date(t.data).toLocaleDateString()}</span>`;
+                li.appendChild(link);
+                listaTreinos.appendChild(li);
+            });
+            document.getElementById("contTreinos").textContent = treinos.length;
 
-      // Pega URL pública
-      const { data: publicUrlData, error: urlError } = supabaseClient
-        .storage
-        .from("perfil")
-        .getPublicUrl(fileName);
+            // Publicações públicas
+            const { data: publicacoes, error: pubsError } = await supabaseClient
+                .from("atividades")
+                .select("*")
+                .eq("email_usuario", usuarioEmail)
+                .eq("visibilidade", "Público")
+                .order("data", { ascending: false });
 
-      if (urlError) throw urlError;
+            if (pubsError) return console.error("Erro ao buscar publicações:", pubsError.message);
 
-      const publicUrl = publicUrlData.publicUrl;
+            const listaPublicacoes = document.getElementById("listaPublicacoes");
+            listaPublicacoes.innerHTML = "";
+            publicacoes.forEach(p => {
+                const div = document.createElement("div");
+                div.className = "post";
+                div.innerHTML = `
+                    <a href="treino1.html?id=${p.id}" class="post-link">
+                        <div class="detalhes">
+                            <span>🏅 Esporte: ${p.titulo}</span>
+                            <span>📏 Distância: ${p.acessorios || "-"}</span>
+                            <span>⏱️ Tempo: 1h 0min</span>
+                            <span>🔥 Calorias: 500 kcal</span>
+                        </div>
+                    </a>
+                `;
+                listaPublicacoes.appendChild(div);
+            });
+            document.getElementById("contPublicacoes").textContent = publicacoes.length;
+        }
 
-      // Atualiza no banco
-      const { error: updateError } = await supabaseClient
-        .from("usuarios")
-        .update({ foto_perfil: publicUrl })
-        .eq("email", usuarioEmail);
-
-      if (updateError) throw updateError;
-
-      // Atualiza a imagem na tela
-      imgPerfil.src = publicUrl;
-      console.log("✅ Foto de perfil atualizada com sucesso!");
-    } catch (err) {
-      console.error("Erro no upload de perfil:", err.message);
-    }
-  });
-
-  // ================================
-  // Executa ao abrir a página
-  // ================================
-  carregarFotoPerfil();
-
-  // ================================
-  // Preview das imagens de post
-  // ================================
-  uploadPost.addEventListener('change', function (event) {
-    preview.innerHTML = '';
-    const files = Array.from(event.target.files);
-
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.cssText = `
-          width: 100px;
-          height: 100px;
-          border-radius: 10px;
-          margin: 5px;
-          object-fit: cover;
-        `;
-        preview.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-</script>
-
-
+        carregarFotoPerfil();
+        carregarTreinosEPub();
+    </script>
 </body>
-
 </html>

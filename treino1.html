@@ -483,6 +483,81 @@
       </div>
     </div>
   </footer>
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+<script>
+  // Configuração Supabase
+  const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+  // Seletores
+  const salvarBtn = document.getElementById("salvarBtn");
+  const mensagemSalvo = document.getElementById("mensagemSalvo");
+
+  salvarBtn.addEventListener("click", async () => {
+    const usuarioEmail = localStorage.getItem("usuarioEmail");
+    if (!usuarioEmail) {
+      alert("Usuário não logado!");
+      return;
+    }
+
+    // Pega valores do formulário
+    const titulo = document.querySelector("input[name='titulo']").value;
+    const descricao = document.querySelector("input[name='descricao']").value;
+    const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
+    const intensidade = document.querySelector(".rangezao").value;
+    const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
+    const acessorios = document.querySelector(".acessorio .active-option")?.innerText || "";
+    const especificacoes = document.getElementById("especificacoesAcessorios").value;
+
+    try {
+      const { error } = await supabaseClient
+        .from("atividades")
+        .insert([{
+          email_usuario: usuarioEmail,
+          titulo,
+          descricao,
+          tipo,
+          intensidade: parseInt(intensidade),
+          visibilidade,
+          acessorios: acessorios + " " + especificacoes
+        }]);
+
+      if (error) throw error;
+
+      // Mostra mensagem de sucesso
+      mensagemSalvo.classList.add("show");
+      setTimeout(() => mensagemSalvo.classList.remove("show"), 2000);
+
+      console.log("✅ Treino salvo no Supabase!");
+    } catch (err) {
+      console.error("Erro ao salvar treino:", err.message);
+      alert("Erro ao salvar treino: " + err.message);
+    }
+  });
+
+  // Pega o ID do treino da URL
+const urlParams = new URLSearchParams(window.location.search);
+const treinoId = urlParams.get("id");
+
+if (treinoId) {
+    const { data: treino, error } = await supabaseClient
+        .from("atividades")
+        .select("*")
+        .eq("id", treinoId)
+        .single();
+
+    if (error) console.error("Erro ao carregar treino:", error.message);
+    else {
+        // Preencher campos do treino com os dados
+        document.querySelector('input[name="titulo"]').value = treino.titulo;
+        document.querySelector('input[name="descricao"]').value = treino.descricao;
+        // Aqui você pode preencher tipo, intensidade, visibilidade e acessórios
+    }
+}
+
+</script>
+
 </body>
 
 </html>
