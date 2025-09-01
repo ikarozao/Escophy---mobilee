@@ -126,115 +126,153 @@
     </div>
 
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    <script>
-        const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+<script>
+  // ===============================
+  // Variáveis do usuário
+  // ===============================
+  const usuario = localStorage.getItem("usuarioLogado");
+  const usuarioEmail = localStorage.getItem("usuarioEmail");
 
-        const inputPerfil = document.getElementById("inputPerfil");
-        const imgPerfil = document.getElementById("imgPerfil");
-        const fotoPerfil = document.getElementById("fotoPerfil");
-        const usuario = localStorage.getItem("usuarioLogado");
-        const usuarioEmail = localStorage.getItem("usuarioEmail");
+  console.log(usuario, usuarioEmail); // Debug: veja se os dados existem
 
-        // Nome do usuário
-        if (usuario && usuario.trim() !== "") {
-            document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-        }
+  // ===============================
+  // Supabase
+  // ===============================
+  const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Clique na foto abre input
-        fotoPerfil.addEventListener("click", () => inputPerfil.click());
+  const inputPerfil = document.getElementById("inputPerfil");
+  const imgPerfil = document.getElementById("imgPerfil");
+  const fotoPerfil = document.getElementById("fotoPerfil");
 
-        // Carregar foto do perfil
-        async function carregarFotoPerfil() {
-            if (!usuarioEmail) return;
+  // ===============================
+  // Nome do usuário
+  // ===============================
+  if (usuario && usuario.trim() !== "") {
+    document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
+  }
 
-            const { data, error } = await supabaseClient
-                .from("usuarios")
-                .select("foto_perfil")
-                .eq("email", usuarioEmail)
-                .single();
+  // ===============================
+  // Clique na foto abre input
+  // ===============================
+  fotoPerfil.addEventListener("click", () => inputPerfil.click());
 
-            if (error) return console.error("Erro ao buscar foto de perfil:", error.message);
-            if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
-        }
+  // ===============================
+  // Carregar foto do perfil
+  // ===============================
+  async function carregarFotoPerfil() {
+    if (!usuarioEmail) return;
 
-        // Upload de nova foto
-        inputPerfil.addEventListener("change", async (event) => {
-            const file = event.target.files[0];
-            if (!file || !usuarioEmail) return;
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("foto_perfil")
+      .eq("email", usuarioEmail)
+      .single();
 
-            const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
-            try {
-                await supabaseClient.storage.from("perfil").upload(fileName, file, { upsert: true });
-                const { data: publicUrlData } = supabaseClient.storage.from("perfil").getPublicUrl(fileName);
-                const publicUrl = publicUrlData.publicUrl;
-                await supabaseClient.from("usuarios").update({ foto_perfil: publicUrl }).eq("email", usuarioEmail);
-                imgPerfil.src = publicUrl;
-            } catch (err) {
-                console.error("Erro no upload de perfil:", err.message);
-            }
-        });
+    if (error) {
+      console.error("Erro ao buscar foto de perfil:", error.message);
+      return;
+    }
 
-        // ================================
-        // Carregar Treinos e Publicações
-        // ================================
-        async function carregarTreinosEPub() {
-            if (!usuarioEmail) return;
+    if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
+  }
 
-            // Treinos realizados
-            const { data: treinos, error: treinosError } = await supabaseClient
-                .from("atividades")
-                .select("*")
-                .eq("email_usuario", usuarioEmail)
-                .order("data", { ascending: false });
+  // ===============================
+  // Upload de nova foto
+  // ===============================
+  inputPerfil.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file || !usuarioEmail) return;
 
-            if (treinosError) return console.error("Erro ao buscar treinos:", treinosError.message);
+    const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
+    try {
+      await supabaseClient.storage.from("perfil").upload(fileName, file, { upsert: true });
 
-            const listaTreinos = document.getElementById("listaTreinos");
-            listaTreinos.innerHTML = "";
-            treinos.forEach(t => {
-                const li = document.createElement("li");
-                const link = document.createElement("a");
-                link.href = `treino1.html?id=${t.id}`;
-                link.innerHTML = `<span class="atividade">${t.titulo}</span> <span class="data">${new Date(t.data).toLocaleDateString()}</span>`;
-                li.appendChild(link);
-                listaTreinos.appendChild(li);
-            });
-            document.getElementById("contTreinos").textContent = treinos.length;
+      const { data: publicUrlData } = supabaseClient.storage.from("perfil").getPublicUrl(fileName);
+      const publicUrl = publicUrlData.publicUrl;
 
-            // Publicações públicas
-            const { data: publicacoes, error: pubsError } = await supabaseClient
-                .from("atividades")
-                .select("*")
-                .eq("email_usuario", usuarioEmail)
-                .eq("visibilidade", "Público")
-                .order("data", { ascending: false });
+      await supabaseClient.from("usuarios").update({ foto_perfil: publicUrl }).eq("email", usuarioEmail);
+      imgPerfil.src = publicUrl;
 
-            if (pubsError) return console.error("Erro ao buscar publicações:", pubsError.message);
+    } catch (err) {
+      console.error("Erro no upload de perfil:", err.message);
+    }
+  });
 
-            const listaPublicacoes = document.getElementById("listaPublicacoes");
-            listaPublicacoes.innerHTML = "";
-            publicacoes.forEach(p => {
-                const div = document.createElement("div");
-                div.className = "post";
-                div.innerHTML = `
-                    <a href="treino1.html?id=${p.id}" class="post-link">
-                        <div class="detalhes">
-                            <span>🏅 Esporte: ${p.titulo}</span>
-                            <span>📏 Distância: ${p.acessorios || "-"}</span>
-                            <span>⏱️ Tempo: 1h 0min</span>
-                            <span>🔥 Calorias: 500 kcal</span>
-                        </div>
-                    </a>
-                `;
-                listaPublicacoes.appendChild(div);
-            });
-            document.getElementById("contPublicacoes").textContent = publicacoes.length;
-        }
+  // ===============================
+  // Carregar treinos e publicações
+  // ===============================
+  async function carregarTreinosEPub() {
+    if (!usuarioEmail) return;
 
-        carregarFotoPerfil();
-        carregarTreinosEPub();
-    </script>
+    // Treinos realizados
+    const { data: treinos, error: treinosError } = await supabaseClient
+      .from("atividades")
+      .select("*")
+      .eq("email_usuario", usuarioEmail)
+      .order("data", { ascending: false });
+
+    if (treinosError) {
+      console.error("Erro ao buscar treinos:", treinosError.message);
+      return;
+    }
+
+    const listaTreinos = document.getElementById("listaTreinos");
+    listaTreinos.innerHTML = "";
+
+    treinos.forEach(t => {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = `treino1.html?id=${t.id}`;
+      link.innerHTML = `<span class="atividade">${t.titulo}</span> <span class="data">${new Date(t.data).toLocaleDateString()}</span>`;
+      li.appendChild(link);
+      listaTreinos.appendChild(li);
+    });
+    document.getElementById("contTreinos").textContent = treinos.length;
+
+    // Publicações públicas
+    const { data: publicacoes, error: pubsError } = await supabaseClient
+      .from("atividades")
+      .select("*")
+      .eq("email_usuario", usuarioEmail)
+      .eq("visibilidade", "Público")
+      .order("data", { ascending: false });
+
+    if (pubsError) {
+      console.error("Erro ao buscar publicações:", pubsError.message);
+      return;
+    }
+
+    const listaPublicacoes = document.getElementById("listaPublicacoes");
+    listaPublicacoes.innerHTML = "";
+
+    publicacoes.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <a href="treino1.html?id=${p.id}" class="post-link">
+          <div class="detalhes">
+            <span>🏅 Esporte: ${p.titulo}</span>
+            <span>📏 Distância: ${p.acessorios || "-"}</span>
+            <span>⏱️ Tempo: 1h 0min</span>
+            <span>🔥 Calorias: 500 kcal</span>
+          </div>
+        </a>
+      `;
+      listaPublicacoes.appendChild(div);
+    });
+
+    document.getElementById("contPublicacoes").textContent = publicacoes.length;
+  }
+
+  // ===============================
+  // Inicializar
+  // ===============================
+  carregarFotoPerfil();
+  carregarTreinosEPub();
+
+</script>
+
 </body>
 </html>
