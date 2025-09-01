@@ -276,154 +276,81 @@
 
   
 
-  // Recupera rota salva no localStorage (ou array vazio se não existir)
-  let route = JSON.parse(localStorage.getItem("route")) || [];
+  //polyline mapa 
 
-  // Adiciona polyline e marcador
-  let polyline = L.polyline(route, { color: 'red' }).addTo(map);
-  let marker = null;
+  //const map = L.map('map');
+    const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 25,
+      ext: 'png'
+    }).addTo(map);
 
-  // Se já havia rota, posiciona o marcador no último ponto
-  if (route.length > 0) {
-    const lastPoint = route[route.length - 1];
-    marker = L.marker(lastPoint).addTo(map);
-    map.setView(lastPoint, 15);
-  }
+    let userPositions = [];
+    let polyline;
+    let startMarker;
+    let endMarker;
+    let watchId;
+    let tracking = false;
 
-  // Rastrear localização em tempo real
-  navigator.geolocation.watchPosition(
-    (pos) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
+    function startTracking() {
+      if (navigator.geolocation) {
+        tracking = true;
+        userPositions = []; // reseta o trajeto
+        if (polyline) polyline.remove();
+        if (startMarker) startMarker.remove();
+        if (endMarker) endMarker.remove();
 
-      // Adiciona novo ponto
-      route.push([lat, lng]);
+        watchId = navigator.geolocation.watchPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-      // Salva no localStorage
-      localStorage.setItem("route", JSON.stringify(route));
+            // adiciona posição atual
+            userPositions.push([lat, lon]);
 
-      // Atualiza polyline
-      polyline.setLatLngs(route);
+            // centraliza no ponto atual
+            map.setView([lat, lon], 16);
 
-      // Atualiza marcador
-      if (!marker) {
-        marker = L.marker([lat, lng]).addTo(map);
+            // marcador de início
+            if (userPositions.length === 1) {
+              startMarker = L.marker([lat, lon]).addTo(map).bindPopup("Início da rota").openPopup();
+            }
+
+            // atualiza polyline
+            if (polyline) {
+              polyline.setLatLngs(userPositions);
+            } else {
+              polyline = L.polyline(userPositions, { color: '#F00' }).addTo(map);
+            }
+          },
+          function(error) {
+            console.error("Erro ao obter localização:", error);
+            map.setView([0, 0], 2);
+          },
+          { enableHighAccuracy: true }
+        );
       } else {
-        marker.setLatLng([lat, lng]);
+        alert("Geolocalização não suportada no seu navegador!");
+        map.setView([0, 0], 2);
       }
-
-      // Centraliza só na primeira posição detectada
-      if (route.length === 1) {
-        map.setView([lat, lng], 15);
-      }
-    },
-    (err) => console.error(err),
-    { enableHighAccuracy: true }
-  );
-
-  // Função para limpar rota
-  function resetRoute() {
-    route = [];
-    localStorage.removeItem("route");
-    polyline.setLatLngs([]);
-    if (marker) {
-      map.removeLayer(marker);
-      marker = null;
     }
-  }
 
-  // Criar botão no mapa para limpar a rota
-  const clearControl = L.Control.extend({
-    options: { position: 'topright' },
-    onAdd: function () {
-      const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-      container.style.backgroundColor = 'white';
-      container.style.width = '100px';
-      container.style.height = '30px';
-      container.style.lineHeight = '30px';
-      container.style.textAlign = 'center';
-      container.style.cursor = 'pointer';
-      container.style.fontWeight = 'bold';
-      container.title = 'Limpar rota';
-      container.innerHTML = 'Limpar Rota';
+    function endTracking() {
+      if (tracking) {
+        navigator.geolocation.clearWatch(watchId);
+        tracking = false;
 
-      container.onclick = function () {
-        if (confirm('Tem certeza que quer limpar a rota?')) {
-          resetRoute();
+        // adiciona marcador no ponto final
+        if (userPositions.length > 0) {
+          const lastPoint = userPositions[userPositions.length - 1];
+          endMarker = L.marker(lastPoint).addTo(map).bindPopup("Fim da rota").openPopup();
         }
-      };
-
-      // Evita que o clique atrapalhe o mapa
-      L.DomEvent.disableClickPropagation(container);
-
-      return container;
-    }
-  });
-
-  map.addControl(new clearControl());
-
-
-
-  navigator.geolocation.watchPosition(
-  (pos) => {
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
-    const accuracy = pos.coords.accuracy; // em metros
-
-    // Ignora pontos ruins
-    if (accuracy > 30) {
-      console.log("Ponto descartado (precisão baixa):", accuracy);
-      return;
+      }
     }
 
-    let newPoint = [lat, lng];
-
-    // 🔥 Suavização (média móvel com últimos 2 pontos)
-    if (route.length >= 2) {
-      const p1 = route[route.length - 1];
-      const p2 = route[route.length - 2];
-      newPoint = [
-        (p1[0] + p2[0] + lat) / 3,
-        (p1[1] + p2[1] + lng) / 3
-      ];
-    }
-
-    // Ignora variações pequenas (ex: < 5m)
-    if (lastPoint) {
-      const dist = haversine(lastPoint, newPoint);
-      if (dist < 5) return;
-      totalDistance += dist;
-    }
-
-    lastPoint = newPoint;
-    route.push(newPoint);
-
-    // Salva rota
-    localStorage.setItem("route", JSON.stringify(route));
-
-    // Atualiza polyline
-    polyline.setLatLngs(route);
-
-    // Atualiza marcador
-    if (!marker) {
-      marker = L.marker(newPoint).addTo(map);
-    } else {
-      marker.setLatLng(newPoint);
-    }
-
-    // Atualiza estatísticas
-    const speed = pos.coords.speed ? pos.coords.speed * 3.6 : 0;
-    updateStats(speed);
-
-    // Centraliza na primeira posição
-    if (route.length === 1) {
-      map.setView(newPoint, 17);
-    }
-  },
-  (err) => console.error(err),
-  { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-);
-
+    document.getElementById("startBtn").addEventListener("click", startTracking);
+    document.getElementById("endBtn").addEventListener("click", endTracking);
 
 
 
