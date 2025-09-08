@@ -229,11 +229,17 @@ nav .search-box input:focus {
     pointer-events: none;
 }
 
+.carrosel-total {
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+
 .carrossel {
     width: 100px;
     height: 100px;
     background-color: white;
-    box-shadow: 3px 0px 3px 5px gray;
+    box-shadow: 4px 4px 8px 1px rgb(217, 217, 217);
     border-radius: 50px;
     display: flex;
     justify-content: center;
