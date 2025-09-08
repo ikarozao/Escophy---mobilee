@@ -31,21 +31,10 @@
       <h1>Registre seu treino!</h1>
     </div>
 
-    <div class="carousel-wrapper">
+    <div class="carrosel-total">
 
-      <div class="carousel">
-        <div class="icon-container" id="carouselContainer">
-          <ul class="card-list">
-            <li class="card-item">
-              <a href="#" class="card-link">
-                <img src="img/exercise.png" alt="card image" class="card-image">
-                <button class="material-symbols-rounded">
-                  arrow_forward
-                </button>
-               </a>
-            </li>
-          </ul>
-        </div>
+      <div class="carrossel">
+        <img src="img/exercise.png" alt="">
       </div>
 
 
@@ -263,7 +252,7 @@
     function startTracking() {
       if (navigator.geolocation) {
         tracking = true;
-        userPositions = []; // reseta o trajeto
+        userPositions = [];
         if (polyline) polyline.remove();
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
@@ -273,18 +262,18 @@
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            // adiciona posição atual
+            
             userPositions.push([lat, lon]);
 
-            // centraliza no ponto atual
+            
             map.setView([lat, lon], 16);
 
-            // marcador de início
+            
             if (userPositions.length === 1) {
               startMarker = L.marker([lat, lon]).addTo(map).bindPopup("Início da rota").openPopup();
             }
 
-            // atualiza polyline
+            
             if (polyline) {
               polyline.setLatLngs(userPositions);
             } else {
@@ -308,7 +297,7 @@
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
 
-        // adiciona marcador no ponto final
+        
         if (userPositions.length > 0) {
           const lastPoint = userPositions[userPositions.length - 1];
           endMarker = L.marker(lastPoint).addTo(map).bindPopup("Fim da rota").openPopup();
@@ -322,7 +311,7 @@
 
 
 
-    // Adiciona o tile do OpenStreetMap
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
         '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -361,7 +350,7 @@
       <div class="footer-column">
         <h3>Redes</h3>
         <ul class="social-icons">
-          <li><a href="https://www.instagram.com/escorphy"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
           <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
 
         </ul>
@@ -379,12 +368,12 @@
   </footer>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
   <script>
-    // Configuração Supabase
+   
     const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Seletores
+    
     const salvarBtn = document.getElementById("salvarBtn");
     const mensagemSalvo = document.getElementById("mensagemSalvo");
 
@@ -395,7 +384,7 @@
         return;
       }
 
-      // Pega valores do formulário
+      
       const titulo = document.querySelector("input[name='titulo']").value;
       const descricao = document.querySelector("input[name='descricao']").value;
       const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
@@ -419,7 +408,7 @@
 
         if (error) throw error;
 
-        // Mostra mensagem de sucesso
+        
         mensagemSalvo.classList.add("show");
         setTimeout(() => mensagemSalvo.classList.remove("show"), 2000);
 
@@ -430,7 +419,7 @@
       }
     });
 
-    // Pega o ID do treino da URL
+   
     const urlParams = new URLSearchParams(window.location.search);
     const treinoId = urlParams.get("id");
 
@@ -443,10 +432,10 @@
 
       if (error) console.error("Erro ao carregar treino:", error.message);
       else {
-        // Preencher campos do treino com os dados
+        
         document.querySelector('input[name="titulo"]').value = treino.titulo;
         document.querySelector('input[name="descricao"]').value = treino.descricao;
-        // Aqui você pode preencher tipo, intensidade, visibilidade e acessórios
+       
       }
     }
 
