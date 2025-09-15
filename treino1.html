@@ -31,34 +31,73 @@
       <h1>Registre seu treino!</h1>
     </div>
 
-    <div class="carrosel-total">
+    <ul class="carrosel-total">
 
-      <div class="carrossel">
+      <div class="org">
+        <li class="carrossel">
         <img src="img/exercise.png" alt="">
+      </li>
+      <p>Yoga</p>
       </div>
 
-      <div class="carrossel">
-        <img src="img/exercise.png" alt="">
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/bike copy.png" alt="">
+      </li>
+      <p>Ciclismo</p>
       </div>
-
-      <div class="carrossel">
-        <img src="img/exercise.png" alt="">
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/dumbbell.png" alt="">
+      </li>
+      <p>Musculação</p>
       </div>
-
-      <div class="carrossel">
-        <img src="img/exercise.png" alt="">
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/run.png" alt="">
+      </li>
+       <p>Corrida</p>
       </div>
-
-      <div class="carrossel">
-        <img src="img/exercise.png" alt="">
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
+      </li>
+      <p>Vôlei</p>
       </div>
-
-      <div class="carrossel">
-        <img src="img/exercise.png" alt="">
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
+      </li>
+      <p>Tênis</p>
       </div>
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
+      </li>
+      <p>Caminhada</p>
+      </div>
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
+      </li>
+      <p>Futebol/Futsal</p>
+      </div>
+      
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_bb816331.jpg" alt="">
+      </li>
+      <p>Trilha</p>
+      </div>
+      
 
-
-    </div>
+    </ul>
 
     <div id="map"></div>
 
@@ -141,6 +180,29 @@
     integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
 
   <script>
+
+    const botoes = document.querySelectorAll(".carrossel");
+  const info = document.querySelector(".infos_treinos");
+
+  botoes.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      if (info.style.display === "none") {
+        info.style.display = "block";
+      } else {
+        info.style.display = "none";
+      }
+
+      botoes.forEach(b => b.classList.remove("ativo"));
+      // adiciona a borda no botão clicado
+      botao.classList.add("ativo");
+
+    });
+  });
+
+   
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
       function setupSingleSelection(containerSelector) {
         const container = document.querySelector(containerSelector);
