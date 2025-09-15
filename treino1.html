@@ -309,14 +309,12 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // Inicializa o mapa
+    
     const map = L.map('map').setView([-24.740387, -53.767403], 16);
 
 
 
-    //polyline mapa 
-
-    //const map = L.map('map');
+    
     const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
       subdomains: 'abcd',
       minZoom: 0,

@@ -275,9 +275,9 @@ nav .search-box input:focus {
     object-fit: contain;
 }
 
-.carrosel.ativo {
-    border-color: darkgreen; /* borda verde escura */
-  }
+/*.carrosel.ativo {
+    border-color: darkgreen; 
+  }*/
 
 
 
@@ -306,7 +306,7 @@ nav .search-box input:focus {
     border-color: #008e09;
 }
 
-/* Container geral para cada grupo de opções (tipo, visibilidade, acessório) */
+/
 .grupo-opcoes {
     margin-bottom: 25px;
     width: 100%;
@@ -316,7 +316,7 @@ nav .search-box input:focus {
     align-items: center;
 }
 
-/* Título de cada grupo */
+
 .grupo-opcoes > p {
     font-weight: 700;
     font-size: 18px;
@@ -325,7 +325,7 @@ nav .search-box input:focus {
     text-align: center;
 }
 
-/* Container das opções (links/botões) */
+
 .tipo,
 .visibilidade,
 .acessorio {
@@ -337,7 +337,7 @@ nav .search-box input:focus {
     box-sizing: border-box;
 }
 
-/* Estilo para os links que atuam como botões de seleção */
+
 .tipo a,
 .visibilidade a,
 .acessorio a {
@@ -363,7 +363,7 @@ nav .search-box input:focus {
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* Link ativo / selecionado */
+
 a.active-option,
 a.selecionado {
     background-color: #00b40c !important;
@@ -372,7 +372,7 @@ a.selecionado {
     box-shadow: 0 0 10px #00b40c !important;
 }
 
-/* Botão salvar */
+
 .botao-salvar {
     display: flex;
     justify-content: center;
@@ -397,7 +397,7 @@ a.selecionado {
     background-color: #008e09;
 }
 
-/* Mensagem flutuante salva */
+
 .mensagem-flutuante {
     position: fixed;
     bottom: 20px;
@@ -420,7 +420,7 @@ a.selecionado {
     pointer-events: auto;
 }
 
-/* Range slider */
+
 .range-container {
     width: 80%;
     max-width: 500px;
@@ -486,7 +486,7 @@ a.selecionado {
     cursor: pointer;
 }
 
-/* Tooltip */
+
 .tooltip {
     position: relative;
     cursor: default;
@@ -516,7 +516,7 @@ a.selecionado {
     transform: translateX(-50%) scale(1);
 }
 
-/* Form container styles */
+
 .infos_treinos {
     display: flex;
     flex-direction: column;
@@ -566,7 +566,7 @@ a.selecionado {
     display: block;
 }
 
-/* Especificações acessórios */
+
 .acessorio-specs {
     margin-top: 15px;
     width: 100%;
@@ -586,7 +586,7 @@ a.selecionado {
     height: auto;
 }
 
-/* Responsividade */
+
 @media (max-width: 1024px) {
     nav .bar_n {
         font-size: 32px;
@@ -802,7 +802,7 @@ a.selecionado {
   font-size: 16px;
 }
 
-/* RESPONSIVO */
+
 @media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
