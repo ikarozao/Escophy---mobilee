@@ -251,6 +251,7 @@ nav .search-box input:focus {
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 20px;
+    justify-content: space-between;
     /*
     justify-content: space-evenly;
     position: relative;*/
@@ -279,6 +280,11 @@ nav .search-box input:focus {
     border-color: darkgreen; 
   }*/
 
+  .carrossel:hover {
+    border: 5px solid rgb(1, 51, 1);
+    transition: border 0.1s ease, width 0.1s ease;;
+  }
+
 
 
 
@@ -306,7 +312,6 @@ nav .search-box input:focus {
     border-color: #008e09;
 }
 
-/
 .grupo-opcoes {
     margin-bottom: 25px;
     width: 100%;
