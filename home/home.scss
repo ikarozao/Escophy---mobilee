@@ -71,6 +71,7 @@ nav .search-box input {
     border-radius: 25px;
     transition: box-shadow 0.3s ease;
 }
+}
 
 
 
@@ -1003,6 +1004,7 @@ a.selecionado {
     }
 }
 
+<<<<<<< Updated upstream
 /* ===== SCROLLBAR STYLES ===== */
 ::-webkit-scrollbar {
     width: 12px;
@@ -1187,3 +1189,8 @@ a.selecionado {
             }
         }
         
+=======
+.main-content{
+    margin-top: 1vh;
+}
+>>>>>>> Stashed changes
