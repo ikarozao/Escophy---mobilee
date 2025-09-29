@@ -95,12 +95,12 @@
 
       <div class="titulo">
         <p>Título do treino:</p>
-        <input class="input-rounded" type="text" name="titulo" placeholder="" required>
+        <input class="input-rounded" type="text" name="titulo" placeholder="Ex: Corrida no parque" required>
       </div>
 
       <div class="descricao">
         <p>Descrição do treino:</p>
-        <input class="input-rounded" type="text" name="descricao" placeholder="" required>
+        <input class="input-rounded" type="text" name="descricao" placeholder="Ex: Treino leve de manhã" required>
       </div>
 
       <div class="grupo-opcoes">
@@ -149,7 +149,7 @@
       </div>
 
       <div class="botao-salvar">
-        <button id="salvarBtn">Salvar</button>
+        <button id="salvarBtn">Salvar Treino</button>
       </div>
 
       <div id="mensagemSalvo" class="mensagem-flutuante">
@@ -213,6 +213,8 @@
     // CONFIGURAÇÃO INICIAL
     // ===============================
     
+    console.log("🚀 Iniciando script...");
+    
     // Configuração do Supabase
     const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
@@ -230,6 +232,7 @@
     // CONFIGURAÇÃO DO MAPA
     // ===============================
     
+    console.log("🗺️ Configurando mapa...");
     const map = L.map('map').setView([-24.740387, -53.767403], 16);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -241,6 +244,7 @@
     // ===============================
     
     function startTracking() {
+      console.log("📍 Iniciando tracking...");
       if (navigator.geolocation) {
         tracking = true;
         userPositions = [];
@@ -255,6 +259,8 @@
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             const accuracy = position.coords.accuracy;
+
+            console.log(`📍 Posição: ${lat}, ${lon}`);
 
             // Adiciona posição atual ao array com timestamp
             userPositions.push({
@@ -288,7 +294,7 @@
             }
           },
           function (error) {
-            console.error("Erro ao obter localização:", error);
+            console.error("❌ Erro ao obter localização:", error);
             alert("Erro ao obter localização: " + error.message);
           },
           { 
@@ -303,6 +309,7 @@
     }
 
     function endTracking() {
+      console.log("🛑 Finalizando tracking...");
       if (tracking) {
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
@@ -316,7 +323,7 @@
             .openPopup();
         }
 
-        console.log("Trajeto registrado:", userPositions);
+        console.log("📊 Trajeto registrado com", userPositions.length, "pontos:", userPositions);
       }
     }
 
@@ -353,12 +360,15 @@
     // ===============================
     
     document.addEventListener('DOMContentLoaded', function () {
+      console.log("📄 DOM carregado, configurando interface...");
+
       // Configuração dos botões do carrossel
       const botoes = document.querySelectorAll(".carrossel");
       const info = document.querySelector(".infos_treinos");
 
       botoes.forEach((botao) => {
         botao.addEventListener("click", () => {
+          console.log("🎯 Botão de treino clicado");
           if (info.style.display === "none") {
             info.style.display = "block";
           } else {
@@ -381,6 +391,7 @@
             e.preventDefault();
             links.forEach(l => l.classList.remove('active-option'));
             link.classList.add('active-option');
+            console.log(`✅ ${link.innerText} selecionado`);
           });
         });
       }
@@ -420,6 +431,7 @@
         option.addEventListener('click', function (event) {
           event.preventDefault();
           this.classList.toggle('active-option');
+          console.log(`🎧 Acessório: ${this.innerText} - ${this.classList.contains('active-option') ? 'selecionado' : 'desselecionado'}`);
           toggleAcessorioSpecsVisibility();
         });
       });
@@ -435,16 +447,21 @@
       const mensagemSalvo = document.getElementById('mensagemSalvo');
 
       salvarBtn.addEventListener('click', async () => {
+        console.log("💾 Botão salvar clicado!");
+        
         // Verifica se usuário está logado
         const usuarioEmail = localStorage.getItem("usuarioEmail");
+        console.log("👤 Email do usuário:", usuarioEmail);
+        
         if (!usuarioEmail) {
-          alert("Usuário não logado!");
+          alert("❌ Usuário não logado! Faça login primeiro.");
           return;
         }
 
         // Verifica se há trajeto registrado
+        console.log("📍 Pontos no trajeto:", userPositions.length);
         if (userPositions.length === 0) {
-          alert("Por favor, inicie e finalize um trajeto antes de salvar!");
+          alert("❌ Por favor, inicie e finalize um trajeto antes de salvar!");
           return;
         }
 
@@ -454,6 +471,20 @@
         const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
         const intensidade = document.querySelector(".rangezao").value;
         const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
+        
+        console.log("📝 Dados do formulário:", {
+          titulo,
+          descricao,
+          tipo,
+          intensidade,
+          visibilidade
+        });
+
+        // Valida campos obrigatórios
+        if (!titulo || !descricao || !tipo || !visibilidade) {
+          alert("❌ Preencha todos os campos obrigatórios!");
+          return;
+        }
         
         // Coleta acessórios (pode ser múltipla seleção)
         const acessoriosSelecionados = [];
@@ -474,7 +505,11 @@
           }
         };
 
+        console.log("🗺️ Trajeto a ser salvo:", trajetoCompleto);
+
         try {
+          console.log("📤 Enviando dados para Supabase...");
+          
           // Insere no Supabase
           const { data, error } = await supabaseClient
             .from("atividades")
@@ -491,7 +526,12 @@
             }])
             .select();
 
-          if (error) throw error;
+          if (error) {
+            console.error("❌ Erro do Supabase:", error);
+            throw error;
+          }
+
+          console.log("✅ Sucesso! Dados salvos:", data);
 
           // Feedback de sucesso
           mensagemSalvo.classList.add("show");
@@ -510,15 +550,17 @@
             if (startMarker) startMarker.remove();
             if (endMarker) endMarker.remove();
             
+            console.log("🔄 Formulário limpo");
+            
           }, 2000);
 
-          console.log("✅ Treino salvo no Supabase:", data);
-
         } catch (err) {
-          console.error("Erro ao salvar treino:", err.message);
-          alert("Erro ao salvar treino: " + err.message);
+          console.error("❌ Erro ao salvar treino:", err);
+          alert("❌ Erro ao salvar treino: " + err.message);
         }
       });
+
+      console.log("✅ Interface configurada com sucesso!");
     });
   </script>
 </body>
