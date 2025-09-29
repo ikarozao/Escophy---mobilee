@@ -7,6 +7,7 @@
     <title>Perfil</title>
     <link rel="stylesheet" href="perfil/perfil.css">
     <link rel="icon" type="image/png" href="img/a.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body>
@@ -169,156 +170,305 @@
         </div>
     </div>
 </footer>
-</body>
 
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-<script>
-  // ===============================
-  // Variáveis do usuário
-  // ===============================
-  const usuario = localStorage.getItem("usuarioLogado");
-  const usuarioEmail = localStorage.getItem("usuarioEmail");
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ===============================
+        // Variáveis do usuário
+        // ===============================
+        const usuario = localStorage.getItem("usuarioLogado");
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
 
-  console.log(usuario, usuarioEmail); // Debug: veja se os dados existem
+        console.log(usuario, usuarioEmail);
 
-  // ===============================
-  // Supabase
-  // ===============================
-  const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        // ===============================
+        // Supabase
+        // ===============================
+        const supabaseUrl = 'https://szachxclixfketavlkyv.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-  const inputPerfil = document.getElementById("inputPerfil");
-  const imgPerfil = document.getElementById("imgPerfil");
-  const fotoPerfil = document.getElementById("fotoPerfil");
+        const inputPerfil = document.getElementById("inputPerfil");
+        const imgPerfil = document.getElementById("imgPerfil");
+        const fotoPerfil = document.getElementById("fotoPerfil");
 
-  // ===============================
-  // Nome do usuário
-  // ===============================
-  if (usuario && usuario.trim() !== "") {
-    document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
-  }
+        // ===============================
+        // Nome do usuário
+        // ===============================
+        if (usuario && usuario.trim() !== "") {
+            document.getElementById("nomeUsuario").textContent = `Olá, ${usuario.trim()}`;
+        }
 
-  // ===============================
-  // Clique na foto abre input
-  // ===============================
-  fotoPerfil.addEventListener("click", () => inputPerfil.click());
+        // ===============================
+        // Clique na foto abre input
+        // ===============================
+        fotoPerfil.addEventListener("click", () => inputPerfil.click());
 
-  // ===============================
-  // Carregar foto do perfil
-  // ===============================
-  async function carregarFotoPerfil() {
-    if (!usuarioEmail) return;
+        // ===============================
+        // Carregar foto do perfil
+        // ===============================
+        async function carregarFotoPerfil() {
+            if (!usuarioEmail) return;
 
-    const { data, error } = await supabaseClient
-      .from("usuarios")
-      .select("foto_perfil")
-      .eq("email", usuarioEmail)
-      .single();
+            const { data, error } = await supabaseClient
+                .from("usuarios")
+                .select("foto_perfil")
+                .eq("email", usuarioEmail)
+                .single();
 
-    if (error) {
-      console.error("Erro ao buscar foto de perfil:", error.message);
-      return;
-    }
+            if (error) {
+                console.error("Erro ao buscar foto de perfil:", error.message);
+                return;
+            }
 
-    if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
-  }
+            if (data?.foto_perfil) imgPerfil.src = data.foto_perfil;
+        }
 
-  // ===============================
-  // Upload de nova foto
-  // ===============================
-  inputPerfil.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file || !usuarioEmail) return;
+        // ===============================
+        // Upload de nova foto
+        // ===============================
+        inputPerfil.addEventListener("change", async (event) => {
+            const file = event.target.files[0];
+            if (!file || !usuarioEmail) return;
 
-    const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
-    try {
-      await supabaseClient.storage.from("perfil").upload(fileName, file, { upsert: true });
+            const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
+            try {
+                await supabaseClient.storage.from("perfil").upload(fileName, file, { upsert: true });
 
-      const { data: publicUrlData } = supabaseClient.storage.from("perfil").getPublicUrl(fileName);
-      const publicUrl = publicUrlData.publicUrl;
+                const { data: publicUrlData } = supabaseClient.storage.from("perfil").getPublicUrl(fileName);
+                const publicUrl = publicUrlData.publicUrl;
 
-      await supabaseClient.from("usuarios").update({ foto_perfil: publicUrl }).eq("email", usuarioEmail);
-      imgPerfil.src = publicUrl;
+                await supabaseClient.from("usuarios").update({ foto_perfil: publicUrl }).eq("email", usuarioEmail);
+                imgPerfil.src = publicUrl;
 
-    } catch (err) {
-      console.error("Erro no upload de perfil:", err.message);
-    }
-  });
+            } catch (err) {
+                console.error("Erro no upload de perfil:", err.message);
+            }
+        });
 
-  // ===============================
-  // Carregar treinos e publicações
-  // ===============================
-  async function carregarTreinosEPub() {
-    if (!usuarioEmail) return;
+        // ===============================
+        // Funções auxiliares para cálculos
+        // ===============================
+        function calcularDistanciaTotal(positions) {
+            if (!positions || positions.length < 2) return 0;
+            
+            let totalDistance = 0;
+            for (let i = 1; i < positions.length; i++) {
+                const prev = positions[i - 1];
+                const curr = positions[i];
+                totalDistance += calcularDistancia(prev.lat, prev.lng, curr.lat, curr.lng);
+            }
+            return Math.round(totalDistance);
+        }
 
-    // Treinos realizados
-    const { data: treinos, error: treinosError } = await supabaseClient
-      .from("atividades")
-      .select("*")
-      .eq("email_usuario", usuarioEmail)
-      .order("data", { ascending: false });
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371000;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
 
-    if (treinosError) {
-      console.error("Erro ao buscar treinos:", treinosError.message);
-      return;
-    }
+        function calcularTempoTreino(startTime, endTime) {
+            if (!startTime || !endTime) return "0min";
+            const start = new Date(startTime);
+            const end = new Date(endTime);
+            const diffMs = end - start;
+            const minutes = Math.floor(diffMs / 60000);
+            const hours = Math.floor(minutes / 60);
+            const remainingMinutes = minutes % 60;
+            
+            if (hours > 0) {
+                return `${hours}h ${remainingMinutes}min`;
+            }
+            return `${minutes}min`;
+        }
 
-    const listaTreinos = document.getElementById("listaTreinos");
-    listaTreinos.innerHTML = "";
+        function calcularCalorias(distancia, intensidade) {
+            // Fórmula simplificada: ~65 calorias por km para corrida
+            const distanciaKm = distancia / 1000;
+            const caloriasBase = distanciaKm * 65;
+            const fatorIntensidade = 1 + (intensidade - 5) * 0.1;
+            return Math.round(caloriasBase * fatorIntensidade);
+        }
 
-    treinos.forEach(t => {
-      const li = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = `treino1.html?id=${t.id}`;
-      link.innerHTML = `<span class="atividade">${t.titulo}</span> <span class="data">${new Date(t.data).toLocaleDateString()}</span>`;
-      li.appendChild(link);
-      listaTreinos.appendChild(li);
-    });
-    document.getElementById("contTreinos").textContent = treinos.length;
+        // ===============================
+        // Carregar treinos e publicações
+        // ===============================
+        async function carregarTreinosEPub() {
+            if (!usuarioEmail) return;
 
-    // Publicações públicas
-    const { data: publicacoes, error: pubsError } = await supabaseClient
-      .from("atividades")
-      .select("*")
-      .eq("email_usuario", usuarioEmail)
-      .eq("visibilidade", "Público")
-      .order("data", { ascending: false });
+            // Treinos realizados
+            const { data: treinos, error: treinosError } = await supabaseClient
+                .from("atividades")
+                .select("*")
+                .eq("email_usuario", usuarioEmail)
+                .order("data", { ascending: false });
 
-    if (pubsError) {
-      console.error("Erro ao buscar publicações:", pubsError.message);
-      return;
-    }
+            if (treinosError) {
+                console.error("Erro ao buscar treinos:", treinosError.message);
+                return;
+            }
 
-    const listaPublicacoes = document.getElementById("listaPublicacoes");
-    listaPublicacoes.innerHTML = "";
+            const listaTreinos = document.getElementById("listaTreinos");
+            listaTreinos.innerHTML = "";
 
-    publicacoes.forEach(p => {
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <a href="treino1.html?id=${p.id}" class="post-link">
-          <div class="detalhes">
-            <span>🏅 Esporte: ${p.titulo}</span>
-            <span>📏 Distância: ${p.acessorios || "-"}</span>
-            <span>⏱️ Tempo: 1h 0min</span>
-            <span>🔥 Calorias: 500 kcal</span>
-          </div>
-        </a>
-      `;
-      listaPublicacoes.appendChild(div);
-    });
+            treinos.forEach(t => {
+                const li = document.createElement("li");
+                const link = document.createElement("a");
+                link.href = `treino1.html?id=${t.id}`;
+                link.innerHTML = `
+                    <span class="atividade">${t.titulo}</span> 
+                    <span class="data">${new Date(t.data).toLocaleDateString('pt-BR')}</span>
+                `;
+                li.appendChild(link);
+                listaTreinos.appendChild(li);
+            });
+            document.getElementById("contTreinos").textContent = treinos.length;
 
-    document.getElementById("contPublicacoes").textContent = publicacoes.length;
-  }
+            // Publicações públicas
+            const { data: publicacoes, error: pubsError } = await supabaseClient
+                .from("atividades")
+                .select("*")
+                .eq("email_usuario", usuarioEmail)
+                .eq("visibilidade", "Público")
+                .order("data", { ascending: false });
 
-  // ===============================
-  // Inicializar
-  // ===============================
-  carregarFotoPerfil();
-  carregarTreinosEPub();
+            if (pubsError) {
+                console.error("Erro ao buscar publicações:", pubsError.message);
+                return;
+            }
 
-</script>
+            const listaPublicacoes = document.getElementById("listaPublicacoes");
+            listaPublicacoes.innerHTML = "";
 
+            publicacoes.forEach(p => {
+                const trajeto = p.trajeto || {};
+                const positions = trajeto.positions || [];
+                const distancia = trajeto.summary?.distance || calcularDistanciaTotal(positions);
+                const tempo = calcularTempoTreino(
+                    trajeto.summary?.startTime, 
+                    trajeto.summary?.endTime || p.data
+                );
+                const calorias = calcularCalorias(distancia, p.intensidade);
+
+                const div = document.createElement("div");
+                div.className = "post";
+                div.innerHTML = `
+                    <a href="treino1.html?id=${p.id}" class="post-link">
+                        <div class="post-header">
+                            <h3 class="post-titulo">${p.titulo}</h3>
+                            <span class="post-data">${new Date(p.data).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                        <div class="detalhes">
+                            <span>${getEmojiTipo(p.tipo)} ${p.tipo || 'Treino'}</span>
+                            <span>📏 ${(distancia / 1000).toFixed(2)} km</span>
+                            <span>⏱️ ${tempo}</span>
+                            <span>🔥 ${calorias} kcal</span>
+                            <span>💪 Intensidade: ${p.intensidade}/10</span>
+                            ${p.acessorios ? `<span>🎧 ${p.acessorios}</span>` : ''}
+                        </div>
+                        ${positions.length > 0 ? `
+                            <div class="mapa-miniatura" id="mapa-${p.id}"></div>
+                        ` : ''}
+                        <div class="post-stats">
+                            <div class="stat">
+                                <span class="stat-valor">${(distancia / 1000).toFixed(1)}</span>
+                                <span class="stat-label">km</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-valor">${tempo.split(' ')[0]}</span>
+                                <span class="stat-label">${tempo.includes('h') ? 'tempo' : 'min'}</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-valor">${calorias}</span>
+                                <span class="stat-label">cal</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-valor">${p.intensidade}</span>
+                                <span class="stat-label">intens</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                listaPublicacoes.appendChild(div);
+
+                // Carrega mapa miniaturas se houver trajeto
+                if (positions.length > 0) {
+                    setTimeout(() => {
+                        carregarMapaMiniatura(p.id, positions);
+                    }, 100);
+                }
+            });
+
+            document.getElementById("contPublicacoes").textContent = publicacoes.length;
+        }
+
+        function getEmojiTipo(tipo) {
+            const emojis = {
+                'Corrida': '🏃',
+                'Ciclismo': '🚴',
+                'Musculação': '💪',
+                'Yoga': '🧘',
+                'Caminhada': '🚶',
+                'Natação': '🏊',
+                'Treino': '🏅',
+                'Prova': '🥇',
+                'Longão': '🛣️'
+            };
+            return emojis[tipo] || '🏅';
+        }
+
+        function carregarMapaMiniatura(postId, positions) {
+            const container = document.getElementById(`mapa-${postId}`);
+            if (!container) return;
+
+            // Limpa o container
+            container.innerHTML = '';
+            
+            // Cria mapa
+            const map = L.map(container, {
+                zoomControl: false,
+                attributionControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                tap: false
+            });
+
+            // Tile layer simplificado
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 18
+            }).addTo(map);
+
+            // Adiciona polyline do trajeto
+            if (positions.length > 0) {
+                const latLngs = positions.map(pos => [pos.lat, pos.lng]);
+                const polyline = L.polyline(latLngs, {
+                    color: '#e34c26',
+                    weight: 4,
+                    opacity: 0.8
+                }).addTo(map);
+
+                // Ajusta o zoom para o trajeto
+                map.fitBounds(polyline.getBounds(), {
+                    padding: [5, 5]
+                });
+            }
+        }
+
+        // ===============================
+        // Inicializar
+        // ===============================
+        carregarFotoPerfil();
+        carregarTreinosEPub();
+    </script>
 </body>
 </html>
