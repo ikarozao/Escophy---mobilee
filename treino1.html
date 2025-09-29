@@ -32,54 +32,73 @@
     </div>
 
     <ul class="carrosel-total">
+
+     <!-- 
       <div class="org">
         <li class="carrossel">
-          <img src="img/bike copy.png" alt="">
-        </li>
-        <p>Ciclismo</p>
+        <img src="img/exercise.png" alt="">
+      </li>
+      <p>Yoga</p>
+      </div>
+      --> 
+
+      <div class="org">
+        <li class="carrossel">
+        <img src="img/bike copy.png" alt="">
+      </li>
+      <p>Ciclismo</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/dumbbell.png" alt="">
-        </li>
-        <p>Musculação</p>
+        <img src="img/dumbbell.png" alt="">
+      </li>
+      <p>Musculação</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/run.png" alt="">
-        </li>
-        <p>Corrida</p>
+        <img src="img/run.png" alt="">
+      </li>
+       <p>Corrida</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
-        </li>
-        <p>Vôlei</p>
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
+      </li>
+      <p>Vôlei</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
-        </li>
-        <p>Tênis</p>
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
+      </li>
+      <p>Tênis</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
-        </li>
-        <p>Caminhada</p>
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
+      </li>
+      <p>Caminhada</p>
       </div>
       
       <div class="org">
         <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
-        </li>
-        <p>Futebol/Futsal</p>
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
+      </li>
+      <p>Futebol/Futsal</p>
       </div>
+      
+      <!--<div class="org">
+        <li class="carrossel">
+        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_bb816331.jpg" alt="">
+      </li>
+      <p>Trilha</p>
+      </div>-->
+      
+
     </ul>
 
     <div id="map"></div>
@@ -95,12 +114,12 @@
 
       <div class="titulo">
         <p>Título do treino:</p>
-        <input class="input-rounded" type="text" name="titulo" placeholder="Ex: Corrida no parque" required>
+        <input class="input-rounded" type="text" name="titulo" placeholder="" required>
       </div>
 
       <div class="descricao">
         <p>Descrição do treino:</p>
-        <input class="input-rounded" type="text" name="descricao" placeholder="Ex: Treino leve de manhã" required>
+        <input class="input-rounded" type="text" name="descricao" placeholder="" required>
       </div>
 
       <div class="grupo-opcoes">
@@ -115,7 +134,7 @@
       <div class="grupo-opcoes">
         <p>Nível de intensidade</p>
         <div class="range-container">
-          <input type="range" class="rangezao" min="1" max="10" step="1" value="5">
+          <input type="range" class="rangezao" min="1" max="10" step="1">
           <div class="rangezi">
             <span class="tooltip">1<span class="tip">Pouco</span></span>
             <span>2</span><span>3</span><span>4</span>
@@ -149,7 +168,7 @@
       </div>
 
       <div class="botao-salvar">
-        <button id="salvarBtn">Salvar Treino</button>
+        <button id="salvarBtn">Salvar</button>
       </div>
 
       <div id="mensagemSalvo" class="mensagem-flutuante">
@@ -158,6 +177,234 @@
 
     </article>
   </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
+
+  <script>
+
+
+
+
+    const botoes = document.querySelectorAll(".carrossel");
+  const info = document.querySelector(".infos_treinos");
+
+  botoes.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      if (info.style.display === "none") {
+        info.style.display = "block";
+      } else {
+        info.style.display = "none";
+      }
+
+      botoes.forEach(b => b.classList.remove("ativo"));
+      // adiciona a borda no botão clicado
+      botao.classList.add("ativo");
+
+    });
+  });
+
+   
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      function setupSingleSelection(containerSelector) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            links.forEach(l => l.classList.remove('active-option'));
+            link.classList.add('active-option');
+          });
+        });
+      }
+
+      setupSingleSelection('.tipo');
+      setupSingleSelection('.visibilidade');
+
+      const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
+      const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
+      const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
+
+      function toggleAcessorioSpecsVisibility() {
+        let anyAccessorySelected = false;
+        accessoryOptions.forEach(option => {
+          if (option.classList.contains('active-option')) {
+            anyAccessorySelected = true;
+          }
+        });
+
+        if (anyAccessorySelected) {
+          acessorioSpecsContainer.style.display = 'flex';
+          acessorioSpecsContainer.offsetHeight;
+          acessorioSpecsContainer.style.opacity = '1';
+          acessorioSpecsContainer.style.height = 'auto';
+        } else {
+          acessorioSpecsContainer.style.opacity = '0';
+          acessorioSpecsContainer.style.height = '0';
+          especificacoesAcessoriosInput.value = '';
+          setTimeout(() => {
+            acessorioSpecsContainer.style.display = 'none';
+          }, 300);
+        }
+      }
+
+      accessoryOptions.forEach(option => {
+        option.addEventListener('click', function (event) {
+          event.preventDefault();
+          this.classList.toggle('active-option');
+          toggleAcessorioSpecsVisibility();
+        });
+      });
+
+      toggleAcessorioSpecsVisibility();
+
+      const circles = document.querySelectorAll('.circle');
+      circles.forEach(circle => {
+        circle.addEventListener('click', () => {
+          circles.forEach(c => {
+            c.classList.remove('active');
+            c.style.animation = 'none';
+            c.offsetHeight;
+            c.style.animation = null;
+          });
+          circle.classList.add('active');
+        });
+      });
+
+      window.mostrarFormulario = function () {
+        const form = document.getElementById("infos_treinos");
+        form.style.display = form.style.display === "none" ? "block" : "none";
+      }
+
+      const salvarBtn = document.getElementById('salvarBtn');
+      const mensagemSalvo = document.getElementById('mensagemSalvo');
+
+      salvarBtn.addEventListener('click', () => {
+        mensagemSalvo.classList.add('show');
+        setTimeout(() => {
+          mensagemSalvo.classList.remove('show');
+        }, 2000);
+      });
+
+      const map = L.map('map').setView([-23.55052, -46.633308], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap',
+      }).addTo(map);
+
+      L.marker([-23.55052, -46.633308])
+        .addTo(map)
+        .bindPopup('Você está aqui.')
+        .openPopup();
+    });
+
+  </script>
+
+
+
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    
+    const map = L.map('map').setView([-24.740387, -53.767403], 16);
+
+
+
+    
+    const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 25,
+      ext: 'png'
+    }).addTo(map);
+
+    let userPositions = [];
+    let polyline;
+    let startMarker;
+    let endMarker;
+    let watchId;
+    let tracking = false;
+
+    function startTracking() {
+      if (navigator.geolocation) {
+        tracking = true;
+        userPositions = [];
+        if (polyline) polyline.remove();
+        if (startMarker) startMarker.remove();
+        if (endMarker) endMarker.remove();
+
+        watchId = navigator.geolocation.watchPosition(
+          function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            
+            userPositions.push([lat, lon]);
+
+            
+            map.setView([lat, lon], 16);
+
+            
+            if (userPositions.length === 1) {
+              startMarker = L.marker([lat, lon]).addTo(map).bindPopup("Início da rota").openPopup();
+            }
+
+            
+            if (polyline) {
+              polyline.setLatLngs(userPositions);
+            } else {
+              polyline = L.polyline(userPositions, { color: '#F00' }).addTo(map);
+            }
+          },
+          function (error) {
+            console.error("Erro ao obter localização:", error);
+            map.setView([0, 0], 2);
+          },
+          { enableHighAccuracy: true }
+        );
+      } else {
+        alert("Geolocalização não suportada no seu navegador!");
+        map.setView([0, 0], 2);
+      }
+    }
+
+    function endTracking() {
+      if (tracking) {
+        navigator.geolocation.clearWatch(watchId);
+        tracking = false;
+
+        
+        if (userPositions.length > 0) {
+          const lastPoint = userPositions[userPositions.length - 1];
+          endMarker = L.marker(lastPoint).addTo(map).bindPopup("Fim da rota").openPopup();
+        }
+      }
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startTracking);
+    document.getElementById("endBtn").addEventListener("click", endTracking);
+
+
+
+
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+
+  </script>
+
 
   <footer class="footer">
     <div class="footer-container">
@@ -190,6 +437,7 @@
         <ul class="social-icons">
           <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
           <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
+
         </ul>
       </div>
 
@@ -203,8 +451,7 @@
       </div>
     </div>
   </footer>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
@@ -229,18 +476,21 @@
     let tracking = false;
 
     // ===============================
-    // CONFIGURAÇÃO DO MAPA
+    // CONFIGURAÇÃO DO MAPA (MANTIDA COMO NO SEU CÓDIGO ORIGINAL)
     // ===============================
     
     console.log("🗺️ Configurando mapa...");
     const map = L.map('map').setView([-24.740387, -53.767403], 16);
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+    const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 25,
+      ext: 'png'
     }).addTo(map);
 
     // ===============================
-    // FUNÇÕES DE TRACKING
+    // FUNÇÕES DE TRACKING (MANTIDAS)
     // ===============================
     
     function startTracking() {
@@ -258,7 +508,6 @@
           function (position) {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            const accuracy = position.coords.accuracy;
 
             console.log(`📍 Posição: ${lat}, ${lon}`);
 
@@ -267,7 +516,7 @@
               lat: lat,
               lng: lon,
               timestamp: new Date().toISOString(),
-              accuracy: accuracy
+              accuracy: position.coords.accuracy
             });
 
             // Atualiza visualização do mapa
@@ -323,7 +572,7 @@
             .openPopup();
         }
 
-        console.log("📊 Trajeto registrado com", userPositions.length, "pontos:", userPositions);
+        console.log("📊 Trajeto registrado com", userPositions.length, "pontos");
       }
     }
 
