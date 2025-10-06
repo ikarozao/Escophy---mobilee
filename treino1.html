@@ -9,8 +9,8 @@
   <title>Treinos | Escorphy</title>
 
   <link rel="stylesheet" href="treinos/treinos.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin="" />
+  <!-- CORREÇÃO: Removido integrity que causa erro -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <link rel="icon" type="image/png" href="img/a.png">
 </head>
@@ -32,16 +32,6 @@
     </div>
 
     <ul class="carrosel-total">
-
-     <!-- 
-      <div class="org">
-        <li class="carrossel">
-        <img src="img/exercise.png" alt="">
-      </li>
-      <p>Yoga</p>
-      </div>
-      --> 
-
       <div class="org">
         <li class="carrossel">
         <img src="img/bike copy.png" alt="">
@@ -90,15 +80,6 @@
       </li>
       <p>Futebol/Futsal</p>
       </div>
-      
-      <!--<div class="org">
-        <li class="carrossel">
-        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_bb816331.jpg" alt="">
-      </li>
-      <p>Trilha</p>
-      </div>-->
-      
-
     </ul>
 
     <div id="map"></div>
@@ -118,7 +99,7 @@
       </div>
 
       <div class="descricao">
-        <p>Descrição do treino:</p>
+        <p>Descricão do treino:</p>
         <input class="input-rounded" type="text" name="descricao" placeholder="" required>
       </div>
 
@@ -178,37 +159,168 @@
     </article>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
+  <!-- CORREÇÃO: Scripts no final, sem duplicação -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
   <script>
+    // ===============================
+    // CONFIGURAÇÃO ÚNICA - EVITANDO DUPLICAÇÃO
+    // ===============================
+    
+    console.log("🚀 Iniciando aplicação...");
+    
+    // Configuração do Supabase
+    const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+    // Variáveis globais para tracking
+    let userPositions = [];
+    let polyline;
+    let startMarker;
+    let endMarker;
+    let watchId;
+    let tracking = false;
 
-
-
-    const botoes = document.querySelectorAll(".carrossel");
-  const info = document.querySelector(".infos_treinos");
-
-  botoes.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      if (info.style.display === "none") {
-        info.style.display = "block";
-      } else {
-        info.style.display = "none";
+    // ===============================
+    // FUNÇÕES GLOBAIS
+    // ===============================
+    
+    function calcularDistanciaTotal(positions) {
+      if (positions.length < 2) return 0;
+      
+      let totalDistance = 0;
+      for (let i = 1; i < positions.length; i++) {
+        const prev = positions[i - 1];
+        const curr = positions[i];
+        totalDistance += calcularDistancia(prev.lat, prev.lng, curr.lat, curr.lng);
       }
+      return Math.round(totalDistance);
+    }
 
-      botoes.forEach(b => b.classList.remove("ativo"));
-      // adiciona a borda no botão clicado
-      botao.classList.add("ativo");
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
 
-    });
-  });
+    function startTracking() {
+      console.log("📍 Iniciando tracking...");
+      if (navigator.geolocation) {
+        tracking = true;
+        userPositions = [];
+        
+        if (polyline) polyline.remove();
+        if (startMarker) startMarker.remove();
+        if (endMarker) endMarker.remove();
 
-   
+        watchId = navigator.geolocation.watchPosition(
+          function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
+            console.log(`📍 Posição: ${lat}, ${lon}`);
 
+            userPositions.push({
+              lat: lat,
+              lng: lon,
+              timestamp: new Date().toISOString(),
+              accuracy: position.coords.accuracy
+            });
 
+            // CORREÇÃO: Usando o mapa global
+            window.mainMap.setView([lat, lon], 16);
+
+            if (userPositions.length === 1) {
+              startMarker = L.marker([lat, lon])
+                .addTo(window.mainMap)
+                .bindPopup("Início da rota")
+                .openPopup();
+            }
+
+            const latLngs = userPositions.map(pos => [pos.lat, pos.lng]);
+            if (polyline) {
+              polyline.setLatLngs(latLngs);
+            } else {
+              polyline = L.polyline(latLngs, { 
+                color: '#F00',
+                weight: 6,
+                opacity: 0.8
+              }).addTo(window.mainMap);
+            }
+          },
+          function (error) {
+            console.error("❌ Erro ao obter localização:", error);
+            alert("Erro ao obter localização: " + error.message);
+          },
+          { 
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      } else {
+        alert("Geolocalização não suportada no seu navegador!");
+      }
+    }
+
+    function endTracking() {
+      console.log("🛑 Finalizando tracking...");
+      if (tracking) {
+        navigator.geolocation.clearWatch(watchId);
+        tracking = false;
+
+        if (userPositions.length > 0) {
+          const lastPoint = userPositions[userPositions.length - 1];
+          endMarker = L.marker([lastPoint.lat, lastPoint.lng])
+            .addTo(window.mainMap)
+            .bindPopup("Fim da rota")
+            .openPopup();
+        }
+
+        console.log("📊 Trajeto registrado com", userPositions.length, "pontos");
+      }
+    }
+
+    // ===============================
+    // CONFIGURAÇÃO DA INTERFACE
+    // ===============================
+    
     document.addEventListener('DOMContentLoaded', function () {
+      console.log("📄 DOM carregado...");
+
+      // CORREÇÃO: Criando apenas UM mapa global
+      console.log("🗺️ Inicializando mapa...");
+      window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
+      
+      L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+        subdomains: 'abcd',
+        minZoom: 0,
+        maxZoom: 25,
+        ext: 'png'
+      }).addTo(window.mainMap);
+
+      // Configuração do carrossel
+      const botoes = document.querySelectorAll(".carrossel");
+      const info = document.querySelector(".infos_treinos");
+
+      botoes.forEach((botao) => {
+        botao.addEventListener("click", () => {
+          console.log("🎯 Botão de treino clicado");
+          info.style.display = info.style.display === "none" ? "block" : "none";
+          botoes.forEach(b => b.classList.remove("ativo"));
+          botao.classList.add("ativo");
+        });
+      });
+
+      // Configuração das seleções
       function setupSingleSelection(containerSelector) {
         const container = document.querySelector(containerSelector);
         if (!container) return;
@@ -226,9 +338,9 @@
       setupSingleSelection('.tipo');
       setupSingleSelection('.visibilidade');
 
+      // Configuração dos acessórios
       const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
       const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
-      const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
 
       function toggleAcessorioSpecsVisibility() {
         let anyAccessorySelected = false;
@@ -240,13 +352,13 @@
 
         if (anyAccessorySelected) {
           acessorioSpecsContainer.style.display = 'flex';
-          acessorioSpecsContainer.offsetHeight;
-          acessorioSpecsContainer.style.opacity = '1';
-          acessorioSpecsContainer.style.height = 'auto';
+          setTimeout(() => {
+            acessorioSpecsContainer.style.opacity = '1';
+            acessorioSpecsContainer.style.height = 'auto';
+          }, 10);
         } else {
           acessorioSpecsContainer.style.opacity = '0';
           acessorioSpecsContainer.style.height = '0';
-          especificacoesAcessoriosInput.value = '';
           setTimeout(() => {
             acessorioSpecsContainer.style.display = 'none';
           }, 300);
@@ -261,150 +373,121 @@
         });
       });
 
-      toggleAcessorioSpecsVisibility();
+      // Event listeners
+      document.getElementById("startBtn").addEventListener("click", startTracking);
+      document.getElementById("endBtn").addEventListener("click", endTracking);
 
-      const circles = document.querySelectorAll('.circle');
-      circles.forEach(circle => {
-        circle.addEventListener('click', () => {
-          circles.forEach(c => {
-            c.classList.remove('active');
-            c.style.animation = 'none';
-            c.offsetHeight;
-            c.style.animation = null;
-          });
-          circle.classList.add('active');
-        });
-      });
-
-      window.mostrarFormulario = function () {
-        const form = document.getElementById("infos_treinos");
-        form.style.display = form.style.display === "none" ? "block" : "none";
-      }
-
+      // CORREÇÃO: Botão salvar com Supabase
       const salvarBtn = document.getElementById('salvarBtn');
       const mensagemSalvo = document.getElementById('mensagemSalvo');
 
-      salvarBtn.addEventListener('click', () => {
-        mensagemSalvo.classList.add('show');
-        setTimeout(() => {
-          mensagemSalvo.classList.remove('show');
-        }, 2000);
+      salvarBtn.addEventListener('click', async () => {
+        console.log("=== 🔍 BOTÃO SALVAR ACIONADO 🔍 ===");
+        
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
+        console.log("1. Email:", usuarioEmail);
+        
+        if (!usuarioEmail) {
+          alert("❌ Usuário não logado!");
+          return;
+        }
+
+        console.log("2. Pontos no trajeto:", userPositions.length);
+        if (userPositions.length === 0) {
+          alert("❌ Nenhum trajeto registrado!");
+          return;
+        }
+
+        // Coleta dados
+        const titulo = document.querySelector("input[name='titulo']").value;
+        const descricao = document.querySelector("input[name='descricao']").value;
+        const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
+        const intensidade = document.querySelector(".rangezao").value;
+        const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
+        
+        console.log("3. Dados:", {titulo, descricao, tipo, intensidade, visibilidade});
+
+        if (!titulo || !descricao || !tipo || !visibilidade) {
+          alert("❌ Preencha todos os campos!");
+          return;
+        }
+        
+        // Acessórios
+        const acessoriosSelecionados = [];
+        document.querySelectorAll('.acessorio .active-option').forEach(option => {
+          acessoriosSelecionados.push(option.innerText);
+        });
+        const acessorios = acessoriosSelecionados.join(', ');
+        const especificacoes = document.getElementById("especificacoesAcessorios").value;
+
+        // Trajeto
+        const trajetoCompleto = {
+          positions: userPositions,
+          summary: {
+            totalPoints: userPositions.length,
+            startTime: userPositions[0]?.timestamp,
+            endTime: userPositions[userPositions.length - 1]?.timestamp,
+            distance: calcularDistanciaTotal(userPositions)
+          }
+        };
+
+        try {
+          console.log("4. 📤 Enviando para Supabase...");
+          
+          const { data, error } = await supabaseClient
+            .from("atividades")
+            .insert([{
+              email_usuario: usuarioEmail,
+              titulo: titulo,
+              descricao: descricao,
+              tipo: tipo,
+              intensidade: parseInt(intensidade),
+              visibilidade: visibilidade.toLowerCase(),
+              acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
+              trajeto: trajetoCompleto,
+              data: new Date().toISOString()
+            }])
+            .select();
+
+          if (error) {
+            console.error("❌ Erro Supabase:", error);
+            alert("❌ Erro: " + error.message);
+            return;
+          }
+
+          console.log("✅ Sucesso! Dados:", data);
+          
+          mensagemSalvo.classList.add("show");
+          setTimeout(() => {
+            mensagemSalvo.classList.remove("show");
+            
+            // Limpeza
+            document.querySelector("input[name='titulo']").value = "";
+            document.querySelector("input[name='descricao']").value = "";
+            document.querySelector(".rangezao").value = "5";
+            document.querySelectorAll('.active-option').forEach(el => {
+              el.classList.remove('active-option');
+            });
+            document.getElementById("especificacoesAcessorios").value = "";
+            
+            userPositions = [];
+            if (polyline) polyline.remove();
+            if (startMarker) startMarker.remove();
+            if (endMarker) endMarker.remove();
+            
+            console.log("🔄 Formulário limpo");
+            
+          }, 2000);
+
+        } catch (err) {
+          console.error("❌ Erro geral:", err);
+          alert("❌ Erro: " + err.message);
+        }
       });
 
-      const map = L.map('map').setView([-23.55052, -46.633308], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap',
-      }).addTo(map);
-
-      L.marker([-23.55052, -46.633308])
-        .addTo(map)
-        .bindPopup('Você está aqui.')
-        .openPopup();
+      console.log("✅ Aplicação carregada!");
     });
-
   </script>
-
-
-
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-    
-    const map = L.map('map').setView([-24.740387, -53.767403], 16);
-
-
-
-    
-    const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 25,
-      ext: 'png'
-    }).addTo(map);
-
-    let userPositions = [];
-    let polyline;
-    let startMarker;
-    let endMarker;
-    let watchId;
-    let tracking = false;
-
-    function startTracking() {
-      if (navigator.geolocation) {
-        tracking = true;
-        userPositions = [];
-        if (polyline) polyline.remove();
-        if (startMarker) startMarker.remove();
-        if (endMarker) endMarker.remove();
-
-        watchId = navigator.geolocation.watchPosition(
-          function (position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            
-            userPositions.push([lat, lon]);
-
-            
-            map.setView([lat, lon], 16);
-
-            
-            if (userPositions.length === 1) {
-              startMarker = L.marker([lat, lon]).addTo(map).bindPopup("Início da rota").openPopup();
-            }
-
-            
-            if (polyline) {
-              polyline.setLatLngs(userPositions);
-            } else {
-              polyline = L.polyline(userPositions, { color: '#F00' }).addTo(map);
-            }
-          },
-          function (error) {
-            console.error("Erro ao obter localização:", error);
-            map.setView([0, 0], 2);
-          },
-          { enableHighAccuracy: true }
-        );
-      } else {
-        alert("Geolocalização não suportada no seu navegador!");
-        map.setView([0, 0], 2);
-      }
-    }
-
-    function endTracking() {
-      if (tracking) {
-        navigator.geolocation.clearWatch(watchId);
-        tracking = false;
-
-        
-        if (userPositions.length > 0) {
-          const lastPoint = userPositions[userPositions.length - 1];
-          endMarker = L.marker(lastPoint).addTo(map).bindPopup("Fim da rota").openPopup();
-        }
-      }
-    }
-
-    document.getElementById("startBtn").addEventListener("click", startTracking);
-    document.getElementById("endBtn").addEventListener("click", endTracking);
-
-
-
-
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-    }).addTo(map);
-
-
-  </script>
-
 
   <footer class="footer">
     <div class="footer-container">
@@ -437,7 +520,6 @@
         <ul class="social-icons">
           <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
           <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
-
         </ul>
       </div>
 
@@ -451,366 +533,5 @@
       </div>
     </div>
   </footer>
-   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-sA+e2GPr+T3z3aQmc6ctFfgkZ4p4O4FfX3JfQ3xXNDs=" crossorigin=""></script>
-  <script src="https://unpkg.com/@supabase/supabase-js"></script>
-
-  <script>
-    // ===============================
-    // CONFIGURAÇÃO INICIAL
-    // ===============================
-    
-    console.log("🚀 Iniciando script...");
-    
-    // Configuração do Supabase
-    const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-    // Variáveis globais para o tracking
-    let userPositions = [];
-    let polyline;
-    let startMarker;
-    let endMarker;
-    let watchId;
-    let tracking = false;
-
-    // ===============================
-    // CONFIGURAÇÃO DO MAPA (MANTIDA COMO NO SEU CÓDIGO ORIGINAL)
-    // ===============================
-    
-    console.log("🗺️ Configurando mapa...");
-    const map = L.map('map').setView([-24.740387, -53.767403], 16);
-    
-    const layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 25,
-      ext: 'png'
-    }).addTo(map);
-
-    // ===============================
-    // FUNÇÕES DE TRACKING (MANTIDAS)
-    // ===============================
-    
-    function startTracking() {
-      console.log("📍 Iniciando tracking...");
-      if (navigator.geolocation) {
-        tracking = true;
-        userPositions = [];
-        
-        // Limpa elementos anteriores do mapa
-        if (polyline) polyline.remove();
-        if (startMarker) startMarker.remove();
-        if (endMarker) endMarker.remove();
-
-        watchId = navigator.geolocation.watchPosition(
-          function (position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            console.log(`📍 Posição: ${lat}, ${lon}`);
-
-            // Adiciona posição atual ao array com timestamp
-            userPositions.push({
-              lat: lat,
-              lng: lon,
-              timestamp: new Date().toISOString(),
-              accuracy: position.coords.accuracy
-            });
-
-            // Atualiza visualização do mapa
-            map.setView([lat, lon], 16);
-
-            // Marca o início da rota
-            if (userPositions.length === 1) {
-              startMarker = L.marker([lat, lon])
-                .addTo(map)
-                .bindPopup("Início da rota")
-                .openPopup();
-            }
-
-            // Atualiza ou cria a polyline
-            const latLngs = userPositions.map(pos => [pos.lat, pos.lng]);
-            if (polyline) {
-              polyline.setLatLngs(latLngs);
-            } else {
-              polyline = L.polyline(latLngs, { 
-                color: '#F00',
-                weight: 6,
-                opacity: 0.8
-              }).addTo(map);
-            }
-          },
-          function (error) {
-            console.error("❌ Erro ao obter localização:", error);
-            alert("Erro ao obter localização: " + error.message);
-          },
-          { 
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
-          }
-        );
-      } else {
-        alert("Geolocalização não suportada no seu navegador!");
-      }
-    }
-
-    function endTracking() {
-      console.log("🛑 Finalizando tracking...");
-      if (tracking) {
-        navigator.geolocation.clearWatch(watchId);
-        tracking = false;
-
-        // Marca o fim da rota
-        if (userPositions.length > 0) {
-          const lastPoint = userPositions[userPositions.length - 1];
-          endMarker = L.marker([lastPoint.lat, lastPoint.lng])
-            .addTo(map)
-            .bindPopup("Fim da rota")
-            .openPopup();
-        }
-
-        console.log("📊 Trajeto registrado com", userPositions.length, "pontos");
-      }
-    }
-
-    // ===============================
-    // FUNÇÕES AUXILIARES
-    // ===============================
-    
-    function calcularDistanciaTotal(positions) {
-      if (positions.length < 2) return 0;
-      
-      let totalDistance = 0;
-      for (let i = 1; i < positions.length; i++) {
-        const prev = positions[i - 1];
-        const curr = positions[i];
-        totalDistance += calcularDistancia(prev.lat, prev.lng, curr.lat, curr.lng);
-      }
-      return Math.round(totalDistance);
-    }
-
-    function calcularDistancia(lat1, lon1, lat2, lon2) {
-      const R = 6371000; // Raio da Terra em metros
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
-
-    // ===============================
-    // CONFIGURAÇÃO DA INTERFACE
-    // ===============================
-    
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log("📄 DOM carregado, configurando interface...");
-
-      // Configuração dos botões do carrossel
-      const botoes = document.querySelectorAll(".carrossel");
-      const info = document.querySelector(".infos_treinos");
-
-      botoes.forEach((botao) => {
-        botao.addEventListener("click", () => {
-          console.log("🎯 Botão de treino clicado");
-          if (info.style.display === "none") {
-            info.style.display = "block";
-          } else {
-            info.style.display = "none";
-          }
-
-          botoes.forEach(b => b.classList.remove("ativo"));
-          botao.classList.add("ativo");
-        });
-      });
-
-      // Configuração dos botões de seleção única
-      function setupSingleSelection(containerSelector) {
-        const container = document.querySelector(containerSelector);
-        if (!container) return;
-
-        const links = container.querySelectorAll('a');
-        links.forEach(link => {
-          link.addEventListener('click', e => {
-            e.preventDefault();
-            links.forEach(l => l.classList.remove('active-option'));
-            link.classList.add('active-option');
-            console.log(`✅ ${link.innerText} selecionado`);
-          });
-        });
-      }
-
-      setupSingleSelection('.tipo');
-      setupSingleSelection('.visibilidade');
-
-      // Configuração dos acessórios
-      const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
-      const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
-      const especificacoesAcessoriosInput = document.getElementById('especificacoesAcessorios');
-
-      function toggleAcessorioSpecsVisibility() {
-        let anyAccessorySelected = false;
-        accessoryOptions.forEach(option => {
-          if (option.classList.contains('active-option')) {
-            anyAccessorySelected = true;
-          }
-        });
-
-        if (anyAccessorySelected) {
-          acessorioSpecsContainer.style.display = 'flex';
-          acessorioSpecsContainer.offsetHeight;
-          acessorioSpecsContainer.style.opacity = '1';
-          acessorioSpecsContainer.style.height = 'auto';
-        } else {
-          acessorioSpecsContainer.style.opacity = '0';
-          acessorioSpecsContainer.style.height = '0';
-          especificacoesAcessoriosInput.value = '';
-          setTimeout(() => {
-            acessorioSpecsContainer.style.display = 'none';
-          }, 300);
-        }
-      }
-
-      accessoryOptions.forEach(option => {
-        option.addEventListener('click', function (event) {
-          event.preventDefault();
-          this.classList.toggle('active-option');
-          console.log(`🎧 Acessório: ${this.innerText} - ${this.classList.contains('active-option') ? 'selecionado' : 'desselecionado'}`);
-          toggleAcessorioSpecsVisibility();
-        });
-      });
-
-      toggleAcessorioSpecsVisibility();
-
-      // Event listeners para os botões de tracking
-      document.getElementById("startBtn").addEventListener("click", startTracking);
-      document.getElementById("endBtn").addEventListener("click", endTracking);
-
-      // Configuração do botão salvar
-      const salvarBtn = document.getElementById('salvarBtn');
-      const mensagemSalvo = document.getElementById('mensagemSalvo');
-
-      salvarBtn.addEventListener('click', async () => {
-        console.log("💾 Botão salvar clicado!");
-        
-        // Verifica se usuário está logado
-        const usuarioEmail = localStorage.getItem("usuarioEmail");
-        console.log("👤 Email do usuário:", usuarioEmail);
-        
-        if (!usuarioEmail) {
-          alert("❌ Usuário não logado! Faça login primeiro.");
-          return;
-        }
-
-        // Verifica se há trajeto registrado
-        console.log("📍 Pontos no trajeto:", userPositions.length);
-        if (userPositions.length === 0) {
-          alert("❌ Por favor, inicie e finalize um trajeto antes de salvar!");
-          return;
-        }
-
-        // Coleta os dados do formulário
-        const titulo = document.querySelector("input[name='titulo']").value;
-        const descricao = document.querySelector("input[name='descricao']").value;
-        const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
-        const intensidade = document.querySelector(".rangezao").value;
-        const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
-        
-        console.log("📝 Dados do formulário:", {
-          titulo,
-          descricao,
-          tipo,
-          intensidade,
-          visibilidade
-        });
-
-        // Valida campos obrigatórios
-        if (!titulo || !descricao || !tipo || !visibilidade) {
-          alert("❌ Preencha todos os campos obrigatórios!");
-          return;
-        }
-        
-        // Coleta acessórios (pode ser múltipla seleção)
-        const acessoriosSelecionados = [];
-        document.querySelectorAll('.acessorio .active-option').forEach(option => {
-          acessoriosSelecionados.push(option.innerText);
-        });
-        const acessorios = acessoriosSelecionados.join(', ');
-        const especificacoes = document.getElementById("especificacoesAcessorios").value;
-
-        // Prepara o objeto trajeto com metadados
-        const trajetoCompleto = {
-          positions: userPositions,
-          summary: {
-            totalPoints: userPositions.length,
-            startTime: userPositions[0]?.timestamp,
-            endTime: userPositions[userPositions.length - 1]?.timestamp,
-            distance: calcularDistanciaTotal(userPositions)
-          }
-        };
-
-        console.log("🗺️ Trajeto a ser salvo:", trajetoCompleto);
-
-        try {
-          console.log("📤 Enviando dados para Supabase...");
-          
-          // Insere no Supabase
-          const { data, error } = await supabaseClient
-            .from("atividades")
-            .insert([{
-              email_usuario: usuarioEmail,
-              titulo: titulo,
-              descricao: descricao,
-              tipo: tipo,
-              intensidade: parseInt(intensidade),
-              visibilidade: visibilidade,
-              acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
-              trajeto: trajetoCompleto,
-              data: new Date().toISOString()
-            }])
-            .select();
-
-          if (error) {
-            console.error("❌ Erro do Supabase:", error);
-            throw error;
-          }
-
-          console.log("✅ Sucesso! Dados salvos:", data);
-
-          // Feedback de sucesso
-          mensagemSalvo.classList.add("show");
-          setTimeout(() => {
-            mensagemSalvo.classList.remove("show");
-            
-            // Limpa o formulário após salvar
-            document.querySelector("input[name='titulo']").value = "";
-            document.querySelector("input[name='descricao']").value = "";
-            document.querySelector(".rangezao").value = "5";
-            document.querySelectorAll('.active-option').forEach(el => {
-              el.classList.remove('active-option');
-            });
-            userPositions = [];
-            if (polyline) polyline.remove();
-            if (startMarker) startMarker.remove();
-            if (endMarker) endMarker.remove();
-            
-            console.log("🔄 Formulário limpo");
-            
-          }, 2000);
-
-        } catch (err) {
-          console.error("❌ Erro ao salvar treino:", err);
-          alert("❌ Erro ao salvar treino: " + err.message);
-        }
-      });
-
-      console.log("✅ Interface configurada com sucesso!");
-    });
-  </script>
 </body>
 </html>
