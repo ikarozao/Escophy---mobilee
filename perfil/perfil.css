@@ -226,6 +226,24 @@ nav .search-box input {
   text-align: center;
 }
 
+.feed {
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed h2 {
+  font-size: 30px;
+  letter-spacing: 2px;
+  margin-top: 3%;
+  font-family: "Staatliches", sans-serif; /* Mantendo Staatliches para os títulos */
+  width: 100%;
+  text-align: center;
+}
+
 .publi_usua h2,
 .treinos h2,
 .sugeridos h2 {
@@ -242,14 +260,8 @@ nav .search-box input {
   padding: 15px;
   margin-bottom: 15px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 90%;
   box-sizing: border-box;
-}
-
-.post img {
-  width: 100%;
-  border-radius: 10px;
-  margin-top: 10px;
 }
 
 .detalhes {
@@ -683,4 +695,25 @@ button#botaoMais {
   -o-object-fit: cover;
      object-fit: cover;
   transition: 0.3s ease-in-out;
+}
+
+.youtube-video-container {
+  width: 100%;
+  max-width: 560px; /* Largura máxima para o vídeo */
+  margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
+  border-radius: 15px;
+  overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: white; /* Para seguir o design do site */
+  padding: 10px; /* Espaçamento interno */
+  box-sizing: border-box; /* Inclui padding na largura total */
+  /* Garante que ele se comporte como um bloco para margin:auto funcionar e ocupar sua própria linha */
+  display: block;
+}
+
+.youtube-video-container iframe {
+  width: 100%;
+  height: 315px; /* Altura padrão para 16:9 em 560px de largura */
+  border: none;
+  border-radius: 10px; /* Arredonda as bordas do iframe */
 }/*# sourceMappingURL=perfil.css.map */
