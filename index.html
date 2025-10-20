@@ -210,18 +210,7 @@
       }
     });
 
-    // =========================
-    // Verificar se usuário já está logado
-    // =========================
-    function checkLogin() {
-      const usuarioEmail = localStorage.getItem("usuarioEmail");
-      if (usuarioEmail) {
-        // Usuário já logado, redireciona para home
-        window.location.href = "home.html";
-      }
-    }
 
-    checkLogin();
 
     // =========================
     // Toggle Password Visibility
