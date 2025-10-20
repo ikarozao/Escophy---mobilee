@@ -34,51 +34,51 @@
     <ul class="carrosel-total">
       <div class="org">
         <li class="carrossel">
-        <img src="img/bike copy.png" alt="">
-      </li>
-      <p>Ciclismo</p>
+          <img src="img/bike copy.png" alt="">
+        </li>
+        <p>Ciclismo</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/dumbbell.png" alt="">
-      </li>
-      <p>Musculação</p>
+          <img src="img/dumbbell.png" alt="">
+        </li>
+        <p>Musculação</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/run.png" alt="">
-      </li>
-       <p>Corrida</p>
+          <img src="img/run.png" alt="">
+        </li>
+        <p>Corrida</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
-      </li>
-      <p>Vôlei</p>
+          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
+        </li>
+        <p>Vôlei</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
-      </li>
-      <p>Tênis</p>
+          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
+        </li>
+        <p>Tênis</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
-      </li>
-      <p>Caminhada</p>
+          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
+        </li>
+        <p>Caminhada</p>
       </div>
-      
+
       <div class="org">
         <li class="carrossel">
-        <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
-      </li>
-      <p>Futebol/Futsal</p>
+          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
+        </li>
+        <p>Futebol/Futsal</p>
       </div>
     </ul>
 
@@ -167,9 +167,9 @@
     // ===============================
     // CONFIGURAÇÃO ÚNICA - EVITANDO DUPLICAÇÃO
     // ===============================
-    
+
     console.log("🚀 Iniciando aplicação...");
-    
+
     // Configuração do Supabase
     const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
@@ -186,10 +186,10 @@
     // ===============================
     // FUNÇÕES GLOBAIS
     // ===============================
-    
+
     function calcularDistanciaTotal(positions) {
       if (positions.length < 2) return 0;
-      
+
       let totalDistance = 0;
       for (let i = 1; i < positions.length; i++) {
         const prev = positions[i - 1];
@@ -203,21 +203,21 @@
       const R = 6371000;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     }
-    
+
 
     function startTracking() {
       console.log("📍 Iniciando tracking...");
       if (navigator.geolocation) {
         tracking = true;
         userPositions = [];
-        
+
         if (polyline) polyline.remove();
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
@@ -250,7 +250,7 @@
             if (polyline) {
               polyline.setLatLngs(latLngs);
             } else {
-              polyline = L.polyline(latLngs, { 
+              polyline = L.polyline(latLngs, {
                 color: '#F00',
                 weight: 6,
                 opacity: 0.8
@@ -261,7 +261,7 @@
             console.error("❌ Erro ao obter localização:", error);
             alert("Erro ao obter localização: " + error.message);
           },
-          { 
+          {
             enableHighAccuracy: true,
             timeout: 10000,
             maximumAge: 0
@@ -293,22 +293,20 @@
     // ===============================
     // CONFIGURAÇÃO DA INTERFACE
     // ===============================
-    
+
     document.addEventListener('DOMContentLoaded', function () {
       console.log("📄 DOM carregado...");
 
       // CORREÇÃO: Criando apenas UM mapa global
       console.log("🗺️ Inicializando mapa...");
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
-      
-      L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 25,
-        ext: 'png'
-      }).addTo(window.mainMap);*/
 
-       //Configuração do carrossel
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(window.mainMap);
+
+      //Configuração do carrossel
       const botoes = document.querySelectorAll(".carrossel");
       const info = document.querySelector(".infos_treinos");
 
@@ -384,10 +382,10 @@
 
       salvarBtn.addEventListener('click', async () => {
         console.log("=== 🔍 BOTÃO SALVAR ACIONADO 🔍 ===");
-        
+
         const usuarioEmail = localStorage.getItem("usuarioEmail");
         console.log("1. Email:", usuarioEmail);
-        
+
         if (!usuarioEmail) {
           alert("❌ Usuário não logado!");
           return;
@@ -405,14 +403,14 @@
         const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
         const intensidade = document.querySelector(".rangezao").value;
         const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
-        
-        console.log("3. Dados:", {titulo, descricao, tipo, intensidade, visibilidade});
+
+        console.log("3. Dados:", { titulo, descricao, tipo, intensidade, visibilidade });
 
         if (!titulo || !descricao || !tipo || !visibilidade) {
           alert("❌ Preencha todos os campos!");
           return;
         }
-        
+
         // Acessórios
         const acessoriosSelecionados = [];
         document.querySelectorAll('.acessorio .active-option').forEach(option => {
@@ -434,7 +432,7 @@
 
         try {
           console.log("4. 📤 Enviando para Supabase...");
-          
+
           const { data, error } = await supabaseClient
             .from("atividades")
             .insert([{
@@ -457,11 +455,11 @@
           }
 
           console.log("✅ Sucesso! Dados:", data);
-          
+
           mensagemSalvo.classList.add("show");
           setTimeout(() => {
             mensagemSalvo.classList.remove("show");
-            
+
             // Limpeza
             document.querySelector("input[name='titulo']").value = "";
             document.querySelector("input[name='descricao']").value = "";
@@ -470,14 +468,14 @@
               el.classList.remove('active-option');
             });
             document.getElementById("especificacoesAcessorios").value = "";
-            
+
             userPositions = [];
             if (polyline) polyline.remove();
             if (startMarker) startMarker.remove();
             if (endMarker) endMarker.remove();
-            
+
             console.log("🔄 Formulário limpo");
-            
+
           }, 2000);
 
         } catch (err) {
@@ -487,7 +485,7 @@
       });
 
       console.log("✅ Aplicação carregada!");
-    ;
+    })
   </script>
 
   <footer class="footer">
@@ -535,4 +533,5 @@
     </div>
   </footer>
 </body>
+
 </html>
