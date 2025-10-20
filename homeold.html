@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Escorphy</title>
+    <link rel="stylesheet" href="home/home.css" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
+    <link rel="icon" type="image/png" href="img/a.png">
+    
+</head>
+<body>
+<nav>
+    <div class="bar_n">Escorphy</div>
+    <div class="nav-right">
+        <div class="search-box">
+            <input type="text" placeholder="Pesquisar..." />
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+    <section class="container">
+        <div class="left-column-wrapper">
+            <article class="ultimo_treino">
+                <div>
+                    <h2>Último treino</h2>
+                </div>
+                <div class="bike">
+                    <img src="img/bike.png" alt="Imagem do treino" />
+                </div>
+                <div>
+                    <p>Ciclismo</p>
+                </div>
+                <div class="foto_upload">
+                    <input type="file" id="upload" hidden multiple />
+                    <label for="upload" class="upload-btn">Adicionar Foto</label>
+                    <div class="preview" id="preview"></div>
+                </div>
+
+                <article class="metas">
+                    <h2>Metas Semanais</h2>
+                    <p>Meta: 12 km de corrida</p>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <p>4 km alcançados de 12 km</p>
+                </article>
+            </article>
+
+            <div class="youtube-video-container">
+                <iframe src="https://www.youtube.com/embed/LsvhNS4w8zc" allowfullscreen></iframe>
+            </div>
+            <div class="youtube-video-container">
+                <iframe src="https://www.youtube.com/embed/0JDIeCiexgI" allowfullscreen></iframe>
+            </div>
+            <div class="youtube-video-container">
+                <iframe src="https://www.youtube.com/embed/MiCmcdcF_Ss" allowfullscreen></iframe>
+            </div>
+            <div class="youtube-video-container">
+                <iframe src="https://www.youtube.com/embed/Nys6iOhtjp0" allowfullscreen></iframe>
+            </div>
+        </div> <section class="feed">
+            <h2>Últimas Publicações</h2>
+
+            <article class="post">
+                <h3>Pedro Silva</h3>
+                <p>Ciclismo nas montanhas</p>
+                <img src="img/Tudo-o-que-voce-precisa-saber-sobre-ciclismo.jpg" alt="Publicação" />
+                <div class="detalhes">
+                    <span>🏅 Esporte: Ciclismo</span>
+                    <span>📏 Distância: 25 km</span>
+                    <span>⛰️ Elevação: 500 m</span>
+                    <span>⏱️ Tempo: 1h 30min</span>
+                    <span>🔥 Calorias: 800 kcal</span>
+                </div>
+                <button class="btn-curtir">❤️</button>
+            </article>
+
+            <article class="post">
+                <h3>Ana Souza</h3>
+                <p>Corrida matinal na praia</p>
+                <img src="img/praia.jpg" alt="Publicação" />
+                <div class="detalhes">
+                    <span>🏃‍♂️ Esporte: Corrida</span>
+                    <span>📏 Distância: 10 km</span>
+                    <span>⏱️ Tempo: 50 min</span>
+                    <span>🔥 Calorias: 600 kcal</span>
+                </div>
+                <button class="btn-curtir">❤️</button>
+            </article>
+
+            <article class="post">
+                <h3>Lucas Pereira</h3>
+                <p>Trilha na floresta</p>
+                <img src="img/trilha.png" alt="Publicação" />
+                <div class="detalhes">
+                    <span>🥾 Esporte: Caminhada</span>
+                    <span>📏 Distância: 15 km</span>
+                    <span>⛰️ Elevação: 300 m</span>
+                    <span>⏱️ Tempo: 3h 15min</span>
+                    <span>🔥 Calorias: 900 kcal</span>
+                </div>
+                <button class="btn-curtir">❤️</button>
+            </article>
+
+            <article class="post">
+                <h3>Maria Oliveira</h3>
+                <p>Aula de yoga ao amanhecer</p>
+                <img src="img/yoga.jpg" alt="Publicação" />
+                <div class="detalhes">
+                    <span>🧘‍♀️ Esporte: Yoga</span>
+                    <span>⏱️ Tempo: 1h</span>
+                    <span>🔥 Calorias: 250 kcal</span>
+                </div>
+                <button class="btn-curtir">❤️</button>
+            </article>
+        </section>
+    </section>
+
+    <div class="floating-buttons-container">
+        <a href="perfil.html">
+            <div class="botaoperfil-container">
+                <button class="botaoperfil" id="botaoperfil"><img src="img/perfilz.png" alt=""></button>
+            </div>
+        </a>
+        <a href="treino1.html">
+            <div class="botaomais-container">
+                <button class="botaomais" id="botaoMais">+</button>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div id="mensagem-flutuante"></div>
+
+<script>
+
+
+
+
+
+
+
+
+
+    // Preview das imagens no upload
+    document.getElementById('upload').addEventListener('change', function(event) {
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+        const files = event.target.files;
+
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.borderRadius = '10px';
+                    img.style.margin = '5px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    // Botão Curtir funcionalidade
+    document.querySelectorAll('.btn-curtir').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('curtido');
+        });
+    });
+</script>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h1>ESCORPHY</h1>
+            <p>© 2025 Escorphy</p>
+        </div>
+
+        <div class="footer-column">
+            <h3>Sobre</h3>
+            <ul>
+                <li><a href="sobrenos.html">Nossa História</a></li>
+                <li><a href="sobrenos.html">Missão</a></li>
+                <li><a href="sobrenos.html">Equipe</a></li>
+                <li><a href="#">Privacidade</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Explorar</h3>
+            <ul>
+                <li><a href="#">Funcionalidades</a></li>
+                <li><a href="#">Planos</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Redes</h3>
+            <ul class="social-icons">
+                <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
+                <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Ajuda</h3>
+            <ul>
+                <li><a href="#">Suporte</a></li>
+                <li><a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale Conosco</a></li>
+                <li><a href="#">Central de Ajuda</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
