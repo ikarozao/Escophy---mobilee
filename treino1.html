@@ -187,7 +187,7 @@
     // FUNÇÕES GLOBAIS
     // ===============================
     
-    /*function calcularDistanciaTotal(positions) {
+    function calcularDistanciaTotal(positions) {
       if (positions.length < 2) return 0;
       
       let totalDistance = 0;
@@ -210,6 +210,7 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
+    
 
     function startTracking() {
       console.log("📍 Iniciando tracking...");
@@ -305,9 +306,9 @@
         minZoom: 0,
         maxZoom: 25,
         ext: 'png'
-      }).addTo(window.mainMap);
+      }).addTo(window.mainMap);*/
 
-      // Configuração do carrossel
+       //Configuração do carrossel
       const botoes = document.querySelectorAll(".carrossel");
       const info = document.querySelector(".infos_treinos");
 
@@ -318,7 +319,7 @@
           botoes.forEach(b => b.classList.remove("ativo"));
           botao.classList.add("ativo");
         });
-      });*/
+      });
 
       // Configuração das seleções
       function setupSingleSelection(containerSelector) {
@@ -486,7 +487,7 @@
       });
 
       console.log("✅ Aplicação carregada!");
-    });
+    ;
   </script>
 
   <footer class="footer">
