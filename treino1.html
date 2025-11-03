@@ -433,20 +433,32 @@
         try {
           console.log("4.Enviando para Supabase...");
 
-          const { data, error } = await supabaseClient
-            .from("atividades")
-            .insert([{
-              email_usuario: usuarioEmail,
-              titulo: titulo,
-              descricao: descricao,
-              tipo: tipo,
-              intensidade: parseInt(intensidade),
-              visibilidade: visibilidade.toLowerCase(),
-              acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
-              trajeto: trajetoCompleto,
-              data: new Date().toISOString()
-            }])
-            .select();
+          // Identifica pontos de início e fim
+const startPoint = userPositions[0];
+const endPoint = userPositions[userPositions.length - 1];
+
+const { data, error } = await supabaseClient
+  .from("atividades")
+  .insert([{
+    email_usuario: usuarioEmail,
+    titulo: titulo,
+    descricao: descricao,
+    tipo: tipo,
+    intensidade: parseInt(intensidade),
+    visibilidade: visibilidade.toLowerCase(),
+    acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
+    trajeto: trajetoCompleto, // opcional, se quiser salvar todos os pontos em JSON
+
+    // novos campos individuais:
+    trajeto_inicial_1: startPoint.lat,
+    trajeto_inicial_2: startPoint.lng,
+    trajeto_final_1: endPoint.lat,
+    trajeto_final_2: endPoint.lng,
+
+    data: new Date().toISOString()
+  }])
+  .select();
+
 
           if (error) {
             console.error("Erro Supabase:", error);
@@ -459,7 +471,13 @@
           mensagemSalvo.classList.add("show");
           setTimeout(() => {
             mensagemSalvo.classList.remove("show");
+            // Mostra o trajeto salvo no mapa
+            L.polyline([
+            [startPoint.lat, startPoint.lng],
+            [endPoint.lat, endPoint.lng]
+            ], { color: 'orange', weight: 5 }).addTo(window.mainMap);
 
+            
             // Limpeza
             document.querySelector("input[name='titulo']").value = "";
             document.querySelector("input[name='descricao']").value = "";
