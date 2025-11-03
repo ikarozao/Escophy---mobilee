@@ -450,10 +450,10 @@ const { data, error } = await supabaseClient
     trajeto: trajetoCompleto, // opcional, se quiser salvar todos os pontos em JSON
 
     // novos campos individuais:
-    trajeto_inicial_1: startPoint.lat,
-    trajeto_inicial_2: startPoint.lng,
-    trajeto_final_1: endPoint.lat,
-    trajeto_final_2: endPoint.lng,
+    trajeto_inicial1: startPoint.lat,
+    trajeto_inicial2: startPoint.lng,
+    trajeto_final1: endPoint.lat,
+    trajeto_final2: endPoint.lng,
 
     data: new Date().toISOString()
   }])
