@@ -168,11 +168,11 @@
     // CONFIGURAÇÃO ÚNICA - EVITANDO DUPLICAÇÃO
     // ===============================
 
-    console.log("🚀 Iniciando aplicação...");
+    console.log("Iniciando aplicação...");
 
     // Configuração do Supabase
-    const supabaseUrl = "https://szachxclixfketavlkyv.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YWNoeGNsaXhma2V0YXZsa3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMDYwNTIsImV4cCI6MjA2OTg4MjA1Mn0.mL71dNsCRvhVluuiz6WUB9fBeLZoy6QyMue6nc3B_-g";
+    const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     // Variáveis globais para tracking
@@ -213,7 +213,7 @@
 
 
     function startTracking() {
-      console.log("📍 Iniciando tracking...");
+      console.log("Iniciando tracking...");
       if (navigator.geolocation) {
         tracking = true;
         userPositions = [];
@@ -227,7 +227,7 @@
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            console.log(`📍 Posição: ${lat}, ${lon}`);
+            console.log(`Posição: ${lat}, ${lon}`);
 
             userPositions.push({
               lat: lat,
@@ -258,7 +258,7 @@
             }
           },
           function (error) {
-            console.error("❌ Erro ao obter localização:", error);
+            console.error("Erro ao obter localização:", error);
             alert("Erro ao obter localização: " + error.message);
           },
           {
@@ -273,7 +273,7 @@
     }
 
     function endTracking() {
-      console.log("🛑 Finalizando tracking...");
+      console.log("Finalizando tracking...");
       if (tracking) {
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
@@ -286,7 +286,7 @@
             .openPopup();
         }
 
-        console.log("📊 Trajeto registrado com", userPositions.length, "pontos");
+        console.log("Trajeto registrado com", userPositions.length, "pontos");
       }
     }
 
@@ -295,10 +295,10 @@
     // ===============================
 
     document.addEventListener('DOMContentLoaded', function () {
-      console.log("📄 DOM carregado...");
+      console.log("DOM carregado...");
 
       // CORREÇÃO: Criando apenas UM mapa global
-      console.log("🗺️ Inicializando mapa...");
+      console.log("Inicializando mapa...");
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -312,7 +312,7 @@
 
       botoes.forEach((botao) => {
         botao.addEventListener("click", () => {
-          console.log("🎯 Botão de treino clicado");
+          console.log("Botão de treino clicado");
           info.style.display = info.style.display === "none" ? "block" : "none";
           botoes.forEach(b => b.classList.remove("ativo"));
           botao.classList.add("ativo");
@@ -381,19 +381,19 @@
       const mensagemSalvo = document.getElementById('mensagemSalvo');
 
       salvarBtn.addEventListener('click', async () => {
-        console.log("=== 🔍 BOTÃO SALVAR ACIONADO 🔍 ===");
+        console.log("BOTÃO SALVAR ACIONADO");
 
         const usuarioEmail = localStorage.getItem("usuarioEmail");
         console.log("1. Email:", usuarioEmail);
 
         if (!usuarioEmail) {
-          alert("❌ Usuário não logado!");
+          alert("Usuário não logado");
           return;
         }
 
         console.log("2. Pontos no trajeto:", userPositions.length);
         if (userPositions.length === 0) {
-          alert("❌ Nenhum trajeto registrado!");
+          alert("Nenhum trajeto registrado!");
           return;
         }
 
@@ -407,7 +407,7 @@
         console.log("3. Dados:", { titulo, descricao, tipo, intensidade, visibilidade });
 
         if (!titulo || !descricao || !tipo || !visibilidade) {
-          alert("❌ Preencha todos os campos!");
+          alert("Preencha todos os campos!");
           return;
         }
 
@@ -431,7 +431,7 @@
         };
 
         try {
-          console.log("4. 📤 Enviando para Supabase...");
+          console.log("4.Enviando para Supabase...");
 
           const { data, error } = await supabaseClient
             .from("atividades")
@@ -449,12 +449,12 @@
             .select();
 
           if (error) {
-            console.error("❌ Erro Supabase:", error);
-            alert("❌ Erro: " + error.message);
+            console.error("Erro Supabase:", error);
+            alert("Erro: " + error.message);
             return;
           }
 
-          console.log("✅ Sucesso! Dados:", data);
+          console.log("Sucesso! Dados:", data);
 
           mensagemSalvo.classList.add("show");
           setTimeout(() => {
@@ -479,12 +479,12 @@
           }, 2000);
 
         } catch (err) {
-          console.error("❌ Erro geral:", err);
-          alert("❌ Erro: " + err.message);
+          console.error("Erro geral:", err);
+          alert("Erro: " + err.message);
         }
       });
 
-      console.log("✅ Aplicação carregada!");
+      console.log("Aplicação carregada!");
     })
   </script>
 
