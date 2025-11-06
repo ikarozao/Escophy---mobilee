@@ -7,6 +7,7 @@ body {
     padding: 0;
     color: #222;
     padding-top: 70px;
+    
 }
 
 section {
@@ -88,6 +89,8 @@ nav .search-box input:focus {
     padding: 30px 30px 50px 30px;
     box-sizing: border-box;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .treinos .cima {
@@ -187,8 +190,8 @@ nav .search-box input:focus {
 }
 
 
-/* Container dos ícones do carrossel - linha fixa e overflow escondido */
-.icon-container {
+
+/*.icon-container {
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -196,7 +199,7 @@ nav .search-box input:focus {
     padding: 10px 0;
 }
 
-/* Cada círculo do carrossel */
+
 .circle {
     background-color: rgb(230, 230, 230);
     width: 100px;
@@ -227,7 +230,7 @@ nav .search-box input:focus {
     height: 50px;
     user-select: none;
     pointer-events: none;
-}
+}*/
 
 .org {
     display: flex;
@@ -251,7 +254,7 @@ nav .search-box input:focus {
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 20px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     /*
     justify-content: space-evenly;
     position: relative;*/
@@ -268,6 +271,7 @@ nav .search-box input:focus {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .carrossel img {
@@ -280,7 +284,7 @@ nav .search-box input:focus {
     border-color: darkgreen; 
   }*/
 
-  .carrossel:hover {
+  .carrossel.selected {
     border: 5px solid rgb(1, 51, 1);
     transition: border 0.1s ease, width 0.1s ease;;
   }

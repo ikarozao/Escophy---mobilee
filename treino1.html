@@ -9,7 +9,7 @@
   <title>Treinos | Escorphy</title>
 
   <link rel="stylesheet" href="treinos/treinos.css" />
-  <!-- CORREÇÃO: Removido integrity que causa erro -->
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <link rel="icon" type="image/png" href="img/a.png">
@@ -41,30 +41,9 @@
 
       <div class="org">
         <li class="carrossel">
-          <img src="img/dumbbell.png" alt="">
-        </li>
-        <p>Musculação</p>
-      </div>
-
-      <div class="org">
-        <li class="carrossel">
           <img src="img/run.png" alt="">
         </li>
         <p>Corrida</p>
-      </div>
-
-      <div class="org">
-        <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.23.27_2a1a5874.jpg" alt="">
-        </li>
-        <p>Vôlei</p>
-      </div>
-
-      <div class="org">
-        <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.25.11_86e22000.jpg" alt="">
-        </li>
-        <p>Tênis</p>
       </div>
 
       <div class="org">
@@ -74,13 +53,18 @@
         <p>Caminhada</p>
       </div>
 
-      <div class="org">
-        <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_a5eb2f28.jpg" alt="">
-        </li>
-        <p>Futebol/Futsal</p>
-      </div>
-    </ul>
+    </ul> 
+
+    <script>
+const buttons = document.querySelectorAll('.carrossel');
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+</script>
 
     <div id="map"></div>
 
@@ -159,7 +143,7 @@
     </article>
   </div>
 
-  <!-- CORREÇÃO: Scripts no final, sem duplicação -->
+  <!--Scripts no final, sem duplicação -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
@@ -168,7 +152,7 @@
     // CONFIGURAÇÃO ÚNICA - EVITANDO DUPLICAÇÃO
     // ===============================
 
-    console.log("Iniciando aplicação...");
+    console.log("Iniciando aplicação");
 
     // Configuração do Supabase
     const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
@@ -295,16 +279,17 @@
     // ===============================
 
     document.addEventListener('DOMContentLoaded', function () {
-      console.log("DOM carregado...");
+      console.log("DOM carregado");
 
       // CORREÇÃO: Criando apenas UM mapa global
-      console.log("Inicializando mapa...");
+      console.log("Inicializando mapa");
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(window.mainMap);
+    
 
       //Configuração do carrossel
       const botoes = document.querySelectorAll(".carrossel");
@@ -318,6 +303,7 @@
           botao.classList.add("ativo");
         });
       });
+    
 
       // Configuração das seleções
       function setupSingleSelection(containerSelector) {
@@ -376,7 +362,7 @@
       document.getElementById("startBtn").addEventListener("click", startTracking);
       document.getElementById("endBtn").addEventListener("click", endTracking);
 
-      // CORREÇÃO: Botão salvar com Supabase
+      // Botão salvar com Supabase
       const salvarBtn = document.getElementById('salvarBtn');
       const mensagemSalvo = document.getElementById('mensagemSalvo');
 
