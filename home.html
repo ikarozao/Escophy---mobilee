@@ -12,7 +12,9 @@
 
 <body>
     <nav>
-        <a href="home.html"><div class="bar_n">Escorphy</div></a>
+        <a href="home.html">
+            <div class="bar_n">Escorphy</div>
+        </a>
         <div class="nav-right">
             <div class="search-box">
                 <input type="text" placeholder="Pesquisar..." />
@@ -36,13 +38,13 @@
                 <article class="info_usua">
                     <span>Treinos</span>
                     <span>Publicações</span>
-                    
+
                 </article>
 
                 <article class="info_usua2">
                     <span id="contTreinos">0</span>
                     <span id="contPublicacoes">0</span>
-                    
+
                 </article>
             </article>
 
@@ -57,40 +59,41 @@
             </article>
 
             <section class="feed">
-            <h2>Vídeos sugeridos</h2>
+                <h2>Vídeos sugeridos</h2>
 
-            <article class="post">
-                <div class="youtube-video-container">
-                <iframe src="https://www.youtube.com/embed/LsvhNS4w8zc" allowfullscreen></iframe>
-            </div>
-            </article>
+                <article class="post">
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/LsvhNS4w8zc" allowfullscreen></iframe>
+                    </div>
+                </article>
 
-            <article class="post">
-                <div class="youtube-video-container">
-                <iframe src="https://www.youtube.com/embed/0JDIeCiexgI" allowfullscreen></iframe>
-            </div>
-            </article>
+                <article class="post">
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/0JDIeCiexgI" allowfullscreen></iframe>
+                    </div>
+                </article>
 
-            <article class="post">
-                <div class="youtube-video-container">
-                <iframe src="https://www.youtube.com/embed/MiCmcdcF_Ss" allowfullscreen></iframe>
-            </div>
-            </article>
+                <article class="post">
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/MiCmcdcF_Ss" allowfullscreen></iframe>
+                    </div>
+                </article>
 
-            <article class="post">
-                <div class="youtube-video-container">
-                <iframe src="https://www.youtube.com/embed/Nys6iOhtjp0" allowfullscreen></iframe>
-            </div>
-            </article>
-        </section>
+                <article class="post">
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/Nys6iOhtjp0" allowfullscreen></iframe>
+                    </div>
+                </article>
+            </section>
 
         </div>
 
         <div class="column right-column">
-            <!-- Publicações do usuário -->
+
             <article class="publi_usua">
                 <div>
                     <h2>Galeria</h2>
+                    <input type="file" id="inputGaleria" accept="image/*" multiple>
                 </div>
                 <div id="listaPublicacoes"></div>
             </article>
@@ -154,156 +157,425 @@
     </div>
 
     <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-logo">
-            <h1>ESCORPHY</h1>
-            <p>© 2025 Escorphy</p>
-        </div>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h1>ESCORPHY</h1>
+                <p>© 2025 Escorphy</p>
+            </div>
 
-        <div class="footer-column">
-            <h3>Sobre</h3>
-            <ul>
-                <li><a href="sobrenos.html">Nossa História</a></li>
-                <li><a href="sobrenos.html">Missão</a></li>
-                <li><a href="sobrenos.html">Equipe</a></li>
-                <li><a href="#">Privacidade</a></li>
-            </ul>
-        </div>
+            <div class="footer-column">
+                <h3>Sobre</h3>
+                <ul>
+                    <li><a href="sobrenos.html">Nossa História</a></li>
+                    <li><a href="sobrenos.html">Missão</a></li>
+                    <li><a href="sobrenos.html">Equipe</a></li>
+                    <li><a href="#">Privacidade</a></li>
+                </ul>
+            </div>
 
-        <div class="footer-column">
-            <h3>Explorar</h3>
-            <ul>
-                <li><a href="#">Funcionalidades</a></li>
-                <li><a href="#">Planos</a></li>
-                <li><a href="#">Blog</a></li>
-            </ul>
-        </div>
+            <div class="footer-column">
+                <h3>Explorar</h3>
+                <ul>
+                    <li><a href="#">Funcionalidades</a></li>
+                    <li><a href="#">Planos</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
 
-        <div class="footer-column">
-            <h3>Redes</h3>
-            <ul class="social-icons">
-                <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
-                <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
-            </ul>
-        </div>
+            <div class="footer-column">
+                <h3>Redes</h3>
+                <ul class="social-icons">
+                    <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a>
+                    </li>
+                    <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
+                </ul>
+            </div>
 
-        <div class="footer-column">
-            <h3>Ajuda</h3>
-            <ul>
-                <li><a href="#">Suporte</a></li>
-                <li><a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale Conosco</a></li>
-                <li><a href="#">Central de Ajuda</a></li>
-            </ul>
+            <div class="footer-column">
+                <h3>Ajuda</h3>
+                <ul>
+                    <li><a href="#">Suporte</a></li>
+                    <li><a
+                            href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale
+                            Conosco</a></li>
+                    <li><a href="#">Central de Ajuda</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    //integração banco de dados 
-    const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    <script>
+        //integração banco de dados 
+        const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    const usuario = localStorage.getItem("usuarioLogado");
-    const usuarioEmail = localStorage.getItem("usuarioEmail");
+        const usuario = localStorage.getItem("usuarioLogado");
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
 
-    //
-    async function carregarPerfil() {
-        if (!usuarioEmail) return;
+        //carregar nome e foto de perfil
+        async function carregarPerfil() {
+            if (!usuarioEmail) return;
 
-        const { data: perfil, error } = await supabaseClient
-            .from('perfil')
-            .select('nome')
-            .eq('email', usuarioEmail)
-            .single();
+            const { data: perfilAtual, error: erroBusca } = await supabaseClient
+                .from('perfil')
+                .select('galeria')
+                .eq('email', usuarioEmailLocal)
+                .maybeSingle(); // ← troca single() por maybeSingle()
 
-        if (error) {
-            console.error('Erro', error);
-            return;
-        }
 
-        if (perfil) {
-            document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome}`;
-            document.getElementById('contTreinos').textContent = perfil.treinos || 0;
-            document.getElementById('contPublicacoes').textContent = perfil.publicacoes || 0;
-            
-            if (perfil.foto_perfil) {
-                document.getElementById('imgPerfil').src = perfil.foto_perfil;
+            if (error) {
+                console.error('Erro', error);
+                return;
+            }
+
+            if (perfil) {
+                document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome}`;
+                document.getElementById('contTreinos').textContent = perfil.treinos || 0;
+                document.getElementById('contPublicacoes').textContent = perfil.publicacoes || 0;
+
+                if (perfil.foto_perfil) {
+                    document.getElementById('imgPerfil').src = perfil.foto_perfil;
+                }
             }
         }
-    }
 
-    document.getElementById('fotoPerfil').addEventListener('click', () => {
-        document.getElementById('inputPerfil').click();
-    });
+        document.getElementById('fotoPerfil').addEventListener('click', () => {
+            document.getElementById('inputPerfil').click();
+        });
 
-    document.getElementById('inputPerfil').addEventListener('change', async (event) => {
-        const file = event.target.files[0];
-        if (!file || !usuarioEmail) return;
+        document.getElementById('inputPerfil').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file || !usuarioEmail) return;
 
-        const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
-        
-        try {
-            const { error: uploadError } = await supabaseClient.storage
-                .from('perfil')
-                .upload(fileName, file, { upsert: true });
+            const fileName = `${usuarioEmail}_${Date.now()}_${file.name}`;
 
-            if (uploadError) throw uploadError;
+            try {
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('perfil')
+                    .upload(fileName, file, { upsert: true });
 
-            const { data: publicUrlData } = supabaseClient.storage
-                .from('perfil')
-                .getPublicUrl(fileName);
+                if (uploadError) throw uploadError;
 
-            const { error: updateError } = await supabaseClient
-                .from('perfil')
-                .update({ foto_perfil: publicUrlData.publicUrl })
-                .eq('email', usuarioEmail);
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from('perfil')
+                    .getPublicUrl(fileName);
 
-            if (updateError) throw updateError;
+                const { error: updateError } = await supabaseClient
+                    .from('perfil')
+                    .update({ foto_perfil: publicUrlData.publicUrl })
+                    .eq('email', usuarioEmail);
 
-            document.getElementById('imgPerfil').src = publicUrlData.publicUrl;
+                if (updateError) throw updateError;
 
-        } catch (err) {
-            console.error('Erro', err);
+                document.getElementById('imgPerfil').src = publicUrlData.publicUrl;
+
+            } catch (err) {
+                console.error('Erro', err);
+            }
+        });
+
+        carregarPerfil();
+
+        //aparecer treinos no home
+        async function carregarTreinos() {
+            if (!usuarioEmail) return;
+
+            const { data: atividades, error } = await supabaseClient
+                .from('atividades')
+                .select('titulo')
+                .eq('email_usuario', usuarioEmail);
+
+            if (error) {
+                console.error('Erro', error);
+                return;
+            }
+
+            const lista = document.getElementById('listaTreinos');
+            lista.innerHTML = '';
+
+            if (atividades && atividades.length > 0) {
+                atividades.forEach(atividade => {
+                    const item = document.createElement('li');
+                    item.textContent = atividade.titulo;
+                    lista.appendChild(item);
+                });
+            } else {
+                const vazio = document.createElement('li');
+                vazio.textContent = 'Nenhum treino realizado ainda.';
+                lista.appendChild(vazio);
+            }
         }
-    });
 
-    carregarPerfil();
+        carregarPerfil();
+        carregarTreinos();
 
-    //aparecer treinos no home
-     async function carregarTreinos() {
-        if (!usuarioEmail) return;
+        //galeria do usuario
 
-        const { data: atividades, error } = await supabaseClient
-            .from('atividades')
-            .select('titulo')
-            .eq('email_usuario', usuarioEmail); 
 
-        if (error) {
-            console.error('Erro', error);
-            return;
+        /* ---------- utils ---------- */
+        function getUsuarioEmail() {
+            // tenta a variável que você já usa
+            const eLocal = localStorage.getItem('usuarioEmail');
+            if (eLocal) return eLocal;
+            // tenta extrair do objeto 'usuario' caso você tenha salvo outro
+            const u = localStorage.getItem('usuarioLogado');
+            if (u) {
+                try {
+                    const parsed = JSON.parse(u);
+                    return parsed?.email || null;
+                } catch { return null; }
+            }
+            return null;
         }
 
-        const lista = document.getElementById('listaTreinos');
-        lista.innerHTML = '';
-
-        if (atividades && atividades.length > 0) {
-            atividades.forEach(atividade => {
-                const item = document.createElement('li');
-                item.textContent = atividade.titulo; 
-                lista.appendChild(item);
-            });
-        } else {
-            const vazio = document.createElement('li');
-            vazio.textContent = 'Nenhum treino realizado ainda.';
-            lista.appendChild(vazio);
+        function normalizeGaleriaValue(raw) {
+            // corrente pode ser null | array | string(json)
+            if (!raw) return [];
+            if (Array.isArray(raw)) return raw;
+            if (typeof raw === 'string') {
+                try {
+                    const parsed = JSON.parse(raw);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch {
+                    // se for uma string simples com uma url
+                    return [raw];
+                }
+            }
+            return [];
         }
-    }
 
-    carregarPerfil();
-    carregarTreinos();
+        /* ---------- carregar galeria ---------- */
+        async function carregarGaleria() {
+            const usuarioEmailLocal = getUsuarioEmail();
+            console.log('carregarGaleria; email=', usuarioEmailLocal);
+            const lista = document.getElementById('listaPublicacoes');
+            lista.innerHTML = '';
 
-</script>
+            if (!usuarioEmailLocal) {
+                lista.innerHTML = '<p>Usuário não identificado.</p>';
+                return;
+            }
+
+            try {
+                const { data: perfil, error } = await supabaseClient
+                    .from('perfil')
+                    .select('galeria')
+                    .eq('email', usuarioEmailLocal)
+                    .single();
+
+                if (error) {
+                    console.error('Erro select perfil (galeria):', error);
+                    lista.innerHTML = '<p>Erro ao carregar galeria (ver console).</p>';
+                    return;
+                }
+
+                const galeria = normalizeGaleriaValue(perfil?.galeria);
+
+                if (galeria.length === 0) {
+                    lista.innerHTML = '<p>Nenhuma imagem adicionada ainda.</p>';
+                    return;
+                }
+
+                galeria.forEach((url, index) => {
+                    const container = document.createElement('div');
+                    container.classList.add('item-galeria');
+
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.alt = `Imagem ${index + 1}`;
+                    img.classList.add('foto-galeria');
+
+                    const btnExcluir = document.createElement('button');
+                    btnExcluir.textContent = 'Excluir';
+                    btnExcluir.classList.add('btn-excluir');
+                    btnExcluir.addEventListener('click', () => excluirImagem(index));
+
+                    container.appendChild(img);
+                    container.appendChild(btnExcluir);
+                    lista.appendChild(container);
+                });
+            } catch (err) {
+                console.error('Exceção carregarGaleria:', err);
+                lista.innerHTML = '<p>Erro inesperado ao carregar galeria (ver console).</p>';
+            }
+        }
+
+        /* ---------- upload ---------- */
+        document.getElementById('inputGaleria').addEventListener('change', async (event) => {
+            const files = Array.from(event.target.files || []);
+            const usuarioEmailLocal = getUsuarioEmail();
+            const lista = document.getElementById('listaPublicacoes');
+
+            if (!usuarioEmailLocal) {
+                console.warn('Nenhum email encontrado ao tentar fazer upload.');
+                lista.innerHTML = '<p>Usuário não identificado.</p>';
+                event.target.value = ''; // limpa input
+                return;
+            }
+
+            if (!files.length) {
+                return;
+            }
+
+            try {
+                // pega galeria atual ANTES de fazer uploads para evitar sobrescrever
+                const { data: perfilAtual, error: erroBusca } = await supabaseClient
+                    .from('perfil')
+                    .select('galeria')
+                    .eq('email', usuarioEmailLocal)
+                    .single();
+
+                if (erroBusca) {
+                    console.error('Erro ao buscar galeria atual:', erroBusca);
+                    lista.innerHTML = '<p>Erro ao acessar galeria atual (ver console).</p>';
+                    event.target.value = '';
+                    return;
+                }
+
+                const galeriaAtual = normalizeGaleriaValue(perfilAtual?.galeria);
+                const novosLinks = [];
+
+                for (const file of files) {
+                    // path seguro: remover espaços, caracteres estranhos
+                    const safeName = file.name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_.-]/g, '');
+                    const fileName = `${usuarioEmailLocal}_${Date.now()}_${safeName}`;
+
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('galeria')
+                        .upload(fileName, file, { upsert: true });
+
+                    if (uploadError) {
+                        console.error('Erro no upload do arquivo', file.name, uploadError);
+                        // continua para as outras imagens
+                        continue;
+                    }
+
+                    // obter url pública corretamente (supabase v2 retorna data.publicUrl)
+                    const { data: publicUrlData, error: getUrlError } = await supabaseClient.storage
+                        .from('galeria')
+                        .getPublicUrl(fileName);
+
+                    if (getUrlError) {
+                        console.error('Erro ao obter publicUrl para', fileName, getUrlError);
+                        continue;
+                    }
+
+                    // pode estar em publicUrl ou publicUrl dentro de data
+                    const publicUrl = publicUrlData?.publicUrl || publicUrlData?.public_url || publicUrlData;
+
+                    if (!publicUrl) {
+                        console.warn('getPublicUrl não retornou URL esperado para', fileName, publicUrlData);
+                        continue;
+                    }
+
+                    novosLinks.push(publicUrl);
+                }
+
+                if (novosLinks.length === 0) {
+                    console.warn('Nenhum link novo obtido (uploads falharam).');
+                    event.target.value = '';
+                    return;
+                }
+
+                const galeriaAtualizada = [...galeriaAtual, ...novosLinks];
+
+                const { error: updateError } = await supabaseClient
+                    .from('perfil')
+                    .update({ galeria: galeriaAtualizada })
+                    .eq('email', usuarioEmailLocal);
+
+                if (updateError) {
+                    console.error('Erro ao atualizar galeria no DB:', updateError);
+                    lista.innerHTML = '<p>Erro ao salvar galeria (ver console).</p>';
+                    event.target.value = '';
+                    return;
+                }
+
+                // Limpa input e atualiza interface
+                event.target.value = '';
+                carregarGaleria();
+            } catch (err) {
+                console.error('Exceção no processo de upload:', err);
+                event.target.value = '';
+            }
+        });
+
+        /* ---------- excluir ---------- */
+        async function excluirImagem(index) {
+            const usuarioEmailLocal = getUsuarioEmail();
+            if (!usuarioEmailLocal) {
+                console.warn('Usuário não identificado ao excluir.');
+                return;
+            }
+
+            try {
+                const { data: perfil, error } = await supabaseClient
+                    .from('perfil')
+                    .select('galeria')
+                    .eq('email', usuarioEmailLocal)
+                    .single();
+
+                if (error) {
+                    console.error('Erro ao buscar galeria para exclusão:', error);
+                    return;
+                }
+
+                const galeriaAtual = normalizeGaleriaValue(perfil?.galeria);
+                if (index < 0 || index >= galeriaAtual.length) {
+                    console.warn('Index inválido para exclusão:', index);
+                    return;
+                }
+
+                // opcional: remover do storage também (se quiser)
+                const urlRemover = galeriaAtual[index];
+                // tentar extrair o path do storage para remover (se o link for padrão do supabase)
+                try {
+                    const urlObj = new URL(urlRemover);
+                    const pathname = urlObj.pathname; // /storage/v1/object/public/galeria/filename
+                    // encontra o segmento após '/galeria/'
+                    const seg = '/galeria/';
+                    const idx = pathname.indexOf(seg);
+                    if (idx !== -1) {
+                        const objectPath = decodeURIComponent(pathname.slice(idx + seg.length));
+                        // tenta remover do bucket (não é obrigatório; faça se desejar)
+                        const { error: deleteErr } = await supabaseClient.storage
+                            .from('galeria')
+                            .remove([objectPath]);
+                        if (deleteErr) {
+                            console.warn('Não foi possível remover arquivo do storage (talvez já removido):', deleteErr);
+                        } else {
+                            console.log('Arquivo removido do storage:', objectPath);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Não foi possível parsear URL para exclusão do storage:', e);
+                }
+
+                const galeriaAtualizada = galeriaAtual.filter((_, i) => i !== index);
+
+                const { error: updateError } = await supabaseClient
+                    .from('perfil')
+                    .update({ galeria: galeriaAtualizada })
+                    .eq('email', usuarioEmailLocal);
+
+                if (updateError) {
+                    console.error('Erro ao atualizar galeria após exclusão:', updateError);
+                    return;
+                }
+
+                carregarGaleria();
+            } catch (err) {
+                console.error('Exceção ao excluir imagem:', err);
+            }
+        }
+
+        /* ---------- init ---------- */
+        carregarGaleria();
+
+
+    </script>
 </body>
+
 </html>

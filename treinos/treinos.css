@@ -280,8 +280,7 @@ nav .search-box input:focus {
   transition: border 0.1s ease, width 0.1s ease;
 }
 
-/* Inputs de texto - Centralizados e Responsivos */
-.treinos input[type=text] {
+c .treinos input[type=text] {
   width: 100%;
   max-width: 300px;
   padding: 10px 15px;
@@ -800,4 +799,83 @@ a.selecionado {
 }
 #controls button:hover {
   background: #388E3C;
+}
+
+.floating-buttons-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex; /* Para alinhar os botões lado a lado */
+  flex-direction: row; /* Alinha na horizontal */
+  gap: 10px; /* Espaçamento entre os botões */
+  align-items: center;
+  z-index: 1000; /* Garante que fiquem acima de outros elementos */
+}
+
+.floating-buttons-container a { /* Aplica o estilo a todos os links dentro do container */
+  text-decoration: none; /* Remove o sublinhado */
+  color: inherit; /* Garante que a cor do texto seja herdada, se necessário */
+}
+
+.botaomais-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.botaomais {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgb(64, 182, 64);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Garante que o "+" seja branco */
+  font-size: 40px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+  font-family: "Staatliches", sans-serif;
+}
+
+.botaomais:hover {
+  background-color: #6fe600;
+}
+
+/* ===== BOTÃO PERFIL ===== */
+.botaoperfil-container {
+  display: flex; /* Para alinhar a imagem dentro do botão */
+  justify-content: center;
+  align-items: center;
+}
+
+.botaoperfil-container img {
+  width: 40px;
+  height: 40px;
+}
+
+.botaoperfil {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgb(64, 182, 64);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-shadow: 3px 3px 6px rgb(45, 255, 38);
+  transition: background 0.3s;
+  font-family: "Staatliches", sans-serif;
+}
+
+.botaoperfil:hover {
+  background-color: #6fe600;
 }/*# sourceMappingURL=treinos.css.map */
