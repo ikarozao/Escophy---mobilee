@@ -200,6 +200,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+    //integração banco de dados 
     const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -207,17 +208,18 @@
     const usuario = localStorage.getItem("usuarioLogado");
     const usuarioEmail = localStorage.getItem("usuarioEmail");
 
+    //
     async function carregarPerfil() {
         if (!usuarioEmail) return;
 
         const { data: perfil, error } = await supabaseClient
             .from('perfil')
-            .select('*')
+            .select('nome')
             .eq('email', usuarioEmail)
             .single();
 
         if (error) {
-            console.error('Erro ao carregar perfil:', error);
+            console.error('Erro', error);
             return;
         }
 
@@ -263,11 +265,45 @@
             document.getElementById('imgPerfil').src = publicUrlData.publicUrl;
 
         } catch (err) {
-            console.error('Erro no upload:', err);
+            console.error('Erro', err);
         }
     });
 
     carregarPerfil();
+
+    //aparecer treinos no home
+     async function carregarTreinos() {
+        if (!usuarioEmail) return;
+
+        const { data: atividades, error } = await supabaseClient
+            .from('atividades')
+            .select('titulo')
+            .eq('email_usuario', usuarioEmail); 
+
+        if (error) {
+            console.error('Erro', error);
+            return;
+        }
+
+        const lista = document.getElementById('listaTreinos');
+        lista.innerHTML = '';
+
+        if (atividades && atividades.length > 0) {
+            atividades.forEach(atividade => {
+                const item = document.createElement('li');
+                item.textContent = atividade.titulo; 
+                lista.appendChild(item);
+            });
+        } else {
+            const vazio = document.createElement('li');
+            vazio.textContent = 'Nenhum treino realizado ainda.';
+            lista.appendChild(vazio);
+        }
+    }
+
+    carregarPerfil();
+    carregarTreinos();
+
 </script>
 </body>
 </html>

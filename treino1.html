@@ -220,13 +220,13 @@ buttons.forEach(btn => {
               accuracy: position.coords.accuracy
             });
 
-            // CORREÇÃO: Usando o mapa global
+            
             window.mainMap.setView([lat, lon], 16);
 
             if (userPositions.length === 1) {
               startMarker = L.marker([lat, lon])
                 .addTo(window.mainMap)
-                .bindPopup("Início da rota")
+                .bindPopup("Início do percurso")
                 .openPopup();
             }
 
@@ -252,12 +252,12 @@ buttons.forEach(btn => {
           }
         );
       } else {
-        alert("Geolocalização não suportada no seu navegador!");
+        alert("Geolocalização não suportada no seu navegador");
       }
     }
 
     function endTracking() {
-      console.log("Finalizando tracking...");
+      console.log("Finalizando");
       if (tracking) {
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
@@ -266,7 +266,7 @@ buttons.forEach(btn => {
           const lastPoint = userPositions[userPositions.length - 1];
           endMarker = L.marker([lastPoint.lat, lastPoint.lng])
             .addTo(window.mainMap)
-            .bindPopup("Fim da rota")
+            .bindPopup("Fim do percurso")
             .openPopup();
         }
 
