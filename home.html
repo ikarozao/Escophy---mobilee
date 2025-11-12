@@ -215,31 +215,32 @@
         const usuarioEmail = localStorage.getItem("usuarioEmail");
 
         //carregar nome e foto de perfil
-        async function carregarPerfil() {
-            if (!usuarioEmail) return;
+        
+    async function carregarPerfil() {
+    if (!usuarioEmail) return;
 
-            const { data: perfilAtual, error: erroBusca } = await supabaseClient
-                .from('perfil')
-                .select('galeria')
-                .eq('email', usuarioEmailLocal)
-                .maybeSingle(); // ← troca single() por maybeSingle()
+    const { data: perfil, error } = await supabaseClient
+        .from('usuarios')
+        .select('nome, treinos, publicacoes, foto_perfil')
+        .eq('email', usuarioEmail)
+        .maybeSingle();
 
+    if (error) {
+        console.error('Erro ao buscar perfil:', error);
+        return;
+    }
 
-            if (error) {
-                console.error('Erro', error);
-                return;
-            }
+    if (perfil) {
+        document.getElementById('nomeUIsuario').textContent = `Olá, ${perfil.nome}`;
+        document.getElementById('contTreinos').textContent = perfil.treinos || 0;
+        document.getElementById('contPublicacoes').textContent = perfil.publicacoes || 0;
 
-            if (perfil) {
-                document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome}`;
-                document.getElementById('contTreinos').textContent = perfil.treinos || 0;
-                document.getElementById('contPublicacoes').textContent = perfil.publicacoes || 0;
-
-                if (perfil.foto_perfil) {
-                    document.getElementById('imgPerfil').src = perfil.foto_perfil;
-                }
-            }
+        if (perfil.foto_perfil) {
+            document.getElementById('imgPerfil').src = perfil.foto_perfil;
         }
+    }
+}
+
 
         document.getElementById('fotoPerfil').addEventListener('click', () => {
             document.getElementById('inputPerfil').click();
@@ -314,7 +315,7 @@
         //galeria do usuario
 
 
-        /* ---------- utils ---------- */
+        
         function getUsuarioEmail() {
             // tenta a variável que você já usa
             const eLocal = localStorage.getItem('usuarioEmail');
@@ -360,7 +361,7 @@
 
             try {
                 const { data: perfil, error } = await supabaseClient
-                    .from('perfil')
+                    .from('usuarios')
                     .select('galeria')
                     .eq('email', usuarioEmailLocal)
                     .single();
