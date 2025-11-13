@@ -576,7 +576,16 @@
         carregarGaleria();
 
 
-    </script>
+    
+  // Atualiza o texto "Olá, usuário" com o nome verdadeiro
+     if (usuario) {
+    const nomeElemento = document.getElementById('nomeUsuario');
+    if (nomeElemento) {
+      nomeElemento.textContent = `Olá, ${usuario}`;
+    }
+  }
+</script>
+
 </body>
 
 </html>
