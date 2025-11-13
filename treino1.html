@@ -490,6 +490,28 @@ const { data, error } = await supabaseClient
 
       console.log("Aplicação carregada!");
     })
+
+
+
+
+    // Carregar treino selecionado (se houver)
+window.addEventListener('DOMContentLoaded', () => {
+  const treinoSalvo = localStorage.getItem('treinoSelecionado');
+  if (treinoSalvo) {
+    const treino = JSON.parse(treinoSalvo);
+
+    // Preenche os campos com as informações
+    if (treino.titulo) document.querySelector('input[name="titulo"]').value = treino.titulo;
+    if (treino.descricao) document.querySelector('input[name="descricao"]').value = treino.descricao;
+
+    // Exibe a seção de informações, caso esteja oculta
+    const infos = document.getElementById('infos_treinos');
+    if (infos) infos.style.display = 'block';
+  }
+});
+
+localStorage.removeItem('treinoSelecionado');
+
   </script>
 
   <div class="floating-buttons-container">

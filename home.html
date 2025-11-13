@@ -213,7 +213,12 @@
 
         const usuario = localStorage.getItem("usuarioLogado");
         const usuarioEmail = localStorage.getItem("usuarioEmail");
-
+            if (usuario) {
+            const nomeElemento = document.getElementById('nomeUsuario');
+                if (nomeElemento) {
+                    nomeElemento.textContent = `Olá, ${usuario}`;
+    }
+  }
         //carregar nome e foto de perfil
         
     async function carregarPerfil() {
@@ -281,35 +286,42 @@
 
         //aparecer treinos no home
         async function carregarTreinos() {
-            if (!usuarioEmail) return;
+    if (!usuarioEmail) return;
 
-            const { data: atividades, error } = await supabaseClient
-                .from('atividades')
-                .select('titulo')
-                .eq('email_usuario', usuarioEmail);
+    const { data: atividades, error } = await supabaseClient
+        .from('atividades')
+        .select('*') // <-- pega todos os campos, não só o título
+        .eq('email_usuario', usuarioEmail);
 
-            if (error) {
-                console.error('Erro', error);
-                return;
-            }
+    if (error) {
+        console.error('Erro ao carregar atividades:', error);
+        return;
+    }
 
-            const lista = document.getElementById('listaTreinos');
-            lista.innerHTML = '';
+    const lista = document.getElementById('listaTreinos');
+    lista.innerHTML = '';
 
-            if (atividades && atividades.length > 0) {
-                atividades.forEach(atividade => {
-                    const item = document.createElement('li');
-                    item.textContent = atividade.titulo;
-                    lista.appendChild(item);
-                });
-            } else {
-                const vazio = document.createElement('li');
-                vazio.textContent = 'Nenhum treino realizado ainda.';
-                lista.appendChild(vazio);
-            }
-        }
+    if (atividades && atividades.length > 0) {
+        atividades.forEach(atividade => {
+            const item = document.createElement('li');
+            item.textContent = atividade.titulo;
+            item.style.cursor = "pointer";
 
-        carregarPerfil();
+            // Quando clicar no treino, salva os dados e redireciona
+            item.addEventListener('click', () => {
+                localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
+                window.location.href = 'treino1.html';
+            });
+
+            lista.appendChild(item);
+        });
+    } else {
+        lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
+    }
+}
+
+
+        
         carregarTreinos();
 
         //galeria do usuario
@@ -576,14 +588,8 @@
         carregarGaleria();
 
 
+
     
-  // Atualiza o texto "Olá, usuário" com o nome verdadeiro
-     if (usuario) {
-    const nomeElemento = document.getElementById('nomeUsuario');
-    if (nomeElemento) {
-      nomeElemento.textContent = `Olá, ${usuario}`;
-    }
-  }
 </script>
 
 </body>
