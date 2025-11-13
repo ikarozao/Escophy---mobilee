@@ -143,6 +143,7 @@ buttons.forEach(btn => {
     </article>
   </div>
 
+
   <!--Scripts no final, sem duplicação -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
@@ -495,6 +496,7 @@ const { data, error } = await supabaseClient
 
 
     // Carregar treino selecionado (se houver)
+// Carregar treino selecionado (se houver)
 window.addEventListener('DOMContentLoaded', () => {
   const treinoSalvo = localStorage.getItem('treinoSelecionado');
   if (treinoSalvo) {
@@ -507,10 +509,13 @@ window.addEventListener('DOMContentLoaded', () => {
     // Exibe a seção de informações, caso esteja oculta
     const infos = document.getElementById('infos_treinos');
     if (infos) infos.style.display = 'block';
+
+    // 🔥 Só remove depois de usar
+    localStorage.removeItem('treinoSelecionado');
   }
 });
 
-localStorage.removeItem('treinoSelecionado');
+
 
   </script>
 
