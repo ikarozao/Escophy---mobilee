@@ -731,6 +731,7 @@ a.selecionado {
 }
 .footer h1 {
   font-family: "Staatliches", sans-serif;
+  text-align: start;
 }
 
 .footer-container {
