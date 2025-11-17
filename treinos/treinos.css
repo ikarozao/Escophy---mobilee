@@ -736,6 +736,12 @@ a.selecionado {
 .footer p {
   text-align: start;
 }
+.footer h3 {
+  text-align: start;
+}
+.footer ul {
+  text-align: start;
+}
 
 .footer-container {
   display: flex;
