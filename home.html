@@ -15,11 +15,7 @@
         <a href="home.html">
             <div class="bar_n">Escorphy</div>
         </a>
-        <div class="nav-right">
-            <div class="search-box">
-                <input type="text" placeholder="Pesquisar..." />
-            </div>
-        </div>
+
     </nav>
 
     <div class="main-content-perfil">
@@ -90,24 +86,26 @@
 
         <div class="column right-column">
 
-            <article class="publi_usua">
+            <!--<article class="publi_usua">
                 <div>
                     <h2>Galeria</h2>
                     <input type="file" id="inputGaleria" accept="image/*" multiple>
                 </div>
                 <div id="listaPublicacoes"></div>
-            </article>
+            </article>-->
+
+            <input type="file" id="fileInput" accept="image/*" multiple />
+            <div id="preview" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+
+            <button id="saveBtn">Salvar galeria</button>
+
+            <!--<script type="module" src="./galeria.js"></script>-->
+
         </div>
     </div>
 
     <div class="floating-buttons-container">
-        <a href="home.html">
-            <div class="botaoperfil-container">
-                <button class="botaoperfil" id="botaoperfil">
-                    <img src="img/home.png" alt="Ícone Perfil">
-                </button>
-            </div>
-        </a>
+
         <a href="treino1.html">
             <div class="botaomais-container">
                 <button class="botaomais" id="botaoMais">+</button>
@@ -184,7 +182,7 @@
 
             const { data: perfil, error } = await supabaseClient
                 .from('usuarios')
-                .select('nome, treinos, publicacoes, foto_perfil')
+                .select('nome, publicacoes, foto_perfil')
                 .eq('email', usuarioEmail)
                 .maybeSingle();
 
@@ -246,6 +244,124 @@
         // o restante do teu código (galeria etc) continua igual
         // não removi nada
 
+        let selectedImages = []; // Armazena arquivos selecionados
+        let uploadedURLs = [];   // URLs finais após upload
+
+        const fileInput = document.getElementById("fileInput");
+        const preview = document.getElementById("preview");
+        const saveBtn = document.getElementById("saveBtn");
+
+        // === PREVIEW IMEDIATO DAS IMAGENS ===
+        fileInput.addEventListener("change", (event) => {
+            const files = Array.from(event.target.files);
+
+            files.forEach(file => {
+                selectedImages.push(file);
+
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style.width = "120px";
+                img.style.height = "120px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "8px";
+
+                preview.appendChild(img);
+            });
+        });
+
+        // === UPLOAD PARA STORAGE DO SUPABASE ===
+        async function uploadImages(userId) {
+            uploadedURLs = [];
+
+            for (const file of selectedImages) {
+                const fileName = `${userId}_${Date.now()}_${file.name}`;
+                const path = `galerias/${userId}/${fileName}`;
+
+                const { data, error } = await supabaseClient.storage
+                    .from("galeria_usuarios")
+                    .upload(path, file);
+
+                if (error) {
+                    console.error("Erro ao enviar imagem:", error);
+                    continue;
+                }
+
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from("galeria_usuarios")
+                    .getPublicUrl(path);
+
+                uploadedURLs.push(publicUrlData.publicUrl);
+            }
+
+            return uploadedURLs;
+        }
+
+        // === SALVAR URLs NO BANCO ===
+        saveBtn.addEventListener("click", async () => {
+            const userId = 1; // defina o ID do usuário atual
+
+            const urls = await uploadImages(userId);
+
+            console.log("URLs enviadas:", urls);
+
+            /*const { data, error } = await supabase
+                .from("usuarios")
+                .update({ galeria: urls })
+                .eq("id", userId);*/
+
+            /*saveBtn.addEventListener("click", async () => {
+                const userId = 1; // defina o ID do usuário atual
+                const urls = await uploadImages(userId);
+                console.log("URLs enviadas:", urls);
+
+                const { data, error } = await supabaseClient  // <-- MUDANÇA AQUI
+        .from("usuarios")
+                        .update({ galeria: urls })
+                        .eq("id", userId);
+
+                if (error) {
+                    alert("Erro ao salvar galeria!");
+                    console.error(error);
+                } else {
+                    alert("Galeria salva com sucesso!");
+                }
+            });
+
+            if (error) {
+                alert("Erro ao salvar galeria!");
+                console.error(error);
+            } else {
+                alert("Galeria salva com sucesso!");
+            }*/
+
+            saveBtn.addEventListener("click", async () => {
+                const userId = 1; // defina o ID do usuário atual
+
+                try {
+                    const urls = await uploadImages(userId);
+                    console.log("URLs enviadas:", urls);
+
+                    const { data, error: updateError } = await supabaseClient // Renomeei para updateError
+                        .from("usuarios")
+                        .update({ galeria: urls })
+                        .eq("id", userId);
+
+                    if (updateError) { // Usando o nome correto: updateError
+                        alert("Erro ao salvar galeria!");
+                        console.error(updateError);
+                    } else {
+                        alert("Galeria salva com sucesso!");
+                    }
+                } catch (err) {
+                    // Este catch pega qualquer erro inesperado, incluindo o uploadImages falhando
+                    alert("Ocorreu um erro inesperado durante o processo.");
+                    console.error("Erro inesperado:", err);
+                }
+            });
+        });
+
+
     </script>
 </body>
+
 </html>
