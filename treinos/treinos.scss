@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap');
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 body {
     background: #e9e9e9;
     font-family: "Poppins", sans-serif;
@@ -9,6 +14,13 @@ body {
     padding-top: 70px;
     
 }
+
+/* CSS Geral */
+body {
+    overflow-x: hidden;
+    width: 100%;        
+}
+
 
 section {
     width: 100%;
@@ -756,16 +768,26 @@ a.selecionado {
 
 
 
+
 .footer {
-  background-color: #f9f9f9;
-  padding: 40px 20px;
-  color: #333;
-  margin-top: 3vh;
- width: 99%;
-  h1{
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+    color: #333;
+    margin-top: 3vh;
+    width: 100%; 
+    h1{
     font-family: "Staatliches", sans-serif;
+    text-align: start;
   }
-  
+    p {
+        text-align: start;
+    }
+    h3 {
+        text-align: start;
+    }
+    ul {
+        text-align: start;
+    }
 }
 
 .footer-container {
@@ -835,26 +857,38 @@ a.selecionado {
 
 
 @media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column;
-    gap: 40px;
-  }
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
+    }
 
-  .footer-column {
-    flex: 1 1 100%;
-  }
+    .footer-column {
+        flex: 1 1 100%;
+    }
 
-  .footer-logo {
-    text-align: center;
-  }
+    .footer-logo {
+        text-align: center; /* Garante que o conteúdo do logo esteja centralizado */
+    }
 
-  .footer-column h3 {
-    text-align: center;
-  }
+    /* 💡 REVERTENDO AS TRANSFORMAÇÕES para centralizar o logo no celular */
+    .footer-logo h1, 
+    .footer-logo p {
+        transform: translateX(0); /* Remove o deslocamento lateral */
+        margin-top: 0;           /* Reseta a margem superior se necessário */
+    }
+    
+    .footer-column h3 {
+        text-align: center;
+    }
 
-  .footer-column ul {
-    text-align: center;
-  }
+    .footer-column ul {
+        text-align: center;
+    }
+
+    /* 💡 Centraliza os links dentro do ul */
+    .footer-column ul li a {
+        justify-content: center; /* Centraliza o ícone e o texto lado a lado */
+    }
 }
 
 #controls {
