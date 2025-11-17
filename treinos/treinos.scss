@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Staatliches&family=Poppins&display=swap');
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 body {
     background: #e9e9e9;
     font-family: "Poppins", sans-serif;
@@ -10,10 +15,12 @@ body {
     
 }
 
+/* CSS Geral */
 body {
-  overflow-x: hidden; /* Remove a barra de rolagem horizontal */
-  /* overflow-y: scroll;  (Opcional: Garante que a vertical permaneça, se necessário) */
+    overflow-x: hidden;
+    width: 100%;        
 }
+
 
 section {
     width: 100%;
@@ -761,16 +768,16 @@ a.selecionado {
 
 
 
+
 .footer {
-  background-color: #f9f9f9;
-  padding: 40px 20px;
-  color: #333;
-  margin-top: 3vh;
- width: 99%;
-  h1{
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+    color: #333;
+    margin-top: 3vh;
+    width: 100%; 
+    h1{
     font-family: "Staatliches", sans-serif;
   }
-  
 }
 
 .footer-container {
