@@ -204,7 +204,7 @@
             }
         }
 
-        // 🔧 ADIÇÃO: carregar e salvar treino selecionado
+        //carregar e salvar treino selecionado
         async function carregarTreinos() {
             if (!usuarioEmail) return;
 
@@ -227,7 +227,7 @@
                     item.textContent = atividade.titulo;
                     item.style.cursor = "pointer";
 
-                    // 🔧 Quando clicar no treino, salva no localStorage e vai pra treino1.html
+                    // quando clicar no treino, salva no localstorage e vai pra treino1.html
                     item.addEventListener('click', () => {
                         localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
                         window.location.href = 'treino1.html';
