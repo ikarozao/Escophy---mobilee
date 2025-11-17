@@ -733,6 +733,9 @@ a.selecionado {
   font-family: "Staatliches", sans-serif;
   text-align: start;
 }
+.footer p {
+  text-align: start;
+}
 
 .footer-container {
   display: flex;
