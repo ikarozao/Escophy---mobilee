@@ -278,7 +278,7 @@
                 const path = `galerias/${userId}/${fileName}`;
 
                 const { data, error } = await supabaseClient.storage
-                    .from("galeria_usuarios")
+                    .from("galeria_fotos")
                     .upload(path, file);
 
                 if (error) {
@@ -287,7 +287,7 @@
                 }
 
                 const { data: publicUrlData } = supabaseClient.storage
-                    .from("galeria_usuarios")
+                    .from("galeria_fotos")
                     .getPublicUrl(path);
 
                 uploadedURLs.push(publicUrlData.publicUrl);
@@ -342,7 +342,7 @@
                     console.log("URLs enviadas:", urls);
 
                     const { data, error: updateError } = await supabaseClient // Renomeei para updateError
-                        .from("usuarios")
+                        .from("fotos")
                         .update({ galeria: urls })
                         .eq("id", userId);
 
