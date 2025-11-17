@@ -10,6 +10,11 @@ body {
     
 }
 
+body {
+  overflow-x: hidden; /* Remove a barra de rolagem horizontal */
+  /* overflow-y: scroll;  (Opcional: Garante que a vertical permaneça, se necessário) */
+}
+
 section {
     width: 100%;
     height: 100%;
@@ -835,26 +840,38 @@ a.selecionado {
 
 
 @media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column;
-    gap: 40px;
-  }
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
+    }
 
-  .footer-column {
-    flex: 1 1 100%;
-  }
+    .footer-column {
+        flex: 1 1 100%;
+    }
 
-  .footer-logo {
-    text-align: center;
-  }
+    .footer-logo {
+        text-align: center; /* Garante que o conteúdo do logo esteja centralizado */
+    }
 
-  .footer-column h3 {
-    text-align: center;
-  }
+    /* 💡 REVERTENDO AS TRANSFORMAÇÕES para centralizar o logo no celular */
+    .footer-logo h1, 
+    .footer-logo p {
+        transform: translateX(0); /* Remove o deslocamento lateral */
+        margin-top: 0;           /* Reseta a margem superior se necessário */
+    }
+    
+    .footer-column h3 {
+        text-align: center;
+    }
 
-  .footer-column ul {
-    text-align: center;
-  }
+    .footer-column ul {
+        text-align: center;
+    }
+
+    /* 💡 Centraliza os links dentro do ul */
+    .footer-column ul li a {
+        justify-content: center; /* Centraliza o ícone e o texto lado a lado */
+    }
 }
 
 #controls {
