@@ -244,14 +244,14 @@
         // o restante do teu código (galeria etc) continua igual
         // não removi nada
 
-        let selectedImages = []; // Armazena arquivos selecionados
-        let uploadedURLs = [];   // URLs finais após upload
+        let selectedImages = [];
+        let uploadedURLs = [];
 
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
 
-        // === PREVIEW IMEDIATO DAS IMAGENS ===
+        // === PREVIEW DAS IMAGENS ===
         fileInput.addEventListener("change", (event) => {
             const files = Array.from(event.target.files);
 
@@ -269,20 +269,28 @@
             });
         });
 
-        // === UPLOAD PARA STORAGE DO SUPABASE ===
+        // === UPLOAD PARA SUPABASE ===
         async function uploadImages(userId) {
             uploadedURLs = [];
 
             for (const file of selectedImages) {
+
+                console.log("Tentando enviar:", file.name);
+
                 const fileName = `${userId}_${Date.now()}_${file.name}`;
                 const path = `galerias/${userId}/${fileName}`;
 
-                const { data, error } = await supabaseClient.storage
+                const { error: uploadError } = await supabaseClient.storage
                     .from("galeria_fotos")
                     .upload(path, file);
 
                 if (error) {
-                    console.error("Erro ao enviar imagem:", error);
+                    console.error("Erro ao enviar imagem para o bucket:", error);
+                    continue;
+                }
+
+                if (uploadError) {
+                    console.error("Erro ao enviar imagem:", uploadError);
                     continue;
                 }
 
@@ -296,70 +304,35 @@
             return uploadedURLs;
         }
 
-        // === SALVAR URLs NO BANCO ===
+        // === SALVAR NO BANCO ===
         saveBtn.addEventListener("click", async () => {
-            const userId = 1; // defina o ID do usuário atual
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const userId = user.id;
 
-            const urls = await uploadImages(userId);
 
-            console.log("URLs enviadas:", urls);
-
-            /*const { data, error } = await supabase
-                .from("usuarios")
-                .update({ galeria: urls })
-                .eq("id", userId);*/
-
-            /*saveBtn.addEventListener("click", async () => {
-                const userId = 1; // defina o ID do usuário atual
+            try {
                 const urls = await uploadImages(userId);
                 console.log("URLs enviadas:", urls);
 
-                const { data, error } = await supabaseClient  // <-- MUDANÇA AQUI
-        .from("usuarios")
-                        .update({ galeria: urls })
-                        .eq("id", userId);
+                const { error: updateError } = await supabaseClient
+                    .from("fotos")
+                    .update({ galeria: urls })
+                    .eq("usuario_id", userId);
+                // <- você disse que aqui é FK do usuário
 
-                if (error) {
+                if (updateError) {
                     alert("Erro ao salvar galeria!");
-                    console.error(error);
+                    console.error(updateError);
                 } else {
                     alert("Galeria salva com sucesso!");
+                    // limpa seleção após salvar
+                    selectedImages = [];
                 }
-            });
-
-            if (error) {
-                alert("Erro ao salvar galeria!");
-                console.error(error);
-            } else {
-                alert("Galeria salva com sucesso!");
-            }*/
-
-            saveBtn.addEventListener("click", async () => {
-                const userId = 1; // defina o ID do usuário atual
-
-                try {
-                    const urls = await uploadImages(userId);
-                    console.log("URLs enviadas:", urls);
-
-                    const { data, error: updateError } = await supabaseClient // Renomeei para updateError
-                        .from("fotos")
-                        .update({ galeria: urls })
-                        .eq("id", userId);
-
-                    if (updateError) { // Usando o nome correto: updateError
-                        alert("Erro ao salvar galeria!");
-                        console.error(updateError);
-                    } else {
-                        alert("Galeria salva com sucesso!");
-                    }
-                } catch (err) {
-                    // Este catch pega qualquer erro inesperado, incluindo o uploadImages falhando
-                    alert("Ocorreu um erro inesperado durante o processo.");
-                    console.error("Erro inesperado:", err);
-                }
-            });
+            } catch (err) {
+                alert("Erro inesperado!");
+                console.error(err);
+            }
         });
-
 
     </script>
 </body>
