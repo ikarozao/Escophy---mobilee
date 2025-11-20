@@ -167,12 +167,13 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        const { data: session } = await supabaseClient.auth.getSession();
-console.log("Sessão no Netlify:", session);
+        (async () => {
+            const { data: session } = await supabaseClient.auth.getSession();
+            console.log("Sessão no Netlify:", session);
 
-const { data: user } = await supabaseClient.auth.getUser();
-console.log("User no Netlify:", user);
-
+            const { data: user } = await supabaseClient.auth.getUser();
+            console.log("User no Netlify:", user);
+        })();
 
         const usuario = localStorage.getItem("usuarioLogado");
         const usuarioEmail = localStorage.getItem("usuarioEmail");
@@ -193,7 +194,7 @@ console.log("User no Netlify:", user);
                 .eq('email', usuarioEmail)
                 .maybeSingle();
 
-            if (error) {
+            if (uploadError) {
                 console.error('Erro ao buscar perfil:', error);
                 return;
             }
@@ -320,6 +321,16 @@ console.log("User no Netlify:", user);
             try {
                 const urls = await uploadImages(userId);
                 console.log("URLs enviadas:", urls);
+
+                const { data: userData } = await supabaseClient.auth.getUser();
+
+                if (!userData || !userData.user) {
+                    alert("Você não está logado no Supabase!");
+                    return;
+                }
+
+                const userId = userData.user.id;
+
 
                 const { error: updateError } = await supabaseClient
                     .from("fotos")
