@@ -252,7 +252,7 @@
         // o restante do teu código (galeria etc) continua igual
         // não removi nada
 
-        let selectedImages = [];
+        /*let selectedImages = [];
         let uploadedURLs = [];
 
         const fileInput = document.getElementById("fileInput");
@@ -350,7 +350,103 @@
                 alert("Erro inesperado!");
                 console.error(err);
             }
+        });*/
+
+
+        let selectedImages = [];
+        let uploadedURLs = [];
+
+        const fileInput = document.getElementById("fileInput");
+        const preview = document.getElementById("preview");
+        const saveBtn = document.getElementById("saveBtn");
+
+        // PREVIEW DAS IMAGENS
+        fileInput.addEventListener("change", (event) => {
+            const files = Array.from(event.target.files);
+
+            files.forEach(file => {
+                selectedImages.push(file);
+
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style.width = "120px";
+                img.style.height = "120px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "8px";
+
+                preview.appendChild(img);
+            });
         });
+
+        // UPLOAD PARA BUCKET
+        async function uploadImages(userId) {
+            uploadedURLs = [];
+
+            for (const file of selectedImages) {
+                const fileName = `${userId}_${Date.now()}_${file.name}`;
+                const path = `galerias/${userId}/${fileName}`;
+
+                const { data, error } = await supabaseClient
+                    .storage
+                    .from("galeria_fotos")
+                    .upload(path, file);
+
+                if (error) {
+                    console.error("Erro ao enviar imagem:", error);
+                    continue;
+                }
+
+                const { data: publicUrlData } = supabaseClient
+                    .storage
+                    .from("galeria_fotos")
+                    .getPublicUrl(path);
+
+                uploadedURLs.push(publicUrlData.publicUrl);
+            }
+
+            return uploadedURLs;
+        }
+
+        // SALVAR NO BANCO
+        saveBtn.addEventListener("click", async () => {
+            const userId = localStorage.getItem("usuarioId"); // <-- USANDO O SEU ID
+
+            if (!userId) {
+                alert("ERRO: nenhum usuário logado!");
+                console.log("LocalStorage:", localStorage);
+                return;
+            }
+
+            console.log("ID do usuário carregado:", userId);
+
+            try {
+                const urls = await uploadImages(userId);
+                console.log("URLs enviadas:", urls);
+
+                if (urls.length === 0) {
+                    alert("Nenhuma imagem foi enviada!");
+                    return;
+                }
+
+                const { data, error } = await supabaseClient
+                    .from("fotos")
+                    .update({ galeria: urls })
+                    .eq("usuario_id", userId);
+
+                if (error) {
+                    console.error(error);
+                    alert("Erro ao salvar galeria!");
+                } else {
+                    alert("Galeria salva com sucesso!");
+                }
+
+            } catch (err) {
+                console.error("Erro inesperado:", err);
+                alert("Erro inesperado durante upload!");
+            }
+        });
+
+
 
     </script>
 </body>
