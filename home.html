@@ -352,6 +352,9 @@
             }
         });*/
 
+        // ========================
+        // GALERIA
+        // ========================
 
         let selectedImages = [];
         let uploadedURLs = [];
@@ -360,7 +363,9 @@
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
 
+        // ========================
         // PREVIEW DAS IMAGENS
+        // ========================
         fileInput.addEventListener("change", (event) => {
             const files = Array.from(event.target.files);
 
@@ -378,26 +383,29 @@
             });
         });
 
-        // UPLOAD PARA BUCKET
+        // ========================
+        // UPLOAD PARA O BUCKET
+        // ========================
         async function uploadImages(userId) {
             uploadedURLs = [];
 
             for (const file of selectedImages) {
+
                 const fileName = `${userId}_${Date.now()}_${file.name}`;
                 const path = `galerias/${userId}/${fileName}`;
 
-                const { data, error } = await supabaseClient
-                    .storage
+                console.log("Enviando arquivo:", fileName);
+
+                const { error: uploadError } = await supabaseClient.storage
                     .from("galeria_fotos")
                     .upload(path, file);
 
-                if (error) {
-                    console.error("Erro ao enviar imagem:", error);
+                if (uploadError) {
+                    console.error("Erro ao enviar imagem:", uploadError);
                     continue;
                 }
 
-                const { data: publicUrlData } = supabaseClient
-                    .storage
+                const { data: publicUrlData } = supabaseClient.storage
                     .from("galeria_fotos")
                     .getPublicUrl(path);
 
@@ -407,13 +415,16 @@
             return uploadedURLs;
         }
 
-        // SALVAR NO BANCO
+        // ========================
+        // SALVAR GALERIA NO BANCO
+        // ========================
         saveBtn.addEventListener("click", async () => {
-            const userId = localStorage.getItem("usuarioId"); // <-- USANDO O SEU ID
+
+            // Pegando o ID do usuário salvo no login
+            const userId = localStorage.getItem("usuarioId");
 
             if (!userId) {
-                alert("ERRO: nenhum usuário logado!");
-                console.log("LocalStorage:", localStorage);
+                alert("Erro: usuário não identificado.");
                 return;
             }
 
@@ -423,28 +434,79 @@
                 const urls = await uploadImages(userId);
                 console.log("URLs enviadas:", urls);
 
-                if (urls.length === 0) {
-                    alert("Nenhuma imagem foi enviada!");
+                // SALVA NO BANCO — UPSERT SEMPRE FUNCIONA
+                const { data, error } = await supabaseClient
+                    .from("fotos")
+                    .upsert(
+                        {
+                            usuario_id: userId,
+                            galeria: urls
+                        },
+                        { onConflict: "usuario_id" } // se já existir, atualiza
+                    );
+
+                if (error) {
+                    console.error("Erro ao salvar a galeria:", error);
+                    alert("Erro ao salvar galeria!");
                     return;
                 }
 
-                const { data, error } = await supabaseClient
-                    .from("fotos")
-                    .update({ galeria: urls })
-                    .eq("usuario_id", userId);
-
-                if (error) {
-                    console.error(error);
-                    alert("Erro ao salvar galeria!");
-                } else {
-                    alert("Galeria salva com sucesso!");
-                }
+                alert("Galeria salva com sucesso!");
+                selectedImages = [];
 
             } catch (err) {
-                console.error("Erro inesperado:", err);
-                alert("Erro inesperado durante upload!");
+                alert("Erro inesperado ao salvar galeria!");
+                console.error(err);
             }
         });
+
+        // ========================
+        // CARREGAR GALERIA AO ABRIR A PÁGINA
+        // ========================
+        async function carregarGaleria() {
+            const userId = localStorage.getItem("usuarioId");
+
+            if (!userId) {
+                console.warn("Nenhum usuário logado encontrado no localStorage.");
+                return;
+            }
+
+            console.log("Carregando galeria para usuário:", userId);
+
+            const { data, error } = await supabaseClient
+                .from("fotos")
+                .select("galeria")
+                .eq("usuario_id", userId)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Erro ao buscar galeria:", error);
+                return;
+            }
+
+            if (!data || !data.galeria || data.galeria.length === 0) {
+                console.log("Usuário ainda não possui galeria salva.");
+                return;
+            }
+
+            console.log("Galeria carregada:", data.galeria);
+
+            preview.innerHTML = ""; // limpa antes de mostrar
+
+            data.galeria.forEach(url => {
+                const img = document.createElement("img");
+                img.src = url;
+                img.style.width = "120px";
+                img.style.height = "120px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "8px";
+
+                preview.appendChild(img);
+            });
+        }
+
+        // chama automaticamente quando a página carregar
+        carregarGaleria();
 
 
 
