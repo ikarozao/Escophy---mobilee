@@ -808,7 +808,7 @@ button#botaoMais{
     font-family: "Poppins", sans-serif;
     font-size: 14px;
 
-    padding: 10px 15px;
+    padding: 10px 10px;
     border: none;
     border-radius: 25px;
     cursor: pointer;
@@ -862,4 +862,11 @@ button#botaoMais{
 .preview-img:hover {
     transform: scale(1.1); 
     z-index: 10; 
+}
+@media (max-width: 480px) {
+    #fileInput {
+        width: auto !important;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
 }
