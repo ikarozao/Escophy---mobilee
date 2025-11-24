@@ -19,7 +19,6 @@ body {
     padding-top: 70px; 
 }
 
-/* ===== NAVBAR ===== */
 /*nav {
     background-color: #fff;
     width: 100%; 
@@ -54,7 +53,6 @@ nav {
     left: 0;
     z-index: 1000;
 
-    /* Remove margem que estava causando problema */
     margin: 0;
 }
 
@@ -85,7 +83,7 @@ nav .search-box {
     border-radius: 20px;
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
     width: 100%;
-    max-width: 400px; /* limite para telas maiores */
+    max-width: 400px; 
     margin-right: 4vh; 
 }
 
@@ -101,9 +99,7 @@ nav .search-box input {
     transition: box-shadow 0.3s ease;
 }
 
-
-
-/* ===== CONTÊINER PRINCIPAL DO CONTEÚDO (main-content-perfil) ===== */
+/*principal*/
 .main-content-perfil {
     display: flex; 
     flex-wrap: wrap; 
@@ -115,7 +111,6 @@ nav .search-box input {
     padding-bottom: 80px; 
 }
 
-/* Estilo para as colunas (esquerda e direita) */
 .column {
     display: flex;
     flex-direction: column; 
@@ -141,7 +136,7 @@ nav .search-box input {
     flex: 1;
 }
 
-/* ===== BLOCOS DE CONTEÚDO (articles) ===== */
+/*blocos de conteúdo*/
 .usuario,
 .publi_usua,
 .treinos,
@@ -356,7 +351,7 @@ a {
     color: black;
 }
 
-/* --- BOTÕES FLUTUANTES --- */
+/*botões flutuantes*/
 .floating-buttons-container {
     position: fixed;
     bottom: 20px;
@@ -443,9 +438,6 @@ button#botaoMais{
     border-radius: 50%;
 }
 
-/* ===== RESPONSIVIDADE GERAL ===== */
-
-/* Tablets (769px a 1024px) */
 @media (max-width: 1024px) {
     nav {
         width: 95%; 
@@ -482,7 +474,6 @@ button#botaoMais{
     }
 }
 
-/* Tablets (481px a 768px) */
 @media (max-width: 768px) {
     body {
         padding: 5px;
@@ -534,7 +525,6 @@ button#botaoMais{
     }
 }
 
-/* Celulares (até 480px) */
 @media (max-width: 480px) {
     body {
         padding: 2px;
@@ -738,7 +728,7 @@ button#botaoMais{
   }
 }
 #fotoPerfil {
-    cursor: pointer;  /* deixa a div clicável */
+    cursor: pointer;  
     display: inline-block;
     position: relative;
 }
@@ -753,26 +743,25 @@ button#botaoMais{
 
 .youtube-video-container {
             width: 100%;
-            max-width: 560px; /* Largura máxima para o vídeo */
-            margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
+            max-width: 560px; 
+            margin: 20px auto; 
             border-radius: 15px;
-            overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
+            overflow: hidden; 
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: white; /* Para seguir o design do site */
-            padding: 10px; /* Espaçamento interno */
-            box-sizing: border-box; /* Inclui padding na largura total */
-            /* Garante que ele se comporte como um bloco para margin:auto funcionar e ocupar sua própria linha */
+            background-color: white; 
+            padding: 10px; 
+            box-sizing: border-box; 
             display: block; 
         }
 
         .youtube-video-container iframe {
             width: 100%;
-            height: 315px; /* Altura padrão para 16:9 em 560px de largura */
+            height: 315px; 
             border: none;
-            border-radius: 10px; /* Arredonda as bordas do iframe */
+            border-radius: 10px; 
         }
 
-        /* ===== BOTÃO SALVAR GALERIA ===== */
+        /*botão salvar galeria*/
 #saveBtn {
     background-color: #00b40c;
     color: white;
@@ -788,18 +777,15 @@ button#botaoMais{
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover */
 #saveBtn:hover {
     background-color: #00990a;
     transform: scale(1.05);
 }
 
-/* Clique */
 #saveBtn:active {
     transform: scale(0.97);
 }
 
-/* Versão mobile */
 @media (max-width: 480px) {
     #saveBtn {
         width: 100%;
@@ -808,7 +794,7 @@ button#botaoMais{
         border-radius: 20px;
     }
 }
-/* ===== INPUT DE ARQUIVOS (Galeria) ===== */
+/*galeria*/
 #fileInput {
     background-color: #ffffff;
     color: rgb(0, 0, 0);
@@ -863,10 +849,10 @@ button#botaoMais{
     height: 290px;
     object-fit: cover;
     border-radius: 8px;
-    transition: transform 0.3s ease; /* animação suave */
+    transition: transform 0.3s ease; 
 }
 
 .preview-img:hover {
-    transform: scale(1.1); /* aumenta a imagem */
-    z-index: 10; /* coloca por cima das outras */
+    transform: scale(1.1); 
+    z-index: 10; 
 }

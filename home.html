@@ -43,8 +43,7 @@
 
                 </article>
             </article>
-
-            <!-- Treinos Realizados -->
+>
             <article class="treinos">
                 <div>
                     <h2>Treinos Realizados</h2>
@@ -86,20 +85,10 @@
 
         <div class="column right-column">
 
-            <!--<article class="publi_usua">
-                <div>
-                    <h2>Galeria</h2>
-                    <input type="file" id="inputGaleria" accept="image/*" multiple>
-                </div>
-                <div id="listaPublicacoes"></div>
-            </article>-->
-
             <input type="file" id="fileInput" accept="image/*" multiple />
             <div id="preview" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
 
             <button id="saveBtn">Salvar galeria</button>
-
-            <!--<script type="module" src="./galeria.js"></script>-->
 
         </div>
     </div>
@@ -233,7 +222,6 @@
                     item.textContent = atividade.titulo;
                     item.style.cursor = "pointer";
 
-                    // quando clicar no treino, salva no localstorage e vai pra treino1.html
                     item.addEventListener('click', () => {
                         localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
                         window.location.href = 'treino1.html';
@@ -249,112 +237,7 @@
         carregarPerfil();
         carregarTreinos();
 
-        // o restante do teu código (galeria etc) continua igual
-        // não removi nada
-
-        /*let selectedImages = [];
-        let uploadedURLs = [];
-
-        const fileInput = document.getElementById("fileInput");
-        const preview = document.getElementById("preview");
-        const saveBtn = document.getElementById("saveBtn");
-
-        // === PREVIEW DAS IMAGENS ===
-        fileInput.addEventListener("change", (event) => {
-            const files = Array.from(event.target.files);
-
-            files.forEach(file => {
-                selectedImages.push(file);
-
-                const img = document.createElement("img");
-                img.src = URL.createObjectURL(file);
-                img.style.width = "120px";
-                img.style.height = "120px";
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "8px";
-
-                preview.appendChild(img);
-            });
-        });
-
-        // === UPLOAD PARA SUPABASE ===
-        async function uploadImages(userId) {
-            uploadedURLs = [];
-
-            for (const file of selectedImages) {
-
-                console.log("Tentando enviar:", file.name);
-
-                const fileName = `${userId}_${Date.now()}_${file.name}`;
-                const path = `galerias/${userId}/${fileName}`;
-
-                const { error: uploadError } = await supabaseClient.storage
-                    .from("galeria_fotos")
-                    .upload(path, file);
-
-                if (error) {
-                    console.error("Erro ao enviar imagem para o bucket:", error);
-                    continue;
-                }
-
-                if (uploadError) {
-                    console.error("Erro ao enviar imagem:", uploadError);
-                    continue;
-                }
-
-                const { data: publicUrlData } = supabaseClient.storage
-                    .from("galeria_fotos")
-                    .getPublicUrl(path);
-
-                uploadedURLs.push(publicUrlData.publicUrl);
-            }
-
-            return uploadedURLs;
-        }
-
-        // === SALVAR NO BANCO ===
-        saveBtn.addEventListener("click", async () => {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            const userId = user.id;
-
-
-            try {
-                const urls = await uploadImages(userId);
-                console.log("URLs enviadas:", urls);
-
-                const { data: userData } = await supabaseClient.auth.getUser();
-
-                if (!userData || !userData.user) {
-                    alert("Você não está logado no Supabase!");
-                    return;
-                }
-
-                const userId = userData.user.id;
-
-
-                const { error: updateError } = await supabaseClient
-                    .from("fotos")
-                    .update({ galeria: urls })
-                    .eq("usuario_id", userId);
-                // <- você disse que aqui é FK do usuário
-
-                if (updateError) {
-                    alert("Erro ao salvar galeria!");
-                    console.error(updateError);
-                } else {
-                    alert("Galeria salva com sucesso!");
-                    // limpa seleção após salvar
-                    selectedImages = [];
-                }
-            } catch (err) {
-                alert("Erro inesperado!");
-                console.error(err);
-            }
-        });*/
-
-        // ========================
-        // GALERIA
-        // ========================
+        // galeria
 
         let selectedImages = [];
         let uploadedURLs = [];
@@ -363,9 +246,6 @@
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
 
-        // ========================
-        // PREVIEW DAS IMAGENS
-        // ========================
         fileInput.addEventListener("change", (event) => {
             const files = Array.from(event.target.files);
 
@@ -383,9 +263,6 @@
             });
         });
 
-        // ========================
-        // UPLOAD PARA O BUCKET
-        // ========================
         async function uploadImages(userId) {
             uploadedURLs = [];
 
@@ -415,12 +292,8 @@
             return uploadedURLs;
         }
 
-        // ========================
-        // SALVAR GALERIA NO BANCO
-        // ========================
         saveBtn.addEventListener("click", async () => {
 
-            // Pegando o ID do usuário salvo no login
             const userId = localStorage.getItem("usuarioId");
 
             if (!userId) {
@@ -434,7 +307,6 @@
                 const urls = await uploadImages(userId);
                 console.log("URLs enviadas:", urls);
 
-                // SALVA NO BANCO — UPSERT SEMPRE FUNCIONA
                 const { data, error } = await supabaseClient
                     .from("fotos")
                     .upsert(
@@ -442,7 +314,7 @@
                             usuario_id: userId,
                             galeria: urls
                         },
-                        { onConflict: "usuario_id" } // se já existir, atualiza
+                        { onConflict: "usuario_id" } 
                     );
 
                 if (error) {
@@ -460,9 +332,6 @@
             }
         });
 
-        // ========================
-        // CARREGAR GALERIA AO ABRIR A PÁGINA
-        // ========================
         async function carregarGaleria() {
             const userId = localStorage.getItem("usuarioId");
 
@@ -491,7 +360,7 @@
 
             console.log("Galeria carregada:", data.galeria);
 
-            preview.innerHTML = ""; // limpa antes de mostrar
+            preview.innerHTML = ""; 
 
             data.galeria.forEach(url => {
                 const img = document.createElement("img");
@@ -506,7 +375,6 @@
             });
         }
 
-        // chama automaticamente quando a página carregar
         carregarGaleria();
 
 
