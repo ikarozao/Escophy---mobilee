@@ -800,4 +800,17 @@ button#botaoMais {
     padding: 12px;
     font-size: 13px;
   }
+}
+.preview-img {
+  width: 290px;
+  height: 290px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease; /* animação suave */
+}
+
+.preview-img:hover {
+  transform: scale(1.1); /* aumenta a imagem */
+  z-index: 10; /* coloca por cima das outras */
 }/*# sourceMappingURL=perfil.css.map */

@@ -496,8 +496,9 @@
             data.galeria.forEach(url => {
                 const img = document.createElement("img");
                 img.src = url;
-                img.style.width = "120px";
-                img.style.height = "120px";
+                /*img.style.width = "200px";
+                img.style.height = "200px";*/
+                img.classList.add("preview-img");
                 img.style.objectFit = "cover";
                 img.style.borderRadius = "8px";
 

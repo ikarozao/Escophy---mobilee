@@ -857,3 +857,16 @@ button#botaoMais{
         font-size: 13px;
     }
 }
+
+.preview-img {
+    width: 290px;
+    height: 290px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease; /* animação suave */
+}
+
+.preview-img:hover {
+    transform: scale(1.1); /* aumenta a imagem */
+    z-index: 10; /* coloca por cima das outras */
+}
