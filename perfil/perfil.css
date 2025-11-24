@@ -241,6 +241,11 @@ nav .search-box input {
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .feed {
+    display: none !important;
+  }
+}
 .publi_usua h2,
 .treinos h2,
 .sugeridos h2 {
