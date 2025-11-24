@@ -53,18 +53,18 @@
         <p>Caminhada</p>
       </div>
 
-    </ul> 
+    </ul>
 
     <script>
-const buttons = document.querySelectorAll('.carrossel');
+      const buttons = document.querySelectorAll('.carrossel');
 
-buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    buttons.forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-  });
-});
-</script>
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+      });
+    </script>
 
     <div id="map"></div>
 
@@ -149,9 +149,7 @@ buttons.forEach(btn => {
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
   <script>
-    // ===============================
-    // CONFIGURAÇÃO ÚNICA - EVITANDO DUPLICAÇÃO
-    // ===============================
+
 
     console.log("Iniciando aplicação");
 
@@ -160,17 +158,12 @@ buttons.forEach(btn => {
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Variáveis globais para tracking
     let userPositions = [];
     let polyline;
     let startMarker;
     let endMarker;
     let watchId;
     let tracking = false;
-
-    // ===============================
-    // FUNÇÕES GLOBAIS
-    // ===============================
 
     function calcularDistanciaTotal(positions) {
       if (positions.length < 2) return 0;
@@ -221,7 +214,7 @@ buttons.forEach(btn => {
               accuracy: position.coords.accuracy
             });
 
-            
+
             window.mainMap.setView([lat, lon], 16);
 
             if (userPositions.length === 1) {
@@ -275,14 +268,9 @@ buttons.forEach(btn => {
       }
     }
 
-    // ===============================
-    // CONFIGURAÇÃO DA INTERFACE
-    // ===============================
-
     document.addEventListener('DOMContentLoaded', function () {
       console.log("DOM carregado");
 
-      // CORREÇÃO: Criando apenas UM mapa global
       console.log("Inicializando mapa");
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
 
@@ -290,9 +278,7 @@ buttons.forEach(btn => {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(window.mainMap);
-    
 
-      //Configuração do carrossel
       const botoes = document.querySelectorAll(".carrossel");
       const info = document.querySelector(".infos_treinos");
 
@@ -304,9 +290,7 @@ buttons.forEach(btn => {
           botao.classList.add("ativo");
         });
       });
-    
 
-      // Configuração das seleções
       function setupSingleSelection(containerSelector) {
         const container = document.querySelector(containerSelector);
         if (!container) return;
@@ -324,7 +308,6 @@ buttons.forEach(btn => {
       setupSingleSelection('.tipo');
       setupSingleSelection('.visibilidade');
 
-      // Configuração dos acessórios
       const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
       const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
 
@@ -359,11 +342,9 @@ buttons.forEach(btn => {
         });
       });
 
-      // Event listeners
       document.getElementById("startBtn").addEventListener("click", startTracking);
       document.getElementById("endBtn").addEventListener("click", endTracking);
 
-      // Botão salvar com Supabase
       const salvarBtn = document.getElementById('salvarBtn');
       const mensagemSalvo = document.getElementById('mensagemSalvo');
 
@@ -384,7 +365,6 @@ buttons.forEach(btn => {
           return;
         }
 
-        // Coleta dados
         const titulo = document.querySelector("input[name='titulo']").value;
         const descricao = document.querySelector("input[name='descricao']").value;
         const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
@@ -398,7 +378,6 @@ buttons.forEach(btn => {
           return;
         }
 
-        // Acessórios
         const acessoriosSelecionados = [];
         document.querySelectorAll('.acessorio .active-option').forEach(option => {
           acessoriosSelecionados.push(option.innerText);
@@ -406,7 +385,6 @@ buttons.forEach(btn => {
         const acessorios = acessoriosSelecionados.join(', ');
         const especificacoes = document.getElementById("especificacoesAcessorios").value;
 
-        // Trajeto
         const trajetoCompleto = {
           positions: userPositions,
           summary: {
@@ -420,31 +398,29 @@ buttons.forEach(btn => {
         try {
           console.log("4.Enviando para Supabase...");
 
-          // Identifica pontos de início e fim
-const startPoint = userPositions[0];
-const endPoint = userPositions[userPositions.length - 1];
+          const startPoint = userPositions[0];
+          const endPoint = userPositions[userPositions.length - 1];
 
-const { data, error } = await supabaseClient
-  .from("atividades")
-  .insert([{
-    email_usuario: usuarioEmail,
-    titulo: titulo,
-    descricao: descricao,
-    tipo: tipo,
-    intensidade: parseInt(intensidade),
-    visibilidade: visibilidade.toLowerCase(),
-    acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
-    trajeto: trajetoCompleto, // opcional, se quiser salvar todos os pontos em JSON
+          const { data, error } = await supabaseClient
+            .from("atividades")
+            .insert([{
+              email_usuario: usuarioEmail,
+              titulo: titulo,
+              descricao: descricao,
+              tipo: tipo,
+              intensidade: parseInt(intensidade),
+              visibilidade: visibilidade.toLowerCase(),
+              acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
+              trajeto: trajetoCompleto,
 
-    // novos campos individuais:
-    trajeto_inicial1: startPoint.lat,
-    trajeto_inicial2: startPoint.lng,
-    trajeto_final1: endPoint.lat,
-    trajeto_final2: endPoint.lng,
+              trajeto_inicial1: startPoint.lat,
+              trajeto_inicial2: startPoint.lng,
+              trajeto_final1: endPoint.lat,
+              trajeto_final2: endPoint.lng,
 
-    data: new Date().toISOString()
-  }])
-  .select();
+              data: new Date().toISOString()
+            }])
+            .select();
 
 
           if (error) {
@@ -458,14 +434,12 @@ const { data, error } = await supabaseClient
           mensagemSalvo.classList.add("show");
           setTimeout(() => {
             mensagemSalvo.classList.remove("show");
-            // Mostra o trajeto salvo no mapa
             L.polyline([
-            [startPoint.lat, startPoint.lng],
-            [endPoint.lat, endPoint.lng]
+              [startPoint.lat, startPoint.lng],
+              [endPoint.lat, endPoint.lng]
             ], { color: 'orange', weight: 5 }).addTo(window.mainMap);
 
-            
-            // Limpeza
+
             document.querySelector("input[name='titulo']").value = "";
             document.querySelector("input[name='descricao']").value = "";
             document.querySelector(".rangezao").value = "5";
@@ -495,44 +469,40 @@ const { data, error } = await supabaseClient
 
 
 
-    // Carregar treino selecionado (se houver)
-// Carregar treino selecionado (se houver)
-window.addEventListener('DOMContentLoaded', () => {
-  const treinoSalvo = localStorage.getItem('treinoSelecionado');
-  if (treinoSalvo) {
-    const treino = JSON.parse(treinoSalvo);
 
-    // Preenche os campos com as informações
-    if (treino.titulo) document.querySelector('input[name="titulo"]').value = treino.titulo;
-    if (treino.descricao) document.querySelector('input[name="descricao"]').value = treino.descricao;
+    window.addEventListener('DOMContentLoaded', () => {
+      const treinoSalvo = localStorage.getItem('treinoSelecionado');
+      if (treinoSalvo) {
+        const treino = JSON.parse(treinoSalvo);
 
-    // Exibe a seção de informações, caso esteja oculta
-    const infos = document.getElementById('infos_treinos');
-    if (infos) infos.style.display = 'block';
+        if (treino.titulo) document.querySelector('input[name="titulo"]').value = treino.titulo;
+        if (treino.descricao) document.querySelector('input[name="descricao"]').value = treino.descricao;
 
-    // 🔥 Só remove depois de usar
-    localStorage.removeItem('treinoSelecionado');
-  }
-});
+        const infos = document.getElementById('infos_treinos');
+        if (infos) infos.style.display = 'block';
+
+        localStorage.removeItem('treinoSelecionado');
+      }
+    });
 
 
 
   </script>
 
   <div class="floating-buttons-container">
-        <a href="home.html">
-            <div class="botaoperfil-container">
-                <button class="botaoperfil" id="botaoperfil">
-                    <img src="img/home.png" alt="Ícone Perfil">
-                </button>
-            </div>
-        </a>
-        <a href="treino1.html">
-            <div class="botaomais-container">
-                <button class="botaomais" id="botaoMais">+</button>
-            </div>
-        </a>
-    </div>
+    <a href="home.html">
+      <div class="botaoperfil-container">
+        <button class="botaoperfil" id="botaoperfil">
+          <img src="img/home.png" alt="Ícone Perfil">
+        </button>
+      </div>
+    </a>
+    <a href="treino1.html">
+      <div class="botaomais-container">
+        <button class="botaomais" id="botaoMais">+</button>
+      </div>
+    </a>
+  </div>
 
   <footer class="footer">
     <div class="footer-container">

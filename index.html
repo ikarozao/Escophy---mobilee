@@ -20,7 +20,7 @@
   </div>
 
   <main class="container">
-    <!-- Formulário de Login -->
+    <!-- formulário de Login -->
     <form id="login-form" class="form active">
       <h1>Login</h1>
       <div class="input-box">
@@ -39,7 +39,7 @@
       </div>
     </form>
 
-    <!-- Formulário de Cadastro -->
+    <!-- formulário de Cadastro -->
     <form id="register-form" class="form">
       <h1>Cadastro</h1>
       <div class="input-box">
@@ -98,17 +98,12 @@
       loginForm.classList.add('active');
     });
 
-    // =========================
-    // Supabase Config
-    // =========================
     const SUPABASE_URL = 'https://yuupbtrljazrrwizzafd.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // =========================
-    // LOGIN (apenas tabela usuarios)
-    // =========================
+    // login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -134,12 +129,10 @@
 
         console.log('✅ Login OK:', usuarios);
 
-        // Salva no localStorage
         localStorage.setItem("usuarioLogado", usuarios.nome);
         localStorage.setItem("usuarioEmail", usuarios.email);
         localStorage.setItem("usuarioId", usuarios.id);
 
-        // Redireciona para home
         window.location.href = "home.html";
 
       } catch (err) {
@@ -148,9 +141,7 @@
       }
     });
 
-    // =========================
-    // CADASTRO (apenas tabela usuarios)
-    // =========================
+    // cadastro (apenas tabela usuarios)
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -161,7 +152,6 @@
       try {
         console.log("📝 Tentando cadastro...");
 
-        // Primeiro verifica se o email já existe
         const { data: usuarioExistente, error: checkError } = await supabaseClient
           .from('usuarios')
           .select('email')
@@ -169,11 +159,10 @@
           .single();
 
         if (usuarioExistente) {
-          alert('❌ Este email já está cadastrado!');
+          alert('Este email já está cadastrado!');
           return;
         }
 
-        // Insere na tabela usuarios
         const { data, error } = await supabaseClient
           .from('usuarios')
           .insert([
@@ -194,27 +183,20 @@
 
         console.log("✅ Cadastro realizado:", data);
 
-        // Salva no localStorage
         localStorage.setItem("usuarioLogado", nome);
         localStorage.setItem("usuarioEmail", email);
         localStorage.setItem("usuarioId", data[0].id);
 
         alert("✅ Cadastro realizado com sucesso!");
         
-        // Redireciona para home
         window.location.href = "home.html";
 
       } catch (err) {
-        console.error("❌ Erro no cadastro:", err);
+        console.error("Erro no cadastro:", err);
         alert("Erro ao cadastrar!");
       }
     });
 
-
-
-    // =========================
-    // Toggle Password Visibility
-    // =========================
     document.querySelectorAll(".toggle-password").forEach((icon) => {
       icon.addEventListener("click", () => {
         const inputId = icon.getAttribute("data-target");
