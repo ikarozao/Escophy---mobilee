@@ -771,3 +771,89 @@ button#botaoMais{
             border: none;
             border-radius: 10px; /* Arredonda as bordas do iframe */
         }
+
+        /* ===== BOTÃO SALVAR GALERIA ===== */
+#saveBtn {
+    background-color: #00b40c;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 15px;
+
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover */
+#saveBtn:hover {
+    background-color: #00990a;
+    transform: scale(1.05);
+}
+
+/* Clique */
+#saveBtn:active {
+    transform: scale(0.97);
+}
+
+/* Versão mobile */
+@media (max-width: 480px) {
+    #saveBtn {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+        border-radius: 20px;
+    }
+}
+/* ===== INPUT DE ARQUIVOS (Galeria) ===== */
+#fileInput {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Remove o estilo feio padrão do input */
+#fileInput::-webkit-file-upload-button {
+    background-color: #00990a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#fileInput:hover::-webkit-file-upload-button {
+    background-color: #007e08;
+}
+
+#fileInput:hover {
+    transform: scale(1.03);
+}
+
+#fileInput:active {
+    transform: scale(0.97);
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    #fileInput {
+        width: 100%;
+        padding: 12px;
+        font-size: 13px;
+    }
+}
