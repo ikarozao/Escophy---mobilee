@@ -61,8 +61,7 @@ body {
   color: #fff;
   padding: 30px 40px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  -webkit-backdrop-filter: blur(50px);
-          backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
   opacity: 0;
   pointer-events: none;
   transition: all 0.8s ease;
