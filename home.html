@@ -152,7 +152,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
@@ -167,6 +167,7 @@
         })();
 
         const usuario = localStorage.getItem("usuarioLogado");
+
         const usuarioEmail = localStorage.getItem("usuarioEmail");
 
         if (usuario) {
@@ -185,10 +186,10 @@
                 .eq('email', usuarioEmail)
                 .maybeSingle();
 
-            if (uploadError) {
-                console.error('Erro ao buscar perfil:', error);
-                return;
-            }
+            if (error) {
+            console.error('Erro ao buscar perfil:', error);
+            return;
+}
 
             if (perfil) {
                 document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome}`;
