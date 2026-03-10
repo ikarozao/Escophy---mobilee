@@ -77,6 +77,8 @@
 
       <h1>Informações da atividade</h1>
 
+      <p>Distância: <span id="distance">0 km</span></p>
+
       <div class="titulo">
         <p>Título do treino:</p>
         <input class="input-rounded" type="text" name="titulo" placeholder="" required>
@@ -202,8 +204,17 @@
 
         watchId = navigator.geolocation.watchPosition(
           function (position) {
+            //if (position.coords.accuracy > 30) return;
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
+
+            if (userPositions.length > 0) {
+              const last = userPositions[userPositions.length - 1];
+              const dist = calcularDistancia(last.lat, last.lng, lat, lon);
+
+              //if (dist > 50) return; // salto GPS
+              //if (dist < 3) return;  // movimento mínimo
+            }
 
             console.log(`Posição: ${lat}, ${lon}`);
 
@@ -214,8 +225,14 @@
               accuracy: position.coords.accuracy
             });
 
+            const distanciaTotal = calcularDistanciaTotal(userPositions);
 
-            window.mainMap.setView([lat, lon], 16);
+            const distanciaKm = (distanciaTotal / 1000).toFixed(2);
+            document.getElementById("distance").innerText = distanciaKm + " km";
+
+            console.log("Distância total:", distanciaTotal, "metros");
+
+            window.mainMap.panTo([lat, lon]);
 
             if (userPositions.length === 1) {
               startMarker = L.marker([lat, lon])
@@ -241,7 +258,7 @@
           },
           {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 40000,
             maximumAge: 0
           }
         );
