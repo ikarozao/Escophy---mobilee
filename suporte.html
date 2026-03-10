@@ -13,23 +13,32 @@
 
 <button id="enviarEmail">Envie um email!</button>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-    
+
+const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
+const supabaseKey = 'SUA_ANON_KEY';
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
 emailjs.init("MQCRH_zme-EKH_OA_");
 
 const botao = document.getElementById("enviarEmail");
 
-botao.addEventListener("click", () => {
+botao.addEventListener("click", async () => {
 
     const mensagem = document.getElementById("mensagem").value;
 
-    const user = supabase.auth.getUser(); // usuário logado
+    const { data } = await supabaseClient.auth.getUser();
+    const emailUsuario = data.user.email;
 
     const templateParams = {
         subject: "Ajuda no Escorphy",
         message: mensagem,
-        user_email: user.email
+        user_email: emailUsuario
     };
 
     emailjs.send("service_zy04i9c", "template_n11sxy6", templateParams)
@@ -42,6 +51,7 @@ botao.addEventListener("click", () => {
         });
 
 });
+
 </script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>                
+           
 </html>
