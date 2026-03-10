@@ -204,7 +204,7 @@
 
         watchId = navigator.geolocation.watchPosition(
           function (position) {
-            if (position.coords.accuracy > 30) return;
+            //if (position.coords.accuracy > 30) return;
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
@@ -212,8 +212,8 @@
               const last = userPositions[userPositions.length - 1];
               const dist = calcularDistancia(last.lat, last.lng, lat, lon);
 
-              if (dist > 50) return; // salto GPS
-              if (dist < 3) return;  // movimento mínimo
+              //if (dist > 50) return; // salto GPS
+              //if (dist < 3) return;  // movimento mínimo
             }
 
             console.log(`Posição: ${lat}, ${lon}`);
