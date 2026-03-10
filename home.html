@@ -140,7 +140,7 @@
             <div class="footer-column">
                 <h3>Ajuda</h3>
                 <ul>
-                    <li><a href="#">Suporte</a></li>
+                    <li><a href="suporte.html">Suporte</a></li>
                     <li><a
                             href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale
                             Conosco</a></li>
@@ -150,6 +150,8 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
@@ -199,41 +201,53 @@
             }
         }
 
-        //carregar e salvar treino selecionado
         async function carregarTreinos() {
-            if (!usuarioEmail) return;
 
-            const { data: atividades, error } = await supabaseClient
-                .from('atividades')
-                .select('*')
-                .eq('email_usuario', usuarioEmail);
+    const { data: { user } } = await supabaseClient.auth.getUser();
 
-            if (error) {
-                console.error('Erro ao carregar atividades:', error);
-                return;
-            }
+    if (!user) {
+        console.warn("Usuário não autenticado.");
+        return;
+    }
 
-            const lista = document.getElementById('listaTreinos');
-            lista.innerHTML = '';
+    const { data: atividades, error } = await supabaseClient
+        .from('atividades')
+        .select('*')
+        .eq('usuario_id', user.id);
 
-            if (atividades && atividades.length > 0) {
-                atividades.forEach(atividade => {
-                    const item = document.createElement('li');
-                    item.textContent = atividade.titulo;
-                    item.style.cursor = "pointer";
+    if (error) {
+        console.error('Erro ao carregar atividades:', error);
+        return;
+    }
 
-                    item.addEventListener('click', () => {
-                        localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
-                        window.location.href = 'treino1.html';
-                    });
+    const lista = document.getElementById('listaTreinos');
+    const contador = document.getElementById('contTreinos');
 
-                    lista.appendChild(item);
-                });
-            } else {
-                lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
-            }
-        }
+    lista.innerHTML = '';
 
+    if (atividades && atividades.length > 0) {
+
+        // 🔥 ATUALIZA O CONTADOR AQUI
+        contador.textContent = atividades.length;
+
+        atividades.forEach(atividade => {
+            const item = document.createElement('li');
+            item.textContent = atividade.titulo;
+            item.style.cursor = "pointer";
+
+            item.addEventListener('click', () => {
+                localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
+                window.location.href = 'treino1.html';
+            });
+
+            lista.appendChild(item);
+        });
+
+    } else {
+        contador.textContent = 0;
+        lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
+    }
+}
         carregarPerfil();
         carregarTreinos();
 
