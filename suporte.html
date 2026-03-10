@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="suporte/suporte.scss">
+    <link rel="stylesheet" href="suporte/suporte.css">
 </head>
 <body>
     <h1>Precisa de ajuda?</h1>
@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     
-emailjs.init("SUA_PUBLIC_KEY");
+emailjs.init("MQCRH_zme-EKH_OA_");
 
 const botao = document.getElementById("enviarEmail");
 
@@ -32,7 +32,7 @@ botao.addEventListener("click", () => {
         user_email: user.email
     };
 
-    emailjs.send("SEU_SERVICE_ID", "SEU_TEMPLATE_ID", templateParams)
+    emailjs.send("service_zy04i9c", "template_n11sxy6", templateParams)
         .then(() => {
             alert("Email enviado com sucesso!");
         })
