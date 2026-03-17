@@ -154,247 +154,301 @@
     <script src="auth.js"></script>
 
     <script>
-        const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        (async () => {
-            const { data: session } = await supabaseClient.auth.getSession();
-            console.log("Sessão no Netlify:", session);
+    // DEBUG - Verificar dados no banco
+(async () => {
+    console.log("=== INÍCIO DO DEBUG ===");
+    
+    // 1. Verificar sessão
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    console.log("Sessão:", session);
+    
+    if (session) {
+        // 2. Verificar se o email existe na tabela usuarios
+        const { data: usuario, error } = await supabaseClient
+            .from('usuarios')
+            .select('*')
+            .eq('email', session.user.email);
+        
+        console.log("Busca na tabela usuarios por email:", session.user.email);
+        console.log("Resultado:", usuario);
+        console.log("Erro (se houver):", error);
+        
+        // 3. Listar todos os usuários (para ver o que tem no banco)
+        const { data: todosUsuarios } = await supabaseClient
+            .from('usuarios')
+            .select('*')
+            .limit(5);
+        
+        console.log("Primeiros 5 usuários no banco:", todosUsuarios);
+    }
+    
+    console.log("=== FIM DO DEBUG ===");
+})();
 
-            const { data: user } = await supabaseClient.auth.getUser();
-            console.log("User no Netlify:", user);
-        })();
-
-        const usuario = localStorage.getItem("usuarioLogado");
-
-        const usuarioEmail = localStorage.getItem("usuarioEmail");
-
-        if (usuario) {
-            const nomeElemento = document.getElementById('nomeUsuario');
-            if (nomeElemento) {
-                nomeElemento.textContent = `Olá, ${usuario}`;
+    // Função principal para carregar o perfil do banco de dados
+    async function carregarPerfil() {
+        try {
+            // Pega o usuário autenticado do Supabase
+            const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+            
+            if (userError || !user) {
+                console.error("Erro de autenticação:", userError);
+                return;
             }
-        }
 
-        async function carregarPerfil() {
-            if (!usuarioEmail) return;
+            console.log("Buscando perfil para o email:", user.email);
 
+            // Busca os dados do perfil no banco de dados
             const { data: perfil, error } = await supabaseClient
                 .from('usuarios')
-                .select('nome, publicacoes, foto_perfil')
-                .eq('email', usuarioEmail)
+                .select('nome, foto_perfil, treinos, publicacoes')
+                .eq('email', user.email)
                 .maybeSingle();
 
             if (error) {
-            console.error('Erro ao buscar perfil:', error);
-            return;
-}
+                console.error('Erro ao buscar perfil:', error);
+                return;
+            }
 
             if (perfil) {
-                document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome}`;
-                document.getElementById('contTreinos').textContent = perfil.treinos || 0;
-                document.getElementById('contPublicacoes').textContent = perfil.publicacoes || 0;
+                console.log("Perfil encontrado:", perfil);
+                
+                // Atualiza o nome
+                const nomeElemento = document.getElementById('nomeUsuario');
+                if (nomeElemento) {
+                    nomeElemento.textContent = `Olá, ${perfil.nome}`;
+                }
 
+                // Atualiza contadores
+                const contTreinos = document.getElementById('contTreinos');
+                const contPublicacoes = document.getElementById('contPublicacoes');
+                
+                if (contTreinos) contTreinos.textContent = perfil.treinos || 0;
+                if (contPublicacoes) contPublicacoes.textContent = perfil.publicacoes || 0;
+
+                // Atualiza foto de perfil
                 if (perfil.foto_perfil) {
-                    document.getElementById('imgPerfil').src = perfil.foto_perfil;
+                    const imgPerfil = document.getElementById('imgPerfil');
+                    if (imgPerfil) {
+                        imgPerfil.src = perfil.foto_perfil;
+                    }
+                }
+
+                // Salva no localStorage como backup
+                localStorage.setItem("usuarioLogado", perfil.nome);
+            } else {
+                console.log("Perfil não encontrado para o email:", user.email);
+                
+                // Tenta usar o que está no localStorage como fallback
+                const nomeLocal = localStorage.getItem("usuarioLogado");
+                if (nomeLocal) {
+                    document.getElementById('nomeUsuario').textContent = `Olá, ${nomeLocal}`;
                 }
             }
+        } catch (error) {
+            console.error('Erro inesperado ao carregar perfil:', error);
+        }
+    }
+
+    async function carregarTreinos() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        if (!user) {
+            console.warn("Usuário não autenticado.");
+            return;
         }
 
-        async function carregarTreinos() {
+        const { data: atividades, error } = await supabaseClient
+            .from('atividades')
+            .select('*')
+            .eq('usuario_id', user.id);
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-
-    if (!user) {
-        console.warn("Usuário não autenticado.");
-        return;
-    }
-
-    const { data: atividades, error } = await supabaseClient
-        .from('atividades')
-        .select('*')
-        .eq('usuario_id', user.id);
-
-    if (error) {
-        console.error('Erro ao carregar atividades:', error);
-        return;
-    }
-
-    const lista = document.getElementById('listaTreinos');
-    const contador = document.getElementById('contTreinos');
-
-    lista.innerHTML = '';
-
-    if (atividades && atividades.length > 0) {
-
-        // 🔥 ATUALIZA O CONTADOR AQUI
-        contador.textContent = atividades.length;
-
-        atividades.forEach(atividade => {
-            const item = document.createElement('li');
-            item.textContent = atividade.titulo;
-            item.style.cursor = "pointer";
-
-            item.addEventListener('click', () => {
-                localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
-                window.location.href = 'treino1.html';
-            });
-
-            lista.appendChild(item);
-        });
-
-    } else {
-        contador.textContent = 0;
-        lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
-    }
-}
-        carregarPerfil();
-        carregarTreinos();
-
-        // galeria
-
-        let selectedImages = [];
-        let uploadedURLs = [];
-
-        const fileInput = document.getElementById("fileInput");
-        const preview = document.getElementById("preview");
-        const saveBtn = document.getElementById("saveBtn");
-
-        fileInput.addEventListener("change", (event) => {
-            const files = Array.from(event.target.files);
-
-            files.forEach(file => {
-                selectedImages.push(file);
-
-                const img = document.createElement("img");
-                img.src = URL.createObjectURL(file);
-                img.style.width = "120px";
-                img.style.height = "120px";
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "8px";
-
-                preview.appendChild(img);
-            });
-        });
-
-        async function uploadImages(userId) {
-            uploadedURLs = [];
-
-            for (const file of selectedImages) {
-
-                const fileName = `${userId}_${Date.now()}_${file.name}`;
-                const path = `galerias/${userId}/${fileName}`;
-
-                console.log("Enviando arquivo:", fileName);
-
-                const { error: uploadError } = await supabaseClient.storage
-                    .from("galeria_fotos")
-                    .upload(path, file);
-
-                if (uploadError) {
-                    console.error("Erro ao enviar imagem:", uploadError);
-                    continue;
-                }
-
-                const { data: publicUrlData } = supabaseClient.storage
-                    .from("galeria_fotos")
-                    .getPublicUrl(path);
-
-                uploadedURLs.push(publicUrlData.publicUrl);
-            }
-
-            return uploadedURLs;
+        if (error) {
+            console.error('Erro ao carregar atividades:', error);
+            return;
         }
 
-        saveBtn.addEventListener("click", async () => {
+        const lista = document.getElementById('listaTreinos');
+        const contador = document.getElementById('contTreinos');
 
-            const userId = localStorage.getItem("usuarioId");
+        lista.innerHTML = '';
 
-            if (!userId) {
-                alert("Erro: usuário não identificado.");
-                return;
-            }
+        if (atividades && atividades.length > 0) {
+            contador.textContent = atividades.length;
 
-            console.log("ID do usuário carregado:", userId);
+            atividades.forEach(atividade => {
+                const item = document.createElement('li');
+                item.textContent = atividade.titulo;
+                item.style.cursor = "pointer";
 
-            try {
-                const urls = await uploadImages(userId);
-                console.log("URLs enviadas:", urls);
+                item.addEventListener('click', () => {
+                    localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
+                    window.location.href = 'treino1.html';
+                });
 
-                const { data, error } = await supabaseClient
-                    .from("fotos")
-                    .upsert(
-                        {
-                            usuario_id: userId,
-                            galeria: urls
-                        },
-                        { onConflict: "usuario_id" } 
-                    );
+                lista.appendChild(item);
+            });
+        } else {
+            contador.textContent = 0;
+            lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
+        }
+    }
 
-                if (error) {
-                    console.error("Erro ao salvar a galeria:", error);
-                    alert("Erro ao salvar galeria!");
-                    return;
-                }
+    // Galeria
+    let selectedImages = [];
+    let uploadedURLs = [];
 
-                alert("Galeria salva com sucesso!");
-                selectedImages = [];
+    const fileInput = document.getElementById("fileInput");
+    const preview = document.getElementById("preview");
+    const saveBtn = document.getElementById("saveBtn");
 
-            } catch (err) {
-                alert("Erro inesperado ao salvar galeria!");
-                console.error(err);
-            }
+    fileInput.addEventListener("change", (event) => {
+        const files = Array.from(event.target.files);
+
+        files.forEach(file => {
+            selectedImages.push(file);
+
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.width = "120px";
+            img.style.height = "120px";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "8px";
+
+            preview.appendChild(img);
         });
+    });
 
-        async function carregarGaleria() {
-            const userId = localStorage.getItem("usuarioId");
+    async function uploadImages(userId) {
+        uploadedURLs = [];
 
-            if (!userId) {
-                console.warn("Nenhum usuário logado encontrado no localStorage.");
-                return;
+        for (const file of selectedImages) {
+            const fileName = `${userId}_${Date.now()}_${file.name}`;
+            const path = `galerias/${userId}/${fileName}`;
+
+            console.log("Enviando arquivo:", fileName);
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from("galeria_fotos")
+                .upload(path, file);
+
+            if (uploadError) {
+                console.error("Erro ao enviar imagem:", uploadError);
+                continue;
             }
 
-            console.log("Carregando galeria para usuário:", userId);
+            const { data: publicUrlData } = supabaseClient.storage
+                .from("galeria_fotos")
+                .getPublicUrl(path);
 
-            const { data, error } = await supabaseClient
+            uploadedURLs.push(publicUrlData.publicUrl);
+        }
+
+        return uploadedURLs;
+    }
+
+    saveBtn.addEventListener("click", async () => {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        
+        if (!user) {
+            alert("Erro: usuário não identificado.");
+            return;
+        }
+
+        const userId = user.id;
+
+        try {
+            const urls = await uploadImages(userId);
+            console.log("URLs enviadas:", urls);
+
+            const { error } = await supabaseClient
                 .from("fotos")
-                .select("galeria")
-                .eq("usuario_id", userId)
-                .maybeSingle();
+                .upsert(
+                    {
+                        usuario_id: userId,
+                        galeria: urls
+                    },
+                    { onConflict: "usuario_id" } 
+                );
 
             if (error) {
-                console.error("Erro ao buscar galeria:", error);
+                console.error("Erro ao salvar a galeria:", error);
+                alert("Erro ao salvar galeria!");
                 return;
             }
 
-            if (!data || !data.galeria || data.galeria.length === 0) {
-                console.log("Usuário ainda não possui galeria salva.");
-                return;
-            }
+            alert("Galeria salva com sucesso!");
+            selectedImages = [];
 
-            console.log("Galeria carregada:", data.galeria);
+        } catch (err) {
+            alert("Erro inesperado ao salvar galeria!");
+            console.error(err);
+        }
+    });
 
-            preview.innerHTML = ""; 
+    async function carregarGaleria() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
 
-            data.galeria.forEach(url => {
-                const img = document.createElement("img");
-                img.src = url;
-                /*img.style.width = "200px";
-                img.style.height = "200px";*/
-                img.classList.add("preview-img");
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "8px";
-
-                preview.appendChild(img);
-            });
+        if (!user) {
+            console.warn("Nenhum usuário logado encontrado.");
+            return;
         }
 
-        carregarGaleria();
+        const userId = user.id;
 
+        const { data, error } = await supabaseClient
+            .from("fotos")
+            .select("galeria")
+            .eq("usuario_id", userId)
+            .maybeSingle();
 
+        if (error) {
+            console.error("Erro ao buscar galeria:", error);
+            return;
+        }
 
-    </script>
+        if (!data || !data.galeria || data.galeria.length === 0) {
+            console.log("Usuário ainda não possui galeria salva.");
+            return;
+        }
+
+        preview.innerHTML = ""; 
+
+        data.galeria.forEach(url => {
+            const img = document.createElement("img");
+            img.src = url;
+            img.classList.add("preview-img");
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "8px";
+
+            preview.appendChild(img);
+        });
+    }
+
+    // Inicialização - carrega tudo quando a página abrir
+    (async () => {
+        // Aguarda um pouco para garantir que tudo carregou
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+        // Verifica se está autenticado
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        console.log("Sessão atual:", session);
+        
+        if (session) {
+            console.log("Usuário autenticado:", session.user);
+            await carregarPerfil();
+            await carregarTreinos();
+            await carregarGaleria();
+        } else {
+            console.log("Usuário não está autenticado no Supabase");
+        }
+    })();
+
+</script>
 </body>
 
 </html>
