@@ -11,13 +11,38 @@
 </head>
 
 <body>
+    <!-- NAV (sempre primeiro) -->
     <nav>
         <a href="home.html">
             <div class="bar_n">Escorphy</div>
         </a>
-
     </nav>
+    
+    <!-- BOTÃO TOGGLE -->
+    <button class="sidebar-toggle" id="toggleSidebar">☰</button>
+    
+    <!-- OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Escorphy</h2>
+            <button class="sidebar-close" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="home.html" class="sidebar-link">🏠 Home</a></li>
+                <li><a href="perfil.html" class="sidebar-link active">👤 Perfil</a></li>
+                <li><a href="treinos.html" class="sidebar-link">📊 Treinos</a></li>
+                <li><a href="progresso.html" class="sidebar-link">📈 Progresso</a></li>
+                <li><a href="configuracoes.html" class="sidebar-link">⚙️ Configurações</a></li>
+                <li><a href="#" onclick="logout()" class="sidebar-link">🚪 Sair</a></li>
+            </ul>
+        </nav>
+    </div>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <div class="main-content-perfil">
         <div class="column left-column">
             <article class="usuario">
@@ -34,13 +59,11 @@
                 <article class="info_usua">
                     <span>Treinos</span>
                     <span>Publicações</span>
-
                 </article>
 
                 <article class="info_usua2">
                     <span id="contTreinos">0</span>
                     <span id="contPublicacoes">0</span>
-
                 </article>
             </article>
 
@@ -80,21 +103,16 @@
                     </div>
                 </article>
             </section>
-
         </div>
 
         <div class="column right-column">
-
             <input type="file" id="fileInput" accept="image/*" multiple />
             <div id="preview" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-
             <button id="saveBtn">Salvar galeria</button>
-
         </div>
     </div>
 
     <div class="floating-buttons-container">
-
         <a href="treino1.html">
             <div class="botaomais-container">
                 <button class="botaomais" id="botaoMais">+</button>
@@ -131,8 +149,7 @@
             <div class="footer-column">
                 <h3>Redes</h3>
                 <ul class="social-icons">
-                    <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a>
-                    </li>
+                    <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
                     <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
                 </ul>
             </div>
@@ -141,52 +158,40 @@
                 <h3>Ajuda</h3>
                 <ul>
                     <li><a href="suporte.html">Suporte</a></li>
-                    <li><a
-                            href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale
-                            Conosco</a></li>
+                    <li><a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNxPFlgRKMfNbXtjRlNsMrbsQVVFLbfkqPmwWGZnCVDDPjSWwvcTngxGFMGsRTMztTSRxV">Fale Conosco</a></li>
                     <li><a href="#">Central de Ajuda</a></li>
                 </ul>
             </div>
         </div>
     </footer>
 
-    
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
-
     <script>
-    // Aguardar o auth.js carregar completamente
     (async function() {
         console.log("=== INÍCIO DO DEBUG ===");
         
-        // Verificar se o supabaseClient existe
         if (typeof supabaseClient === 'undefined') {
             console.error("supabaseClient não encontrado! Verifique se o auth.js carregou corretamente.");
             return;
         }
         
-        // Aguardar um momento para a sessão restaurar
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // 1. Verificar sessão
         const { data: { session } } = await supabaseClient.auth.getSession();
         console.log("Sessão:", session);
         
         if (session) {
             console.log("Usuário autenticado:", session.user);
-            
-            // Carregar todos os dados
             await carregarPerfil();
             await carregarTreinos();
             await carregarGaleria();
         } else {
             console.log("Usuário não está autenticado no Supabase");
             
-            // Verificar se há dados no localStorage
             const emailSalvo = localStorage.getItem("usuarioEmail");
             console.log("Email no localStorage:", emailSalvo);
             
-            // Se tiver email, tenta mostrar algo mesmo assim
             if (emailSalvo) {
                 const nomeSalvo = localStorage.getItem("usuarioLogado");
                 if (nomeSalvo) {
@@ -198,7 +203,6 @@
         console.log("=== FIM DO DEBUG ===");
     })();
 
-    // Função principal para carregar o perfil do banco de dados
     async function carregarPerfil() {
         try {
             const { data: { user }, error: userError } = await supabaseClient.auth.getUser();

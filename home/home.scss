@@ -1,20 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap');
 
+/* ===== RESET E ESTILOS GERAIS ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     background: #e9e9e9;
     font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
     color: #222;
-    padding-top: 70px; /* altura da navbar para não sobrepor conteúdo */
+    padding-top: 70px;
 }
 
 section {
     width: 100%;
-    /* Removido height: 100%; para evitar problemas de altura e scroll inesperados */
 }
 
+/* ===== NAVBAR ===== */
 nav {
     background-color: #fff;
     width: 100%;
@@ -27,14 +32,14 @@ nav {
     top: 0;
     left: 0;
     z-index: 1000;
+    height: 70px;
 }
 
 nav .bar_n {
     font-size: 40px;
     font-family: "Staatliches", sans-serif;
-    white-space: nowrap;
-    text-decoration: none;
     color: black;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -48,16 +53,11 @@ nav .search-box {
     display: flex;
     align-items: center;
     background: rgb(234, 234, 234);
-    /*padding: 5px 10px;*/
     padding: 8px 20px;
-    outline: none;
-    margin-right: 2vh;
-    margin-left: 2vh;
     border-radius: 20px;
     box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
     width: 100%;
-    max-width: 400px; /* limite para telas maiores */
-    margin-right: 4vh; 
+    max-width: 400px;
 }
 
 nav .search-box input {
@@ -65,180 +65,208 @@ nav .search-box input {
     outline: none;
     padding: 5px;
     font-size: 14px;
-    background: rgb(234, 234, 234);
+    background: transparent;
     width: 150px;
-    min-width: 120px;
     border-radius: 25px;
-    transition: box-shadow 0.3s ease;
 }
 
-
-.main-content {
-    padding: 10px;
-    min-height: calc(100vh - 70px - 150px); 
-    box-sizing: border-box; 
-    margin-top: -2.5vh;
-}
-
-/* Contêiner das duas colunas (Último Treino/Vídeo e Feed) */
-.container {
-    display: flex;
-    justify-content: space-between; 
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1200px; 
-    margin: 20px auto; 
-    gap: 20px;
-    flex-wrap: wrap; 
-}
-
-
-.left-column-wrapper {
-    display: flex;
-    flex-direction: column; 
-    gap: 20px; 
-    width: 38%;
-    min-width: 300px;
-    max-width: 450px;
-    box-sizing: border-box; 
-}
-
-/* ===== ÚLTIMO TREINO ===== */
-.ultimo_treino {
-    background-color: white;
-    width: 100%; /* Ocupa 100% da largura do seu pai (.left-column-wrapper) */
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-sizing: border-box; /* Inclui padding na largura total */
-}
-
-.bike {
-    width: 100px;
-    height: 100px;
-    background-color: rgb(240, 251, 235);
-    border-radius: 50%;
-    margin: 10px 0;
-    display: flex; /* Para centralizar a imagem dentro do círculo */
-    justify-content: center;
-    align-items: center;
-}
-
-.bike img {
-    width: 80%;
-    height: 80%;
-}
-
-/* ===== FOTO UPLOAD (para o bloco Último Treino) ===== */
-.foto_upload {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.foto_upload .upload-btn {
-    display: inline-block;
-    background-color: #008e09;
+/* ===== SIDEBAR ===== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    width: 250px;
+    height: calc(100vh - 70px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.2s ease;
+    padding: 20px 0;
+    z-index: 999;
+    transition: transform 0.3s ease;
 }
 
-.foto_upload .upload-btn:hover {
-    background-color: #0056b3;
-}
-
-.foto_upload .preview {
-    margin-top: 10px;
+.sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.foto_upload .preview img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+.sidebar-header h2 {
+    font-size: 24px;
 }
 
-/* ===== METAS (dentro do Último Treino) ===== */
-.metas {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgb(240, 251, 235);
-    width: 100%; /* Ocupa 100% da largura do seu pai (.ultimo_treino) */
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.metas h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.metas p {
-    font-size: 1em;
-    margin-bottom: 5px;
-}
-
-.progress-container {
-    width: 100%;
-    height: 10px;
-    background-color: #e6e6e6;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 30%; /* Exemplo: 4km de 12km. Ajuste via JS para dinâmico. */
-    background-color: #4caf50;
-    border-radius: 5px;
-}
-
-/* ===== ESTILO PARA O VÍDEO DO YOUTUBE ===== */
-.youtube-video-container {
-    width: 100%; /* Ocupa 100% da largura do seu pai (.left-column-wrapper) */
-    max-width: 560px; /* Mantém a largura máxima do vídeo para proporção 16:9 */
-    margin: 0 auto; /* Centraliza o vídeo dentro do seu wrapper */
-    border-radius: 15px;
-    overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: white; /* Para seguir o design do site */
-    padding: 10px; /* Espaçamento interno */
-    box-sizing: border-box; /* Inclui padding na largura total */
-    display: block; /* Garante que ele se comporte como um bloco para margin:auto funcionar */
-}
-
-.youtube-video-container iframe {
-    width: 100%;
-    height: 315px; /* Altura padrão para 16:9 em 560px de largura. Será ajustada pela responsividade. */
+.sidebar-close {
+    display: none;
+    background: none;
     border: none;
-    border-radius: 10px; /* Arredonda as bordas do iframe */
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
 }
 
-/* ===== FEED DE PUBLICAÇÕES ===== */
-.feed {
-    width: 58%; /* Largura da coluna do feed. Ajuste conforme necessário (e.g., 60%, 55%) */
-    max-width: 700px; /* Limita a largura do feed em telas muito largas */
+.sidebar-nav ul {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+    background: rgba(255,255,255,0.1);
+    border-left-color: white;
+}
+
+.sidebar-link.active {
+    background: rgba(255,255,255,0.2);
+    border-left-color: white;
+    font-weight: bold;
+}
+
+/* ===== BOTÃO TOGGLE ===== */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 85px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== OVERLAY ===== */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 70px);
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ===== MAIN CONTENT PERFIL ===== */
+.main-content-perfil {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    min-height: calc(100vh - 70px - 200px);
+    transition: margin-left 0.3s ease;
+}
+
+.left-column {
+    flex: 2;
+    min-width: 300px;
+}
+
+.right-column {
+    flex: 1;
+    min-width: 250px;
     background: white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-    box-sizing: border-box; /* Inclui padding na largura total */
+    height: fit-content;
+}
+
+/* ===== USUÁRIO ===== */
+.usuario {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.foto_perfil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 15px auto;
+    border: 3px solid #667eea;
+}
+
+.foto_perfil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info_usua, .info_usua2 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 10px 0;
+}
+
+.info_usua2 span {
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* ===== TREINOS REALIZADOS ===== */
+.treinos {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.treinos h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.treinos ul {
+    list-style: none;
+}
+
+.treinos li {
+    padding: 10px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.treinos li:hover {
+    background: #e0e0e0;
+}
+
+/* ===== FEED DE VÍDEOS ===== */
+.feed {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+
+.feed h2 {
+    margin-bottom: 15px;
 }
 
 .post {
@@ -247,763 +275,139 @@ nav .search-box input {
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-    position: relative;
 }
 
-.post h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-}
-
-.post p {
-    font-size: 14px;
-    color: #666;
-}
-
-.post img {
+.youtube-video-container {
     width: 100%;
     border-radius: 10px;
-    margin-top: 10px;
+    overflow: hidden;
 }
 
-.detalhes {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    font-size: 12px;
-    color: #555;
+.youtube-video-container iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
 }
 
-.detalhes span {
-    background: rgb(240, 251, 235);
-    padding: 5px;
-    border-radius: 5px;
-}
-
-/* ===== BOTÃO DE CURTIR ===== */
-.btn-curtir {
-    background-color: transparent;
-    border: 2px solid #FFA500;
-    color: #FFA500;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    margin-top: 1%;
-    font-family: "Staatliches", sans-serif;
-    font-size: 16px;
-}
-
-.btn-curtir:hover {
-    background-color: #FFA500;
-    color: white;
-}
-
-.btn-curtir.curtido {
-    background-color: #FFA500;
-    color: white;
-    border-color: #FF8C00;
-    box-shadow: 0 0 8px #FF8C00;
-}
-
-/* ===== CONTÊINER DE BOTÕES FLUTUANTES ===== */
+/* ===== BOTÕES FLUTUANTES ===== */
 .floating-buttons-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    display: flex; /* Para alinhar os botões lado a lado */
-    flex-direction: row; /* Alinha na horizontal */
-    gap: 10px; /* Espaçamento entre os botões */
-    align-items: center;
-    z-index: 1000; /* Garante que fiquem acima de outros elementos */
+    z-index: 1000;
+    transition: margin-left 0.3s ease;
 }
 
-.floating-buttons-container a { /* Aplica o estilo a todos os links dentro do container */
-    text-decoration: none; /* Remove o sublinhado */
-    color: inherit; /* Garante que a cor do texto seja herdada, se necessário */
-}
-
-.botaomais-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.floating-buttons-container a {
+    text-decoration: none;
 }
 
 .botaomais {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: rgb(64, 182, 64);
+    background: rgb(64, 182, 64);
+    color: white;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white; /* Garante que o "+" seja branco */
-    font-size: 40px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s;
-    font-family: "Staatliches", sans-serif;
 }
 
 .botaomais:hover {
     background-color: #6fe600;
 }
 
-/* ===== BOTÃO PERFIL ===== */
-.botaoperfil-container {
-    display: flex; /* Para alinhar a imagem dentro do botão */
-    justify-content: center;
-    align-items: center;
+/* ===== FOOTER ===== */
+.footer {
+    background: #f9f9f9;
+    padding: 40px 20px;
+    margin-top: 30px;
+    transition: margin-left 0.3s ease;
 }
 
-.botaoperfil-container img {
-    width: 40px;
-    height: 40px;
-}
-
-.botaoperfil {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: rgb(64, 182, 64);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 40px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 3px 3px 6px rgb(45, 255, 38);
-    transition: background 0.3s;
+.footer h1 {
     font-family: "Staatliches", sans-serif;
+    font-size: 24px;
 }
 
-.botaoperfil:hover {
-    background-color: #6fe600;
-}
-
-/* ===== TREINOS PAGE SPECIFIC STYLES (manter estes, pois são para outras páginas) ===== */
-
-.treinos {
-    width: 80%;
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
     max-width: 1200px;
-    margin: 2vh auto;
-    border-radius: 30px;
-    background-color: #fff;
-    padding: 30px 30px 50px 30px;
-    box-sizing: border-box;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    justify-content: space-between;
 }
 
-.treinos .cima {
-    text-align: center;
-    font-family: "Staatliches", sans-serif;
+.footer-logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 3vh;
 }
 
-.treinos .cima h1 {
-    font-weight: 500;
-    font-size: 40px;
-    margin-bottom: 20px;
-    color: #044700;
+.footer-logo p {
+    font-size: 14px;
+    margin-top: 8px;
+    color: #666;
 }
 
-.icon-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-top: 30px;
+.footer-column {
+    flex: 1 1 150px;
+    min-width: 150px;
 }
 
-.circle {
-    background-color: rgb(230, 230, 230);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease, border 0.3s ease;
-    cursor: pointer;
-    border: 6px solid transparent;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.circle:hover {
-    transform: scale(1.1);
-    border-color: #8fce67;
-}
-
-.circle.active {
-    border-color: #00b40c;
-    box-shadow: 0 0 12px #00b40c;
-}
-
-.circle img {
-    width: 50px;
-    height: 50px;
-    user-select: none;
-    pointer-events: none;
-}
-
-/* Inputs de texto - Centralizados e Responsivos */
-.treinos input[type="text"] {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px 15px;
-    border-radius: 25px;
-    border: 2px solid #00b40c;
-    box-shadow: 2px 2px 6px rgba(0, 180, 12, 0.3);
-    font-size: 16px;
-    outline: none;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    margin: 8px auto;
-    box-sizing: border-box;
-    display: block;
-    text-align: center;
-}
-
-.treinos input[type="text"]:focus {
-    box-shadow: 0 0 10px #00b40c;
-    border-color: #008e09;
-}
-
-/* Container geral para cada grupo de opções (tipo, visibilidade, acessório) */
-.grupo-opcoes {
-    margin-bottom: 25px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Título de cada grupo */
-.grupo-opcoes > p {
-    font-weight: 700;
-    font-size: 18px;
-    color: #044700;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Container das opções (links/botões) - ESSENCIAIS PARA CENTRALIZAÇÃO E LAYOUT DOS BOTÕES */
-.tipo,
-.visibilidade,
-.acessorio {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Estilo para os links que atuam como botões de seleção */
-.tipo a,
-.visibilidade a,
-.acessorio a {
-    text-decoration: none;
-    color: black;
-    padding: 10px 20px;
-    border-radius: 20px;
-    background-color: #e7e7e7;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid transparent;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.tipo a:hover,
-.visibilidade a:hover,
-.acessorio a:hover {
-    background-color: #d5ffd7;
-    border-color: #8fce67;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-/* Link ativo / selecionado */
-a.active-option,
-a.selecionado {
-    background-color: #00b40c !important;
-    color: white !important;
-    border-color: #008e09 !important;
-    box-shadow: 0 0 10px #00b40c !important;
-}
-
-/* Botão salvar */
-.botao-salvar {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.botao-salvar button {
-    padding: 12px 30px;
+.footer-column h3 {
     font-size: 16px;
     font-weight: bold;
-    background-color: #00b40c;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 12px;
 }
 
-.botao-salvar button:hover {
-    background-color: #008e09;
+.footer-column ul {
+    list-style: none;
 }
 
-/* Mensagem flutuante salva */
-.mensagem-flutuante {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 180, 12, 0.85);
-    color: white;
-    padding: 15px 30px;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-    z-index: 9999;
+.footer-column ul li {
+    margin-bottom: 10px;
 }
 
-.mensagem-flutuante.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Range slider */
-.range-container {
-    width: 80%;
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.rangezi {
+.footer-column ul li a {
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
     display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    padding: 0 2px;
-    position: relative;
-    margin-top: 5px;
-    width: 100%;
-}
-
-.rangezao {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 8px;
-    background: #ccc;
-    border-radius: 5px;
-    outline: none;
-    margin-top: 10px;
-}
-
-.rangezao::-webkit-slider-runnable-track {
-    background: rgba(4, 71, 0, 0.85);
-    height: 8px;
-    border-radius: 5px;
-}
-
-.rangezao::-moz-range-track {
-    background: rgba(4, 71, 0, 0.85);
-    height: 8px;
-    border-radius: 5px;
-}
-
-.rangezao::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border: 2px solid rgba(4, 71, 0, 0.85);
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -6px;
-    transition: background-color 0.3s ease;
-}
-
-.rangezao::-webkit-slider-thumb:hover {
-    background-color: #e6ffe6;
-}
-
-.rangezao::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: white;
-    border: 2px solid rgba(4, 71, 0, 0.85);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-/* Tooltip */
-.tooltip {
-    position: relative;
-    cursor: default;
-}
-
-.tooltip .tip {
-    visibility: hidden;
-    opacity: 0;
-    background-color: #333;
-    color: #fff;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.95);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    white-space: nowrap;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.tooltip:hover .tip {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-}
-
-/* Form container styles - Centraliza o formulário principal */
-.infos_treinos {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 80%;
-    max-width: 900px;
-    margin: 20px auto 40px;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 30px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    gap: 6px;
 }
 
-.infos_treinos h1 {
-    font-family: "Staatliches", sans-serif;
-    font-weight: 500;
-    font-size: 32px;
-    margin-bottom: 25px;
-    color: #044700;
-    text-align: center;
+.footer-column ul li a:hover {
+    color: #000;
 }
 
-/* Divs internas dentro de .infos_treinos - Para alinhar cada seção de conteúdo */
-.infos_treinos > div {
-    margin-bottom: 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.social-icons i {
+    font-size: 16px;
 }
 
-.infos_treinos p {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #044700;
-    text-align: center;
-}
-
-#map {
-    height: 400px;
-    margin: 30px auto;
-    border-radius: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    width: 100%;
-    max-width: 600px;
-    display: block;
-}
-
-/* Estilos para o novo campo de especificações de acessórios */
-.acessorio-specs {
-    margin-top: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    display: none;
-    transition: opacity 0.3s ease, height 0.3s ease;
-    overflow: hidden;
-    opacity: 0;
-    height: 0;
-}
-
-.acessorio-specs.show {
-    display: flex;
-    opacity: 1;
-    height: auto;
-}
-
-/* ===== RESPONSIVIDADE GERAL ===== */
-
-/* Responsividade para telas grandes (maior que 1024px, se necessário ajustar ainda mais) */
-@media (min-width: 1201px) {
-    /* Ajustes finos para desktops grandes, se os valores padrão não forem suficientes */
-}
-
-/* Responsividade para tablets (769px a 1024px) */
-@media (max-width: 1024px) {
-    nav .bar_n {
-        font-size: 32px;
-    }
-
-    nav .search-box input {
-        width: 130px;
-    }
-
-    .treinos .cima h1 {
-        font-size: 36px;
-    }
-
-    .container {
-        flex-direction: column; /* Empilha as colunas em telas menores */
-        align-items: center; /* Centraliza os itens empilhados */
-        width: 95%; /* Ocupa mais da largura disponível */
-        gap: 30px; /* Mais espaço entre os blocos empilhados */
-    }
-
-    .left-column-wrapper,
-    .feed {
-        width: 95%; /* Ocupa mais largura em telas menores, mas com max-width */
-        max-width: 600px; /* Limita a largura para não esticar muito em tablets */
-    }
-    /* O vídeo já está definido para 'display: none !important;' em telas menores,
-       então esta regra de media query garante que essa regra seja aplicada. */
-    .youtube-video-container {
-        display: none !important; /* Esconde o vídeo em telas menores que 1024px */
-    }
-}
-
-/* Responsividade para tablets (481px a 768px) */
+/* ===== RESPONSIVIDADE FOOTER ===== */
 @media (max-width: 768px) {
-    nav {
-        padding: 8px 16px;
-        flex-direction: row;
-        gap: 10px;
-        width: 100%; /* Ajustado para 100% para evitar barra de rolagem horizontal */
-        box-sizing: border-box; /* Inclui padding na largura */
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
     }
 
-    nav .bar_n {
-        font-size: 28px;
+    .footer-column {
+        flex: 1 1 100%;
     }
 
-    nav .nav-right {
-        justify-content: center;
-        width: 100%;
-        gap: 10px;
-    }
-
-    nav .search-box {
-        width: 50%;
-        margin-right: unset; /* Remove margens que podem atrapalhar no mobile */
-        margin-left: unset;
-        max-width: none; /* Permite que ocupe a largura do pai */
-    }
-
-    nav .search-box input {
-        width: 100%; /* Ocupa a largura do search-box */
-        min-width: unset;
-    }
-
-    .treinos {
-        width: 95%;
-        padding: 20px 15px 40px 15px;
-    }
-
-    .treinos .cima h1 {
-        font-size: 32px;
-    }
-
-    .icon-container {
-        gap: 30px;
-    }
-
-    .circle {
-        width: 80px;
-        height: 80px;
-    }
-
-    .circle img {
-        width: 40px;
-        height: 40px;
-    }
-
-    #map {
-        height: 300px;
-        margin: 25px auto;
-        border-radius: 20px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .infos_treinos {
-        padding: 15px;
-        width: 95%;
-    }
-
-    .tipo a,
-    .visibilidade a,
-    .acessorio a {
-        padding: 10px 15px;
-        font-size: 15px;
-    }
-
-    .floating-buttons-container {
-        bottom: 15px;
-        right: 15px;
-        gap: 8px;
-    }
-}
-
-/* Responsividade para celulares (até 480px) */
-@media (max-width: 480px) {
-    nav {
-        width: 100%; /* Garantir 100% */
-        padding: 10px;
-        box-sizing: border-box;
-    }
-
-    
-
-    nav .bar_n {
-        font-size: 24px;
-    }
-
-    nav .search-box {
-        width: 100%; /* Ocupa toda a largura do nav-right */
-        padding: 8px 15px; /* Ajusta padding */
-    }
-
-    nav .search-box input {
-        width: 100%;
-        min-width: unset;
-    }
-
-    .container {
-        width: 98%;
-        margin-left: auto; /* Centraliza */
-        margin-right: auto;
-        gap: 10px; /* Ajusta gap para telas menores */
-    }
-
-    
-    .ultimo_treino, /* Garantir que o treino se ajuste ao wrapper */
-    .feed {
-        width: 100%; /* Ocupa 100% do container em mobile */
-        max-width: none; /* Remove max-width para celular */
-        margin-left: 0;
-        margin-right: 0;
-        padding: 15px; /* Ajusta padding para mobile */
-    }
-
-    .left-column-wrapper {
-        width: 100%; /* Ocupa 100% do container em mobile */
-        max-width: none; /* Remove max-width para celular */
-        margin-left: 0;
-        margin-right: 0;
-        padding: 1px;
-    }
-
-    .post {
-        margin-left: unset;
-        margin-right: unset;
-    }
-
-    .treinos {
-        width: 98%;
-        padding: 15px;
-    }
-
-    .treinos .cima h1 {
-        font-size: 26px;
-    }
-
-    .icon-container {
-        gap: 15px;
-    }
-
-    .circle {
-        width: 65px;
-        height: 65px;
-    }
-
-    .circle img {
-        width: 30px;
-        height: 30px;
-    }
-
-    #map {
-        height: 200px;
-        margin: 15px auto;
-    }
-
-    .infos_treinos {
-        width: 98%;
-        padding: 10px;
-    }
-
-    .tipo a,
-    .visibilidade a,
-    .acessorio a {
-        padding: 8px 12px;
-        font-size: 13px;
-        flex-grow: 1; /* Permite que eles cresçam para ocupar espaço */
+    .footer-logo {
         text-align: center;
     }
-
-    .range-container {
-        width: 95%;
-    }
-
-    .mensagem-flutuante {
-        padding: 10px 20px;
-        font-size: 1rem;
-        width: 90%;
-        box-sizing: border-box;
-    }
-
-    .floating-buttons-container {
-        bottom: 10px;
-        right: 10px;
-        gap: 6px;
-    }
-
-    .botaomais,
-    .botaoperfil {
-        width: 50px;
-        height: 50px;
-    }
-    .botaoperfil-container img {
-        width: 30px;
-        height: 30px;
-    }
 }
 
-<<<<<<< Updated upstream
-/* ===== SCROLLBAR STYLES ===== */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 12px;
     height: 8px;
@@ -1029,166 +433,118 @@ a.selecionado {
     scrollbar-color: #4CAF50 #e0e0e0;
 }
 
-/* ===== FOOTER STYLES ===== */
-.footer {
-    background-color: #f9f9f9;
-    padding: 40px 20px;
-    color: #333;
-    margin-top: 3vh;
+/* ===== DESKTOP ===== */
+@media (min-width: 769px) {
+    nav {
+        width: calc(100% - 250px);
+        margin-left: 250px;
+    }
+    
+    .main-content-perfil {
+        margin-left: 270px;
+        width: calc(100% - 270px);
+    }
+    
+    .footer {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+    
+    .floating-buttons-container {
+        margin-left: 250px;
+    }
+    
+    .sidebar-toggle {
+        display: none !important;
+    }
+    
+    .sidebar-overlay {
+        display: none !important;
+    }
 }
 
-/* Ajuste para o h1 dentro do footer, como está no seu código. */
-.footer h1 {
-    font-family: "Staatliches", sans-serif;
-    font-size: 24px; /* Garante um tamanho base, se não houver outro */
-}
-
-.footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    justify-content: space-between;
-}
-
-.footer-logo h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-    margin-top: 3vh;
-    /* Reintroduzindo o transform para desktop */
-    transform: translateX(-10vh);
-}
-
-.footer-logo p {
-    font-size: 14px;
-    margin-top: 8px;
-    color: #666;
-    /* Reintroduzindo o transform para desktop */
-    transform: translateX(-10vh);
-}
-
-.footer-column {
-    flex: 1 1 150px;
-    min-width: 150px;
-}
-
-.footer-column h3 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-column ul li {
-    margin-bottom: 10px;
-}
-
-.footer-column ul li a {
-    color: #555;
-    text-decoration: none;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: color 0.3s;
-}
-
-.footer-column ul li a:hover {
-    color: #000;
-}
-
-.social-icons i {
-    font-size: 16px;
-}
-
-/* RESPONSIVO FOOTER */
+/* ===== MOBILE (768px) ===== */
 @media (max-width: 768px) {
-    .footer-container {
+    nav {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    nav .bar_n {
+        font-size: 28px;
+    }
+    
+    nav .search-box {
+        width: 50%;
+    }
+    
+    nav .search-box input {
+        width: 100%;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .sidebar-close {
+        display: block;
+    }
+    
+    .sidebar-toggle {
+        display: block;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    .main-content-perfil {
+        margin-left: 0;
+        width: 100%;
         flex-direction: column;
-        gap: 40px;
     }
-
-    .footer-column {
-        flex: 1 1 100%;
+    
+    .footer {
+        margin-left: 0;
+        width: 100%;
     }
-
-    .footer-logo {
-        text-align: center; /* Centraliza o logo no mobile */
+    
+    .floating-buttons-container {
+        margin-left: 0;
     }
-    /* Remove os transforms para telas menores */
-    .footer-logo h1,
-    .footer-logo p {
-        transform: none; /* Garante que não haja deslocamento em mobile */
-    }
-
-    .footer-column h3 {
-        text-align: center;
-    }
-
-    .footer-column ul {
-        text-align: center;
+    
+    .youtube-video-container {
+        display: none;
     }
 }
 
-.youtube-video-container {
-            width: 100%;
-            max-width: 560px; /* Largura máxima para o vídeo */
-            margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
-            border-radius: 15px;
-            overflow: hidden; /* Garante que o border-radius seja aplicado ao iframe */
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: white; /* Para seguir o design do site */
-            padding: 10px; /* Espaçamento interno */
-            box-sizing: border-box; /* Inclui padding na largura total */
-            /* Garante que ele se comporte como um bloco para margin:auto funcionar e ocupar sua própria linha */
-            display: block; 
-        }
-
-        .youtube-video-container iframe {
-            width: 100%;
-            height: 315px; /* Altura padrão para 16:9 em 560px de largura */
-            border: none;
-            border-radius: 10px; /* Arredonda as bordas do iframe */
-        }
-
-        /* Esconde o vídeo em telas menores que 768px (celulares e alguns tablets) */
-        @media (max-width: 768px) {
-            .youtube-video-container {
-                display: none !important; /* Usar !important para garantir que sobreponha o display: block */
-            }
-        }
-
-        /* Ajuste do layout da section .container para acomodar o vídeo abaixo do .ultimo_treino em desktop */
-        @media (min-width: 769px) {
-            .container {
-                /* Se .container for um flexbox com justify-content: space-between,
-                   e você quer o vídeo abaixo do .ultimo_treino e não ao lado do .feed,
-                   pode precisar de um wrapper ou ajustar a ordem.
-                   Uma abordagem simples é deixar o vídeo fluir naturalmente se
-                   o .ultimo_treino tiver uma largura definida e não estiver em um flex-flow: row-reverse etc. */
-                flex-direction: row; /* Volta a ser linha para desktop se foi alterado para coluna */
-                align-items: flex-start; /* Alinhamento superior */
-            }
-
-            /* Para que o vídeo apareça abaixo do 'Último treino' e não ao lado do 'Feed' */
-            .left-column-wrapper {
-                display: flex;
-                flex-direction: column;
-                gap: 20px; /* Espaçamento entre o 'Último treino' e o vídeo */
-                width: 40%; /* Mesma largura do .ultimo_treino */
-                max-width: 500px; /* Mesma max-width do .ultimo_treino */
-            }
-        }
-        
-=======
-.main-content{
-    margin-top: 1vh;
+/* ===== MOBILE PEQUENO (480px) ===== */
+@media (max-width: 480px) {
+    nav .bar_n {
+        font-size: 24px;
+    }
+    
+    nav .search-box {
+        width: 100%;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .botaomais {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+    }
+    
+    .left-column, .right-column {
+        min-width: 100%;
+    }
 }
->>>>>>> Stashed changes
