@@ -150,44 +150,46 @@
         </div>
     </footer>
 
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
-
     <script>
-    const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-    // DEBUG - Verificar dados no banco
-(async () => {
-    console.log("=== INÍCIO DO DEBUG ===");
     
-    // 1. Verificar sessão
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    console.log("Sessão:", session);
-    
-    if (session) {
-        // 2. Verificar se o email existe na tabela usuarios
-        const { data: usuario, error } = await supabaseClient
-            .from('usuarios')
-            .select('*')
-            .eq('email', session.user.email);
+    (async () => {
+        console.log("=== INÍCIO DO DEBUG ===");
         
-        console.log("Busca na tabela usuarios por email:", session.user.email);
-        console.log("Resultado:", usuario);
-        console.log("Erro (se houver):", error);
+        // Verificar se o supabaseClient existe
+        if (typeof supabaseClient === 'undefined') {
+            console.error("supabaseClient não encontrado! Verifique o auth.js");
+            return;
+        }
         
-        // 3. Listar todos os usuários (para ver o que tem no banco)
-        const { data: todosUsuarios } = await supabaseClient
-            .from('usuarios')
-            .select('*')
-            .limit(5);
+        // 1. Verificar sessão
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        console.log("Sessão:", session);
         
-        console.log("Primeiros 5 usuários no banco:", todosUsuarios);
-    }
-    
-    console.log("=== FIM DO DEBUG ===");
-})();
+        if (session) {
+            // 2. Verificar se o email existe na tabela usuarios
+            const { data: usuario, error } = await supabaseClient
+                .from('usuarios')
+                .select('*')
+                .eq('email', session.user.email);
+            
+            console.log("Busca na tabela usuarios por email:", session.user.email);
+            console.log("Resultado:", usuario);
+            console.log("Erro (se houver):", error);
+            
+            // 3. Listar todos os usuários
+            const { data: todosUsuarios } = await supabaseClient
+                .from('usuarios')
+                .select('*')
+                .limit(5);
+            
+            console.log("Primeiros 5 usuários no banco:", todosUsuarios);
+        }
+        
+        console.log("=== FIM DO DEBUG ===");
+    })();
 
     // Função principal para carregar o perfil do banco de dados
     async function carregarPerfil() {
