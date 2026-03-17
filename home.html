@@ -151,41 +151,48 @@
     </footer>
 
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+
     <script>
-    
-    (async () => {
+    // Aguardar o auth.js carregar completamente
+    (async function() {
         console.log("=== INÍCIO DO DEBUG ===");
         
         // Verificar se o supabaseClient existe
         if (typeof supabaseClient === 'undefined') {
-            console.error("supabaseClient não encontrado! Verifique o auth.js");
+            console.error("supabaseClient não encontrado! Verifique se o auth.js carregou corretamente.");
             return;
         }
+        
+        // Aguardar um momento para a sessão restaurar
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         // 1. Verificar sessão
         const { data: { session } } = await supabaseClient.auth.getSession();
         console.log("Sessão:", session);
         
         if (session) {
-            // 2. Verificar se o email existe na tabela usuarios
-            const { data: usuario, error } = await supabaseClient
-                .from('usuarios')
-                .select('*')
-                .eq('email', session.user.email);
+            console.log("Usuário autenticado:", session.user);
             
-            console.log("Busca na tabela usuarios por email:", session.user.email);
-            console.log("Resultado:", usuario);
-            console.log("Erro (se houver):", error);
+            // Carregar todos os dados
+            await carregarPerfil();
+            await carregarTreinos();
+            await carregarGaleria();
+        } else {
+            console.log("Usuário não está autenticado no Supabase");
             
-            // 3. Listar todos os usuários
-            const { data: todosUsuarios } = await supabaseClient
-                .from('usuarios')
-                .select('*')
-                .limit(5);
+            // Verificar se há dados no localStorage
+            const emailSalvo = localStorage.getItem("usuarioEmail");
+            console.log("Email no localStorage:", emailSalvo);
             
-            console.log("Primeiros 5 usuários no banco:", todosUsuarios);
+            // Se tiver email, tenta mostrar algo mesmo assim
+            if (emailSalvo) {
+                const nomeSalvo = localStorage.getItem("usuarioLogado");
+                if (nomeSalvo) {
+                    document.getElementById('nomeUsuario').textContent = `Olá, ${nomeSalvo}`;
+                }
+            }
         }
         
         console.log("=== FIM DO DEBUG ===");
@@ -194,7 +201,6 @@
     // Função principal para carregar o perfil do banco de dados
     async function carregarPerfil() {
         try {
-            // Pega o usuário autenticado do Supabase
             const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
             
             if (userError || !user) {
@@ -204,7 +210,6 @@
 
             console.log("Buscando perfil para o email:", user.email);
 
-            // Busca os dados do perfil no banco de dados
             const { data: perfil, error } = await supabaseClient
                 .from('usuarios')
                 .select('nome, foto_perfil, treinos, publicacoes')
@@ -219,20 +224,17 @@
             if (perfil) {
                 console.log("Perfil encontrado:", perfil);
                 
-                // Atualiza o nome
                 const nomeElemento = document.getElementById('nomeUsuario');
                 if (nomeElemento) {
                     nomeElemento.textContent = `Olá, ${perfil.nome}`;
                 }
 
-                // Atualiza contadores
                 const contTreinos = document.getElementById('contTreinos');
                 const contPublicacoes = document.getElementById('contPublicacoes');
                 
                 if (contTreinos) contTreinos.textContent = perfil.treinos || 0;
                 if (contPublicacoes) contPublicacoes.textContent = perfil.publicacoes || 0;
 
-                // Atualiza foto de perfil
                 if (perfil.foto_perfil) {
                     const imgPerfil = document.getElementById('imgPerfil');
                     if (imgPerfil) {
@@ -240,16 +242,9 @@
                     }
                 }
 
-                // Salva no localStorage como backup
                 localStorage.setItem("usuarioLogado", perfil.nome);
             } else {
                 console.log("Perfil não encontrado para o email:", user.email);
-                
-                // Tenta usar o que está no localStorage como fallback
-                const nomeLocal = localStorage.getItem("usuarioLogado");
-                if (nomeLocal) {
-                    document.getElementById('nomeUsuario').textContent = `Olá, ${nomeLocal}`;
-                }
             }
         } catch (error) {
             console.error('Erro inesperado ao carregar perfil:', error);
@@ -430,27 +425,7 @@
             preview.appendChild(img);
         });
     }
-
-    // Inicialização - carrega tudo quando a página abrir
-    (async () => {
-        // Aguarda um pouco para garantir que tudo carregou
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
-        // Verifica se está autenticado
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        console.log("Sessão atual:", session);
-        
-        if (session) {
-            console.log("Usuário autenticado:", session.user);
-            await carregarPerfil();
-            await carregarTreinos();
-            await carregarGaleria();
-        } else {
-            console.log("Usuário não está autenticado no Supabase");
-        }
-    })();
-
-</script>
+    </script>
 </body>
 
 </html>
