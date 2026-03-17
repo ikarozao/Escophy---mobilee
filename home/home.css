@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap");
-/* ===== RESET E ESTILOS GERAIS ===== */
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
@@ -13,10 +13,6 @@ body {
   font-family: "Poppins", sans-serif;
   color: #222;
   padding-top: 70px;
-}
-
-section {
-  width: 100%;
 }
 
 /* ===== NAVBAR ===== */
@@ -40,7 +36,6 @@ nav .bar_n {
   font-family: "Staatliches", sans-serif;
   color: black;
   text-decoration: none;
-  cursor: pointer;
 }
 
 nav .nav-right {
@@ -55,7 +50,6 @@ nav .search-box {
   background: rgb(234, 234, 234);
   padding: 8px 20px;
   border-radius: 20px;
-  box-shadow: 1px 2px 6px rgba(119, 119, 119, 0.1);
   width: 100%;
   max-width: 400px;
 }
@@ -67,37 +61,47 @@ nav .search-box input {
   font-size: 14px;
   background: transparent;
   width: 150px;
-  border-radius: 25px;
 }
 
-/* ===== SIDEBAR ===== */
+/* ===== SIDEBAR CORRIGIDA ===== */
 .sidebar {
   position: fixed;
   left: 0;
   top: 70px;
   width: 250px;
   height: calc(100vh - 70px);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, rgb(5, 43, 5) 0%, rgb(64, 182, 64) 100%);
   color: white;
-  padding: 20px 0;
   z-index: 999;
   transition: transform 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 70px;
+  width: 250px;
+  height: calc(100vh - 70px);
+  background: linear-gradient(135deg, rgb(5, 43, 5), rgb(64, 182, 64));
+  color: white;
+  z-index: 999;
+  overflow-y: auto; /* SCROLL NA SIDEBAR, não dentro */
 }
 
 .sidebar-header {
-  padding: 0 20px 20px;
+  padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-shrink: 0;
 }
 
 .sidebar-header h2 {
+  margin: 0;
   font-size: 24px;
+  color: white;
 }
 
 .sidebar-close {
   display: none;
+  position: absolute;
+  top: 15px;
+  right: 15px;
   background: none;
   border: none;
   color: white;
@@ -105,9 +109,21 @@ nav .search-box input {
   cursor: pointer;
 }
 
+.sidebar-nav {
+  padding: 10px 0;
+  display: block; /* garante renderização normal */
+}
+
 .sidebar-nav ul {
   list-style: none;
-  padding: 20px 0;
+  padding: 0;
+  margin: 0;
+  display: block; /* IMPORTANTE */
+}
+
+.sidebar-nav li {
+  display: block; /* NÃO usa flex aqui */
+  width: 100%;
 }
 
 .sidebar-link {
@@ -115,7 +131,14 @@ nav .search-box input {
   padding: 12px 20px;
   color: white;
   text-decoration: none;
+  font-size: 16px;
   border-left: 3px solid transparent;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-link:hover {
@@ -136,7 +159,7 @@ nav .search-box input {
   top: 85px;
   left: 20px;
   z-index: 1001;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgb(64, 182, 64);
   color: white;
   border: none;
   border-radius: 8px;
@@ -166,7 +189,7 @@ nav .search-box input {
   opacity: 1;
 }
 
-/* ===== MAIN CONTENT PERFIL ===== */
+/* ===== MAIN CONTENT ===== */
 .main-content-perfil {
   display: flex;
   gap: 20px;
@@ -207,7 +230,7 @@ nav .search-box input {
   border-radius: 50%;
   overflow: hidden;
   margin: 15px auto;
-  border: 3px solid #667eea;
+  border: 3px solid rgb(64, 182, 64);
 }
 
 .foto_perfil img {
@@ -224,12 +247,18 @@ nav .search-box input {
   margin: 10px 0;
 }
 
-.info_usua2 span {
-  font-weight: 700;
-  color: #667eea;
+.info_usua span {
+  font-size: 16px;
+  font-weight: 500;
 }
 
-/* ===== TREINOS REALIZADOS ===== */
+.info_usua2 span {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(64, 182, 64);
+}
+
+/* ===== TREINOS ===== */
 .treinos {
   background: white;
   padding: 20px;
@@ -240,7 +269,6 @@ nav .search-box input {
 
 .treinos h2 {
   margin-bottom: 15px;
-  color: #333;
 }
 
 .treinos ul {
@@ -259,7 +287,7 @@ nav .search-box input {
   background: #e0e0e0;
 }
 
-/* ===== FEED DE VÍDEOS ===== */
+/* ===== FEED ===== */
 .feed {
   background: white;
   padding: 20px;
@@ -291,13 +319,12 @@ nav .search-box input {
   border: none;
 }
 
-/* ===== BOTÕES FLUTUANTES ===== */
+/* ===== BOTÃO FLUTUANTE ===== */
 .floating-buttons-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  transition: margin-left 0.3s ease;
 }
 
 .floating-buttons-container a {
@@ -313,14 +340,14 @@ nav .search-box input {
   font-size: 40px;
   border: none;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .botaomais:hover {
-  background-color: #6fe600;
+  background: #6fe600;
 }
 
 /* ===== FOOTER ===== */
@@ -328,7 +355,6 @@ nav .search-box input {
   background: #f9f9f9;
   padding: 40px 20px;
   margin-top: 30px;
-  transition: margin-left 0.3s ease;
 }
 
 .footer h1 {
@@ -359,7 +385,6 @@ nav .search-box input {
 
 .footer-column {
   flex: 1 1 150px;
-  min-width: 150px;
 }
 
 .footer-column h3 {
@@ -380,32 +405,12 @@ nav .search-box input {
   color: #555;
   text-decoration: none;
   font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .footer-column ul li a:hover {
   color: #000;
 }
 
-.social-icons i {
-  font-size: 16px;
-}
-
-/* ===== RESPONSIVIDADE FOOTER ===== */
-@media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column;
-    gap: 40px;
-  }
-  .footer-column {
-    flex: 1 1 100%;
-  }
-  .footer-logo {
-    text-align: center;
-  }
-}
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 12px;
@@ -418,18 +423,13 @@ nav .search-box input {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #4CAF50;
+  background: #4CAF50;
   border-radius: 10px;
   border: 2px solid #e0e0e0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #388E3C;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #4CAF50 #e0e0e0;
+  background: #388E3C;
 }
 
 /* ===== DESKTOP ===== */
@@ -449,18 +449,18 @@ nav .search-box input {
   .floating-buttons-container {
     margin-left: 250px;
   }
-  .sidebar-toggle {
-    display: none !important;
-  }
-  .sidebar-overlay {
+  .sidebar-toggle,
+  .sidebar-overlay,
+  .sidebar-close {
     display: none !important;
   }
 }
-/* ===== MOBILE (768px) ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
   nav {
     width: 100%;
     margin-left: 0;
+    padding: 8px 16px;
   }
   nav .bar_n {
     font-size: 28px;
@@ -504,7 +504,7 @@ nav .search-box input {
     display: none;
   }
 }
-/* ===== MOBILE PEQUENO (480px) ===== */
+/* ===== MOBILE PEQUENO ===== */
 @media (max-width: 480px) {
   nav .bar_n {
     font-size: 24px;
@@ -520,7 +520,20 @@ nav .search-box input {
     height: 50px;
     font-size: 30px;
   }
-  .left-column, .right-column {
-    min-width: 100%;
+  .info_usua, .info_usua2 {
+    gap: 20px;
+  }
+}
+/* ===== FOOTER RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .footer-column {
+    flex: 1 1 100%;
+  }
+  .footer-logo {
+    text-align: center;
   }
 }/*# sourceMappingURL=home.css.map */
