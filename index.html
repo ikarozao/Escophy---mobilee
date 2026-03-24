@@ -13,10 +13,11 @@
 <body>
 
   <div class="background-carousel">
-    <img class="bg-img active" src="img/inicio1.jpg" alt="Imagem 1" />
-    <img class="bg-img" src="img/inicio2.jpg" alt="Imagem 2" />
-    <img class="bg-img" src="img/inicio3.jpg" alt="Imagem 3" />
-    <img class="bg-img" src="img/inicio4.jpg" alt="Imagem 4" />
+    <img class="bg-img active" src="img/edit 10.jpg" alt="Imagem 1" />
+    <img class="bg-img" src="img/edit 8.jpg" alt="Imagem 2" />
+    <img class="bg-img" src="img/edit 9.jpg" alt="Imagem 3" />
+    <img class="bg-img" src="img/edit 2.jpg" alt="Imagem 4" />
+    <img class="bg-img" src="img/edit 4.jpg" alt="Imagem 2" />
   </div>
 
   <main class="container">
@@ -76,7 +77,7 @@
       images[current].classList.remove('active');
       current = (current + 1) % images.length;
       images[current].classList.add('active');
-    }, 6000);
+    }, 8000);
 
     // =========================
     // Alternar forms
@@ -111,7 +112,7 @@
       const senha = document.getElementById('senha-login').value;
 
       try {
-        console.log("🔐 Tentando login...");
+        console.log("Tentando login...");
 
         // Busca usuário na tabela usuarios
         const { data: usuarios, error } = await supabaseClient
@@ -150,7 +151,7 @@
       const senha = document.getElementById('senha-cadastro').value;
 
       try {
-        console.log("📝 Tentando cadastro...");
+        console.log("Tentando cadastro...");
 
         const { data: usuarioExistente, error: checkError } = await supabaseClient
           .from('usuarios')
