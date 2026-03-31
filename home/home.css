@@ -31,11 +31,12 @@ nav {
   height: 70px;
 }
 
-nav .bar_n {
+.bar_n {
   font-size: 40px;
   font-family: "Staatliches", sans-serif;
   color: black;
   text-decoration: none;
+  outline: none;
 }
 
 nav .nav-right {
@@ -79,7 +80,7 @@ nav .search-box input {
   top: 70px;
   width: 250px;
   height: calc(100vh - 70px);
-  background: linear-gradient(135deg, rgb(5, 43, 5), rgb(64, 182, 64));
+  background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.712));
   color: white;
   z-index: 999;
   overflow-y: auto; /* SCROLL NA SIDEBAR, não dentro */
@@ -230,7 +231,7 @@ nav .search-box input {
   border-radius: 50%;
   overflow: hidden;
   margin: 15px auto;
-  border: 3px solid rgb(64, 182, 64);
+  border: 3px solid rgba(4, 71, 0, 0.753);
 }
 
 .foto_perfil img {
@@ -255,7 +256,7 @@ nav .search-box input {
 .info_usua2 span {
   font-size: 16px;
   font-weight: 700;
-  color: rgb(64, 182, 64);
+  color: rgb(4, 71, 0);
 }
 
 /* ===== TREINOS ===== */
@@ -335,7 +336,7 @@ nav .search-box input {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgb(64, 182, 64);
+  background: rgba(4, 71, 0, 0.5);
   color: white;
   font-size: 40px;
   border: none;
@@ -347,7 +348,7 @@ nav .search-box input {
 }
 
 .botaomais:hover {
-  background: #6fe600;
+  background: rgba(4, 71, 0, 0.788);
 }
 
 /* ===== FOOTER ===== */
@@ -535,5 +536,75 @@ nav .search-box input {
   }
   .footer-logo {
     text-align: center;
+  }
+}
+/* ===== SIDEBAR RETRÁTIL ===== */
+.sidebar {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+/* Botão único para abrir/fechar */
+.sidebar-toggle-btn {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(4, 71, 0, 0.753);
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  width: 30px;
+  height: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgb(2, 51, 0);
+  width: 45px;
+}
+
+/* Quando a sidebar estiver aberta, o botão muda de ícone */
+.sidebar-toggle-btn.opened {
+  left: 250px;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Ajuste no conteúdo principal */
+.main-content-perfil {
+  margin-left: 0;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .sidebar.active ~ .main-content-perfil,
+  .sidebar.active ~ .footer,
+  .sidebar.active ~ .floating-buttons-container,
+  .sidebar.active ~ nav {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: all 0.3s ease;
+  }
+  .sidebar.active ~ nav {
+    width: calc(100% - 250px);
+  }
+}
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar-toggle-btn.opened {
+    left: 280px;
   }
 }/*# sourceMappingURL=home.css.map */
