@@ -34,8 +34,9 @@ nav {
 /* Logo da navbar */
 #logoimg {
   width: auto;
-  height: 35px;
-  margin-top: 0;
+  height: 55px;
+  width: 55px;
+  margin-top: 1vh;
 }
 
 nav .nav-right {
@@ -421,13 +422,13 @@ nav .search-box input {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4CAF50;
+  background: #055e08;
   border-radius: 10px;
   border: 2px solid #e0e0e0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #388E3C;
+  background: #054608;
 }
 
 /* ===== DESKTOP - Sidebar sempre visível ===== */
@@ -443,7 +444,8 @@ nav .search-box input {
     margin-left: 250px;
   }
   #logoimg {
-    height: 40px;
+    height: 50px;
+    width: 50px;
   }
   .main-content-perfil {
     margin-left: 270px;
@@ -484,7 +486,8 @@ nav .search-box input {
     justify-content: center;
   }
   #logoimg {
-    height: 30px;
+    height: 40px;
+    width: 30px;
   }
   nav .search-box {
     width: 50%;
@@ -521,6 +524,7 @@ nav .search-box input {
   }
   #logoimg {
     height: 25px;
+    width: 25px;
   }
   nav .search-box {
     width: 100%;
