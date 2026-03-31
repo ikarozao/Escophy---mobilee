@@ -28,15 +28,14 @@ nav {
     top: 0;
     left: 0;
     z-index: 1000;
-    height: 70px;
+    height: 60px;
 }
 
-.bar_n {
-    font-size: 40px;
-    font-family: "Staatliches", sans-serif;
-    color: black;
-    text-decoration: none;
-    outline: none;
+/* Logo da navbar */
+#logoimg {
+    width: auto;
+    height: 35px;
+    margin-top: 0;
 }
 
 nav .nav-right {
@@ -64,30 +63,18 @@ nav .search-box input {
     width: 150px;
 }
 
-/* ===== SIDEBAR CORRIGIDA ===== */
+/* ===== SIDEBAR ===== */
 .sidebar {
     position: fixed;
     left: 0;
     top: 70px;
     width: 250px;
     height: calc(100vh - 70px);
-    background: linear-gradient(135deg, rgb(5, 43, 5) 0%, rgb(64, 182, 64) 100%);
+    background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.712));
     color: white;
     z-index: 999;
+    overflow-y: auto;
     transition: transform 0.3s ease;
-    position: fixed;
-    left: 0;
-    top: 70px;
-    width: 250px;
-    height: calc(100vh - 70px);
-
-    background: linear-gradient(135deg, rgb(4, 71, 0),rgba(4, 71, 0, 0.712));
-    color: white;
-
-    z-index: 999;
-
-    overflow-y: auto; /* SCROLL NA SIDEBAR, não dentro */
-
 }
 
 .sidebar-header {
@@ -102,35 +89,20 @@ nav .search-box input {
     color: white;
 }
 
-.sidebar-close {
-    display: none;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-}
-
 .sidebar-nav {
     padding: 10px 0;
-
-    display: block; /* garante renderização normal */
+    display: block;
 }
 
 .sidebar-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-
-    
-    display: block; /* IMPORTANTE */
+    display: block;
 }
 
 .sidebar-nav li {
-    display: block; /* NÃO usa flex aqui */
+    display: block;
     width: 100%;
 }
 
@@ -160,22 +132,31 @@ nav .search-box input {
     font-weight: bold;
 }
 
-/* ===== BOTÃO TOGGLE ===== */
-.sidebar-toggle {
-    display: none;
+/* ===== BOTÃO ÚNICO PARA ABRIR/FECHAR SIDEBAR ===== */
+.sidebar-toggle-btn {
     position: fixed;
-    top: 85px;
-    left: 20px;
-    z-index: 1001;
-    background: rgb(64, 182, 64);
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(4, 71, 0, 0.753);
     color: white;
     border: none;
-    border-radius: 8px;
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
+    border-radius: 0 8px 8px 0;
+    width: 40px;
+    height: 80px;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgb(2, 51, 0);
+    width: 45px;
 }
 
 /* ===== OVERLAY ===== */
@@ -246,22 +227,31 @@ nav .search-box input {
     object-fit: cover;
 }
 
-.info_usua, .info_usua2 {
+/* Estatísticas - Treinos e Publicações */
+.stats-container {
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin: 10px 0;
+    gap: 50px;
+    margin-top: 15px;
 }
 
-.info_usua span {
-    font-size: 16px;
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 14px;
     font-weight: 500;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.info_usua2 span {
-    font-size: 16px;
+.stat-number {
+    font-size: 20px;
     font-weight: 700;
-    color: rgb(4, 71, 0);;
+    color: rgb(4, 71, 0);
+    display: block;
 }
 
 /* ===== TREINOS ===== */
@@ -438,11 +428,23 @@ nav .search-box input {
     background: #388E3C;
 }
 
-/* ===== DESKTOP ===== */
+/* ===== DESKTOP - Sidebar sempre visível ===== */
 @media (min-width: 769px) {
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+    
+    .sidebar-toggle-btn {
+        display: none !important;
+    }
+    
     nav {
         width: calc(100% - 250px);
         margin-left: 250px;
+    }
+    
+    #logoimg {
+        height: 40px;
     }
     
     .main-content-perfil {
@@ -459,23 +461,41 @@ nav .search-box input {
         margin-left: 250px;
     }
     
-    .sidebar-toggle,
-    .sidebar-overlay,
-    .sidebar-close {
+    .sidebar-overlay {
         display: none !important;
     }
 }
 
-/* ===== MOBILE ===== */
+/* ===== MOBILE - Sidebar ocupa 75% da tela ===== */
 @media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 75%;
+        max-width: 300px;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .sidebar-toggle-btn {
+        display: flex;
+    }
+    
+    .sidebar-toggle-btn.opened {
+        left: 75%;
+        transform: translateY(-50%);
+    }
+    
     nav {
         width: 100%;
         margin-left: 0;
         padding: 8px 16px;
+        justify-content: center;
     }
     
-    nav .bar_n {
-        font-size: 28px;
+    #logoimg {
+        height: 30px;
     }
     
     nav .search-box {
@@ -484,28 +504,6 @@ nav .search-box input {
     
     nav .search-box input {
         width: 100%;
-    }
-    
-    .sidebar {
-        transform: translateX(-100%);
-        width: 280px;
-    }
-    
-    .sidebar.active {
-        transform: translateX(0);
-    }
-    
-    .sidebar-close {
-        display: block;
-    }
-    
-    .sidebar-toggle {
-        display: block;
-    }
-    
-    .sidebar-overlay.active {
-        display: block;
-        opacity: 1;
     }
     
     .main-content-perfil {
@@ -526,19 +524,27 @@ nav .search-box input {
     .youtube-video-container {
         display: none;
     }
+    
+    .stats-container {
+        gap: 40px;
+    }
 }
 
 /* ===== MOBILE PEQUENO ===== */
 @media (max-width: 480px) {
-    nav .bar_n {
-        font-size: 24px;
+    .sidebar {
+        width: 80%;
+    }
+    
+    .sidebar-toggle-btn.opened {
+        left: 80%;
+    }
+    
+    #logoimg {
+        height: 25px;
     }
     
     nav .search-box {
-        width: 100%;
-    }
-    
-    .sidebar {
         width: 100%;
     }
     
@@ -548,8 +554,16 @@ nav .search-box input {
         font-size: 30px;
     }
     
-    .info_usua, .info_usua2 {
-        gap: 20px;
+    .stats-container {
+        gap: 30px;
+    }
+    
+    .stat-label {
+        font-size: 12px;
+    }
+    
+    .stat-number {
+        font-size: 18px;
     }
 }
 
@@ -566,78 +580,5 @@ nav .search-box input {
 
     .footer-logo {
         text-align: center;
-    }
-}
-
-/* ===== SIDEBAR RETRÁTIL ===== */
-.sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.sidebar.active {
-    transform: translateX(0);
-}
-
-/* Botão único para abrir/fechar */
-.sidebar-toggle-btn {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(4, 71, 0, 0.753);
-    color: white;
-    border: none;
-    border-radius: 0 8px 8px 0;
-    width: 30px;
-    height: 45px;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 1001;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-}
-
-.sidebar-toggle-btn:hover {
-    background: rgb(2, 51, 0);
-    width: 45px;
-}
-
-/* Quando a sidebar estiver aberta, o botão muda de ícone */
-.sidebar-toggle-btn.opened {
-    left: 250px;
-    border-radius: 0 8px 8px 0;
-}
-
-/* Ajuste no conteúdo principal */
-.main-content-perfil {
-    margin-left: 0;
-    width: 100%;
-    transition: margin-left 0.3s ease;
-}
-
-/* Desktop */
-@media (min-width: 769px) {
-    .sidebar.active ~ .main-content-perfil,
-    .sidebar.active ~ .footer,
-    .sidebar.active ~ .floating-buttons-container,
-    .sidebar.active ~ nav {
-        margin-left: 250px;
-        width: calc(100% - 250px);
-        transition: all 0.3s ease;
-    }
-    
-    .sidebar.active ~ nav {
-        width: calc(100% - 250px);
-    }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .sidebar-toggle-btn.opened {
-        left: 280px;
     }
 }

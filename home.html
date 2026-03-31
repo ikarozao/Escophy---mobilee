@@ -13,31 +13,28 @@
 <body>
     
     <nav>
-        
         <a href="home.html">
-            <div class="bar_n">Escorphy</div>
+            <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
         </a>
     </nav>
     
-<!-- Botão ÚNICO para abrir/fechar a sidebar -->
-<button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
+    <!-- Botão ÚNICO para abrir/fechar a sidebar (só aparece no mobile) -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
 
-<!-- OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- SIDEBAR (sem o botão X) -->
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-nav">
-        <ul>
-            <li><a href="home.html" class="sidebar-link active">Home</a></li>
-            <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
-            <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
-            <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
-            <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
-        </ul>
-    </div>
-</div>
-
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="home.html" class="sidebar-link active">Home</a></li>
+                <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
+                <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
+                <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
+                <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+            </ul>
+        </div>
     </div>
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -54,14 +51,15 @@
 
                 <input type="file" id="inputPerfil" accept="image/*" hidden>
 
-                <article class="info_usua">
-                    <span>Treinos</span>
-                    <span>Publicações</span>
-                </article>
-
-                <article class="info_usua2">
-                    <span id="contTreinos">0</span>
-                    <span id="contPublicacoes">0</span>
+                <article class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-label">Treinos</span>
+                        <span class="stat-number" id="contTreinos">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Publicações</span>
+                        <span class="stat-number" id="contPublicacoes">0</span>
+                    </div>
                 </article>
             </article>
 
@@ -427,59 +425,77 @@
             preview.appendChild(img);
         });
     }
-   // Controle da sidebar com um único botão
-const sidebar = document.getElementById('sidebar');
-const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-const overlay = document.getElementById('sidebarOverlay');
-
-// Função para abrir/fechar sidebar
-function toggleSidebar() {
-    sidebar.classList.toggle('active');
     
-    if (sidebar.classList.contains('active')) {
-        sidebarToggleBtn.classList.add('opened');
-        sidebarToggleBtn.innerHTML = '◀'; // Muda para seta esquerda
-        if (overlay) overlay.classList.add('active');
-        localStorage.setItem('sidebarOpen', 'true');
-    } else {
-        sidebarToggleBtn.classList.remove('opened');
-        sidebarToggleBtn.innerHTML = '▶'; // Volta para seta direita
-        if (overlay) overlay.classList.remove('active');
-        localStorage.setItem('sidebarOpen', 'false');
+    // Controle da sidebar - só funciona no mobile
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    // Verificar se é mobile
+    function isMobile() {
+        return window.innerWidth <= 768;
     }
-}
 
-// Evento de clique no botão
-if (sidebarToggleBtn) {
-    sidebarToggleBtn.addEventListener('click', toggleSidebar);
-}
-
-// Fechar ao clicar no overlay (mobile)
-if (overlay) {
-    overlay.addEventListener('click', () => {
+    // Função para abrir/fechar sidebar (só mobile)
+    function toggleSidebar() {
+        if (!isMobile()) return; // Não faz nada no desktop
+        
+        sidebar.classList.toggle('active');
+        
         if (sidebar.classList.contains('active')) {
+            sidebarToggleBtn.classList.add('opened');
+            sidebarToggleBtn.innerHTML = '◀';
+            if (overlay) overlay.classList.add('active');
+            localStorage.setItem('sidebarOpen', 'true');
+        } else {
+            sidebarToggleBtn.classList.remove('opened');
+            sidebarToggleBtn.innerHTML = '▶';
+            if (overlay) overlay.classList.remove('active');
+            localStorage.setItem('sidebarOpen', 'false');
+        }
+    }
+
+    // Evento de clique no botão
+    if (sidebarToggleBtn) {
+        sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    }
+
+    // Fechar ao clicar no overlay (mobile)
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            if (isMobile() && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                overlay.classList.remove('active');
+                localStorage.setItem('sidebarOpen', 'false');
+            }
+        });
+    }
+
+    // Verificar estado salvo ao carregar a página (apenas mobile)
+    const sidebarState = localStorage.getItem('sidebarOpen');
+    if (isMobile() && sidebarState === 'true') {
+        sidebar.classList.add('active');
+        sidebarToggleBtn.classList.add('opened');
+        sidebarToggleBtn.innerHTML = '◀';
+        if (overlay) overlay.classList.add('active');
+    } else if (!isMobile()) {
+        sidebar.classList.remove('active');
+        sidebarToggleBtn.classList.remove('opened');
+        sidebarToggleBtn.innerHTML = '▶';
+        if (overlay) overlay.classList.remove('active');
+    }
+    
+    // Monitorar redimensionamento da tela
+    window.addEventListener('resize', function() {
+        if (!isMobile()) {
             sidebar.classList.remove('active');
             sidebarToggleBtn.classList.remove('opened');
             sidebarToggleBtn.innerHTML = '▶';
-            overlay.classList.remove('active');
-            localStorage.setItem('sidebarOpen', 'false');
+            if (overlay) overlay.classList.remove('active');
         }
     });
-}
-
-// Verificar estado salvo ao carregar a página
-const sidebarState = localStorage.getItem('sidebarOpen');
-if (sidebarState === 'true') {
-    sidebar.classList.add('active');
-    sidebarToggleBtn.classList.add('opened');
-    sidebarToggleBtn.innerHTML = '◀';
-    if (overlay) overlay.classList.add('active');
-} else {
-    sidebar.classList.remove('active');
-    sidebarToggleBtn.classList.remove('opened');
-    sidebarToggleBtn.innerHTML = '▶';
-    if (overlay) overlay.classList.remove('active');
-}
     </script>
 </body>
 
