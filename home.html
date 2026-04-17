@@ -103,7 +103,7 @@
 
         <div class="column right-column">
             <input type="file" id="fileInput" accept="image/*" multiple />
-            <div id="preview" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+            <div id="preview" style="display: flex; gap: 10px; flex-wrap:wrap;"></div>
             <button class="saveBtn">Salvar galeria</button>
         </div>
     </div>
@@ -311,8 +311,8 @@
 
             const img = document.createElement("img");
             img.src = URL.createObjectURL(file);
-            img.style.width = "120px";
-            img.style.height = "120px";
+            img.style.width = "400px";
+            img.style.height = "400px";
             img.style.objectFit = "cover";
             img.style.borderRadius = "8px";
 
