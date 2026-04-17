@@ -243,7 +243,7 @@ nav .search-box input {
 .label-file {
   display: flex;
   align-items: center;
-  width: 19vh;
+  width: 20vh;
   height: 4vh;
   padding: 5px;
   background-color: rgb(17, 94, 13);
@@ -383,7 +383,7 @@ nav .search-box input {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(4, 71, 0, 0.5);
+  background: rgba(4, 71, 0, 0.788);
   color: white;
   font-size: 40px;
   border: none;
@@ -395,7 +395,7 @@ nav .search-box input {
 }
 
 .botaomais:hover {
-  background: rgba(4, 71, 0, 0.788);
+  background: rgb(4, 71, 0);
 }
 
 /* ===== FOOTER ===== */
