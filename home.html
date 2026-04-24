@@ -102,7 +102,9 @@
         </div>
 
         <div class="column-right-column">
-            <div><h2>Galeria</h2></div>
+            <div>
+                <h2>Galeria</h2>
+            </div>
             <!--<input type="file" id="fileInput" accept="image/*" multiple />-->
             <label class="label-file">
                 Selecionar Imagem
@@ -376,7 +378,7 @@
                     .upsert(
                         {
                             usuario_id: userId,
-                            galeria: urls
+                            galeria: urls ?? []
                         },
                         { onConflict: "usuario_id" }
                     );
@@ -395,6 +397,9 @@
                 console.error(err);
             }
         });
+
+        console.log("Tipo de urls:", typeof urls);
+        console.log("Conteúdo:", urls);
 
         async function carregarGaleria() {
             const { data: { user } } = await supabaseClient.auth.getUser();
