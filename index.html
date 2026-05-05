@@ -180,8 +180,23 @@
 
         const user = data.user;
 
-        // salva infos extras
+        console.log("Auth user id:", user.id);
+
         const { error: insertError } = await supabaseClient
+          .from("usuarios")
+          .insert([
+            {
+              id: user.id,
+              nome,
+              email,
+              created_at: new Date().toISOString()
+            }
+          ]);
+
+        console.log("Erro insert usuario:", insertError);
+
+        // salva infos extras
+        /*const { error: insertError } = await supabaseClient
           .from("usuarios")
           .insert([
             {
@@ -196,8 +211,8 @@
           console.error(insertError);
           alert("Erro ao salvar usuário.");
           return;
-        }
-
+        }*/
+       
         localStorage.setItem("usuarioId", user.id);
         localStorage.setItem("usuarioEmail", user.email);
         localStorage.setItem("usuarioLogado", nome);
