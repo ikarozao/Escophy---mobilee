@@ -70,149 +70,150 @@
     // =========================
     // Carrossel
     // =========================
-    const images = document.querySelectorAll('.bg-img');
+    const images = document.querySelectorAll(".bg-img");
     let current = 0;
 
     setInterval(() => {
-      images[current].classList.remove('active');
+      images[current].classList.remove("active");
       current = (current + 1) % images.length;
-      images[current].classList.add('active');
+      images[current].classList.add("active");
     }, 8000);
 
     // =========================
     // Alternar forms
     // =========================
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const showRegister = document.getElementById('show-register');
-    const showLogin = document.getElementById('show-login');
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+    const showRegister = document.getElementById("show-register");
+    const showLogin = document.getElementById("show-login");
 
-    showRegister?.addEventListener('click', (e) => {
+    showRegister?.addEventListener("click", (e) => {
       e.preventDefault();
-      loginForm.classList.remove('active');
-      registerForm.classList.add('active');
+      loginForm.classList.remove("active");
+      registerForm.classList.add("active");
     });
 
-    showLogin?.addEventListener('click', (e) => {
+    showLogin?.addEventListener("click", (e) => {
       e.preventDefault();
-      registerForm.classList.remove('active');
-      loginForm.classList.add('active');
+      registerForm.classList.remove("active");
+      loginForm.classList.add("active");
     });
 
-    const SUPABASE_URL = 'https://yuupbtrljazrrwizzafd.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
+    // =========================
+    // Supabase
+    // =========================
+    const SUPABASE_URL = "https://yuupbtrljazrrwizzafd.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_wHu7RW-F1J8ralIQoIbTyA_H6fldLYG";
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
-    // login
-    loginForm.addEventListener('submit', async (e) => {
+    // =========================
+    // LOGIN
+    // =========================
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById('email-login').value;
-      const senha = document.getElementById('senha-login').value;
+      const email = document.getElementById("email-login").value;
+      const senha = document.getElementById("senha-login").value;
 
       try {
-        console.log("Tentando login...");
+        const { data, error } =
+          await supabaseClient.auth.signInWithPassword({
+            email,
+            password: senha,
+          });
 
-        // Busca usuário na tabela usuarios
-        /*const { data: usuarios, error } = await supabaseClient
-          .from('usuarios')
-          .select('*')
-          .eq('email', email)
-          .eq('senha', senha)
+        if (error) {
+          console.error(error);
+          alert("Email ou senha incorretos!");
+          return;
+        }
+
+        // pega nome da tabela usuarios
+        const { data: usuario } = await supabaseClient
+          .from("usuarios")
+          .select("nome")
+          .eq("id", data.user.id)
           .single();
 
-        if (error || !usuarios) {
-          console.error('❌ Erro no login:', error);
-          alert('Email ou senha incorretos!');
-          return;
-        }*/
+        localStorage.setItem("usuarioId", data.user.id);
+        localStorage.setItem("usuarioEmail", data.user.email);
 
-        /*const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password: senha
-        });*/
+        if (usuario?.nome) {
+          localStorage.setItem("usuarioLogado", usuario.nome);
+        }
 
-        const user = data.user;
-
-        console.log('✅ Login OK:', usuarios);
-
-        /*localStorage.setItem("usuarioLogado", usuarios.nome);
-        localStorage.setItem("usuarioEmail", usuarios.email);
-        localStorage.setItem("usuarioId", usuarios.id);*/
-
-        await supabaseClient.from("usuarios").insert([
-          {
-            id: user.id,
-            nome,
-            email
-          }
-        ]);
-
+        console.log("✅ Login OK");
         window.location.href = "home.html";
 
       } catch (err) {
-        console.error('❌ Erro no login:', err);
-        alert('Erro ao fazer login!');
+        console.error(err);
+        alert("Erro ao fazer login!");
       }
     });
 
-    // cadastro (apenas tabela usuarios)
-    registerForm.addEventListener('submit', async (e) => {
+    // =========================
+    // CADASTRO
+    // =========================
+    registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const nome = document.getElementById('nome-cadastro').value;
-      const email = document.getElementById('email-cadastro').value;
-      const senha = document.getElementById('senha-cadastro').value;
+      const nome = document.getElementById("nome-cadastro").value;
+      const email = document.getElementById("email-cadastro").value;
+      const senha = document.getElementById("senha-cadastro").value;
 
       try {
-        console.log("Tentando cadastro...");
-
-        const { data: usuarioExistente, error: checkError } = await supabaseClient
-          .from('usuarios')
-          .select('email')
-          .eq('email', email)
-          .single();
-
-        if (usuarioExistente) {
-          alert('Este email já está cadastrado!');
-          return;
-        }
-
-        const { data, error } = await supabaseClient
-          .from('usuarios')
-          .insert([
-            {
-              nome: nome,
-              email: email,
-              senha: senha,
-              created_at: new Date().toISOString()
-            }
-          ])
-          .select();
+        // cria conta no Auth
+        const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password: senha,
+        });
 
         if (error) {
-          console.error("❌ Erro no cadastro:", error);
-          alert("Erro no cadastro: " + error.message);
+          console.error(error);
+          alert(error.message);
           return;
         }
 
-        console.log("✅ Cadastro realizado:", data);
+        const user = data.user;
 
-        /*localStorage.setItem("usuarioLogado", nome);
-        localStorage.setItem("usuarioEmail", email);
-        localStorage.setItem("usuarioId", data[0].id);*/
+        // salva infos extras
+        const { error: insertError } = await supabaseClient
+          .from("usuarios")
+          .insert([
+            {
+              id: user.id,
+              nome: nome,
+              email: email,
+              created_at: new Date().toISOString(),
+            },
+          ]);
+
+        if (insertError) {
+          console.error(insertError);
+          alert("Erro ao salvar usuário.");
+          return;
+        }
+
+        localStorage.setItem("usuarioId", user.id);
+        localStorage.setItem("usuarioEmail", user.email);
+        localStorage.setItem("usuarioLogado", nome);
 
         alert("✅ Cadastro realizado com sucesso!");
-
         window.location.href = "home.html";
 
       } catch (err) {
-        console.error("Erro no cadastro:", err);
+        console.error(err);
         alert("Erro ao cadastrar!");
       }
     });
 
+    // =========================
+    // Mostrar senha
+    // =========================
     document.querySelectorAll(".toggle-password").forEach((icon) => {
       icon.addEventListener("click", () => {
         const inputId = icon.getAttribute("data-target");
@@ -220,32 +221,15 @@
 
         if (input.type === "password") {
           input.type = "text";
-          icon.classList.remove("bx-show");
-          icon.classList.add("bx-hide");
+          icon.classList.replace("bx-show", "bx-hide");
         } else {
           input.type = "password";
-          icon.classList.remove("bx-hide");
-          icon.classList.add("bx-show");
+          icon.classList.replace("bx-hide", "bx-show");
         }
       });
     });
-
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password: senha
-    });
-
-    if (error) {
-      alert("Email ou senha incorretos");
-      return;
-    }
-
-    localStorage.setItem("usuarioEmail", data.user.email);
-    localStorage.setItem("usuarioId", data.user.id);
-
-    window.location.href = "home.html";
-
   </script>
+
 </body>
 
 </html>
