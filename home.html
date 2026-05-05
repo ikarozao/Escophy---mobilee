@@ -195,7 +195,7 @@
 
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            const userId = localStorage.getItem("usuarioId");
+            /*const userId = localStorage.getItem("usuarioId");
 
             if (!userId) {
                 alert("Usuário não logado!");
@@ -204,7 +204,7 @@
             }
 
             const { data: { session } } = await supabaseClient.auth.getSession();
-            
+
             console.log("Sessão:", session);
 
             if (session) {
@@ -224,7 +224,21 @@
                         document.getElementById('nomeUsuario').textContent = `Olá, ${nomeSalvo}`;
                     }
                 }
+            }*/
+
+            const { data: { user } } = await supabaseClient.auth.getUser();
+
+            console.log("Usuário:", user);
+
+            if (!user) {
+                alert("Usuário não logado!");
+                window.location.href = "login.html";
+                return;
             }
+
+            await carregarPerfil();
+            await carregarTreinos();
+            await carregarGaleria();
 
             console.log("=== FIM DO DEBUG ===");
         })();
