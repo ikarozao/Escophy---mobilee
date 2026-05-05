@@ -388,6 +388,8 @@
 
             try {
                 const urls = await uploadImages(userId);
+                console.log("Tipo de urls:", typeof urls);
+                console.log("Conteúdo:", urls);
                 console.log("URLs enviadas:", urls);
 
                 const { error } = await supabaseClient
@@ -414,9 +416,6 @@
                 console.error(err);
             }
         });
-
-        console.log("Tipo de urls:", typeof urls);
-        console.log("Conteúdo:", urls);
 
         async function carregarGaleria() {
             const { data: { user } } = await supabaseClient.auth.getUser();
