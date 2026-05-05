@@ -115,7 +115,7 @@
         console.log("Tentando login...");
 
         // Busca usuário na tabela usuarios
-        const { data: usuarios, error } = await supabaseClient
+        /*const { data: usuarios, error } = await supabaseClient
           .from('usuarios')
           .select('*')
           .eq('email', email)
@@ -126,13 +126,28 @@
           console.error('❌ Erro no login:', error);
           alert('Email ou senha incorretos!');
           return;
-        }
+        }*/
+
+        /*const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password: senha
+        });*/
+
+        const user = data.user;
 
         console.log('✅ Login OK:', usuarios);
 
-        localStorage.setItem("usuarioLogado", usuarios.nome);
+        /*localStorage.setItem("usuarioLogado", usuarios.nome);
         localStorage.setItem("usuarioEmail", usuarios.email);
-        localStorage.setItem("usuarioId", usuarios.id);
+        localStorage.setItem("usuarioId", usuarios.id);*/
+
+        await supabaseClient.from("usuarios").insert([
+          {
+            id: user.id,
+            nome,
+            email
+          }
+        ]);
 
         window.location.href = "home.html";
 
@@ -184,12 +199,12 @@
 
         console.log("✅ Cadastro realizado:", data);
 
-        localStorage.setItem("usuarioLogado", nome);
+        /*localStorage.setItem("usuarioLogado", nome);
         localStorage.setItem("usuarioEmail", email);
-        localStorage.setItem("usuarioId", data[0].id);
+        localStorage.setItem("usuarioId", data[0].id);*/
 
         alert("✅ Cadastro realizado com sucesso!");
-        
+
         window.location.href = "home.html";
 
       } catch (err) {
@@ -215,6 +230,22 @@
       });
     });
 
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password: senha
+    });
+
+    if (error) {
+      alert("Email ou senha incorretos");
+      return;
+    }
+
+    localStorage.setItem("usuarioEmail", data.user.email);
+    localStorage.setItem("usuarioId", data.user.id);
+
+    window.location.href = "home.html";
+
   </script>
 </body>
+
 </html>
