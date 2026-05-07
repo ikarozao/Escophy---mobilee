@@ -213,7 +213,7 @@
 
                 const { data: perfil, error } = await supabaseClient
                     .from('usuarios')
-                    .select('nome, foto_perfil, treinos, publicacoes, id')
+                    .select('nome, foto_perfil, publicacoes, id')
                     .eq('email', user.email)
                     .maybeSingle();
 
@@ -230,10 +230,20 @@
                         nomeElemento.textContent = `Olá, ${perfil.nome}`;
                     }
 
-                    const contTreinos = document.getElementById('contTreinos');
-                    const contPublicacoes = document.getElementById('contPublicacoes');
+                    // Conta quantos treinos o usuário tem usando o email
+                    const { count: totalTreinos, error: countError } = await supabaseClient
+                        .from('atividades')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('email_usuario', user.email);
 
-                    if (contTreinos) contTreinos.textContent = perfil.treinos || 0;
+                    if (!countError) {
+                        const contTreinos = document.getElementById('contTreinos');
+                        if (contTreinos) contTreinos.textContent = totalTreinos || 0;
+                    } else {
+                        console.error("Erro ao contar treinos:", countError);
+                    }
+
+                    const contPublicacoes = document.getElementById('contPublicacoes');
                     if (contPublicacoes) contPublicacoes.textContent = perfil.publicacoes || 0;
 
                     if (perfil.foto_perfil) {
@@ -261,22 +271,14 @@
                 return;
             }
 
-            // Busca o ID do usuário na tabela usuarios
-            const { data: usuarioData } = await supabaseClient
-                .from('usuarios')
-                .select('id')
-                .eq('email', user.email)
-                .single();
+            console.log("Buscando treinos para o email:", user.email);
 
-            if (!usuarioData) {
-                console.warn("Usuário não encontrado na tabela usuarios");
-                return;
-            }
-
+            // Busca os treinos usando o EMAIL (igual salva no treino1.html)
             const { data: atividades, error } = await supabaseClient
                 .from('atividades')
                 .select('*')
-                .eq('usuario_id', usuarioData.id);
+                .eq('email_usuario', user.email)
+                .order('data', { ascending: false }); // Ordena do mais recente primeiro
 
             if (error) {
                 console.error('Erro ao carregar atividades:', error);
@@ -289,11 +291,20 @@
             lista.innerHTML = '';
 
             if (atividades && atividades.length > 0) {
+                // Atualiza o contador também aqui
                 contador.textContent = atividades.length;
 
                 atividades.forEach(atividade => {
                     const item = document.createElement('li');
-                    item.textContent = atividade.titulo;
+                    
+                    // Formata a data se existir
+                    let dataTexto = '';
+                    if (atividade.data) {
+                        const dataObj = new Date(atividade.data);
+                        dataTexto = ` - ${dataObj.toLocaleDateString('pt-BR')}`;
+                    }
+                    
+                    item.textContent = `${atividade.titulo}${dataTexto}`;
                     item.style.cursor = "pointer";
 
                     item.addEventListener('click', () => {
@@ -305,7 +316,7 @@
                 });
             } else {
                 contador.textContent = 0;
-                lista.innerHTML = '<li>Nenhum treino encontrado.</li>';
+                lista.innerHTML = '<li>Nenhum treino encontrado. Clique no + para registrar!</li>';
             }
         }
 
@@ -318,7 +329,7 @@
 
         fileInput.addEventListener("change", (event) => {
             preview.innerHTML = "";
-            selectedImages = []; // Limpa as imagens anteriores
+            selectedImages = [];
             const files = Array.from(event.target.files);
 
             files.forEach(file => {
@@ -371,7 +382,6 @@
                 return;
             }
 
-            // Busca o ID do usuário na tabela usuarios
             const { data: usuarioData, error: usuarioError } = await supabaseClient
                 .from('usuarios')
                 .select('id')
@@ -413,7 +423,6 @@
 
                 alert("Galeria salva com sucesso!");
                 selectedImages = [];
-                // Recarrega a galeria para mostrar as novas fotos
                 await carregarGaleria();
 
             } catch (err) {
@@ -430,7 +439,6 @@
                 return;
             }
 
-            // Busca o ID do usuário na tabela usuarios
             const { data: usuarioData, error: usuarioError } = await supabaseClient
                 .from('usuarios')
                 .select('id')
