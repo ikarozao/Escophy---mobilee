@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+    <title>Perfil | Escorphy</title>
     <link rel="stylesheet" href="home/home.css">
     <link rel="icon" type="image/png" href="img/a.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -34,6 +34,17 @@
                 <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
                 <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
             </ul>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação para excluir imagem -->
+    <div id="confirmModal" class="modal-confirm">
+        <div class="modal-content">
+            <p>Tem certeza que deseja excluir esta imagem?</p>
+            <div class="modal-buttons">
+                <button class="btn-confirm" id="confirmDelete">Sim</button>
+                <button class="btn-cancel" id="cancelDelete">Não</button>
+            </div>
         </div>
     </div>
 
@@ -107,9 +118,9 @@
             </div>
             <label class="label-file">
                 Selecionar Imagem
-                <input type="file" id="fileInput" accept="image/*">
+                <input type="file" id="fileInput" accept="image/*" multiple>
             </label>
-            <div id="preview" style="display: flex; gap: 10px; flex-wrap:wrap;"></div>
+            <div id="preview"></div>
             <button id="saveBtn">Salvar galeria</button>
         </div>
     </div>
@@ -230,7 +241,6 @@
                         nomeElemento.textContent = `Olá, ${perfil.nome}`;
                     }
 
-                    // Conta quantos treinos o usuário tem usando o email
                     const { count: totalTreinos, error: countError } = await supabaseClient
                         .from('atividades')
                         .select('*', { count: 'exact', head: true })
@@ -273,12 +283,11 @@
 
             console.log("Buscando treinos para o email:", user.email);
 
-            // Busca os treinos usando o EMAIL (igual salva no treino1.html)
             const { data: atividades, error } = await supabaseClient
                 .from('atividades')
                 .select('*')
                 .eq('email_usuario', user.email)
-                .order('data', { ascending: false }); // Ordena do mais recente primeiro
+                .order('data', { ascending: false });
 
             if (error) {
                 console.error('Erro ao carregar atividades:', error);
@@ -291,13 +300,11 @@
             lista.innerHTML = '';
 
             if (atividades && atividades.length > 0) {
-                // Atualiza o contador também aqui
                 contador.textContent = atividades.length;
 
                 atividades.forEach(atividade => {
                     const item = document.createElement('li');
                     
-                    // Formata a data se existir
                     let dataTexto = '';
                     if (atividade.data) {
                         const dataObj = new Date(atividade.data);
@@ -320,36 +327,168 @@
             }
         }
 
-        // Galeria
-        let selectedImages = [];
+        // ========== GALERIA ==========
+        let selectedFiles = [];
+        let currentImageToDelete = null;
 
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
+        const modal = document.getElementById("confirmModal");
+        const confirmDeleteBtn = document.getElementById("confirmDelete");
+        const cancelDeleteBtn = document.getElementById("cancelDelete");
 
+        function showDeleteModal(imageUrl, imageContainer) {
+            currentImageToDelete = { url: imageUrl, container: imageContainer };
+            modal.style.display = "flex";
+        }
+
+        function hideModal() {
+            modal.style.display = "none";
+            currentImageToDelete = null;
+        }
+
+        function getStoragePathFromUrl(url) {
+            try {
+                const urlObj = new URL(url);
+                const pathParts = urlObj.pathname.split('/');
+                const galeriasIndex = pathParts.indexOf('galerias');
+                if (galeriasIndex !== -1) {
+                    return pathParts.slice(galeriasIndex).join('/');
+                }
+            } catch (e) {
+                console.error("Erro ao extrair path:", e);
+            }
+            return null;
+        }
+
+        async function deleteImageFromStorage(imageUrl) {
+            try {
+                const path = getStoragePathFromUrl(imageUrl);
+                if (!path) {
+                    console.error("Não foi possível extrair o path da imagem");
+                    return false;
+                }
+
+                console.log("Tentando deletar:", path);
+                
+                const { error } = await supabaseClient.storage
+                    .from("galeria_fotos")
+                    .remove([path]);
+
+                if (error) {
+                    console.error("Erro ao deletar do storage:", error);
+                    return false;
+                }
+
+                console.log("Imagem deletada do storage com sucesso!");
+                return true;
+            } catch (err) {
+                console.error("Erro ao deletar imagem:", err);
+                return false;
+            }
+        }
+
+        async function excluirImagem() {
+            if (!currentImageToDelete) return;
+
+            const { url, container } = currentImageToDelete;
+            
+            const deletedFromStorage = await deleteImageFromStorage(url);
+            
+            if (!deletedFromStorage) {
+                alert("Erro ao deletar a imagem do servidor!");
+                hideModal();
+                return;
+            }
+
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) {
+                alert("Usuário não identificado!");
+                hideModal();
+                return;
+            }
+
+            const { data: usuarioData } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (!usuarioData) {
+                alert("Usuário não encontrado!");
+                hideModal();
+                return;
+            }
+
+            const userId = usuarioData.id;
+
+            const { data: galeriaData, error: fetchError } = await supabaseClient
+                .from("fotos")
+                .select("galeria")
+                .eq("usuario_id", userId)
+                .single();
+
+            if (fetchError) {
+                console.error("Erro ao buscar galeria:", fetchError);
+                alert("Erro ao buscar dados da galeria!");
+                hideModal();
+                return;
+            }
+
+            const novasUrls = galeriaData.galeria.filter(imgUrl => imgUrl !== url);
+
+            const { error: updateError } = await supabaseClient
+                .from("fotos")
+                .update({ galeria: novasUrls })
+                .eq("usuario_id", userId);
+
+            if (updateError) {
+                console.error("Erro ao atualizar galeria:", updateError);
+                alert("Erro ao atualizar a galeria!");
+                hideModal();
+                return;
+            }
+
+            container.remove();
+            alert("Imagem excluída com sucesso!");
+            hideModal();
+        }
+
+        confirmDeleteBtn.addEventListener("click", excluirImagem);
+        cancelDeleteBtn.addEventListener("click", hideModal);
+
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+        // Adiciona imagens sem remover as anteriores
         fileInput.addEventListener("change", (event) => {
-            preview.innerHTML = "";
-            selectedImages = [];
             const files = Array.from(event.target.files);
-
+            
             files.forEach(file => {
-                selectedImages.push(file);
-
+                selectedFiles.push(file);
+                
+                const container = document.createElement("div");
+                container.className = "preview-img-container";
+                
                 const img = document.createElement("img");
                 img.src = URL.createObjectURL(file);
-                img.style.width = "400px";
-                img.style.height = "400px";
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "8px";
-
-                preview.appendChild(img);
+                img.className = "preview-img";
+                
+                container.appendChild(img);
+                preview.appendChild(container);
             });
+            
+            fileInput.value = "";
         });
 
         async function uploadImages(userId) {
             const uploadedURLs = [];
 
-            for (const file of selectedImages) {
+            for (const file of selectedFiles) {
                 const fileName = `${userId}_${Date.now()}_${file.name}`;
                 const path = `galerias/${userId}/${fileName}`;
 
@@ -396,7 +535,7 @@
 
             const userId = usuarioData.id;
 
-            if (selectedImages.length === 0) {
+            if (selectedFiles.length === 0) {
                 alert("Selecione pelo menos uma imagem!");
                 return;
             }
@@ -405,12 +544,24 @@
                 const urls = await uploadImages(userId);
                 console.log("URLs enviadas:", urls);
 
+                const { data: galeriaAtual, error: fetchError } = await supabaseClient
+                    .from("fotos")
+                    .select("galeria")
+                    .eq("usuario_id", userId)
+                    .maybeSingle();
+
+                let galeriaFinal = urls;
+                
+                if (galeriaAtual && galeriaAtual.galeria && galeriaAtual.galeria.length > 0) {
+                    galeriaFinal = [...galeriaAtual.galeria, ...urls];
+                }
+
                 const { error } = await supabaseClient
                     .from("fotos")
                     .upsert(
                         {
                             usuario_id: userId,
-                            galeria: urls
+                            galeria: galeriaFinal
                         },
                         { onConflict: "usuario_id" }
                     );
@@ -422,7 +573,7 @@
                 }
 
                 alert("Galeria salva com sucesso!");
-                selectedImages = [];
+                selectedFiles = [];
                 await carregarGaleria();
 
             } catch (err) {
@@ -464,24 +615,36 @@
             }
 
             if (!data || !data.galeria || data.galeria.length === 0) {
-                console.log("Usuário ainda não possui galeria salva.");
+                preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>';
                 return;
             }
 
             preview.innerHTML = "";
 
             data.galeria.forEach(url => {
+                const container = document.createElement("div");
+                container.className = "preview-img-container";
+                
                 const img = document.createElement("img");
                 img.src = url;
-                img.style.width = "400px";
-                img.style.height = "400px";
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "8px";
-                preview.appendChild(img);
+                img.className = "preview-img";
+                
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-btn";
+                deleteBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7H20M10 11V16M14 11V16M5 7L6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19L19 7M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>';
+                
+                deleteBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    showDeleteModal(url, container);
+                });
+                
+                container.appendChild(img);
+                container.appendChild(deleteBtn);
+                preview.appendChild(container);
             });
         }
 
-        // Controle da sidebar - só funciona no mobile
+        // ========== CONTROLE DA SIDEBAR ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const overlay = document.getElementById('sidebarOverlay');
