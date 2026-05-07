@@ -105,7 +105,6 @@
             <div>
                 <h2>Galeria</h2>
             </div>
-            <!--<input type="file" id="fileInput" accept="image/*" multiple />-->
             <label class="label-file">
                 Selecionar Imagem
                 <input type="file" id="fileInput" accept="image/*">
@@ -174,17 +173,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
-
-        /*const supabaseClient = supabase.createClient(
-            "https://yuupbtrljazrrwizzafd.supabase.co",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0",
-            {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true
-                }
-            }
-        );*/
         (async function () {
             console.log("=== INÍCIO DO DEBUG ===");
 
@@ -194,37 +182,6 @@
             }
 
             await new Promise(resolve => setTimeout(resolve, 500));
-
-            /*const userId = localStorage.getItem("usuarioId");
-
-            if (!userId) {
-                alert("Usuário não logado!");
-                window.location.href = "login.html";
-                return;
-            }
-
-            const { data: { session } } = await supabaseClient.auth.getSession();
-
-            console.log("Sessão:", session);
-
-            if (session) {
-                console.log("Usuário autenticado:", session.user);
-                await carregarPerfil();
-                await carregarTreinos();
-                await carregarGaleria();
-            } else {
-                console.log("Usuário não está autenticado no Supabase");
-
-                const emailSalvo = localStorage.getItem("usuarioEmail");
-                console.log("Email no localStorage:", emailSalvo);
-
-                if (emailSalvo) {
-                    const nomeSalvo = localStorage.getItem("usuarioLogado");
-                    if (nomeSalvo) {
-                        document.getElementById('nomeUsuario').textContent = `Olá, ${nomeSalvo}`;
-                    }
-                }
-            }*/
 
             const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -256,7 +213,7 @@
 
                 const { data: perfil, error } = await supabaseClient
                     .from('usuarios')
-                    .select('nome, foto_perfil, treinos, publicacoes')
+                    .select('nome, foto_perfil, treinos, publicacoes, id')
                     .eq('email', user.email)
                     .maybeSingle();
 
@@ -287,6 +244,7 @@
                     }
 
                     localStorage.setItem("usuarioLogado", perfil.nome);
+                    localStorage.setItem("usuarioIdTabela", perfil.id);
                 } else {
                     console.log("Perfil não encontrado para o email:", user.email);
                 }
@@ -303,10 +261,22 @@
                 return;
             }
 
+            // Busca o ID do usuário na tabela usuarios
+            const { data: usuarioData } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (!usuarioData) {
+                console.warn("Usuário não encontrado na tabela usuarios");
+                return;
+            }
+
             const { data: atividades, error } = await supabaseClient
                 .from('atividades')
                 .select('*')
-                .eq('usuario_id', user.id);
+                .eq('usuario_id', usuarioData.id);
 
             if (error) {
                 console.error('Erro ao carregar atividades:', error);
@@ -341,7 +311,6 @@
 
         // Galeria
         let selectedImages = [];
-        let uploadedURLs = [];
 
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
@@ -349,6 +318,7 @@
 
         fileInput.addEventListener("change", (event) => {
             preview.innerHTML = "";
+            selectedImages = []; // Limpa as imagens anteriores
             const files = Array.from(event.target.files);
 
             files.forEach(file => {
@@ -366,7 +336,7 @@
         });
 
         async function uploadImages(userId) {
-            uploadedURLs = [];
+            const uploadedURLs = [];
 
             for (const file of selectedImages) {
                 const fileName = `${userId}_${Date.now()}_${file.name}`;
@@ -401,12 +371,28 @@
                 return;
             }
 
-            const userId = user.id;
+            // Busca o ID do usuário na tabela usuarios
+            const { data: usuarioData, error: usuarioError } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (usuarioError || !usuarioData) {
+                alert("Erro: Usuário não encontrado no banco de dados. Faça logout e login novamente.");
+                console.error("Erro ao buscar usuario:", usuarioError);
+                return;
+            }
+
+            const userId = usuarioData.id;
+
+            if (selectedImages.length === 0) {
+                alert("Selecione pelo menos uma imagem!");
+                return;
+            }
 
             try {
                 const urls = await uploadImages(userId);
-                console.log("Tipo de urls:", typeof urls);
-                console.log("Conteúdo:", urls);
                 console.log("URLs enviadas:", urls);
 
                 const { error } = await supabaseClient
@@ -421,12 +407,14 @@
 
                 if (error) {
                     console.error("Erro ao salvar a galeria:", error);
-                    alert("Erro ao salvar galeria!");
+                    alert("Erro ao salvar galeria: " + error.message);
                     return;
                 }
 
                 alert("Galeria salva com sucesso!");
                 selectedImages = [];
+                // Recarrega a galeria para mostrar as novas fotos
+                await carregarGaleria();
 
             } catch (err) {
                 alert("Erro inesperado ao salvar galeria!");
@@ -442,7 +430,19 @@
                 return;
             }
 
-            const userId = user.id;
+            // Busca o ID do usuário na tabela usuarios
+            const { data: usuarioData, error: usuarioError } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (usuarioError || !usuarioData) {
+                console.error("Usuário não encontrado na tabela usuarios");
+                return;
+            }
+
+            const userId = usuarioData.id;
 
             const { data, error } = await supabaseClient
                 .from("fotos")
@@ -465,29 +465,25 @@
             data.galeria.forEach(url => {
                 const img = document.createElement("img");
                 img.src = url;
-                img.classList.add("preview-img");
+                img.style.width = "400px";
+                img.style.height = "400px";
                 img.style.objectFit = "cover";
                 img.style.borderRadius = "8px";
-
                 preview.appendChild(img);
             });
         }
-
-        window.addEventListener("DOMContentLoaded", carregarGaleria);
 
         // Controle da sidebar - só funciona no mobile
         const sidebar = document.getElementById('sidebar');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const overlay = document.getElementById('sidebarOverlay');
 
-        // Verificar se é mobile
         function isMobile() {
             return window.innerWidth <= 768;
         }
 
-        // Função para abrir/fechar sidebar (só mobile)
         function toggleSidebar() {
-            if (!isMobile()) return; // Não faz nada no desktop
+            if (!isMobile()) return;
 
             sidebar.classList.toggle('active');
 
@@ -504,12 +500,10 @@
             }
         }
 
-        // Evento de clique no botão
         if (sidebarToggleBtn) {
             sidebarToggleBtn.addEventListener('click', toggleSidebar);
         }
 
-        // Fechar ao clicar no overlay (mobile)
         if (overlay) {
             overlay.addEventListener('click', () => {
                 if (isMobile() && sidebar.classList.contains('active')) {
@@ -522,7 +516,6 @@
             });
         }
 
-        // Verificar estado salvo ao carregar a página (apenas mobile)
         const sidebarState = localStorage.getItem('sidebarOpen');
         if (isMobile() && sidebarState === 'true') {
             sidebar.classList.add('active');
@@ -536,7 +529,6 @@
             if (overlay) overlay.classList.remove('active');
         }
 
-        // Monitorar redimensionamento da tela
         window.addEventListener('resize', function () {
             if (!isMobile()) {
                 sidebar.classList.remove('active');
