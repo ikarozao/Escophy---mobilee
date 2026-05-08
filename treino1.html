@@ -26,6 +26,25 @@
     </div>
   </nav>
 
+  <!-- Botão ÚNICO para abrir/fechar a sidebar (só aparece no mobile) -->
+  <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
+
+  <!-- OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-nav">
+      <ul>
+        <li><a href="home.html" class="sidebar-link active">Home</a></li>
+        <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
+        <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
+        <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
+        <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="treinos">
     <div class="cima">
       <h1>Registre seu treino!</h1>
@@ -484,9 +503,6 @@
     })
 
 
-
-
-
     window.addEventListener('DOMContentLoaded', () => {
       const treinoSalvo = localStorage.getItem('treinoSelecionado');
       if (treinoSalvo) {
@@ -499,6 +515,71 @@
         if (infos) infos.style.display = 'block';
 
         localStorage.removeItem('treinoSelecionado');
+      }
+    });
+
+    // ========== CONTROLE DA SIDEBAR ==========
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function toggleSidebar() {
+      if (!isMobile()) return;
+
+      sidebar.classList.toggle('active');
+
+      if (sidebar.classList.contains('active')) {
+        sidebarToggleBtn.classList.add('opened');
+        sidebarToggleBtn.innerHTML = '◀';
+        if (overlay) overlay.classList.add('active');
+        localStorage.setItem('sidebarOpen', 'true');
+      } else {
+        sidebarToggleBtn.classList.remove('opened');
+        sidebarToggleBtn.innerHTML = '▶';
+        if (overlay) overlay.classList.remove('active');
+        localStorage.setItem('sidebarOpen', 'false');
+      }
+    }
+
+    if (sidebarToggleBtn) {
+      sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        if (isMobile() && sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          sidebarToggleBtn.classList.remove('opened');
+          sidebarToggleBtn.innerHTML = '▶';
+          overlay.classList.remove('active');
+          localStorage.setItem('sidebarOpen', 'false');
+        }
+      });
+    }
+
+    const sidebarState = localStorage.getItem('sidebarOpen');
+    if (isMobile() && sidebarState === 'true') {
+      sidebar.classList.add('active');
+      sidebarToggleBtn.classList.add('opened');
+      sidebarToggleBtn.innerHTML = '◀';
+      if (overlay) overlay.classList.add('active');
+    } else if (!isMobile()) {
+      sidebar.classList.remove('active');
+      sidebarToggleBtn.classList.remove('opened');
+      sidebarToggleBtn.innerHTML = '▶';
+      if (overlay) overlay.classList.remove('active');
+    }
+
+    window.addEventListener('resize', function () {
+      if (!isMobile()) {
+        sidebar.classList.remove('active');
+        sidebarToggleBtn.classList.remove('opened');
+        sidebarToggleBtn.innerHTML = '▶';
+        if (overlay) overlay.classList.remove('active');
       }
     });
 
