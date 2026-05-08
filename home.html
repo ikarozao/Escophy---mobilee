@@ -48,6 +48,20 @@
         </div>
     </div>
 
+    <!-- MODAL DE RELATÓRIO DO TREINO -->
+    <div id="modalRelatorio" class="modal-relatorio">
+        <div class="modal-relatorio-content">
+            <div class="modal-relatorio-header">
+                <button class="modal-relatorio-close" id="closeModalBtn">&times;</button>
+                <h2 id="modalTituloTreino">Carregando...</h2>
+            </div>
+            <div class="modal-relatorio-body" id="modalBody"></div>
+            <div class="modal-relatorio-footer">
+                <button class="btn-fechar-modal" id="footerCloseBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="main-content-perfil">
         <div class="column left-column">
@@ -56,8 +70,19 @@
                     <h2 id="nomeUsuario">Olá, usuario</h2>
                 </div>
 
-                <div class="foto_perfil" id="fotoPerfil">
-                    <img id="imgPerfil" src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
+                <!-- Container da foto com tooltip de pontos -->
+                <div class="foto-perfil-container" id="fotoPerfilContainer">
+                    <div class="foto_perfil" id="fotoPerfil">
+                        <img id="imgPerfil" src="img/perfil-removebg-preview.png" alt="Imagem do perfil">
+                    </div>
+                    <div class="pontos-tooltip" id="pontosTooltip">
+                        <div class="tooltip-content">
+                            <span class="tooltip-pontos-icon">⭐</span>
+                            <span class="tooltip-pontos-label">Pontos neste mês:</span>
+                            <span class="tooltip-pontos-valor" id="pontosMes">0</span>
+                        </div>
+                        <div class="tooltip-arrow"></div>
+                    </div>
                 </div>
 
                 <input type="file" id="inputPerfil" accept="image/*" hidden>
@@ -70,6 +95,10 @@
                     <div class="stat-item">
                         <span class="stat-label">Publicações</span>
                         <span class="stat-number" id="contPublicacoes">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-number" id="contPontos">0</span>
                     </div>
                 </article>
             </article>
@@ -184,6 +213,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
+        // Variável global para armazenar o email do usuário
+        let userEmailGlobal = null;
+
         (async function () {
             console.log("=== INÍCIO DO DEBUG ===");
 
@@ -204,12 +236,134 @@
                 return;
             }
 
+            userEmailGlobal = user.email;
+
             await carregarPerfil();
             await carregarTreinos();
             await carregarGaleria();
+            await calcularPontosDoMes(); // Calcular pontos do mês atual
 
             console.log("=== FIM DO DEBUG ===");
         })();
+
+        // Função para verificar se é um novo mês e resetar pontos
+        async function verificarEResetarPontos() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+
+            const agora = new Date();
+            const mesAtual = agora.getMonth();
+            const anoAtual = agora.getFullYear();
+            const chaveReset = `ultimoReset_${user.email}`;
+            const ultimoReset = localStorage.getItem(chaveReset);
+
+            if (!ultimoReset) {
+                // Primeira vez, salvar mês atual
+                localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
+                return;
+            }
+
+            const [ultimoAno, ultimoMes] = ultimoReset.split('-');
+            
+            if (parseInt(ultimoAno) !== anoAtual || parseInt(ultimoMes) !== mesAtual) {
+                // É um novo mês! Resetar pontos
+                console.log("Novo mês detectado! Resetando pontos...");
+                
+                const { data: usuarioData } = await supabaseClient
+                    .from('usuarios')
+                    .select('id')
+                    .eq('email', user.email)
+                    .single();
+
+                if (usuarioData) {
+                    // Resetar pontos no banco
+                    await supabaseClient
+                        .from('usuarios')
+                        .update({ pontos_mes: 0 })
+                        .eq('id', usuarioData.id);
+                    
+                    // Atualizar localStorage com o novo mês
+                    localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
+                    
+                    // Atualizar contador na tela
+                    const contPontos = document.getElementById('contPontos');
+                    if (contPontos) contPontos.textContent = '0';
+                    
+                    const tooltipPontos = document.getElementById('pontosMes');
+                    if (tooltipPontos) tooltipPontos.textContent = '0';
+                }
+            }
+        }
+
+        // Função para calcular pontos com base na distância (1km = 10 pontos)
+        function calcularPontosPorDistancia(distanciaKm) {
+            return Math.floor(distanciaKm * 10); // 10 pontos por km
+        }
+
+        // Função para calcular total de pontos do mês atual
+        async function calcularPontosDoMes() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+
+            // Verificar se precisa resetar os pontos
+            await verificarEResetarPontos();
+
+            const agora = new Date();
+            const inicioDoMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+            const fimDoMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0, 23, 59, 59);
+
+            const { data: atividades, error } = await supabaseClient
+                .from('atividades')
+                .select('trajeto, data')
+                .eq('email_usuario', user.email)
+                .gte('data', inicioDoMes.toISOString())
+                .lte('data', fimDoMes.toISOString());
+
+            if (error) {
+                console.error('Erro ao buscar atividades do mês:', error);
+                return 0;
+            }
+
+            let pontosTotais = 0;
+
+            if (atividades && atividades.length > 0) {
+                atividades.forEach(atividade => {
+                    let distanciaMetros = 0;
+                    
+                    if (atividade.trajeto && atividade.trajeto.summary && atividade.trajeto.summary.distance) {
+                        distanciaMetros = atividade.trajeto.summary.distance;
+                    } else if (atividade.trajeto && atividade.trajeto.distance) {
+                        distanciaMetros = atividade.trajeto.distance;
+                    }
+                    
+                    const distanciaKm = distanciaMetros / 1000;
+                    pontosTotais += calcularPontosPorDistancia(distanciaKm);
+                });
+            }
+
+            // Atualizar o banco com os pontos do mês
+            const { data: usuarioData } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (usuarioData) {
+                await supabaseClient
+                    .from('usuarios')
+                    .update({ pontos_mes: pontosTotais })
+                    .eq('id', usuarioData.id);
+            }
+
+            // Atualizar na tela
+            const contPontos = document.getElementById('contPontos');
+            if (contPontos) contPontos.textContent = pontosTotais;
+            
+            const tooltipPontos = document.getElementById('pontosMes');
+            if (tooltipPontos) tooltipPontos.textContent = pontosTotais;
+
+            return pontosTotais;
+        }
 
         async function carregarPerfil() {
             try {
@@ -224,7 +378,7 @@
 
                 const { data: perfil, error } = await supabaseClient
                     .from('usuarios')
-                    .select('nome, foto_perfil, publicacoes, id')
+                    .select('nome, foto_perfil, publicacoes, id, pontos_mes')
                     .eq('email', user.email)
                     .maybeSingle();
 
@@ -273,6 +427,135 @@
             }
         }
 
+        function formatarDistancia(treino) {
+            if (treino.trajeto && treino.trajeto.summary && treino.trajeto.summary.distance) {
+                const distanciaMetros = treino.trajeto.summary.distance;
+                const distanciaKm = (distanciaMetros / 1000).toFixed(2);
+                return `${distanciaKm} km`;
+            }
+            
+            if (treino.trajeto && typeof treino.trajeto === 'object') {
+                if (treino.trajeto.distance) {
+                    const distanciaKm = (treino.trajeto.distance / 1000).toFixed(2);
+                    return `${distanciaKm} km`;
+                }
+            }
+            
+            return "Distância não disponível";
+        }
+
+        function getIntensidadeCor(intensidade) {
+            if (intensidade <= 3) return '#27ae60';
+            if (intensidade <= 7) return '#f39c12';
+            return '#e74c3c';
+        }
+
+        function getIntensidadeTexto(intensidade) {
+            if (intensidade <= 3) return 'Leve';
+            if (intensidade <= 7) return 'Moderado';
+            return 'Intenso';
+        }
+
+        function exibirRelatorioTreino(treino) {
+            const modal = document.getElementById('modalRelatorio');
+            const modalTitulo = document.getElementById('modalTituloTreino');
+            const modalBody = document.getElementById('modalBody');
+            
+            let dataFormatada = "Data não disponível";
+            if (treino.data) {
+                const dataObj = new Date(treino.data);
+                dataFormatada = dataObj.toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            const distanciaTexto = formatarDistancia(treino);
+            const intensidade = treino.intensidade || 0;
+            const intensidadeCor = getIntensidadeCor(intensidade);
+            const intensidadeTexto = getIntensidadeTexto(intensidade);
+            
+            modalTitulo.textContent = treino.titulo || "Treino sem título";
+            
+            modalBody.innerHTML = `
+                <div class="data-treino">
+                    📅 ${dataFormatada}
+                </div>
+                
+                <div class="relatorio-section">
+                    <div class="relatorio-label">
+                        📏 DISTÂNCIA PERCORRIDA
+                    </div>
+                    <div class="relatorio-value relatorio-value-large">
+                        ${distanciaTexto}
+                    </div>
+                </div>
+                
+                <div class="relatorio-section">
+                    <div class="relatorio-label">
+                        📝 DESCRIÇÃO
+                    </div>
+                    <div class="relatorio-value">
+                        ${treino.descricao || "Nenhuma descrição fornecida"}
+                    </div>
+                </div>
+                
+                <div class="relatorio-section">
+                    <div class="relatorio-label">
+                        ⚡ NÍVEL DE INTENSIDADE
+                    </div>
+                    <div class="intensidade-bar">
+                        <div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${intensidadeCor};"></div>
+                        <div class="intensidade-labels">
+                            <span>Leve</span>
+                            <span>Moderado</span>
+                            <span>Intenso</span>
+                        </div>
+                    </div>
+                    <div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">
+                        Nível ${intensidade}/10 - ${intensidadeTexto}
+                    </div>
+                </div>
+                
+                <div class="relatorio-section">
+                    <div class="relatorio-label">
+                        🏷️ INFORMAÇÕES DO TREINO
+                    </div>
+                    <div class="relatorio-value">
+                        <span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Não especificado"}</span>
+                        <span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">
+                            ${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Público'}
+                        </span>
+                    </div>
+                </div>
+                
+                ${treino.acessorios ? `
+                <div class="relatorio-section">
+                    <div class="relatorio-label">
+                        🎧 ACESSÓRIOS UTILIZADOS
+                    </div>
+                    <div class="relatorio-value">
+                        <div class="acessorio-item">
+                            ${treino.acessorios}
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function fecharModalRelatorio() {
+            const modal = document.getElementById('modalRelatorio');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         async function carregarTreinos() {
             const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -304,19 +587,32 @@
 
                 atividades.forEach(atividade => {
                     const item = document.createElement('li');
-
+                    
                     let dataTexto = '';
                     if (atividade.data) {
                         const dataObj = new Date(atividade.data);
                         dataTexto = ` - ${dataObj.toLocaleDateString('pt-BR')}`;
                     }
-
-                    item.textContent = `${atividade.titulo}${dataTexto}`;
+                    
+                    let distanciaPreview = '';
+                    if (atividade.trajeto && atividade.trajeto.summary && atividade.trajeto.summary.distance) {
+                        const distKm = (atividade.trajeto.summary.distance / 1000).toFixed(1);
+                        distanciaPreview = ` 🏃 ${distKm}km`;
+                    } else if (atividade.trajeto && atividade.trajeto.distance) {
+                        const distKm = (atividade.trajeto.distance / 1000).toFixed(1);
+                        distanciaPreview = ` 🏃 ${distKm}km`;
+                    }
+                    
+                    item.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>${atividade.titulo}${dataTexto}</span>
+                            ${distanciaPreview ? `<span style="font-size: 0.85rem; color: #e74c3c;">${distanciaPreview}</span>` : ''}
+                        </div>
+                    `;
                     item.style.cursor = "pointer";
 
                     item.addEventListener('click', () => {
-                        localStorage.setItem('treinoSelecionado', JSON.stringify(atividade));
-                        window.location.href = 'treino1.html';
+                        exibirRelatorioTreino(atividade);
                     });
 
                     lista.appendChild(item);
@@ -327,6 +623,54 @@
             }
         }
 
+        function setupModalEvents() {
+            const closeBtn = document.getElementById('closeModalBtn');
+            const footerCloseBtn = document.getElementById('footerCloseBtn');
+            const modal = document.getElementById('modalRelatorio');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', fecharModalRelatorio);
+            }
+            if (footerCloseBtn) {
+                footerCloseBtn.addEventListener('click', fecharModalRelatorio);
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        fecharModalRelatorio();
+                    }
+                });
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+                    fecharModalRelatorio();
+                }
+            });
+        }
+
+        // Configurar tooltip de pontos no hover da foto
+        function setupPontosTooltip() {
+            const container = document.getElementById('fotoPerfilContainer');
+            const tooltip = document.getElementById('pontosTooltip');
+            
+            if (!container || !tooltip) return;
+            
+            let timeoutId;
+            
+            container.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+                tooltip.classList.add('show');
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                timeoutId = setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 300);
+            });
+        }
+
         // ========== GALERIA ==========
         let selectedFiles = [];
         let currentImageToDelete = null;
@@ -334,17 +678,17 @@
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
-        const modal = document.getElementById("confirmModal");
+        const modalConfirm = document.getElementById("confirmModal");
         const confirmDeleteBtn = document.getElementById("confirmDelete");
         const cancelDeleteBtn = document.getElementById("cancelDelete");
 
         function showDeleteModal(imageUrl, imageContainer) {
             currentImageToDelete = { url: imageUrl, container: imageContainer };
-            modal.style.display = "flex";
+            modalConfirm.style.display = "flex";
         }
 
         function hideModal() {
-            modal.style.display = "none";
+            modalConfirm.style.display = "none";
             currentImageToDelete = null;
         }
 
@@ -370,8 +714,6 @@
                     return false;
                 }
 
-                console.log("Tentando deletar:", path);
-
                 const { error } = await supabaseClient.storage
                     .from("galeria_fotos")
                     .remove([path]);
@@ -381,7 +723,6 @@
                     return false;
                 }
 
-                console.log("Imagem deletada do storage com sucesso!");
                 return true;
             } catch (err) {
                 console.error("Erro ao deletar imagem:", err);
@@ -459,12 +800,11 @@
         cancelDeleteBtn.addEventListener("click", hideModal);
 
         window.addEventListener("click", (event) => {
-            if (event.target === modal) {
+            if (event.target === modalConfirm) {
                 hideModal();
             }
         });
 
-        // Adiciona imagens sem remover as anteriores
         fileInput.addEventListener("change", (event) => {
             const files = Array.from(event.target.files);
 
@@ -491,8 +831,6 @@
             for (const file of selectedFiles) {
                 const fileName = `${userId}_${Date.now()}_${file.name}`;
                 const path = `galerias/${userId}/${fileName}`;
-
-                console.log("Enviando arquivo:", fileName);
 
                 const { error: uploadError } = await supabaseClient.storage
                     .from("galeria_fotos")
@@ -542,7 +880,6 @@
 
             try {
                 const urls = await uploadImages(userId);
-                console.log("URLs enviadas:", urls);
 
                 const { data: galeriaAtual, error: fetchError } = await supabaseClient
                     .from("fotos")
@@ -631,7 +968,7 @@
 
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "delete-btn";
-                deleteBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7H20M10 11V16M14 11V16M5 7L6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19L19 7M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>';
+                deleteBtn.innerHTML = '✖';
 
                 deleteBtn.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -708,6 +1045,9 @@
                 if (overlay) overlay.classList.remove('active');
             }
         });
+
+        setupModalEvents();
+        setupPontosTooltip();
     </script>
 </body>
 
