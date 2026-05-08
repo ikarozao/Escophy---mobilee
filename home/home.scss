@@ -833,3 +833,397 @@ nav .search-box input {
         text-align: center;
     }
 }
+/* ============================================ */
+/* ===== MODAL DE RELATÓRIO DO TREINO ===== */
+/* ============================================ */
+
+.modal-relatorio {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.modal-relatorio.active {
+    display: flex;
+}
+
+.modal-relatorio-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-relatorio-header {
+    background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.9));
+    padding: 25px;
+    border-radius: 24px 24px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-relatorio-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.8rem;
+    text-align: center;
+    word-break: break-word;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+.modal-relatorio-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-relatorio-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.modal-relatorio-body {
+    padding: 25px;
+}
+
+.relatorio-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.relatorio-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.relatorio-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: rgb(4, 71, 0);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.relatorio-value {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    margin-left: 28px;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+.relatorio-value-large {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgb(4, 71, 0);
+}
+
+.intensidade-bar {
+    margin-left: 28px;
+    margin-top: 8px;
+}
+
+.intensidade-fill {
+    height: 8px;
+    background: linear-gradient(90deg, #27ae60, #f39c12, #e74c3c);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.intensidade-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.7rem;
+    color: #666;
+}
+
+.badge-treino {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.badge-tipo {
+    background: #3498db;
+    color: white;
+}
+
+.badge-visibilidade {
+    background: #9b59b6;
+    color: white;
+}
+
+.badge-privado {
+    background: #7f8c8d;
+    color: white;
+}
+
+.badge-publico {
+    background: rgb(4, 71, 0);
+    color: white;
+}
+
+.acessorio-item {
+    background: rgba(4, 71, 0, 0.1);
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.data-treino {
+    text-align: center;
+    padding: 15px;
+    background: rgba(4, 71, 0, 0.08);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.modal-relatorio-footer {
+    padding: 20px 25px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 24px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-fechar-modal {
+    background: rgb(4, 71, 0);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 40px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.btn-fechar-modal:hover {
+    background: rgba(4, 71, 0, 0.85);
+    transform: scale(1.02);
+}
+
+/* Scrollbar personalizada do modal - TRANSPARENTE */
+.modal-relatorio-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-relatorio-content::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.modal-relatorio-content::-webkit-scrollbar-thumb {
+    background: rgba(4, 71, 0, 0.3);
+    border-radius: 10px;
+}
+
+.modal-relatorio-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(4, 71, 0, 0.5);
+}
+
+/* Responsividade do modal */
+@media (max-width: 768px) {
+    .modal-relatorio-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .modal-relatorio-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .relatorio-value-large {
+        font-size: 1.5rem;
+    }
+    
+    .relatorio-value {
+        font-size: 1rem;
+        margin-left: 20px;
+    }
+    
+    .relatorio-label {
+        font-size: 0.75rem;
+    }
+    
+    .badge-treino {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-relatorio-body {
+        padding: 15px;
+    }
+    
+    .modal-relatorio-header {
+        padding: 15px;
+    }
+    
+    .modal-relatorio-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .relatorio-value-large {
+        font-size: 1.3rem;
+    }
+    
+    .relatorio-value {
+        font-size: 0.9rem;
+        margin-left: 15px;
+    }
+    
+    .intensidade-bar {
+        margin-left: 15px;
+    }
+    
+    .data-treino {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+    
+    .btn-fechar-modal {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== CONTAINER DA FOTO COM TOOLTIP ===== */
+.foto-perfil-container {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    margin: 0 auto;
+}
+
+/* Tooltip de pontos */
+.pontos-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.95));
+    color: white;
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 12px;
+}
+
+.pontos-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tooltip-pontos-icon {
+    font-size: 1.3rem;
+}
+
+.tooltip-pontos-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tooltip-pontos-valor {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #f1c40f;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgb(4, 71, 0);
+}
+
+/* Responsividade do tooltip */
+@media (max-width: 768px) {
+    .pontos-tooltip {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .tooltip-pontos-valor {
+        font-size: 1rem;
+    }
+}
