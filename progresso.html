@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso | Escorphy</title>
+    <link rel="stylesheet" href="progresso/progresso.css">
+    <link rel="icon" type="image/png" href="img/a.png">
+</head>
+
+<body>
+
+    <!-- NAVBAR igual à home -->
+    <nav>
+        <a href="home.html">
+            <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt="Logo"></div>
+        </a>
+    </nav>
+
+    <!-- Botão ÚNICO para abrir/fechar a sidebar (só aparece no mobile) -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
+
+    <!-- OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR igual à home -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="home.html" class="sidebar-link">Home</a></li>
+                <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
+                <li><a href="progresso.html" class="sidebar-link active">Progresso</a></li>
+                <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
+                <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content-progresso">
+        
+        <!-- Modal para definir metas (aparece na primeira vez do mês) -->
+        <div id="modalMetas" class="modal-metas">
+            <div class="modal-metas-content">
+                <div class="modal-metas-header">
+                    <h2>🏆 Definir Metas Mensais</h2>
+                    <p>Defina suas metas de quilometragem para este mês</p>
+                </div>
+                <div class="modal-metas-body">
+                    <div id="metasContainer">
+                        <!-- Meta 1 (sempre existe) -->
+                        <div class="meta-card" data-meta-index="0">
+                            <div class="meta-card-header">
+                                <span class="meta-numero">Meta 1</span>
+                                <button class="btn-remover-meta" onclick="removerMeta(0)" style="display: none;">✖</button>
+                            </div>
+                            <div class="meta-card-body">
+                                <div class="meta-select-group">
+                                    <label>Modalidade:</label>
+                                    <select class="meta-modalidade">
+                                        <option value="corrida">🏃 Corrida</option>
+                                        <option value="caminhada">🚶 Caminhada</option>
+                                        <option value="ciclismo">🚲 Ciclismo</option>
+                                    </select>
+                                </div>
+                                <div class="meta-input-group">
+                                    <label>Meta (km):</label>
+                                    <input type="number" class="meta-valor" placeholder="Ex: 50" min="1" step="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-adicionar-meta" id="btnAdicionarMeta">+ Adicionar Meta</button>
+                </div>
+                <div class="modal-metas-footer">
+                    <button class="btn-salvar-metas" id="btnSalvarMetas">Salvar Metas</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Progresso das Metas (Carrossel) -->
+        <div class="metas-section" id="metasSection" style="display: none;">
+            <h2 class="section-title">📊 Seu Progresso</h2>
+            <div class="metas-carrossel-container">
+                <button class="carrossel-nav carrossel-prev" id="carrosselPrev">◀</button>
+                <div class="metas-carrossel" id="metasCarrossel"></div>
+                <button class="carrossel-nav carrossel-next" id="carrosselNext">▶</button>
+            </div>
+            <div class="carrossel-indicators" id="carrosselIndicators"></div>
+        </div>
+
+        <!-- Seção de Treinos Realizados -->
+        <div class="treinos-realizados-section">
+            <div class="treinos-header">
+                <h2>📋 Histórico de Treinos</h2>
+                <div class="mes-filtro">
+                    <select id="filtroMes">
+                        <option value="todos">Todos os meses</option>
+                    </select>
+                </div>
+            </div>
+            <div class="lista-treinos-container">
+                <ul id="listaTreinosProgresso"></ul>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h1>ESCORPHY</h1>
+                <p>© 2025 Escorphy</p>
+            </div>
+            <div class="footer-column">
+                <h3>Sobre</h3>
+                <ul>
+                    <li><a href="sobrenos.html">Nossa História</a></li>
+                    <li><a href="sobrenos.html">Missão</a></li>
+                    <li><a href="sobrenos.html">Equipe</a></li>
+                    <li><a href="#">Privacidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Explorar</h3>
+                <ul>
+                    <li><a href="#">Funcionalidades</a></li>
+                    <li><a href="#">Planos</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Redes</h3>
+                <ul>
+                    <li><a href="https://www.instagram.com/escorphybr">Instagram</a></li>
+                    <li><a href="https://www.youtube.com/escorphy">YouTube</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Ajuda</h3>
+                <ul>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                    <li><a href="#">Central de Ajuda</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Configuração do Supabase
+        const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let userEmailGlobal = null;
+        let metasUsuario = [];
+        let currentMetaIndex = 0;
+        let treinosFiltrados = [];
+
+        const modalidadeIcones = { 'corrida': '🏃', 'caminhada': '🚶', 'ciclismo': '🚲' };
+        const modalidadeNomes = { 'corrida': 'Corrida', 'caminhada': 'Caminhada', 'ciclismo': 'Ciclismo' };
+
+        // Verificar autenticação
+        (async function () {
+            if (typeof supabaseClient === 'undefined') {
+                console.error("supabaseClient não encontrado!");
+                return;
+            }
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) {
+                alert("Usuário não logado!");
+                window.location.href = "index.html";
+                return;
+            }
+            userEmailGlobal = user.email;
+            localStorage.setItem("usuarioEmail", user.email);
+            await carregarMetas();
+            await carregarTreinos();
+            await carregarFiltroMeses();
+        })();
+
+        async function carregarMetas() {
+            const mesAtual = new Date().getMonth();
+            const anoAtual = new Date().getFullYear();
+            const chaveMeta = `metas_${userEmailGlobal}_${anoAtual}_${mesAtual}`;
+            const metasSalvas = localStorage.getItem(chaveMeta);
+            
+            if (metasSalvas) {
+                metasUsuario = JSON.parse(metasSalvas);
+                exibirMetas();
+                document.getElementById('modalMetas').style.display = 'none';
+                document.getElementById('metasSection').style.display = 'block';
+            } else {
+                document.getElementById('modalMetas').style.display = 'flex';
+                document.getElementById('metasSection').style.display = 'none';
+                inicializarModalMetas();
+            }
+        }
+
+        function inicializarModalMetas() {
+            const container = document.getElementById('metasContainer');
+            container.innerHTML = '';
+            adicionarMetaCard(0);
+            document.getElementById('btnAdicionarMeta').onclick = () => {
+                const totalMetas = document.querySelectorAll('.meta-card').length;
+                if (totalMetas < 3) adicionarMetaCard(totalMetas);
+                else alert("Você pode adicionar no máximo 3 metas por mês!");
+            };
+        }
+
+        function adicionarMetaCard(index) {
+            const container = document.getElementById('metasContainer');
+            const metaCard = document.createElement('div');
+            metaCard.className = 'meta-card';
+            metaCard.setAttribute('data-meta-index', index);
+            metaCard.innerHTML = `
+                <div class="meta-card-header">
+                    <span class="meta-numero">Meta ${index + 1}</span>
+                    <button class="btn-remover-meta" onclick="removerMeta(${index})">✖</button>
+                </div>
+                <div class="meta-card-body">
+                    <div class="meta-select-group">
+                        <label>Modalidade:</label>
+                        <select class="meta-modalidade">
+                            <option value="corrida">🏃 Corrida</option>
+                            <option value="caminhada">🚶 Caminhada</option>
+                            <option value="ciclismo">🚲 Ciclismo</option>
+                        </select>
+                    </div>
+                    <div class="meta-input-group">
+                        <label>Meta (km):</label>
+                        <input type="number" class="meta-valor" placeholder="Ex: 50" min="1" step="1">
+                    </div>
+                </div>
+            `;
+            container.appendChild(metaCard);
+            atualizarBotoesRemover();
+        }
+
+        window.removerMeta = function(index) {
+            const cards = document.querySelectorAll('.meta-card');
+            if (cards.length <= 1) {
+                alert("Você precisa ter pelo menos uma meta!");
+                return;
+            }
+            const cardToRemove = document.querySelector(`.meta-card[data-meta-index="${index}"]`);
+            if (cardToRemove) {
+                cardToRemove.remove();
+                const remainingCards = document.querySelectorAll('.meta-card');
+                remainingCards.forEach((card, newIndex) => {
+                    card.setAttribute('data-meta-index', newIndex);
+                    const numeroSpan = card.querySelector('.meta-numero');
+                    if (numeroSpan) numeroSpan.textContent = `Meta ${newIndex + 1}`;
+                    const removeBtn = card.querySelector('.btn-remover-meta');
+                    if (removeBtn) removeBtn.setAttribute('onclick', `removerMeta(${newIndex})`);
+                });
+            }
+            atualizarBotoesRemover();
+        };
+
+        function atualizarBotoesRemover() {
+            const cards = document.querySelectorAll('.meta-card');
+            const botoes = document.querySelectorAll('.btn-remover-meta');
+            if (cards.length <= 1) botoes.forEach(btn => btn.style.display = 'none');
+            else botoes.forEach(btn => btn.style.display = 'flex');
+        }
+
+        document.getElementById('btnSalvarMetas').addEventListener('click', async () => {
+            const cards = document.querySelectorAll('.meta-card');
+            const novasMetas = [];
+            let hasError = false;
+            
+            cards.forEach((card, idx) => {
+                const modalidade = card.querySelector('.meta-modalidade').value;
+                const valor = parseFloat(card.querySelector('.meta-valor').value);
+                if (!valor || valor <= 0) {
+                    alert(`Por favor, defina um valor válido para a Meta ${idx + 1}`);
+                    hasError = true;
+                    return;
+                }
+                novasMetas.push({
+                    id: idx, modalidade: modalidade, modalidadeNome: modalidadeNomes[modalidade],
+                    icone: modalidadeIcones[modalidade], metaKm: valor, atualKm: 0, porcentagem: 0
+                });
+            });
+            
+            if (hasError) return;
+            
+            for (let meta of novasMetas) {
+                const kmAtual = await calcularKmPorModalidade(meta.modalidade);
+                meta.atualKm = kmAtual;
+                meta.porcentagem = Math.min((kmAtual / meta.metaKm) * 100, 100);
+            }
+            
+            metasUsuario = novasMetas;
+            const mesAtual = new Date().getMonth();
+            const anoAtual = new Date().getFullYear();
+            localStorage.setItem(`metas_${userEmailGlobal}_${anoAtual}_${mesAtual}`, JSON.stringify(metasUsuario));
+            
+            document.getElementById('modalMetas').style.display = 'none';
+            document.getElementById('metasSection').style.display = 'block';
+            exibirMetas();
+        });
+
+        async function calcularKmPorModalidade(modalidade) {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return 0;
+            const agora = new Date();
+            const inicioDoMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+            const fimDoMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0, 23, 59, 59);
+            const { data: atividades, error } = await supabaseClient
+                .from('atividades')
+                .select('trajeto, tipo')
+                .eq('email_usuario', user.email)
+                .eq('tipo', modalidade)
+                .gte('data', inicioDoMes.toISOString())
+                .lte('data', fimDoMes.toISOString());
+            if (error) return 0;
+            let kmTotal = 0;
+            if (atividades) {
+                atividades.forEach(atividade => {
+                    let distanciaMetros = 0;
+                    if (atividade.trajeto?.summary?.distance) distanciaMetros = atividade.trajeto.summary.distance;
+                    else if (atividade.trajeto?.distance) distanciaMetros = atividade.trajeto.distance;
+                    kmTotal += distanciaMetros / 1000;
+                });
+            }
+            return kmTotal;
+        }
+
+        function exibirMetas() {
+            const carrossel = document.getElementById('metasCarrossel');
+            const indicators = document.getElementById('carrosselIndicators');
+            if (!metasUsuario || metasUsuario.length === 0) {
+                carrossel.innerHTML = '<div class="sem-metas">Nenhuma meta definida para este mês</div>';
+                return;
+            }
+            carrossel.innerHTML = '';
+            indicators.innerHTML = '';
+            
+            metasUsuario.forEach((meta, index) => {
+                const metaCard = document.createElement('div');
+                metaCard.className = 'meta-carrossel-card';
+                const porcentagem = meta.porcentagem || 0;
+                const corProgresso = porcentagem >= 100 ? '#4CAF50' : porcentagem >= 70 ? '#2196F3' : '#FF9800';
+                metaCard.innerHTML = `
+                    <div class="meta-icon">${meta.icone}</div>
+                    <div class="meta-nome">${meta.modalidadeNome}</div>
+                    <div class="meta-valores">
+                        <span class="meta-atual">${meta.atualKm.toFixed(1)} km</span>
+                        <span class="meta-divisao">/</span>
+                        <span class="meta-total">${meta.metaKm} km</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: ${porcentagem}%; background: ${corProgresso};"></div>
+                    </div>
+                    <div class="meta-porcentagem">${porcentagem.toFixed(1)}%</div>
+                `;
+                carrossel.appendChild(metaCard);
+                
+                const indicator = document.createElement('span');
+                indicator.className = `carrossel-indicator ${index === currentMetaIndex ? 'active' : ''}`;
+                indicator.addEventListener('click', () => { currentMetaIndex = index; atualizarCarrossel(); });
+                indicators.appendChild(indicator);
+            });
+            
+            atualizarCarrossel();
+            document.getElementById('carrosselPrev').onclick = () => { if (currentMetaIndex > 0) { currentMetaIndex--; atualizarCarrossel(); } };
+            document.getElementById('carrosselNext').onclick = () => { if (currentMetaIndex < metasUsuario.length - 1) { currentMetaIndex++; atualizarCarrossel(); } };
+        }
+        
+        function atualizarCarrossel() {
+            const carrossel = document.getElementById('metasCarrossel');
+            const cards = document.querySelectorAll('.meta-carrossel-card');
+            const indicators = document.querySelectorAll('.carrossel-indicator');
+            const cardWidth = cards[0]?.offsetWidth || 300;
+            carrossel.style.transform = `translateX(-${currentMetaIndex * (cardWidth + 20)}px)`;
+            indicators.forEach((ind, idx) => {
+                if (idx === currentMetaIndex) ind.classList.add('active');
+                else ind.classList.remove('active');
+            });
+        }
+
+        async function carregarTreinos() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            const { data: atividades, error } = await supabaseClient
+                .from('atividades')
+                .select('*')
+                .eq('email_usuario', user.email)
+                .order('data', { ascending: false });
+            if (error) return;
+            treinosFiltrados = atividades || [];
+            exibirListaTreinos();
+        }
+        
+        function exibirListaTreinos() {
+            const lista = document.getElementById('listaTreinosProgresso');
+            if (!treinosFiltrados || treinosFiltrados.length === 0) {
+                lista.innerHTML = '<li class="sem-treinos">Nenhum treino encontrado. Clique no + para registrar!</li>';
+                return;
+            }
+            lista.innerHTML = '';
+            treinosFiltrados.forEach(treino => {
+                const item = document.createElement('li');
+                let dataTexto = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR') : '';
+                let distanciaTexto = '';
+                if (treino.trajeto?.summary?.distance) {
+                    distanciaTexto = `${(treino.trajeto.summary.distance / 1000).toFixed(1)} km`;
+                } else if (treino.trajeto?.distance) {
+                    distanciaTexto = `${(treino.trajeto.distance / 1000).toFixed(1)} km`;
+                }
+                const iconeTipo = treino.tipo === 'corrida' ? '🏃' : treino.tipo === 'ciclismo' ? '🚲' : '🚶';
+                item.innerHTML = `
+                    <div class="treino-item">
+                        <div class="treino-icon">${iconeTipo}</div>
+                        <div class="treino-info">
+                            <div class="treino-titulo">${treino.titulo || 'Treino sem título'}</div>
+                            <div class="treino-data">${dataTexto}</div>
+                        </div>
+                        <div class="treino-distancia">${distanciaTexto}</div>
+                    </div>
+                `;
+                lista.appendChild(item);
+            });
+        }
+        
+        async function carregarFiltroMeses() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            const { data: atividades } = await supabaseClient
+                .from('atividades')
+                .select('data')
+                .eq('email_usuario', user.email)
+                .order('data', { ascending: false });
+            if (!atividades) return;
+            const meses = new Set();
+            atividades.forEach(atividade => {
+                if (atividade.data) {
+                    const data = new Date(atividade.data);
+                    meses.add(`${data.getMonth() + 1}/${data.getFullYear()}`);
+                }
+            });
+            const filtroMes = document.getElementById('filtroMes');
+            filtroMes.innerHTML = '<option value="todos">Todos os meses</option>';
+            meses.forEach(mes => {
+                const option = document.createElement('option');
+                option.value = mes;
+                option.textContent = mes;
+                filtroMes.appendChild(option);
+            });
+            filtroMes.addEventListener('change', filtrarPorMes);
+        }
+        
+        function filtrarPorMes() {
+            const mesSelecionado = document.getElementById('filtroMes').value;
+            if (mesSelecionado === 'todos') carregarTreinos();
+            else {
+                (async () => {
+                    const { data: { user } } = await supabaseClient.auth.getUser();
+                    if (!user) return;
+                    const [mes, ano] = mesSelecionado.split('/');
+                    const inicioMes = new Date(parseInt(ano), parseInt(mes) - 1, 1);
+                    const fimMes = new Date(parseInt(ano), parseInt(mes), 0, 23, 59, 59);
+                    const { data: atividades } = await supabaseClient
+                        .from('atividades')
+                        .select('*')
+                        .eq('email_usuario', user.email)
+                        .gte('data', inicioMes.toISOString())
+                        .lte('data', fimMes.toISOString())
+                        .order('data', { ascending: false });
+                    if (atividades) { treinosFiltrados = atividades; exibirListaTreinos(); }
+                })();
+            }
+        }
+
+        window.logout = async function() {
+            await supabaseClient.auth.signOut();
+            localStorage.removeItem("usuarioEmail");
+            window.location.href = "index.html";
+        };
+
+        // ========== CONTROLE DA SIDEBAR ==========
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function isMobile() { return window.innerWidth <= 768; }
+
+        function toggleSidebar() {
+            if (!isMobile()) return;
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                sidebarToggleBtn.classList.add('opened');
+                sidebarToggleBtn.innerHTML = '◀';
+                if (overlay) overlay.classList.add('active');
+                localStorage.setItem('sidebarOpen', 'true');
+            } else {
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                if (overlay) overlay.classList.remove('active');
+                localStorage.setItem('sidebarOpen', 'false');
+            }
+        }
+
+        if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', () => {
+            if (isMobile() && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                overlay.classList.remove('active');
+                localStorage.setItem('sidebarOpen', 'false');
+            }
+        });
+
+        if (isMobile() && localStorage.getItem('sidebarOpen') === 'true') {
+            sidebar.classList.add('active');
+            sidebarToggleBtn.classList.add('opened');
+            sidebarToggleBtn.innerHTML = '◀';
+            if (overlay) overlay.classList.add('active');
+        }
+        
+        window.addEventListener('resize', () => {
+            if (!isMobile()) {
+                sidebar.classList.remove('active');
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                if (overlay) overlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>

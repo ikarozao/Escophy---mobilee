@@ -17,17 +17,15 @@
 
 <body>
 
+  <!-- NAVBAR corrigida - SOMENTE ISSO FOI ALTERADO -->
   <nav>
-    <!--<a href="home.html" class="bar_n" style="text-decoration:none; color:black; cursor:pointer;">Escorphy</a>-->
-    <div class="nav-right">
-      <!--<div class="search-box">
-        <input class="input-rounded" type="text" placeholder="Pesquisar..." />
-      </div>-->
-    </div>
+    <a href="home.html">
+      <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
+    </a>
   </nav>
 
   <!-- Botão ÚNICO para abrir/fechar a sidebar (só aparece no mobile) -->
-  <!--<button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>-->
+  <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
 
   <!-- OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -36,8 +34,8 @@
   <div class="sidebar" id="sidebar">
     <div class="sidebar-nav">
       <ul>
-        <li><a href="home.html" class="sidebar-link active">Home</a></li>
-        <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
+        <li><a href="home.html" class="sidebar-link">Home</a></li>
+        <li><a href="treino1.html" class="sidebar-link active">Treinos</a></li>
         <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
         <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
         <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
@@ -164,14 +162,11 @@
     </article>
   </div>
 
-
   <!--Scripts no final, sem duplicação -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
   <script>
-
-
     console.log("Iniciando aplicação");
 
     // Configuração do Supabase
@@ -582,9 +577,6 @@
         if (overlay) overlay.classList.remove('active');
       }
     });
-
-
-
   </script>
 
   <div class="floating-buttons-container">
