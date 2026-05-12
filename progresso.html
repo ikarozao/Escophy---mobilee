@@ -44,7 +44,7 @@
         <div id="modalMetas" class="modal-metas">
             <div class="modal-metas-content">
                 <div class="modal-metas-header">
-                    <h2>🏆 Definir Metas Mensais</h2>
+                    <h2>Definir Metas Mensais</h2>
                     <p>Defina suas metas de quilometragem para este mês</p>
                 </div>
                 <div class="modal-metas-body">
@@ -59,9 +59,9 @@
                                 <div class="meta-select-group">
                                     <label>Modalidade:</label>
                                     <select class="meta-modalidade">
-                                        <option value="corrida">🏃 Corrida</option>
-                                        <option value="caminhada">🚶 Caminhada</option>
-                                        <option value="ciclismo">🚲 Ciclismo</option>
+                                        <option value="corrida"> Corrida</option>
+                                        <option value="caminhada">Caminhada</option>
+                                        <option value="ciclismo">Ciclismo</option>
                                     </select>
                                 </div>
                                 <div class="meta-input-group">
@@ -81,7 +81,7 @@
 
         <!-- Seção de Progresso das Metas (Carrossel) -->
         <div class="metas-section" id="metasSection" style="display: none;">
-            <h2 class="section-title">📊 Seu Progresso</h2>
+            <h2 class="section-title">Seu Progresso</h2>
             <div class="metas-carrossel-container">
                 <button class="carrossel-nav carrossel-prev" id="carrosselPrev">◀</button>
                 <div class="metas-carrossel" id="metasCarrossel"></div>
@@ -93,7 +93,7 @@
         <!-- Seção de Treinos Realizados -->
         <div class="treinos-realizados-section">
             <div class="treinos-header">
-                <h2>📋 Histórico de Treinos</h2>
+                <h2>Histórico de Treinos</h2>
                 <div class="mes-filtro">
                     <select id="filtroMes">
                         <option value="todos">Todos os meses</option>
@@ -148,7 +148,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
     <script>
         // Configuração do Supabase
         const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
@@ -166,18 +165,23 @@
 
         // Verificar autenticação
         (async function () {
-            if (typeof supabaseClient === 'undefined') {
-                console.error("supabaseClient não encontrado!");
-                return;
+            console.log("=== INICIANDO PÁGINA DE PROGRESSO ===");
+            
+            const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+            
+            if (userError) {
+                console.error("Erro de autenticação:", userError);
             }
-            const { data: { user } } = await supabaseClient.auth.getUser();
+            
             if (!user) {
                 alert("Usuário não logado!");
                 window.location.href = "index.html";
                 return;
             }
+            
             userEmailGlobal = user.email;
             localStorage.setItem("usuarioEmail", user.email);
+            console.log("Usuário logado:", userEmailGlobal);
             
             // Buscar ID do usuário na tabela 'usuarios'
             const { data: usuarioData, error: usuarioError } = await supabaseClient
@@ -188,10 +192,24 @@
             
             if (usuarioError) {
                 console.error("Erro ao buscar usuário:", usuarioError);
-                return;
-            }
-            
-            if (usuarioData) {
+                // Tenta criar o usuário se não existir
+                const nomeUsuario = userEmailGlobal.split('@')[0];
+                const { data: newUser, error: insertError } = await supabaseClient
+                    .from('usuarios')
+                    .insert([{ email: userEmailGlobal, nome: nomeUsuario }])
+                    .select()
+                    .single();
+                
+                if (insertError) {
+                    console.error("Erro ao criar usuário:", insertError);
+                    return;
+                }
+                
+                if (newUser) {
+                    userGlobalId = newUser.id;
+                    console.log("Usuário criado com ID:", userGlobalId);
+                }
+            } else if (usuarioData) {
                 userGlobalId = usuarioData.id;
                 console.log("ID do usuário encontrado:", userGlobalId);
             }
@@ -204,6 +222,8 @@
         async function carregarMetas() {
             const mesAtual = new Date().getMonth() + 1;
             const anoAtual = new Date().getFullYear();
+            
+            console.log("Carregando metas para:", { userGlobalId, mesAtual, anoAtual });
             
             if (!userGlobalId) {
                 console.error("Usuário não encontrado");
@@ -221,6 +241,8 @@
             if (error) {
                 console.error("Erro ao buscar metas:", error);
             }
+            
+            console.log("Metas encontradas no banco:", metasDB);
             
             if (metasDB && metasDB.length > 0) {
                 // Converter para o formato que a página usa
@@ -253,6 +275,7 @@
                 document.getElementById('metasSection').style.display = 'block';
             } else {
                 // Primeira vez no mês - mostrar modal
+                console.log("Nenhuma meta encontrada, mostrando modal");
                 document.getElementById('modalMetas').style.display = 'flex';
                 document.getElementById('metasSection').style.display = 'none';
                 inicializarModalMetas();
@@ -351,6 +374,8 @@
             
             const mesAtual = new Date().getMonth() + 1;
             const anoAtual = new Date().getFullYear();
+            
+            console.log("Salvando metas:", novasMetas);
             
             // Salvar cada meta no banco de dados
             for (let meta of novasMetas) {
@@ -464,12 +489,20 @@
         async function carregarTreinos() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
+            console.log("Carregando treinos para:", user.email);
+            
             const { data: atividades, error } = await supabaseClient
                 .from('atividades')
                 .select('*')
                 .eq('email_usuario', user.email)
                 .order('data', { ascending: false });
-            if (error) return;
+            
+            if (error) {
+                console.error("Erro ao carregar treinos:", error);
+                return;
+            }
+            
+            console.log("Treinos encontrados:", atividades?.length || 0);
             treinosFiltrados = atividades || [];
             exibirListaTreinos();
         }
