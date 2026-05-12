@@ -154,7 +154,13 @@
         </div>
     </div>
 
-    
+    <div class="floating-buttons-container">
+        <a href="treino1.html">
+            <div class="botaomais-container">
+                <button class="botaomais" id="botaoMais">+</button>
+            </div>
+        </a>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -205,18 +211,17 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
     <script>
+        // Configuração do Supabase
+        const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
         // Variável global para armazenar o email do usuário
         let userEmailGlobal = null;
 
         (async function () {
             console.log("=== INÍCIO DO DEBUG ===");
-
-            if (typeof supabaseClient === 'undefined') {
-                console.error("supabaseClient não encontrado! Verifique se o auth.js carregou corretamente.");
-                return;
-            }
 
             await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -231,11 +236,12 @@
             }
 
             userEmailGlobal = user.email;
+            localStorage.setItem("usuarioEmail", user.email);
 
             await carregarPerfil();
             await carregarTreinos();
             await carregarGaleria();
-            await calcularPontosDoMes(); // Calcular pontos do mês atual
+            await calcularPontosDoMes();
 
             console.log("=== FIM DO DEBUG ===");
         })();
@@ -252,7 +258,6 @@
             const ultimoReset = localStorage.getItem(chaveReset);
 
             if (!ultimoReset) {
-                // Primeira vez, salvar mês atual
                 localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
                 return;
             }
@@ -260,7 +265,6 @@
             const [ultimoAno, ultimoMes] = ultimoReset.split('-');
             
             if (parseInt(ultimoAno) !== anoAtual || parseInt(ultimoMes) !== mesAtual) {
-                // É um novo mês! Resetar pontos
                 console.log("Novo mês detectado! Resetando pontos...");
                 
                 const { data: usuarioData } = await supabaseClient
@@ -270,16 +274,13 @@
                     .single();
 
                 if (usuarioData) {
-                    // Resetar pontos no banco
                     await supabaseClient
                         .from('usuarios')
                         .update({ pontos_mes: 0 })
                         .eq('id', usuarioData.id);
                     
-                    // Atualizar localStorage com o novo mês
                     localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
                     
-                    // Atualizar contador na tela
                     const contPontos = document.getElementById('contPontos');
                     if (contPontos) contPontos.textContent = '0';
                     
@@ -291,7 +292,7 @@
 
         // Função para calcular pontos com base na distância (1km = 10 pontos)
         function calcularPontosPorDistancia(distanciaKm) {
-            return Math.floor(distanciaKm * 10); // 10 pontos por km
+            return Math.floor(distanciaKm * 10);
         }
 
         // Função para calcular total de pontos do mês atual
@@ -299,7 +300,6 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
 
-            // Verificar se precisa resetar os pontos
             await verificarEResetarPontos();
 
             const agora = new Date();
@@ -335,7 +335,6 @@
                 });
             }
 
-            // Atualizar o banco com os pontos do mês
             const { data: usuarioData } = await supabaseClient
                 .from('usuarios')
                 .select('id')
@@ -349,7 +348,6 @@
                     .eq('id', usuarioData.id);
             }
 
-            // Atualizar na tela
             const contPontos = document.getElementById('contPontos');
             if (contPontos) contPontos.textContent = pontosTotais;
             
@@ -370,9 +368,10 @@
 
                 console.log("Buscando perfil para o email:", user.email);
 
-                const { data: perfil, error } = await supabaseClient
+                // Primeiro, verificar se o usuário existe na tabela 'usuarios'
+                let { data: perfil, error } = await supabaseClient
                     .from('usuarios')
-                    .select('nome, foto_perfil, publicacoes, id, pontos_mes')
+                    .select('*')
                     .eq('email', user.email)
                     .maybeSingle();
 
@@ -381,12 +380,38 @@
                     return;
                 }
 
+                // Se não encontrar o perfil, criar um novo
+                if (!perfil) {
+                    console.log("Perfil não encontrado, criando novo...");
+                    const nomeUsuario = user.email.split('@')[0];
+                    
+                    const { data: newPerfil, error: insertError } = await supabaseClient
+                        .from('usuarios')
+                        .insert([{
+                            email: user.email,
+                            nome: nomeUsuario,
+                            publicacoes: 0,
+                            pontos_mes: 0,
+                            created_at: new Date().toISOString()
+                        }])
+                        .select()
+                        .single();
+                    
+                    if (insertError) {
+                        console.error('Erro ao criar perfil:', insertError);
+                        return;
+                    }
+                    
+                    perfil = newPerfil;
+                    console.log("Perfil criado:", perfil);
+                }
+
                 if (perfil) {
                     console.log("Perfil encontrado:", perfil);
 
                     const nomeElemento = document.getElementById('nomeUsuario');
                     if (nomeElemento) {
-                        nomeElemento.textContent = `Olá, ${perfil.nome}`;
+                        nomeElemento.textContent = `Olá, ${perfil.nome || user.email.split('@')[0]}`;
                     }
 
                     const { count: totalTreinos, error: countError } = await supabaseClient
@@ -411,10 +436,8 @@
                         }
                     }
 
-                    localStorage.setItem("usuarioLogado", perfil.nome);
+                    localStorage.setItem("usuarioLogado", perfil.nome || user.email.split('@')[0]);
                     localStorage.setItem("usuarioIdTabela", perfil.id);
-                } else {
-                    console.log("Perfil não encontrado para o email:", user.email);
                 }
             } catch (error) {
                 console.error('Erro inesperado ao carregar perfil:', error);
@@ -686,56 +709,10 @@
             currentImageToDelete = null;
         }
 
-        function getStoragePathFromUrl(url) {
-            try {
-                const urlObj = new URL(url);
-                const pathParts = urlObj.pathname.split('/');
-                const galeriasIndex = pathParts.indexOf('galerias');
-                if (galeriasIndex !== -1) {
-                    return pathParts.slice(galeriasIndex).join('/');
-                }
-            } catch (e) {
-                console.error("Erro ao extrair path:", e);
-            }
-            return null;
-        }
-
-        async function deleteImageFromStorage(imageUrl) {
-            try {
-                const path = getStoragePathFromUrl(imageUrl);
-                if (!path) {
-                    console.error("Não foi possível extrair o path da imagem");
-                    return false;
-                }
-
-                const { error } = await supabaseClient.storage
-                    .from("galeria_fotos")
-                    .remove([path]);
-
-                if (error) {
-                    console.error("Erro ao deletar do storage:", error);
-                    return false;
-                }
-
-                return true;
-            } catch (err) {
-                console.error("Erro ao deletar imagem:", err);
-                return false;
-            }
-        }
-
         async function excluirImagem() {
             if (!currentImageToDelete) return;
 
             const { url, container } = currentImageToDelete;
-
-            const deletedFromStorage = await deleteImageFromStorage(url);
-
-            if (!deletedFromStorage) {
-                alert("Erro ao deletar a imagem do servidor!");
-                hideModal();
-                return;
-            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) {
@@ -1001,6 +978,14 @@
                 localStorage.setItem('sidebarOpen', 'false');
             }
         }
+
+        window.logout = async function() {
+            await supabaseClient.auth.signOut();
+            localStorage.removeItem("usuarioEmail");
+            localStorage.removeItem("usuarioLogado");
+            localStorage.removeItem("usuarioIdTabela");
+            window.location.href = "index.html";
+        };
 
         if (sidebarToggleBtn) {
             sidebarToggleBtn.addEventListener('click', toggleSidebar);

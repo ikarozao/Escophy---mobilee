@@ -106,7 +106,6 @@
         </div>
     </div>
 
-
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
@@ -157,6 +156,7 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         let userEmailGlobal = null;
+        let userGlobalId = null;
         let metasUsuario = [];
         let currentMetaIndex = 0;
         let treinosFiltrados = [];
@@ -178,23 +178,81 @@
             }
             userEmailGlobal = user.email;
             localStorage.setItem("usuarioEmail", user.email);
+            
+            // Buscar ID do usuário na tabela 'usuarios'
+            const { data: usuarioData, error: usuarioError } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', userEmailGlobal)
+                .single();
+            
+            if (usuarioError) {
+                console.error("Erro ao buscar usuário:", usuarioError);
+                return;
+            }
+            
+            if (usuarioData) {
+                userGlobalId = usuarioData.id;
+                console.log("ID do usuário encontrado:", userGlobalId);
+            }
+            
             await carregarMetas();
             await carregarTreinos();
             await carregarFiltroMeses();
         })();
 
         async function carregarMetas() {
-            const mesAtual = new Date().getMonth();
+            const mesAtual = new Date().getMonth() + 1;
             const anoAtual = new Date().getFullYear();
-            const chaveMeta = `metas_${userEmailGlobal}_${anoAtual}_${mesAtual}`;
-            const metasSalvas = localStorage.getItem(chaveMeta);
             
-            if (metasSalvas) {
-                metasUsuario = JSON.parse(metasSalvas);
+            if (!userGlobalId) {
+                console.error("Usuário não encontrado");
+                return;
+            }
+            
+            // Buscar metas do banco de dados
+            const { data: metasDB, error } = await supabaseClient
+                .from('metas_mensais')
+                .select('*')
+                .eq('usuario_id', userGlobalId)
+                .eq('ano', anoAtual)
+                .eq('mes', mesAtual);
+            
+            if (error) {
+                console.error("Erro ao buscar metas:", error);
+            }
+            
+            if (metasDB && metasDB.length > 0) {
+                // Converter para o formato que a página usa
+                metasUsuario = metasDB.map(meta => ({
+                    id: meta.id,
+                    modalidade: meta.modalidade,
+                    modalidadeNome: modalidadeNomes[meta.modalidade],
+                    icone: modalidadeIcones[meta.modalidade],
+                    metaKm: meta.meta_km,
+                    atualKm: meta.atual_km || 0,
+                    porcentagem: meta.porcentagem || 0
+                }));
+                
+                // Atualizar quilometragem atual de cada meta
+                for (let meta of metasUsuario) {
+                    const kmAtual = await calcularKmPorModalidade(meta.modalidade);
+                    meta.atualKm = kmAtual;
+                    meta.porcentagem = (kmAtual / meta.metaKm) * 100;
+                    if (meta.porcentagem > 100) meta.porcentagem = 100;
+                    
+                    // Atualizar no banco
+                    await supabaseClient
+                        .from('metas_mensais')
+                        .update({ atual_km: kmAtual, porcentagem: meta.porcentagem })
+                        .eq('id', meta.id);
+                }
+                
                 exibirMetas();
                 document.getElementById('modalMetas').style.display = 'none';
                 document.getElementById('metasSection').style.display = 'block';
             } else {
+                // Primeira vez no mês - mostrar modal
                 document.getElementById('modalMetas').style.display = 'flex';
                 document.getElementById('metasSection').style.display = 'none';
                 inicializarModalMetas();
@@ -269,6 +327,7 @@
             else botoes.forEach(btn => btn.style.display = 'flex');
         }
 
+        // Salvar metas no BANCO DE DADOS
         document.getElementById('btnSalvarMetas').addEventListener('click', async () => {
             const cards = document.querySelectorAll('.meta-card');
             const novasMetas = [];
@@ -283,27 +342,44 @@
                     return;
                 }
                 novasMetas.push({
-                    id: idx, modalidade: modalidade, modalidadeNome: modalidadeNomes[modalidade],
-                    icone: modalidadeIcones[modalidade], metaKm: valor, atualKm: 0, porcentagem: 0
+                    modalidade: modalidade,
+                    metaKm: valor
                 });
             });
             
             if (hasError) return;
             
+            const mesAtual = new Date().getMonth() + 1;
+            const anoAtual = new Date().getFullYear();
+            
+            // Salvar cada meta no banco de dados
             for (let meta of novasMetas) {
                 const kmAtual = await calcularKmPorModalidade(meta.modalidade);
-                meta.atualKm = kmAtual;
-                meta.porcentagem = Math.min((kmAtual / meta.metaKm) * 100, 100);
+                const porcentagem = (kmAtual / meta.metaKm) * 100;
+                
+                const { error } = await supabaseClient
+                    .from('metas_mensais')
+                    .insert([{
+                        usuario_id: userGlobalId,
+                        modalidade: meta.modalidade,
+                        meta_km: meta.metaKm,
+                        atual_km: kmAtual,
+                        porcentagem: porcentagem > 100 ? 100 : porcentagem,
+                        ano: anoAtual,
+                        mes: mesAtual,
+                        data_criacao: new Date().toISOString()
+                    }]);
+                
+                if (error) {
+                    console.error("Erro ao salvar meta:", error);
+                    alert("Erro ao salvar meta no banco de dados: " + error.message);
+                    return;
+                }
             }
             
-            metasUsuario = novasMetas;
-            const mesAtual = new Date().getMonth();
-            const anoAtual = new Date().getFullYear();
-            localStorage.setItem(`metas_${userEmailGlobal}_${anoAtual}_${mesAtual}`, JSON.stringify(metasUsuario));
-            
-            document.getElementById('modalMetas').style.display = 'none';
-            document.getElementById('metasSection').style.display = 'block';
-            exibirMetas();
+            alert("Metas salvas com sucesso!");
+            // Recarregar metas do banco
+            await carregarMetas();
         });
 
         async function calcularKmPorModalidade(modalidade) {
@@ -372,7 +448,7 @@
             document.getElementById('carrosselPrev').onclick = () => { if (currentMetaIndex > 0) { currentMetaIndex--; atualizarCarrossel(); } };
             document.getElementById('carrosselNext').onclick = () => { if (currentMetaIndex < metasUsuario.length - 1) { currentMetaIndex++; atualizarCarrossel(); } };
         }
-        
+
         function atualizarCarrossel() {
             const carrossel = document.getElementById('metasCarrossel');
             const cards = document.querySelectorAll('.meta-carrossel-card');
