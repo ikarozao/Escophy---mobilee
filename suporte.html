@@ -1,63 +1,645 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="suporte/suporte.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#036600">
+    <title>Suporte - Escorphy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* ===== BODY ===== */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #003b0d 0%, #036600 100%);
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Padrão de fundo sutil */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* ===== CONTAINER PRINCIPAL ===== */
+        .support-container {
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        /* ===== CARD GLASS ===== */
+        .support-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        /* ===== TÍTULO ===== */
+        .support-card h1 {
+            font-size: clamp(28px, 6vw, 36px);
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        /* ===== ÍCONE DECORATIVO ===== */
+        .icon-wrapper {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .icon-wrapper i {
+            font-size: 60px;
+            background: linear-gradient(135deg, #036600, #003b0d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* ===== TEXTAREA (MENSAGEM) ===== */
+        .message-group {
+            margin-bottom: 25px;
+        }
+
+        .message-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .message-group label i {
+            margin-right: 8px;
+            color: #036600;
+        }
+
+        .message-group textarea {
+            width: 100%;
+            height: 150px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            outline: none;
+            font-size: 15px;
+            color: #333;
+            padding: 15px 18px;
+            border-radius: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .message-group textarea:focus {
+            border-color: #036600;
+            box-shadow: 0 0 0 3px rgba(3, 102, 0, 0.1);
+        }
+
+        .message-group textarea::placeholder {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* ===== INFO DO USUÁRIO ===== */
+        .user-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .user-info i {
+            font-size: 20px;
+            color: #036600;
+        }
+
+        .user-info span {
+            font-size: 14px;
+            color: #555;
+            word-break: break-all;
+        }
+
+        /* ===== BOTÃO ===== */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #036600 0%, #003b0d 100%);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(3, 102, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(3, 102, 0, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== LINK VOLTAR ===== */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link a:hover {
+            color: #333;
+            text-decoration: underline;
+        }
+
+        /* ===== TOAST NOTIFICATION (BALÃOZINHO) ===== */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .toast-content {
+            background: white;
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            min-width: 280px;
+            border-left: 4px solid;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast-content.success {
+            border-left-color: #10b981;
+        }
+
+        .toast-content.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast-content.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast-content.info {
+            border-left-color: #036600;
+        }
+
+        .toast-content i {
+            font-size: 22px;
+        }
+
+        .toast-content.success i {
+            color: #10b981;
+        }
+
+        .toast-content.error i {
+            color: #ef4444;
+        }
+
+        .toast-content.warning i {
+            color: #f59e0b;
+        }
+
+        .toast-content.info i {
+            color: #036600;
+        }
+
+        .toast-content span {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        /* Tela de overlay de redirecionamento */
+        .redirect-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .redirect-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .redirect-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .redirect-card i {
+            font-size: 70px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .redirect-card h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .redirect-card p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .redirect-card .countdown {
+            font-size: 36px;
+            font-weight: 700;
+            color: #036600;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #036600, #00a300);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .support-card {
+                padding: 30px 25px;
+            }
+            
+            .toast-notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+            }
+            
+            .toast-content {
+                min-width: auto;
+                width: calc(100% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .support-card {
+                padding: 25px 20px;
+                border-radius: 20px;
+            }
+            
+            .message-group textarea {
+                height: 120px;
+                font-size: 14px;
+            }
+            
+            .btn-submit {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .user-info span {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Precisa de ajuda?</h1>
+    <div class="support-container">
+        <div class="support-card">
+            <div class="icon-wrapper">
+                <i class="fas fa-headset"></i>
+            </div>
+            <h1>Precisa de ajuda?</h1>
+            <p class="subtitle">Estamos aqui para resolver seu problema</p>
+            
+            <div class="message-group">
+                <label><i class="fas fa-edit"></i> Sua mensagem</label>
+                <textarea id="mensagem" placeholder="Descreva detalhadamente o problema que você está enfrentando..."></textarea>
+            </div>
+            
+            <div class="user-info" id="userInfo" style="display: none;">
+                <i class="fas fa-envelope"></i>
+                <span id="userEmail">carregando...</span>
+            </div>
+            
+            <button class="btn-submit" id="enviarEmail">
+                <i class="fas fa-paper-plane"></i>
+                Enviar mensagem
+            </button>
+            
+            <div class="back-link">
+                <a href="javascript:history.back()">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </div>
+    </div>
 
-<input type="text" id="mensagem" placeholder="Relate seu problema aqui">
+    <!-- Balão de notificação -->
+    <div id="toastNotification" class="toast-notification">
+        <div class="toast-content" id="toastContent">
+            <i id="toastIcon" class="fas"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
 
-<button id="enviarEmail">Envie um email!</button>
-</body>
+    <!-- Overlay de redirecionamento -->
+    <div id="redirectOverlay" class="redirect-overlay">
+        <div class="redirect-card">
+            <i class="fas fa-check-circle"></i>
+            <h3>Mensagem enviada!</h3>
+            <p>Voltando para a página inicial em</p>
+            <div class="countdown" id="countdown">3</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-emailjs.init("MQCRH_zme-EKH_OA_");
-
-const botao = document.getElementById("enviarEmail");
-
-botao.addEventListener("click", async () => {
-
-    const mensagem = document.getElementById("mensagem").value;
-
-    const { data } = await supabaseClient.auth.getUser();
-
-        if (!data.user) {
-    alert("Você precisa estar logado para enviar suporte.");
-    return;
-    }
-
-const emailUsuario = data.user.email;
-
-    const templateParams = {
-        subject: "Ajuda no Escorphy",
-        message: mensagem,
-        user_email: emailUsuario
-    };
-
-    emailjs.send("service_zy04i9c", "template_n11sxy6", templateParams)
-        .then(() => {
-            alert("Email enviado com sucesso!");
-        })
-        .catch((error) => {
-            console.error(error);
-            alert("Erro ao enviar email");
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        // Configuração do Supabase
+        const supabaseUrl = 'https://yuupbtrljazrrwizzafd.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Inicializar EmailJS
+        emailjs.init("MQCRH_zme-EKH_OA_");
+        
+        // Elementos
+        const botao = document.getElementById("enviarEmail");
+        const mensagemInput = document.getElementById("mensagem");
+        const userInfoDiv = document.getElementById("userInfo");
+        const userEmailSpan = document.getElementById("userEmail");
+        const toastNotification = document.getElementById("toastNotification");
+        const toastContent = document.getElementById("toastContent");
+        const toastIcon = document.getElementById("toastIcon");
+        const toastMessage = document.getElementById("toastMessage");
+        const redirectOverlay = document.getElementById("redirectOverlay");
+        const countdownElement = document.getElementById("countdown");
+        const progressFill = document.getElementById("progressFill");
+        
+        // Função para mostrar balão de notificação
+        function showToast(message, type = "info") {
+            toastContent.classList.remove("success", "error", "warning", "info");
+            toastContent.classList.add(type);
+            
+            switch(type) {
+                case "success":
+                    toastIcon.className = "fas fa-check-circle";
+                    break;
+                case "error":
+                    toastIcon.className = "fas fa-exclamation-circle";
+                    break;
+                case "warning":
+                    toastIcon.className = "fas fa-exclamation-triangle";
+                    break;
+                default:
+                    toastIcon.className = "fas fa-info-circle";
+            }
+            
+            toastMessage.textContent = message;
+            toastNotification.classList.add("show");
+            
+            setTimeout(() => {
+                toastNotification.classList.remove("show");
+            }, 3000);
+        }
+        
+        // Função para redirecionar com overlay animado
+        function redirectToHome() {
+            let countdown = 3;
+            countdownElement.textContent = countdown;
+            
+            // Animar barra de progresso
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += (100 / 30);
+                progressFill.style.width = progress + "%";
+            }, 100);
+            
+            const timer = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown === 0) {
+                    clearInterval(timer);
+                    clearInterval(interval);
+                    window.location.href = "home.html";
+                }
+            }, 1000);
+        }
+        
+        // Função para verificar usuário logado
+        async function checkUser() {
+            try {
+                const { data, error } = await supabaseClient.auth.getUser();
+                
+                if (error || !data.user) {
+                    showToast("Você precisa estar logado para enviar suporte", "warning");
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 2000);
+                    return null;
+                }
+                
+                userEmailSpan.textContent = data.user.email;
+                userInfoDiv.style.display = "flex";
+                return data.user;
+            } catch (error) {
+                console.error(error);
+                showToast("Erro ao verificar usuário", "error");
+                return null;
+            }
+        }
+        
+        // Função para enviar email
+        async function enviarEmail() {
+            const user = await checkUser();
+            if (!user) return;
+            
+            const mensagem = mensagemInput.value.trim();
+            
+            if (!mensagem) {
+                showToast("Por favor, digite sua mensagem antes de enviar", "warning");
+                mensagemInput.focus();
+                return;
+            }
+            
+            // Estado de loading
+            const originalHTML = botao.innerHTML;
+            botao.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Enviando...';
+            botao.disabled = true;
+            
+            const templateParams = {
+                subject: "Ajuda no Escorphy",
+                message: mensagem,
+                user_email: user.email
+            };
+            
+            try {
+                await emailjs.send("service_zy04i9c", "template_n11sxy6", templateParams);
+                
+                // Mostrar overlay de sucesso e redirecionar
+                redirectOverlay.classList.add("show");
+                redirectToHome();
+                
+            } catch (error) {
+                console.error(error);
+                showToast("Erro ao enviar email. Tente novamente mais tarde.", "error");
+                botao.innerHTML = originalHTML;
+                botao.disabled = false;
+            }
+        }
+        
+        // Evento do botão
+        botao.addEventListener("click", enviarEmail);
+        
+        // Permitir enviar com Ctrl+Enter
+        mensagemInput.addEventListener("keydown", (e) => {
+            if (e.ctrlKey && e.key === "Enter") {
+                enviarEmail();
+            }
         });
-
-});
-
-</script>
-           
+        
+        // Verificar usuário ao carregar
+        checkUser();
+    </script>
+</body>
 </html>
