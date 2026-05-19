@@ -116,8 +116,9 @@ nav .search-box input:focus {
 }
 
 .hist h1 {
-  font-size: 21px;
+  font-size: 1.5rem;
   font-family: "Poppins", sans-serif;
+  font-weight: 800;
   margin-left: 2%;
 }
 
@@ -201,13 +202,9 @@ nav .search-box input:focus {
 
 .titulo {
   background-color: white;
-  width: 70%; /* igual ao .artigo */
+  width: 900px;              /* ou 20% se preferir */
   border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 6%;
+  margin: 6% auto 0 auto;    /* isso centraliza qualquer width */
   padding: 20px;
   text-align: center;
   box-sizing: border-box;
@@ -215,9 +212,9 @@ nav .search-box input:focus {
 
 .titulo h1 {
   margin: 0;
-  font-family: "Staatliches", sans-serif;
-  font-size: 26px;
-  font-weight: 300;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
   color: #222;
   
 }
@@ -241,8 +238,10 @@ nav .search-box input:focus {
 
 .cards-section {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   gap: 5vw;
   padding: 20px;
 }
@@ -308,6 +307,11 @@ nav .search-box input:focus {
   font-size: 0.9rem;
   color: #555;
   margin: 10px 0;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
 }
 
 /* Botão com o logo do Instagram */
