@@ -20,6 +20,14 @@
     <img class="bg-img" src="img/edit 4.jpg" alt="Imagem 2" />
   </div>
 
+  <!-- TOAST DE NOTIFICAÇÃO -->
+  <div id="toast-notification" class="toast-notification">
+    <div class="toast-content">
+      <i id="toast-icon" class="bx"></i>
+      <span id="toast-message"></span>
+    </div>
+  </div>
+
   <main class="container">
     <!-- formulário de Login -->
     <form id="login-form" class="form active">
@@ -56,7 +64,24 @@
         <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
       </div>
 
-      <button class="login" type="submit">Cadastrar</button>
+      <!-- CHECKBOX COM TERMOS -->
+      <div class="terms-box">
+        <label class="checkbox-container">
+          <input type="checkbox" id="terms-checkbox" required>
+          <span class="checkmark"></span>
+          <span class="terms-text">Concordo com os <span id="terms-link" class="terms-link">termos</span></span>
+        </label>
+      </div>
+
+      <!-- BALÃO DOS TERMOS (inicialmente escondido) -->
+      <div id="terms-ballon" class="terms-ballon">
+        <div class="ballon-content">
+          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
+          <button id="close-ballon" class="close-ballon">Entendi</button>
+        </div>
+      </div>
+
+      <button class="login" type="submit" id="cadastro-btn">Cadastrar</button>
 
       <div class="register-link">
         <p>Já tem uma conta? <a href="#" id="show-login">Login</a></p>
@@ -67,6 +92,38 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
 
   <script>
+    // =========================
+    // FUNÇÃO DO TOAST (balão de notificação)
+    // =========================
+    function showToast(message, type = "error") {
+      const toast = document.getElementById("toast-notification");
+      const toastMessage = document.getElementById("toast-message");
+      const toastIcon = document.getElementById("toast-icon");
+      
+      // Remove classes anteriores
+      toast.classList.remove("success", "error", "warning", "show");
+      
+      // Define ícone e classe baseado no tipo
+      if (type === "success") {
+        toastIcon.className = "bx bx-check-circle";
+        toast.classList.add("success");
+      } else if (type === "error") {
+        toastIcon.className = "bx bx-error-circle";
+        toast.classList.add("error");
+      } else if (type === "warning") {
+        toastIcon.className = "bx bx-error";
+        toast.classList.add("warning");
+      }
+      
+      toastMessage.textContent = message;
+      toast.classList.add("show");
+      
+      // Esconde automaticamente após 3 segundos
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
     // =========================
     // Carrossel
     // =========================
@@ -100,6 +157,31 @@
     });
 
     // =========================
+    // BALÃO DOS TERMOS
+    // =========================
+    const termsLink = document.getElementById("terms-link");
+    const termsBallon = document.getElementById("terms-ballon");
+    const closeBallon = document.getElementById("close-ballon");
+
+    termsLink?.addEventListener("click", (e) => {
+      e.preventDefault();
+      termsBallon.classList.add("active");
+    });
+
+    closeBallon?.addEventListener("click", () => {
+      termsBallon.classList.remove("active");
+    });
+
+    // Fechar balão clicando fora
+    window.addEventListener("click", (e) => {
+      if (termsBallon.classList.contains("active")) {
+        if (!termsBallon.contains(e.target) && e.target !== termsLink) {
+          termsBallon.classList.remove("active");
+        }
+      }
+    });
+
+    // =========================
     // Supabase
     // =========================
     const SUPABASE_URL = "https://yuupbtrljazrrwizzafd.supabase.co";
@@ -128,11 +210,10 @@
 
         if (error) {
           console.error(error);
-          alert("Email ou senha incorretos!");
+          showToast("Email ou senha incorretos!", "error");
           return;
         }
 
-        // pega nome da tabela usuarios
         const { data: usuario } = await supabaseClient
           .from("usuarios")
           .select("nome")
@@ -147,26 +228,35 @@
         }
 
         console.log("✅ Login OK");
-        window.location.href = "home.html";
+        showToast("Login realizado com sucesso!", "success");
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1500);
 
       } catch (err) {
         console.error(err);
-        alert("Erro ao fazer login!");
+        showToast("Erro ao fazer login!", "error");
       }
     });
 
     // =========================
-    // CADASTRO
+    // CADASTRO (com validação do checkbox)
     // =========================
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+
+      // Verificar se o checkbox foi marcado
+      const termsCheckbox = document.getElementById("terms-checkbox");
+      if (!termsCheckbox.checked) {
+        showToast("Você precisa concordar com os termos para se cadastrar!", "warning");
+        return;
+      }
 
       const nome = document.getElementById("nome-cadastro").value;
       const email = document.getElementById("email-cadastro").value;
       const senha = document.getElementById("senha-cadastro").value;
 
       try {
-        // cria conta no Auth
         const { data, error } = await supabaseClient.auth.signUp({
           email,
           password: senha,
@@ -174,7 +264,7 @@
 
         if (error) {
           console.error(error);
-          alert(error.message);
+          showToast(error.message, "error");
           return;
         }
 
@@ -193,36 +283,24 @@
             }
           ]);
 
-        console.log("Erro insert usuario:", insertError);
-
-        // salva infos extras
-        /*const { error: insertError } = await supabaseClient
-          .from("usuarios")
-          .insert([
-            {
-              id: user.id,
-              nome: nome,
-              email: email,
-              created_at: new Date().toISOString(),
-            },
-          ]);
-
         if (insertError) {
           console.error(insertError);
-          alert("Erro ao salvar usuário.");
+          showToast("Erro ao salvar usuário!", "error");
           return;
-        }*/
-       
+        }
+
         localStorage.setItem("usuarioId", user.id);
         localStorage.setItem("usuarioEmail", user.email);
         localStorage.setItem("usuarioLogado", nome);
 
-        alert("✅ Cadastro realizado com sucesso!");
-        window.location.href = "home.html";
+        showToast("✅ Cadastro realizado com sucesso!", "success");
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1500);
 
       } catch (err) {
         console.error(err);
-        alert("Erro ao cadastrar!");
+        showToast("Erro ao cadastrar!", "error");
       }
     });
 

@@ -257,4 +257,280 @@ body {
   .column-right-column {
     width: 100% !important;
   }
+}
+/* ===== CHECKBOX PERSONALIZADO ===== */
+.terms-box {
+  margin: 15px 0 10px 0;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  gap: 8px;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: transparent;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: rgba(4, 71, 0, 0.1);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.terms-text {
+  color: #000000;
+  font-size: 13px;
+}
+
+.terms-link {
+  color: #4CAF50;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.terms-link:hover {
+  color: #2e7d32;
+}
+
+/* ===== BALÃO DOS TERMOS ===== */
+.terms-ballon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.terms-ballon.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ballon-content {
+  padding: 25px;
+  background: linear-gradient(135deg, #fff, #f5f5f5);
+  border-radius: 16px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.ballon-content p {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.close-ballon {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.close-ballon:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: scale(1.02);
+}
+
+/* Overlay para o balão */
+.terms-ballon.active::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .ballon-content {
+    padding: 18px;
+  }
+  .ballon-content p {
+    font-size: 12px;
+  }
+  .close-ballon {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .terms-text {
+    font-size: 11px;
+  }
+}
+/* ===== TOAST NOTIFICATION (BALÃO DE NOTIFICAÇÃO) ===== */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.toast-notification.show {
+  transform: translateX(0);
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  min-width: 280px;
+  max-width: 400px;
+  animation: slideIn 0.3s ease;
+}
+
+.toast-content i {
+  font-size: 24px;
+}
+
+.toast-content span {
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+/* Toast de Sucesso */
+.toast-notification.success .toast-content {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border-left: 4px solid #2e7d32;
+}
+
+.toast-notification.success .toast-content i {
+  color: white;
+}
+
+.toast-notification.success .toast-content span {
+  color: white;
+}
+
+/* Toast de Erro */
+.toast-notification.error .toast-content {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  border-left: 4px solid #b71c1c;
+}
+
+.toast-notification.error .toast-content i {
+  color: white;
+}
+
+.toast-notification.error .toast-content span {
+  color: white;
+}
+
+/* Toast de Aviso */
+.toast-notification.warning .toast-content {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  border-left: 4px solid #e65100;
+}
+
+.toast-notification.warning .toast-content i {
+  color: white;
+}
+
+.toast-notification.warning .toast-content span {
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* Responsivo para mobile */
+@media (max-width: 480px) {
+  .toast-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+  }
+  .toast-content {
+    min-width: auto;
+    width: calc(100% - 20px);
+    padding: 12px 16px;
+  }
+  .toast-content i {
+    font-size: 20px;
+  }
+  .toast-content span {
+    font-size: 13px;
+  }
 }/*# sourceMappingURL=style.css.map */
