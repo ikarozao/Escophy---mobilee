@@ -9,34 +9,244 @@
   <title>Treinos | Escorphy</title>
 
   <link rel="stylesheet" href="treinos/treinos.css" />
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <link rel="icon" type="image/png" href="img/a.png">
+
+  <style>
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1a1a2e;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      font-family: 'Poppins', sans-serif;
+    }
+    .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast-msg.success { background: linear-gradient(135deg, #11998e, #38ef7d); }
+    .toast-msg.error { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+    .toast-msg.warning { background: linear-gradient(135deg, #f2994a, #f2c94c); }
+    .toast-msg.i { font-size: 20px; }
+
+    /* Modal personalizado para adicionar acessório */
+    .modal-custom {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 11000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-custom.active {
+      display: flex;
+    }
+    .modal-custom-content {
+      background: white;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 350px;
+      padding: 25px;
+      animation: fadeInScale 0.3s ease;
+    }
+    .modal-custom-content h3 {
+      margin-bottom: 15px;
+      color: #044700;
+    }
+    .modal-custom-content input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 50px;
+      border: 2px solid #e0e0e0;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .modal-custom-content input:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .modal-buttons button {
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-modal-confirm {
+      background: #4CAF50;
+      color: white;
+    }
+    .btn-modal-cancel {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Botão principal de adicionar acessório */
+    .btn-adicionar-acessorio-principal {
+      width: 100%;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border: 2px dashed #4CAF50;
+      color: #2e7d32;
+      padding: 14px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      font-family: "Poppins", sans-serif;
+    }
+    .btn-adicionar-acessorio-principal:hover {
+      background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+      transform: translateY(-2px);
+    }
+
+    /* Card de distância moderno - MAIS BONITO */
+    .distancia-card-moderno {
+      background: linear-gradient(135deg, #ffffff 0%, #f8faf8 100%);
+      border-radius: 28px;
+      padding: 18px 28px;
+      margin: 10px auto 25px auto;
+      text-align: center;
+      width: fit-content;
+      min-width: 220px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(76, 175, 80, 0.25);
+      transition: all 0.3s ease;
+    }
+    .distancia-card-moderno:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -8px rgba(76, 175, 80, 0.15);
+      border-color: rgba(76, 175, 80, 0.5);
+    }
+    .distancia-card-moderno p {
+      font-size: 13px;
+      color: #2e7d32;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .distancia-card-moderno span {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #044700, #4CAF50);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .distancia-card-moderno i {
+      color: #4CAF50;
+      font-size: 20px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* Botões com ícones - COR DO SITE */
+    .control-icons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 20px 0;
+    }
+    .control-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+    .control-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    .control-btn:active {
+      transform: scale(0.96);
+    }
+    .btn-play {
+      background: linear-gradient(135deg, #4CAF50, #2e7d32);
+      color: white;
+    }
+    .btn-play:hover {
+      background: linear-gradient(135deg, #43a047, #1b5e20);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+    }
+    .btn-stop {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+    .btn-stop:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- NAVBAR corrigida - APENAS REMOVIDA A LOGO DUPLICADA -->
+  <!-- TOAST -->
+  <div id="toastMessage" class="toast-msg">
+    <i class="bx"></i>
+    <span id="toastText"></span>
+  </div>
+
+  <!-- MODAL PERSONALIZADO -->
+  <div id="modalCustom" class="modal-custom">
+    <div class="modal-custom-content">
+      <h3>Adicionar acessório</h3>
+      <input type="text" id="modalAcessorioInput" placeholder="Digite o nome do acessório...">
+      <div class="modal-buttons">
+        <button class="btn-modal-cancel" id="modalCancelBtn">Cancelar</button>
+        <button class="btn-modal-confirm" id="modalConfirmBtn">Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
   <nav>
     <a href="home.html">
       <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
     </a>
-    <!--<a href="home.html" class="bar_n" style="text-decoration:none; color:black; cursor:pointer;">Escorphy</a>-->
-    <div class="nav-right">
-      <!--<div class="search-box">
-        <input class="input-rounded" type="text" placeholder="Pesquisar..." />
-      </div>-->
-    </div>
+    <div class="nav-right"></div>
   </nav>
 
-  <!-- Botão ÚNICO para abrir/fechar a sidebar (só aparece no mobile) -->
   <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
-
-  <!-- OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-nav">
       <ul>
@@ -54,6 +264,7 @@
       <h1>Registre seu treino!</h1>
     </div>
 
+    <!-- Carrossel de tipos de treino -->
     <ul class="carrosel-total">
       <div class="org">
         <li class="carrossel">
@@ -61,26 +272,22 @@
         </li>
         <p>Ciclismo</p>
       </div>
-
       <div class="org">
         <li class="carrossel">
           <img src="img/run.png" alt="">
         </li>
         <p>Corrida</p>
       </div>
-
       <div class="org">
         <li class="carrossel">
           <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
         </li>
         <p>Caminhada</p>
       </div>
-
     </ul>
 
     <script>
       const buttons = document.querySelectorAll('.carrossel');
-
       buttons.forEach(btn => {
         btn.addEventListener('click', () => {
           buttons.forEach(b => b.classList.remove('selected'));
@@ -89,18 +296,28 @@
       });
     </script>
 
-    <div id="map"></div>
-
-    <div id="controls">
-      <button id="startBtn">Iniciar Rota</button>
-      <button id="endBtn">Finalizar Rota</button>
+    <!-- Card de distância moderno (embaixo dos ícones) -->
+    <div class="distancia-card-moderno">
+      <p><i class="bx bx-map"></i> Distância percorrida</p>
+      <span id="distance">0 km</span>
     </div>
 
+    <!-- Mapa -->
+    <div id="map"></div>
+
+    <!-- Botões de controle com ícones - COR DO SITE -->
+    <div class="control-icons">
+      <button id="startBtn" class="control-btn btn-play" title="Iniciar rota">
+        <i class="bx bx-play"></i>
+      </button>
+      <button id="endBtn" class="control-btn btn-stop" title="Finalizar rota">
+        <i class="bx bx-stop"></i>
+      </button>
+    </div>
+
+    <!-- Formulário de informações (aparece após selecionar um tipo de treino) -->
     <article id="infos_treinos" class="infos_treinos" style="display: none;">
-
       <h1>Informações da atividade</h1>
-
-      <p>Distância: <span id="distance">0 km</span></p>
 
       <div class="titulo">
         <p>Título do treino:</p>
@@ -108,7 +325,7 @@
       </div>
 
       <div class="descricao">
-        <p>Descricão do treino:</p>
+        <p>Descrição do treino:</p>
         <input class="input-rounded" type="text" name="descricao" placeholder="" required>
       </div>
 
@@ -124,7 +341,7 @@
       <div class="grupo-opcoes">
         <p>Nível de intensidade</p>
         <div class="range-container">
-          <input type="range" class="rangezao" min="1" max="10" step="1">
+          <input type="range" class="rangezao" min="1" max="10" step="1" value="5">
           <div class="rangezi">
             <span class="tooltip">1<span class="tip">Pouco</span></span>
             <span>2</span><span>3</span><span>4</span>
@@ -144,36 +361,92 @@
       </div>
 
       <div class="grupo-opcoes">
-        <p>Adicione o tipo de acessório:</p>
-        <div class="acessorio">
-          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Relógio</a>
-          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Fones</a>
-          <a href="#" class="acessorio-option" role="menuitem" tabindex="0">Pulseira</a>
-        </div>
-
-        <div class="acessorio-specs">
-          <p>Especificações dos acessórios:</p>
-          <input type="text" id="especificacoesAcessorios" placeholder="Ex: Marca, modelo, cor, tipo de pisada, etc.">
+        <p>Adicione os acessórios:</p>
+        
+        <div class="acessorios-container">
+          <!-- Botão único para adicionar acessório -->
+          <button class="btn-adicionar-acessorio-principal" id="abrirModalBtn">
+            <i class="bx bx-plus-circle"></i> Adicionar acessório
+          </button>
+          
+          <!-- Lista de acessórios adicionados -->
+          <div id="acessoriosLista" class="acessorios-lista"></div>
         </div>
       </div>
 
       <div class="botao-salvar">
-        <button id="salvarBtn">Salvar</button>
+        <button id="salvarBtn">Salvar treino</button>
       </div>
-
-      <div id="mensagemSalvo" class="mensagem-flutuante">
-        Salvo com sucesso!
-      </div>
-
     </article>
   </div>
 
-  <!--Scripts no final, sem duplicação -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <h1>ESCORPHY</h1>
+        <p>© 2025 Escorphy</p>
+      </div>
+      <div class="footer-column">
+        <h3>Sobre</h3>
+        <ul>
+          <li><a href="sobrenos.html">Nossa Missão</a></li>
+          <li><a href="sobrenos.html">Equipe</a></li>
+          <li><a href="#">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Explorar</h3>
+        <ul>
+          <li><a href="#">Funcionalidades</a></li>
+          <li><a href="#">Planos</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Redes</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/escorphybr">Instagram</a></li>
+          <li><a href="https://www.youtube.com/escorphy">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Ajuda</h3>
+        <ul>
+          <li><a href="#">Suporte</a></li>
+          <li><a href="#">Fale Conosco</a></li>
+          <li><a href="#">Central de Ajuda</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    console.log("Iniciando aplicação");
+    // ========== TOAST FUNCTION ==========
+    function showToast(message, type = "success") {
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+      const toastIcon = toast.querySelector('i');
+      
+      toast.classList.remove('show', 'success', 'error', 'warning');
+      
+      if (type === 'success') {
+        toastIcon.className = 'bx bx-check-circle';
+        toast.classList.add('success');
+      } else if (type === 'error') {
+        toastIcon.className = 'bx bx-error-circle';
+        toast.classList.add('error');
+      } else {
+        toastIcon.className = 'bx bx-info-circle';
+        toast.classList.add('warning');
+      }
+      
+      toastText.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
 
     // Configuração do Supabase
     const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
@@ -189,7 +462,6 @@
 
     function calcularDistanciaTotal(positions) {
       if (positions.length < 2) return 0;
-
       let totalDistance = 0;
       for (let i = 1; i < positions.length; i++) {
         const prev = positions[i - 1];
@@ -203,135 +475,182 @@
       const R = 6371000;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     }
 
-
     function startTracking() {
-      console.log("Iniciando tracking...");
       if (navigator.geolocation) {
+        if (tracking) {
+          showToast("Rota já está sendo gravada!", "warning");
+          return;
+        }
         tracking = true;
         userPositions = [];
-
         if (polyline) polyline.remove();
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
 
         watchId = navigator.geolocation.watchPosition(
           function (position) {
-            //if (position.coords.accuracy > 30) return;
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-
-            if (userPositions.length > 0) {
-              const last = userPositions[userPositions.length - 1];
-              const dist = calcularDistancia(last.lat, last.lng, lat, lon);
-
-              //if (dist > 50) return; // salto GPS
-              //if (dist < 3) return;  // movimento mínimo
-            }
-
-            console.log(`Posição: ${lat}, ${lon}`);
-
-            userPositions.push({
-              lat: lat,
-              lng: lon,
-              timestamp: new Date().toISOString(),
-              accuracy: position.coords.accuracy
-            });
-
+            userPositions.push({ lat, lng: lon, timestamp: new Date().toISOString(), accuracy: position.coords.accuracy });
             const distanciaTotal = calcularDistanciaTotal(userPositions);
-
-            const distanciaKm = (distanciaTotal / 1000).toFixed(2);
-            document.getElementById("distance").innerText = distanciaKm + " km";
-
-            console.log("Distância total:", distanciaTotal, "metros");
-
+            document.getElementById("distance").innerText = (distanciaTotal / 1000).toFixed(2) + " km";
             window.mainMap.panTo([lat, lon]);
-
             if (userPositions.length === 1) {
-              startMarker = L.marker([lat, lon])
-                .addTo(window.mainMap)
-                .bindPopup("Início do percurso")
-                .openPopup();
+              startMarker = L.marker([lat, lon]).addTo(window.mainMap).bindPopup("Início do percurso").openPopup();
             }
-
             const latLngs = userPositions.map(pos => [pos.lat, pos.lng]);
-            if (polyline) {
-              polyline.setLatLngs(latLngs);
-            } else {
-              polyline = L.polyline(latLngs, {
-                color: '#F00',
-                weight: 6,
-                opacity: 0.8
-              }).addTo(window.mainMap);
-            }
+            if (polyline) polyline.setLatLngs(latLngs);
+            else polyline = L.polyline(latLngs, { color: '#4CAF50', weight: 5, opacity: 0.8 }).addTo(window.mainMap);
           },
           function (error) {
-            console.error("Erro ao obter localização:", error);
-            alert("Erro ao obter localização: " + error.message);
+            showToast("Erro ao obter localização: " + error.message, "error");
           },
-          {
-            enableHighAccuracy: true,
-            timeout: 40000,
-            maximumAge: 0
-          }
+          { enableHighAccuracy: true, timeout: 40000, maximumAge: 0 }
         );
       } else {
-        alert("Geolocalização não suportada no seu navegador");
+        showToast("Geolocalização não suportada no seu navegador", "error");
       }
     }
 
     function endTracking() {
-      console.log("Finalizando");
       if (tracking) {
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
-
         if (userPositions.length > 0) {
           const lastPoint = userPositions[userPositions.length - 1];
-          endMarker = L.marker([lastPoint.lat, lastPoint.lng])
-            .addTo(window.mainMap)
-            .bindPopup("Fim do percurso")
-            .openPopup();
+          endMarker = L.marker([lastPoint.lat, lastPoint.lng]).addTo(window.mainMap).bindPopup("Fim do percurso").openPopup();
+          showToast(`Rota finalizada! ${(calcularDistanciaTotal(userPositions) / 1000).toFixed(2)} km percorridos`, "success");
+        } else {
+          showToast("Nenhuma rota registrada", "warning");
         }
-
-        console.log("Trajeto registrado com", userPositions.length, "pontos");
+      } else {
+        showToast("Nenhuma rota em andamento", "warning");
       }
     }
 
+    // ========== SISTEMA DE ACESSÓRIOS ==========
+    let acessoriosSelecionados = [];
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function renderizarAcessorios() {
+      const container = document.getElementById('acessoriosLista');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      acessoriosSelecionados.forEach((acessorio, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'acessorio-item-custom';
+        itemDiv.innerHTML = `
+          <div class="acessorio-header-custom">
+            <span class="acessorio-nome-custom">${escapeHtml(acessorio.nome)}</span>
+            <button class="btn-remover-acessorio" data-index="${index}"><i class="bx bx-trash"></i></button>
+          </div>
+          <input type="text" class="acessorio-espec-custom" data-index="${index}" value="${escapeHtml(acessorio.especificacao || '')}" placeholder="Especificações (ex: marca, modelo, cor...)">
+        `;
+        container.appendChild(itemDiv);
+      });
+      
+      document.querySelectorAll('.btn-remover-acessorio').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(btn.dataset.index);
+          removerAcessorio(index);
+        });
+      });
+      
+      document.querySelectorAll('.acessorio-espec-custom').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const index = parseInt(input.dataset.index);
+          acessoriosSelecionados[index].especificacao = input.value;
+        });
+      });
+    }
+
+    function adicionarAcessorio(nome, especificacao = '') {
+      if (!nome || nome.trim() === '') {
+        showToast('Digite o nome do acessório!', 'warning');
+        return false;
+      }
+      if (acessoriosSelecionados.some(a => a.nome === nome)) {
+        showToast(`Acessório "${nome}" já foi adicionado!`, 'warning');
+        return false;
+      }
+      acessoriosSelecionados.push({ nome: nome.trim(), especificacao: especificacao });
+      renderizarAcessorios();
+      showToast(`Acessório "${nome}" adicionado!`, 'success');
+      return true;
+    }
+
+    function removerAcessorio(index) {
+      const nome = acessoriosSelecionados[index].nome;
+      acessoriosSelecionados.splice(index, 1);
+      renderizarAcessorios();
+      showToast(`Acessório "${nome}" removido!`, 'success');
+    }
+
+    // Modal personalizado
+    const modalCustom = document.getElementById('modalCustom');
+    const modalInput = document.getElementById('modalAcessorioInput');
+    
+    function abrirModalPersonalizado() {
+      modalInput.value = '';
+      modalCustom.classList.add('active');
+      modalInput.focus();
+    }
+    
+    function fecharModal() {
+      modalCustom.classList.remove('active');
+    }
+    
+    function confirmarModal() {
+      const nome = modalInput.value.trim();
+      if (nome) {
+        adicionarAcessorio(nome);
+        fecharModal();
+      } else {
+        showToast('Digite o nome do acessório!', 'warning');
+      }
+    }
+    
+    document.getElementById('modalConfirmBtn').addEventListener('click', confirmarModal);
+    document.getElementById('modalCancelBtn').addEventListener('click', fecharModal);
+    modalCustom.addEventListener('click', (e) => { if (e.target === modalCustom) fecharModal(); });
+    modalInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') confirmarModal(); });
+
+    // Botão principal para adicionar acessório
+    document.getElementById('abrirModalBtn').addEventListener('click', () => {
+      abrirModalPersonalizado();
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
-      console.log("DOM carregado");
-
-      console.log("Inicializando mapa");
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(window.mainMap);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(window.mainMap);
 
       const botoes = document.querySelectorAll(".carrossel");
       const info = document.querySelector(".infos_treinos");
-
       botoes.forEach((botao) => {
         botao.addEventListener("click", () => {
-          console.log("Botão de treino clicado");
           info.style.display = info.style.display === "none" ? "block" : "none";
-          botoes.forEach(b => b.classList.remove("ativo"));
-          botao.classList.add("ativo");
+          botoes.forEach(b => b.classList.remove('selected'));
+          botao.classList.add('selected');
         });
       });
 
       function setupSingleSelection(containerSelector) {
         const container = document.querySelector(containerSelector);
         if (!container) return;
-
         const links = container.querySelectorAll('a');
         links.forEach(link => {
           link.addEventListener('click', e => {
@@ -341,198 +660,95 @@
           });
         });
       }
-
       setupSingleSelection('.tipo');
       setupSingleSelection('.visibilidade');
-
-      const accessoryOptions = document.querySelectorAll('.acessorio .acessorio-option');
-      const acessorioSpecsContainer = document.querySelector('.acessorio-specs');
-
-      function toggleAcessorioSpecsVisibility() {
-        let anyAccessorySelected = false;
-        accessoryOptions.forEach(option => {
-          if (option.classList.contains('active-option')) {
-            anyAccessorySelected = true;
-          }
-        });
-
-        if (anyAccessorySelected) {
-          acessorioSpecsContainer.style.display = 'flex';
-          setTimeout(() => {
-            acessorioSpecsContainer.style.opacity = '1';
-            acessorioSpecsContainer.style.height = 'auto';
-          }, 10);
-        } else {
-          acessorioSpecsContainer.style.opacity = '0';
-          acessorioSpecsContainer.style.height = '0';
-          setTimeout(() => {
-            acessorioSpecsContainer.style.display = 'none';
-          }, 300);
-        }
-      }
-
-      accessoryOptions.forEach(option => {
-        option.addEventListener('click', function (event) {
-          event.preventDefault();
-          this.classList.toggle('active-option');
-          toggleAcessorioSpecsVisibility();
-        });
-      });
 
       document.getElementById("startBtn").addEventListener("click", startTracking);
       document.getElementById("endBtn").addEventListener("click", endTracking);
 
       const salvarBtn = document.getElementById('salvarBtn');
-      const mensagemSalvo = document.getElementById('mensagemSalvo');
-
       salvarBtn.addEventListener('click', async () => {
-        console.log("BOTÃO SALVAR ACIONADO");
-
         const usuarioEmail = localStorage.getItem("usuarioEmail");
-        console.log("1. Email:", usuarioEmail);
-
         if (!usuarioEmail) {
-          alert("Usuário não logado");
+          showToast("Usuário não logado! Faça login novamente.", "error");
           return;
         }
-
-        console.log("2. Pontos no trajeto:", userPositions.length);
         if (userPositions.length === 0) {
-          alert("Nenhum trajeto registrado!");
+          showToast("Nenhum trajeto registrado! Inicie uma rota primeiro.", "warning");
           return;
         }
-
         const titulo = document.querySelector("input[name='titulo']").value;
         const descricao = document.querySelector("input[name='descricao']").value;
         const tipo = document.querySelector(".tipo .active-option")?.innerText || "";
         const intensidade = document.querySelector(".rangezao").value;
         const visibilidade = document.querySelector(".visibilidade .active-option")?.innerText || "";
-
-        console.log("3. Dados:", { titulo, descricao, tipo, intensidade, visibilidade });
-
         if (!titulo || !descricao || !tipo || !visibilidade) {
-          alert("Preencha todos os campos!");
+          showToast("Preencha todos os campos!", "warning");
           return;
         }
+        
+        const acessoriosJSON = acessoriosSelecionados;
+        
+        const startPoint = userPositions[0];
+        const endPoint = userPositions[userPositions.length - 1];
+        const trajetoCompleto = { positions: userPositions, summary: { totalPoints: userPositions.length, startTime: userPositions[0]?.timestamp, endTime: userPositions[userPositions.length - 1]?.timestamp, distance: calcularDistanciaTotal(userPositions) } };
 
-        const acessoriosSelecionados = [];
-        document.querySelectorAll('.acessorio .active-option').forEach(option => {
-          acessoriosSelecionados.push(option.innerText);
-        });
-        const acessorios = acessoriosSelecionados.join(', ');
-        const especificacoes = document.getElementById("especificacoesAcessorios").value;
+        const { data, error } = await supabaseClient
+          .from("atividades")
+          .insert([{
+            email_usuario: usuarioEmail,
+            titulo: titulo,
+            descricao: descricao,
+            tipo: tipo,
+            intensidade: parseInt(intensidade),
+            visibilidade: visibilidade.toLowerCase(),
+            accessories: acessoriosJSON,
+            trajeto: trajetoCompleto,
+            trajeto_inicial1: startPoint.lat,
+            trajeto_inicial2: startPoint.lng,
+            trajeto_final1: endPoint.lat,
+            trajeto_final2: endPoint.lng,
+            data: new Date().toISOString()
+          }])
+          .select();
 
-        const trajetoCompleto = {
-          positions: userPositions,
-          summary: {
-            totalPoints: userPositions.length,
-            startTime: userPositions[0]?.timestamp,
-            endTime: userPositions[userPositions.length - 1]?.timestamp,
-            distance: calcularDistanciaTotal(userPositions)
-          }
-        };
-
-        try {
-          console.log("4.Enviando para Supabase...");
-
-          const startPoint = userPositions[0];
-          const endPoint = userPositions[userPositions.length - 1];
-
-          const { data, error } = await supabaseClient
-            .from("atividades")
-            .insert([{
-              email_usuario: usuarioEmail,
-              titulo: titulo,
-              descricao: descricao,
-              tipo: tipo,
-              intensidade: parseInt(intensidade),
-              visibilidade: visibilidade.toLowerCase(),
-              acessorios: acessorios + (especificacoes ? ` - ${especificacoes}` : ""),
-              trajeto: trajetoCompleto,
-
-              trajeto_inicial1: startPoint.lat,
-              trajeto_inicial2: startPoint.lng,
-              trajeto_final1: endPoint.lat,
-              trajeto_final2: endPoint.lng,
-
-              data: new Date().toISOString()
-            }])
-            .select();
-
-
-          if (error) {
-            console.error("Erro Supabase:", error);
-            alert("Erro: " + error.message);
-            return;
-          }
-
-          console.log("Sucesso! Dados:", data);
-
-          mensagemSalvo.classList.add("show");
-          setTimeout(() => {
-            mensagemSalvo.classList.remove("show");
-            L.polyline([
-              [startPoint.lat, startPoint.lng],
-              [endPoint.lat, endPoint.lng]
-            ], { color: 'orange', weight: 5 }).addTo(window.mainMap);
-
-
-            document.querySelector("input[name='titulo']").value = "";
-            document.querySelector("input[name='descricao']").value = "";
-            document.querySelector(".rangezao").value = "5";
-            document.querySelectorAll('.active-option').forEach(el => {
-              el.classList.remove('active-option');
-            });
-            document.getElementById("especificacoesAcessorios").value = "";
-
-            userPositions = [];
-            if (polyline) polyline.remove();
-            if (startMarker) startMarker.remove();
-            if (endMarker) endMarker.remove();
-
-            console.log("🔄 Formulário limpo");
-
-          }, 2000);
-
-        } catch (err) {
-          console.error("Erro geral:", err);
-          alert("Erro: " + err.message);
+        if (error) {
+          console.error("Erro Supabase:", error);
+          showToast("Erro ao salvar: " + error.message, "error");
+          return;
         }
+        showToast("Treino salvo com sucesso!", "success");
+        document.querySelector("input[name='titulo']").value = "";
+        document.querySelector("input[name='descricao']").value = "";
+        document.querySelector(".rangezao").value = "5";
+        document.querySelectorAll('.active-option').forEach(el => el.classList.remove('active-option'));
+        acessoriosSelecionados = [];
+        renderizarAcessorios();
+        userPositions = [];
+        if (polyline) polyline.remove();
+        if (startMarker) startMarker.remove();
+        if (endMarker) endMarker.remove();
+        document.getElementById("distance").innerText = "0 km";
       });
-
-      console.log("Aplicação carregada!");
-    })
-
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const treinoSalvo = localStorage.getItem('treinoSelecionado');
-      if (treinoSalvo) {
-        const treino = JSON.parse(treinoSalvo);
-
-        if (treino.titulo) document.querySelector('input[name="titulo"]').value = treino.titulo;
-        if (treino.descricao) document.querySelector('input[name="descricao"]').value = treino.descricao;
-
-        const infos = document.getElementById('infos_treinos');
-        if (infos) infos.style.display = 'block';
-
-        localStorage.removeItem('treinoSelecionado');
-      }
+      
+      renderizarAcessorios();
     });
 
-    // ========== CONTROLE DA SIDEBAR ==========
+    window.logout = async function() {
+      await supabaseClient.auth.signOut();
+      localStorage.clear();
+      showToast("Logout realizado com sucesso!", "success");
+      setTimeout(() => { window.location.href = "index.html"; }, 1000);
+    };
+
+    // Sidebar
     const sidebar = document.getElementById('sidebar');
     const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
     const overlay = document.getElementById('sidebarOverlay');
-
-    function isMobile() {
-      return window.innerWidth <= 768;
-    }
-
+    function isMobile() { return window.innerWidth <= 768; }
     function toggleSidebar() {
       if (!isMobile()) return;
-
       sidebar.classList.toggle('active');
-
       if (sidebar.classList.contains('active')) {
         sidebarToggleBtn.classList.add('opened');
         sidebarToggleBtn.innerHTML = '◀';
@@ -545,104 +761,12 @@
         localStorage.setItem('sidebarOpen', 'false');
       }
     }
-
-    if (sidebarToggleBtn) {
-      sidebarToggleBtn.addEventListener('click', toggleSidebar);
-    }
-
-    if (overlay) {
-      overlay.addEventListener('click', () => {
-        if (isMobile() && sidebar.classList.contains('active')) {
-          sidebar.classList.remove('active');
-          sidebarToggleBtn.classList.remove('opened');
-          sidebarToggleBtn.innerHTML = '▶';
-          overlay.classList.remove('active');
-          localStorage.setItem('sidebarOpen', 'false');
-        }
-      });
-    }
-
+    if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    if (overlay) overlay.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
     const sidebarState = localStorage.getItem('sidebarOpen');
-    if (isMobile() && sidebarState === 'true') {
-      sidebar.classList.add('active');
-      sidebarToggleBtn.classList.add('opened');
-      sidebarToggleBtn.innerHTML = '◀';
-      if (overlay) overlay.classList.add('active');
-    } else if (!isMobile()) {
-      sidebar.classList.remove('active');
-      sidebarToggleBtn.classList.remove('opened');
-      sidebarToggleBtn.innerHTML = '▶';
-      if (overlay) overlay.classList.remove('active');
-    }
-
-    window.addEventListener('resize', function () {
-      if (!isMobile()) {
-        sidebar.classList.remove('active');
-        sidebarToggleBtn.classList.remove('opened');
-        sidebarToggleBtn.innerHTML = '▶';
-        if (overlay) overlay.classList.remove('active');
-      }
-    });
+    if (isMobile() && sidebarState === 'true') toggleSidebar();
+    window.addEventListener('resize', () => { if (!isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
   </script>
-
-  <div class="floating-buttons-container">
-    <a href="home.html">
-      <div class="botaoperfil-container">
-        <button class="botaoperfil" id="botaoperfil">
-          <img src="img/home.png" alt="Ícone Perfil">
-        </button>
-      </div>
-    </a>
-    <a href="treino1.html">
-      <div class="botaomais-container">
-        <button class="botaomais" id="botaoMais">+</button>
-      </div>
-    </a>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-logo">
-        <h1>ESCORPHY</h1>
-        <p>© 2025 Escorphy</p>
-      </div>
-
-      <div class="footer-column">
-        <h3>Sobre</h3>
-        <ul>
-          <li><a href="sobrenos.html">Nossa Missão</a></li>
-          <li><a href="sobrenos.html">Equipe</a></li>
-          <li><a href="#">Privacidade</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h3>Explorar</h3>
-        <ul>
-          <li><a href="#">Funcionalidades</a></li>
-          <li><a href="#">Planos</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h3>Redes</h3>
-        <ul class="social-icons">
-          <li><a href="https://www.instagram.com/escorphybr"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="https://www.youtube.com/escorphy"><i class="fab fa-youtube"></i> YouTube</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h3>Ajuda</h3>
-        <ul>
-          <li><a href="#">Suporte</a></li>
-          <li><a href="#">Fale Conosco</a></li>
-          <li><a href="#">Central de Ajuda</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
 </body>
 
 </html>

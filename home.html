@@ -9,80 +9,6 @@
     <link rel="icon" type="image/png" href="img/a.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <style>
-        .toast-msg {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1a1a2e;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 14px;
-            z-index: 10000;
-            opacity: 0;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            pointer-events: none;
-            font-family: 'Poppins', sans-serif;
-        }
-        .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast-msg.success { background: linear-gradient(135deg, #11998e, #38ef7d); }
-        .toast-msg.error { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
-        .toast-msg.warning { background: linear-gradient(135deg, #f2994a, #f2c94c); }
-        .toast-msg i { font-size: 20px; }
-        
-        .modal-foto-perfil {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-foto-perfil.active { display: flex; }
-        .modal-foto-content {
-            background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-        }
-        .modal-foto-header {
-            padding: 20px;
-            background: #4CAF50;
-            color: white;
-            border-radius: 20px 20px 0 0;
-            display: flex;
-            justify-content: space-between;
-        }
-        .modal-foto-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .modal-foto-body { padding: 25px; }
-        .upload-option {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-    </style>
 </head>
 
 <body>
@@ -113,7 +39,7 @@
             <p>Tem certeza que deseja excluir esta imagem?</p>
             <div class="modal-buttons">
                 <button class="btn-confirm" id="confirmDelete">Sim</button>
-                <button class="btn-cancel" id="cancelDelete">Não</button>
+                <button class="btn-cancel" id="cancelDelete">Nao</button>
             </div>
         </div>
     </div>
@@ -159,7 +85,7 @@
         <div class="column left-column">
             <article class="usuario">
                 <div>
-                    <h2 id="nomeUsuario">Olá, usuario</h2>
+                    <h2 id="nomeUsuario">Ola, usuario</h2>
                 </div>
 
                 <div class="foto-perfil-container" id="fotoPerfilContainer">
@@ -169,7 +95,7 @@
                     <div class="pontos-tooltip" id="pontosTooltip">
                         <div class="tooltip-content">
                             <span class="tooltip-pontos-icon">⭐</span>
-                            <span class="tooltip-pontos-label">Pontos neste mês:</span>
+                            <span class="tooltip-pontos-label">Pontos neste mes:</span>
                             <span class="tooltip-pontos-valor" id="pontosMes">0</span>
                         </div>
                         <div class="tooltip-arrow"></div>
@@ -182,7 +108,7 @@
                         <span class="stat-number" id="contTreinos">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Publicações</span>
+                        <span class="stat-label">Publicacoes</span>
                         <span class="stat-number" id="contPublicacoes">0</span>
                     </div>
                     <div class="stat-item">
@@ -198,7 +124,7 @@
             </article>
 
             <section class="feed">
-                <h2>Vídeos sugeridos</h2>
+                <h2>Videos sugeridos</h2>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/LsvhNS4w8zc" allowfullscreen></iframe></div></article>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/0JDIeCiexgI" allowfullscreen></iframe></div></article>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/MiCmcdcF_Ss" allowfullscreen></iframe></div></article>
@@ -221,7 +147,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo"><h1>ESCORPHY</h1><p>© 2025 Escorphy</p></div>
-            <div class="footer-column"><h3>Sobre</h3><ul><li><a href="sobrenos.html">Nossa Missão</a></li><li><a href="sobrenos.html#cards-section">Equipe</a></li><li><a href="#">Privacidade</a></li></ul></div>
+            <div class="footer-column"><h3>Sobre</h3><ul><li><a href="sobrenos.html">Nossa Missao</a></li><li><a href="sobrenos.html#cards-section">Equipe</a></li><li><a href="#">Privacidade</a></li></ul></div>
             <div class="footer-column"><h3>Explorar</h3><ul><li><a href="#">Funcionalidades</a></li><li><a href="#">Planos</a></li><li><a href="#">Blog</a></li></ul></div>
             <div class="footer-column"><h3>Redes</h3><ul><li><a href="https://www.instagram.com/escorphybr">Instagram</a></li><li><a href="https://www.youtube.com/escorphy">YouTube</a></li></ul></div>
             <div class="footer-column"><h3>Ajuda</h3><ul><li><a href="suporte.html">Suporte</a></li><li><a href="https://wa.me/+5544998121630">Fale Conosco</a></li><li><a href="#">Central de Ajuda</a></li></ul></div>
@@ -236,7 +162,9 @@
 
         let userEmailGlobal = null;
         let currentImageToDelete = null;
-        let selectedFiles = [];
+        let selectedFilesBase64 = [];
+
+        const MAX_GALLERY_IMAGES = 2;
 
         function showToast(message, type = "success") {
             const toast = document.getElementById('toastMessage');
@@ -261,7 +189,7 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // FOTO DE PERFIL
+        // FOTO DE PERFIL - VERSÃO CORRIGIDA
         const fotoPerfilModal = document.getElementById('fotoPerfilModal');
         const closeFotoModal = document.getElementById('closeFotoModal');
 
@@ -277,13 +205,19 @@
 
             const { data: perfil, error } = await supabaseClient
                 .from('usuarios')
-                .select('foto_perfil')
+                .select('foto_perfil_url')
                 .eq('email', user.email)
-                .single();
+                .maybeSingle();
 
             const imgPerfil = document.getElementById('imgPerfil');
-            if (perfil?.foto_perfil && perfil.foto_perfil !== 'null' && perfil.foto_perfil !== '') {
-                imgPerfil.src = perfil.foto_perfil;
+            
+            if (perfil?.foto_perfil_url && perfil.foto_perfil_url !== 'null' && perfil.foto_perfil_url !== '') {
+                let fotoUrl = perfil.foto_perfil_url;
+                if (!fotoUrl.startsWith('http')) {
+                    const fileName = fotoUrl.split('/').pop();
+                    fotoUrl = `https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/${fileName}`;
+                }
+                imgPerfil.src = fotoUrl + '?t=' + new Date().getTime();
             } else {
                 imgPerfil.src = "img/perfil-removebg-preview.png";
             }
@@ -296,41 +230,63 @@
                 if (!file) return;
 
                 const { data: { user } } = await supabaseClient.auth.getUser();
-                if (!user) { showToast("Usuário não identificado!", "error"); return; }
+                if (!user) { 
+                    showToast("Usuario nao identificado!", "error"); 
+                    return; 
+                }
 
-                if (!file.type.startsWith('image/')) { showToast("Selecione uma imagem válida!", "warning"); return; }
-                if (file.size > 2 * 1024 * 1024) { showToast("Imagem muito grande! Max 2MB", "warning"); return; }
+                if (!file.type.startsWith('image/')) { 
+                    showToast("Selecione uma imagem valida!", "warning"); 
+                    return; 
+                }
+                if (file.size > 2 * 1024 * 1024) { 
+                    showToast("Imagem muito grande! Max 2MB", "warning"); 
+                    return; 
+                }
 
                 showToast("Enviando foto...", "success");
 
-                const reader = new FileReader();
-                reader.onloadend = async function() {
-                    const base64String = reader.result;
-                    
-                    const { error } = await supabaseClient
-                        .from('usuarios')
-                        .update({ foto_perfil: base64String })
-                        .eq('email', user.email);
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${user.id}_${Date.now()}.${fileExt}`;
 
-                    if (error) { 
-                        showToast("Erro ao salvar foto!", "error"); 
-                        return; 
-                    }
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('perfil')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
 
-                    document.getElementById('imgPerfil').src = base64String;
-                    showToast("✅ Foto salva com sucesso!", "success");
-                    fecharModalFoto();
-                };
-                reader.readAsDataURL(file);
+                if (uploadError) {
+                    console.error("Erro no upload:", uploadError);
+                    showToast("Erro ao enviar imagem!", "error");
+                    return;
+                }
+
+                const fotoUrl = `https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/${fileName}`;
+
+                const { error: dbError } = await supabaseClient
+                    .from('usuarios')
+                    .update({ foto_perfil_url: fotoUrl })
+                    .eq('email', user.email);
+
+                if (dbError) {
+                    console.error("Erro no banco:", dbError);
+                    showToast("Erro ao salvar referencia da foto!", "error");
+                    return;
+                }
+
+                document.getElementById('imgPerfil').src = fotoUrl + '?t=' + new Date().getTime();
+                showToast("Foto salva com sucesso!", "success");
+                fecharModalFoto();
             });
         }
 
-        // INICIALIZAÇÃO
+        // INICIALIZACAO
         (async function () {
             await new Promise(resolve => setTimeout(resolve, 500));
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) {
-                showToast("Usuário não logado! Redirecionando...", "error");
+                showToast("Usuario nao logado! Redirecionando...", "error");
                 setTimeout(() => { window.location.href = "index.html"; }, 1500);
                 return;
             }
@@ -436,14 +392,21 @@
                     const nomeUsuario = user.email.split('@')[0];
                     const { data: newPerfil } = await supabaseClient
                         .from('usuarios')
-                        .insert([{ email: user.email, nome: nomeUsuario, publicacoes: 0, pontos_mes: 0, created_at: new Date().toISOString() }])
+                        .insert([{ 
+                            email: user.email, 
+                            nome: nomeUsuario, 
+                            foto_perfil_url: null,
+                            publicacoes: 0, 
+                            pontos_mes: 0, 
+                            created_at: new Date().toISOString() 
+                        }])
                         .select()
                         .single();
                     perfil = newPerfil;
                 }
 
                 if (perfil) {
-                    document.getElementById('nomeUsuario').textContent = `Olá, ${perfil.nome || user.email.split('@')[0]}`;
+                    document.getElementById('nomeUsuario').textContent = `Ola, ${perfil.nome || user.email.split('@')[0]}`;
                     
                     const { count: totalTreinos } = await supabaseClient
                         .from('atividades')
@@ -464,7 +427,7 @@
         function formatarDistancia(treino) {
             if (treino.trajeto?.summary?.distance) return `${(treino.trajeto.summary.distance / 1000).toFixed(2)} km`;
             if (treino.trajeto?.distance) return `${(treino.trajeto.distance / 1000).toFixed(2)} km`;
-            return "Distância não disponível";
+            return "Distancia nao disponivel";
         }
 
         function getIntensidadeCor(intensidade) { 
@@ -484,19 +447,19 @@
             const modalTitulo = document.getElementById('modalTituloTreino');
             const modalBody = document.getElementById('modalBody');
             
-            let dataFormatada = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Data não disponível";
+            let dataFormatada = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Data nao disponivel";
             const distanciaTexto = formatarDistancia(treino);
             const intensidade = treino.intensidade || 0;
             
-            modalTitulo.textContent = treino.titulo || "Treino sem título";
+            modalTitulo.textContent = treino.titulo || "Treino sem titulo";
             
             modalBody.innerHTML = `
                 <div class="data-treino">📅 ${dataFormatada}</div>
-                <div class="relatorio-section"><div class="relatorio-label">DISTÂNCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">DESCRIÇÃO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descrição fornecida"}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">NÍVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nível ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">INFORMAÇÕES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Não especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Público'}</span></div></div>
-                ${treino.acessorios ? `<div class="relatorio-section"><div class="relatorio-label">ACESSÓRIOS UTILIZADOS</div><div class="relatorio-value"><div class="acessorio-item">${treino.acessorios}</div></div></div>` : ''}
+                <div class="relatorio-section"><div class="relatorio-label">DISTANCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
+                <div class="relatorio-section"><div class="relatorio-label">DESCRICAO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descricao fornecida"}</div></div>
+                <div class="relatorio-section"><div class="relatorio-label">NIVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nivel ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
+                <div class="relatorio-section"><div class="relatorio-label">INFORMACOES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Nao especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Publico'}</span></div></div>
+                ${treino.acessorios ? `<div class="relatorio-section"><div class="relatorio-label">ACESSORIOS UTILIZADOS</div><div class="relatorio-value"><div class="acessorio-item">${treino.acessorios}</div></div></div>` : ''}
             `;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -555,7 +518,7 @@
             container.addEventListener('mouseleave', () => { timeoutId = setTimeout(() => tooltip.classList.remove('show'), 300); });
         }
 
-        // GALERIA
+        // GALERIA COM BASE64 NO BANCO DE DADOS
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
@@ -574,9 +537,9 @@
             if (!currentImageToDelete) return;
             const { url, container } = currentImageToDelete;
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { showToast("Usuário não identificado!", "error"); hideModal(); return; }
+            if (!user) { showToast("Usuario nao identificado!", "error"); hideModal(); return; }
             const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).single();
-            if (!usuarioData) { showToast("Usuário não encontrado!", "error"); hideModal(); return; }
+            if (!usuarioData) { showToast("Usuario nao encontrado!", "error"); hideModal(); return; }
             const userId = usuarioData.id;
             const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).single();
             if (fetchError) { showToast("Erro ao buscar galeria!", "error"); hideModal(); return; }
@@ -584,7 +547,13 @@
             const { error: updateError } = await supabaseClient.from("fotos").update({ galeria: novasUrls }).eq("usuario_id", userId);
             if (updateError) { showToast("Erro ao excluir imagem!", "error"); hideModal(); return; }
             container.remove();
-            showToast("Imagem excluída com sucesso!", "success");
+            
+            const remainingImages = document.querySelectorAll('#preview .preview-img-container');
+            if (remainingImages.length === 0) {
+                preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>';
+            }
+            
+            showToast("Imagem excluida com sucesso!", "success");
             hideModal();
         }
 
@@ -592,63 +561,126 @@
         cancelDeleteBtn.addEventListener("click", hideModal);
         window.addEventListener("click", (event) => { if (event.target === modalConfirm) hideModal(); });
 
-        fileInput.addEventListener("change", (event) => {
-            const files = Array.from(event.target.files);
-            files.forEach(file => {
-                selectedFiles.push(file);
-                const container = document.createElement("div");
-                container.className = "preview-img-container";
-                const img = document.createElement("img");
-                img.src = URL.createObjectURL(file);
-                img.className = "preview-img";
-                container.appendChild(img);
-                preview.appendChild(container);
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
             });
+        }
+
+        fileInput.addEventListener("change", async (event) => {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+            
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { showToast("Usuario nao identificado!", "error"); return; }
+            
+            const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).single();
+            if (!usuarioData) { showToast("Usuario nao encontrado!", "error"); return; }
+            const userId = usuarioData.id;
+            
+            const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
+            
+            let currentImageCount = 0;
+            if (galeriaData && galeriaData.galeria && galeriaData.galeria.length > 0) {
+                currentImageCount = galeriaData.galeria.length;
+            }
+            
+            const imagesToAdd = files.length;
+            if (currentImageCount + imagesToAdd > MAX_GALLERY_IMAGES) {
+                showToast(`Voce atingiu o limite de ${MAX_GALLERY_IMAGES} fotos na galeria`, "warning");
+                fileInput.value = "";
+                return;
+            }
+            
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) {
+                    showToast("Selecione apenas imagens!", "warning");
+                    continue;
+                }
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast("Imagem muito grande! Max 2MB", "warning");
+                    continue;
+                }
+                
+                try {
+                    const base64 = await fileToBase64(file);
+                    selectedFilesBase64.push(base64);
+                    
+                    const container = document.createElement("div");
+                    container.className = "preview-img-container";
+                    const img = document.createElement("img");
+                    img.src = base64;
+                    img.className = "preview-img";
+                    container.appendChild(img);
+                    preview.appendChild(container);
+                } catch (err) {
+                    console.error("Erro ao converter imagem:", err);
+                }
+            }
             fileInput.value = "";
         });
 
-        async function uploadImages(userId) {
-            const uploadedURLs = [];
-            for (const file of selectedFiles) {
-                const fileName = `${userId}_${Date.now()}_${file.name}`;
-                const path = `galerias/${userId}/${fileName}`;
-                const { error: uploadError } = await supabaseClient.storage.from("galeria_fotos").upload(path, file);
-                if (uploadError) { console.error("Erro ao enviar:", uploadError); continue; }
-                const { data: publicUrlData } = supabaseClient.storage.from("galeria_fotos").getPublicUrl(path);
-                uploadedURLs.push(publicUrlData.publicUrl);
-            }
-            return uploadedURLs;
-        }
-
         saveBtn.addEventListener("click", async () => {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { showToast("Usuário não identificado!", "error"); return; }
+            if (!user) { showToast("Usuario nao identificado!", "error"); return; }
             const { data: usuarioData, error: usuarioError } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).single();
-            if (usuarioError || !usuarioData) { showToast("Usuário não encontrado!", "error"); return; }
+            if (usuarioError || !usuarioData) { showToast("Usuario nao encontrado!", "error"); return; }
             const userId = usuarioData.id;
-            if (selectedFiles.length === 0) { showToast("Selecione pelo menos uma imagem!", "warning"); return; }
+            
+            if (selectedFilesBase64.length === 0) { showToast("Selecione pelo menos uma imagem!", "warning"); return; }
+            
+            const { data: galeriaAtual, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
+            let currentImageCount = 0;
+            if (galeriaAtual && galeriaAtual.galeria && galeriaAtual.galeria.length > 0) {
+                currentImageCount = galeriaAtual.galeria.length;
+            }
+            
+            if (currentImageCount + selectedFilesBase64.length > MAX_GALLERY_IMAGES) {
+                showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning");
+                return;
+            }
+            
             try {
-                const urls = await uploadImages(userId);
-                const { data: galeriaAtual, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
-                let galeriaFinal = urls;
-                if (galeriaAtual && galeriaAtual.galeria && galeriaAtual.galeria.length > 0) galeriaFinal = [...galeriaAtual.galeria, ...urls];
-                const { error } = await supabaseClient.from("fotos").upsert({ usuario_id: userId, galeria: galeriaFinal }, { onConflict: "usuario_id" });
-                if (error) { showToast("Erro ao salvar galeria!", "error"); return; }
+                let galeriaFinal = [...selectedFilesBase64];
+                if (galeriaAtual && galeriaAtual.galeria && galeriaAtual.galeria.length > 0) {
+                    galeriaFinal = [...galeriaAtual.galeria, ...selectedFilesBase64];
+                }
+                
+                const { error } = await supabaseClient.from("fotos").upsert({ 
+                    usuario_id: userId, 
+                    galeria: galeriaFinal 
+                }, { onConflict: "usuario_id" });
+                
+                if (error) { 
+                    console.error("Erro do Supabase:", error);
+                    showToast("Erro ao salvar galeria!", "error"); 
+                    return; 
+                }
+                
                 showToast("Galeria salva com sucesso!", "success");
-                selectedFiles = [];
+                selectedFilesBase64 = [];
                 await carregarGaleria();
-            } catch (err) { showToast("Erro inesperado!", "error"); console.error(err); }
+            } catch (err) { 
+                console.error("Erro inesperado:", err);
+                showToast("Erro inesperado!", "error"); 
+            }
         });
 
         async function carregarGaleria() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
             const { data: usuarioData, error: usuarioError } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).single();
-            if (usuarioError || !usuarioData) { console.error("Usuário não encontrado"); return; }
+            if (usuarioError || !usuarioData) { console.error("Usuario nao encontrado"); return; }
             const userId = usuarioData.id;
             const { data, error } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
             if (error) { console.error("Erro ao buscar galeria:", error); return; }
-            if (!data || !data.galeria || data.galeria.length === 0) { preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>'; return; }
+            if (!data || !data.galeria || data.galeria.length === 0) { 
+                preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>'; 
+                return; 
+            }
             preview.innerHTML = "";
             data.galeria.forEach(url => {
                 const container = document.createElement("div");
