@@ -9,6 +9,38 @@
     <link rel="icon" type="image/png" href="img/a.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <style>
+        /* Garantir que o botão de excluir apareça */
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 26px;
+            height: 26px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            z-index: 100;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .delete-btn:hover {
+            background-color: #e74c3c;
+            transform: scale(1.1);
+        }
+        
+        .preview-img-container {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,6 +76,18 @@
         </div>
     </div>
 
+    <!-- MODAL DE CONFIRMAÇÃO PARA EXCLUIR TREINO -->
+    <div id="confirmExcluirTreinoModal" class="modal-confirm">
+        <div class="modal-content">
+            <p>⚠️ Tem certeza que deseja excluir este treino?</p>
+            <p style="font-size: 12px; color: #666; margin-top: 5px;">Esta ação não pode ser desfeita.</p>
+            <div class="modal-buttons">
+                <button class="btn-confirm" id="confirmExcluirTreinoBtn">Sim, excluir</button>
+                <button class="btn-cancel" id="cancelExcluirTreinoBtn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modalRelatorio" class="modal-relatorio">
         <div class="modal-relatorio-content">
             <div class="modal-relatorio-header">
@@ -52,6 +96,7 @@
             </div>
             <div class="modal-relatorio-body" id="modalBody"></div>
             <div class="modal-relatorio-footer">
+                <button class="btn-excluir-modal" id="excluirTreinoBtn">🗑 Excluir treino</button>
                 <button class="btn-fechar-modal" id="footerCloseBtn">Fechar</button>
             </div>
         </div>
@@ -80,6 +125,9 @@
         <i class="bx"></i>
         <span id="toastText"></span>
     </div>
+
+    <!-- FILE INPUT ESCONDIDO PARA GALERIA -->
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
     <div class="main-content-perfil">
         <div class="column left-column">
@@ -134,14 +182,22 @@
 
         <div class="column-right-column">
             <div><h2>Galeria</h2></div>
-            <label class="label-file">Selecionar Imagem<input type="file" id="fileInput" accept="image/*" multiple></label>
-            <div id="preview"></div>
-            <button id="saveBtn">Salvar galeria</button>
+            
+            <!-- Container para mensagem e botão -->
+            <div id="galleryEmpty" class="gallery-empty" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; background: #f8fafc; border-radius: 20px; border: 2px dashed #cbd5e1; text-align: center;">
+                <i class="bx bx-image-add" style="font-size: 48px; color: #4CAF50;"></i>
+                <p style="margin-top: 12px; color: #64748b; font-size: 14px;">Nenhuma imagem na galeria.<br>Clique para adicionar!</p>
+            </div>
+            
+            <!-- Container das imagens da galeria -->
+            <div id="preview" style="display: none; margin-top: 15px;"></div>
+            
+            <!-- Botão salvar com ícone + condicional -->
+            <div class="gallery-actions" style="display: flex; gap: 12px; align-items: center; margin-top: 15px;">
+                <button id="saveBtn" style="background-color: rgb(17, 94, 13); min-width: 150px; height: 40px; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer;">Salvar galeria</button>
+                <button id="addImageBtn" class="add-image-btn" style="display: none; background: #4CAF50; color: white; border: none; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; font-size: 20px;"><i class="bx bx-plus-circle"></i></button>
+            </div>
         </div>
-    </div>
-
-    <div class="floating-buttons-container">
-        <a href="treino1.html"><div class="botaomais-container"><button class="botaomais" id="botaoMais">+</button></div></a>
     </div>
 
     <footer class="footer">
@@ -163,6 +219,8 @@
         let userEmailGlobal = null;
         let currentImageToDelete = null;
         let selectedFilesBase64 = [];
+        let currentTreinoId = null;
+        let currentTreinoItem = null;
 
         const MAX_GALLERY_IMAGES = 2;
 
@@ -189,7 +247,7 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // FOTO DE PERFIL - VERSÃO CORRIGIDA
+        // FOTO DE PERFIL
         const fotoPerfilModal = document.getElementById('fotoPerfilModal');
         const closeFotoModal = document.getElementById('closeFotoModal');
 
@@ -442,10 +500,16 @@
             return 'Intenso'; 
         }
 
-        function exibirRelatorioTreino(treino) {
+        let treinoAtualId = null;
+        let treinoAtualItem = null;
+
+        function exibirRelatorioTreino(treino, id, elementoLi) {
             const modal = document.getElementById('modalRelatorio');
             const modalTitulo = document.getElementById('modalTituloTreino');
             const modalBody = document.getElementById('modalBody');
+            
+            treinoAtualId = id;
+            treinoAtualItem = elementoLi;
             
             let dataFormatada = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Data nao disponivel";
             const distanciaTexto = formatarDistancia(treino);
@@ -453,19 +517,70 @@
             
             modalTitulo.textContent = treino.titulo || "Treino sem titulo";
             
+            let acessoriosHtml = '';
+            if (treino.acessorios) {
+                if (typeof treino.acessorios === 'object' && treino.acessorios.length > 0) {
+                    acessoriosHtml = treino.acessorios.map(a => 
+                        `<div class="acessorio-item">${a.nome}${a.especificacao ? `: ${a.especificacao}` : ''}</div>`
+                    ).join('');
+                } else if (typeof treino.acessorios === 'string' && treino.acessorios !== 'Nenhum') {
+                    acessoriosHtml = `<div class="acessorio-item">${treino.acessorios}</div>`;
+                }
+            }
+            
             modalBody.innerHTML = `
                 <div class="data-treino">📅 ${dataFormatada}</div>
                 <div class="relatorio-section"><div class="relatorio-label">DISTANCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
                 <div class="relatorio-section"><div class="relatorio-label">DESCRICAO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descricao fornecida"}</div></div>
                 <div class="relatorio-section"><div class="relatorio-label">NIVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nivel ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
                 <div class="relatorio-section"><div class="relatorio-label">INFORMACOES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Nao especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Publico'}</span></div></div>
-                ${treino.acessorios ? `<div class="relatorio-section"><div class="relatorio-label">ACESSORIOS UTILIZADOS</div><div class="relatorio-value"><div class="acessorio-item">${treino.acessorios}</div></div></div>` : ''}
+                ${acessoriosHtml ? `<div class="relatorio-section"><div class="relatorio-label">ACESSORIOS UTILIZADOS</div><div class="relatorio-value">${acessoriosHtml}</div></div>` : ''}
             `;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
         
-        function fecharModalRelatorio() { document.getElementById('modalRelatorio').classList.remove('active'); document.body.style.overflow = ''; }
+        function fecharModalRelatorio() { 
+            document.getElementById('modalRelatorio').classList.remove('active'); 
+            document.body.style.overflow = '';
+            treinoAtualId = null;
+            treinoAtualItem = null;
+        }
+
+        async function excluirTreino() {
+            if (!treinoAtualId) {
+                showToast("Nenhum treino selecionado!", "error");
+                return;
+            }
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('atividades')
+                    .delete()
+                    .eq('id', treinoAtualId);
+                
+                if (error) {
+                    console.error("Erro ao excluir:", error);
+                    showToast("Erro ao excluir treino!", "error");
+                    return;
+                }
+                
+                if (treinoAtualItem) {
+                    treinoAtualItem.remove();
+                }
+                
+                const contador = document.getElementById('contTreinos');
+                const treinosRestantes = document.querySelectorAll('#listaTreinos li').length;
+                contador.textContent = treinosRestantes;
+                
+                fecharModalRelatorio();
+                
+                showToast("Treino excluído com sucesso!", "success");
+            } catch (err) {
+                console.error("Erro:", err);
+                showToast("Erro ao excluir treino!", "error");
+            }
+        }
 
         async function carregarTreinos() {
             const { data: { user } } = await supabaseClient.auth.getUser();
@@ -493,7 +608,7 @@
                     else if (atividade.trajeto?.distance) distanciaPreview = ` 🏃 ${(atividade.trajeto.distance / 1000).toFixed(1)}km`;
                     item.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><span>${atividade.titulo}${dataTexto}</span>${distanciaPreview ? `<span style="font-size: 0.85rem; color: #e74c3c;">${distanciaPreview}</span>` : ''}</div>`;
                     item.style.cursor = "pointer";
-                    item.addEventListener('click', () => exibirRelatorioTreino(atividade));
+                    item.addEventListener('click', () => exibirRelatorioTreino(atividade, atividade.id, item));
                     lista.appendChild(item);
                 });
             } else { lista.innerHTML = '<li>Nenhum treino encontrado. Clique no + para registrar!</li>'; }
@@ -502,11 +617,56 @@
         function setupModalEvents() {
             const closeBtn = document.getElementById('closeModalBtn');
             const footerCloseBtn = document.getElementById('footerCloseBtn');
+            const excluirBtn = document.getElementById('excluirTreinoBtn');
             const modal = document.getElementById('modalRelatorio');
+            const confirmExcluirModal = document.getElementById('confirmExcluirTreinoModal');
+            const confirmExcluirBtn = document.getElementById('confirmExcluirTreinoBtn');
+            const cancelExcluirBtn = document.getElementById('cancelExcluirTreinoBtn');
+            
             if (closeBtn) closeBtn.addEventListener('click', fecharModalRelatorio);
             if (footerCloseBtn) footerCloseBtn.addEventListener('click', fecharModalRelatorio);
-            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) fecharModalRelatorio(); });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal?.classList.contains('active')) fecharModalRelatorio(); });
+            
+            if (excluirBtn) {
+                excluirBtn.addEventListener('click', () => {
+                    if (treinoAtualId) {
+                        confirmExcluirModal.style.display = "flex";
+                    } else {
+                        showToast("Nenhum treino selecionado!", "warning");
+                    }
+                });
+            }
+            
+            if (confirmExcluirBtn) {
+                confirmExcluirBtn.addEventListener('click', async () => {
+                    confirmExcluirModal.style.display = "none";
+                    await excluirTreino();
+                });
+            }
+            
+            if (cancelExcluirBtn) {
+                cancelExcluirBtn.addEventListener('click', () => {
+                    confirmExcluirModal.style.display = "none";
+                });
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', (e) => { if (e.target === modal) fecharModalRelatorio(); });
+            }
+            
+            if (confirmExcluirModal) {
+                confirmExcluirModal.addEventListener('click', (e) => {
+                    if (e.target === confirmExcluirModal) {
+                        confirmExcluirModal.style.display = "none";
+                    }
+                });
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (modal?.classList.contains('active')) fecharModalRelatorio();
+                    if (confirmExcluirModal?.style.display === 'flex') confirmExcluirModal.style.display = "none";
+                }
+            });
         }
 
         function setupPontosTooltip() {
@@ -518,13 +678,34 @@
             container.addEventListener('mouseleave', () => { timeoutId = setTimeout(() => tooltip.classList.remove('show'), 300); });
         }
 
-        // GALERIA COM BASE64 NO BANCO DE DADOS
+        // ========== GALERIA ==========
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
+        const addImageBtn = document.getElementById("addImageBtn");
+        const galleryEmpty = document.getElementById("galleryEmpty");
         const modalConfirm = document.getElementById("confirmModal");
         const confirmDeleteBtn = document.getElementById("confirmDelete");
         const cancelDeleteBtn = document.getElementById("cancelDelete");
+
+        function atualizarInterfaceGaleria(numeroImagens) {
+            if (numeroImagens === 0) {
+                preview.style.display = "none";
+                galleryEmpty.style.display = "flex";
+                addImageBtn.style.display = "none";
+            } else {
+                galleryEmpty.style.display = "none";
+                preview.style.display = "grid";
+                preview.style.gridTemplateColumns = "repeat(auto-fill, minmax(150px, 1fr))";
+                preview.style.gap = "15px";
+                
+                if (numeroImagens === 1 && numeroImagens < MAX_GALLERY_IMAGES) {
+                    addImageBtn.style.display = "flex";
+                } else {
+                    addImageBtn.style.display = "none";
+                }
+            }
+        }
 
         function showDeleteModal(imageUrl, imageContainer) {
             currentImageToDelete = { url: imageUrl, container: imageContainer };
@@ -548,10 +729,8 @@
             if (updateError) { showToast("Erro ao excluir imagem!", "error"); hideModal(); return; }
             container.remove();
             
-            const remainingImages = document.querySelectorAll('#preview .preview-img-container');
-            if (remainingImages.length === 0) {
-                preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>';
-            }
+            const remainingImages = document.querySelectorAll('#preview .preview-img-container').length;
+            atualizarInterfaceGaleria(remainingImages);
             
             showToast("Imagem excluida com sucesso!", "success");
             hideModal();
@@ -570,6 +749,15 @@
             });
         }
 
+        function abrirSeletorImagem() {
+            const currentImages = document.querySelectorAll('#preview .preview-img-container').length;
+            if (currentImages >= MAX_GALLERY_IMAGES) {
+                showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning");
+                return;
+            }
+            fileInput.click();
+        }
+
         fileInput.addEventListener("change", async (event) => {
             const files = Array.from(event.target.files);
             if (files.length === 0) return;
@@ -579,17 +767,11 @@
             
             const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).single();
             if (!usuarioData) { showToast("Usuario nao encontrado!", "error"); return; }
-            const userId = usuarioData.id;
             
-            const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
-            
-            let currentImageCount = 0;
-            if (galeriaData && galeriaData.galeria && galeriaData.galeria.length > 0) {
-                currentImageCount = galeriaData.galeria.length;
-            }
-            
+            const currentImages = document.querySelectorAll('#preview .preview-img-container').length;
             const imagesToAdd = files.length;
-            if (currentImageCount + imagesToAdd > MAX_GALLERY_IMAGES) {
+            
+            if (currentImages + imagesToAdd > MAX_GALLERY_IMAGES) {
                 showToast(`Voce atingiu o limite de ${MAX_GALLERY_IMAGES} fotos na galeria`, "warning");
                 fileInput.value = "";
                 return;
@@ -611,16 +793,68 @@
                     
                     const container = document.createElement("div");
                     container.className = "preview-img-container";
+                    container.style.position = "relative";
+                    container.style.width = "100%";
+                    container.style.paddingTop = "100%";
+                    container.style.overflow = "hidden";
+                    container.style.borderRadius = "12px";
+                    container.style.backgroundColor = "#f5f5f5";
+                    
                     const img = document.createElement("img");
                     img.src = base64;
-                    img.className = "preview-img";
+                    img.style.position = "absolute";
+                    img.style.top = "0";
+                    img.style.left = "0";
+                    img.style.width = "100%";
+                    img.style.height = "100%";
+                    img.style.objectFit = "cover";
+                    
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "delete-btn";
+                    deleteBtn.innerHTML = '✖';
+                    deleteBtn.style.position = "absolute";
+                    deleteBtn.style.top = "8px";
+                    deleteBtn.style.right = "8px";
+                    deleteBtn.style.width = "28px";
+                    deleteBtn.style.height = "28px";
+                    deleteBtn.style.backgroundColor = "#4CAF50";
+                    deleteBtn.style.borderRadius = "50%";
+                    deleteBtn.style.display = "flex";
+                    deleteBtn.style.alignItems = "center";
+                    deleteBtn.style.justifyContent = "center";
+                    deleteBtn.style.cursor = "pointer";
+                    deleteBtn.style.border = "none";
+                    deleteBtn.style.zIndex = "10";
+                    deleteBtn.style.color = "white";
+                    deleteBtn.style.fontSize = "14px";
+                    deleteBtn.style.fontWeight = "bold";
+                    
+                    deleteBtn.addEventListener("click", (e) => { 
+                        e.stopPropagation(); 
+                        showDeleteModal(base64, container); 
+                    });
+                    
                     container.appendChild(img);
+                    container.appendChild(deleteBtn);
                     preview.appendChild(container);
+                    
                 } catch (err) {
                     console.error("Erro ao converter imagem:", err);
                 }
             }
             fileInput.value = "";
+            
+            const currentCount = document.querySelectorAll('#preview .preview-img-container').length;
+            atualizarInterfaceGaleria(currentCount);
+        });
+
+        addImageBtn.addEventListener("click", () => {
+            const currentCount = document.querySelectorAll('#preview .preview-img-container').length;
+            if (currentCount >= MAX_GALLERY_IMAGES) {
+                showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning");
+                return;
+            }
+            fileInput.click();
         });
 
         saveBtn.addEventListener("click", async () => {
@@ -630,7 +864,10 @@
             if (usuarioError || !usuarioData) { showToast("Usuario nao encontrado!", "error"); return; }
             const userId = usuarioData.id;
             
-            if (selectedFilesBase64.length === 0) { showToast("Selecione pelo menos uma imagem!", "warning"); return; }
+            if (selectedFilesBase64.length === 0) { 
+                showToast("Selecione pelo menos uma imagem!", "warning"); 
+                return; 
+            }
             
             const { data: galeriaAtual, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
             let currentImageCount = 0;
@@ -676,26 +913,68 @@
             if (usuarioError || !usuarioData) { console.error("Usuario nao encontrado"); return; }
             const userId = usuarioData.id;
             const { data, error } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
+            
             if (error) { console.error("Erro ao buscar galeria:", error); return; }
+            
             if (!data || !data.galeria || data.galeria.length === 0) { 
-                preview.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Nenhuma imagem na galeria. Adicione algumas!</p>'; 
+                preview.innerHTML = '';
+                atualizarInterfaceGaleria(0);
                 return; 
             }
+            
             preview.innerHTML = "";
-            data.galeria.forEach(url => {
+            
+            data.galeria.forEach((url) => {
                 const container = document.createElement("div");
                 container.className = "preview-img-container";
+                container.style.position = "relative";
+                container.style.width = "100%";
+                container.style.paddingTop = "100%";
+                container.style.overflow = "hidden";
+                container.style.borderRadius = "12px";
+                container.style.backgroundColor = "#f5f5f5";
+                
                 const img = document.createElement("img");
                 img.src = url;
-                img.className = "preview-img";
+                img.style.position = "absolute";
+                img.style.top = "0";
+                img.style.left = "0";
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover";
+                
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "delete-btn";
                 deleteBtn.innerHTML = '✖';
-                deleteBtn.addEventListener("click", (e) => { e.stopPropagation(); showDeleteModal(url, container); });
+                deleteBtn.style.position = "absolute";
+                deleteBtn.style.top = "8px";
+                deleteBtn.style.right = "8px";
+                deleteBtn.style.width = "28px";
+                deleteBtn.style.height = "28px";
+                deleteBtn.style.backgroundColor = "#4CAF50";
+                deleteBtn.style.borderRadius = "50%";
+                deleteBtn.style.display = "flex";
+                deleteBtn.style.alignItems = "center";
+                deleteBtn.style.justifyContent = "center";
+                deleteBtn.style.cursor = "pointer";
+                deleteBtn.style.border = "none";
+                deleteBtn.style.zIndex = "10";
+                deleteBtn.style.color = "white";
+                deleteBtn.style.fontSize = "14px";
+                deleteBtn.style.fontWeight = "bold";
+                
+                deleteBtn.addEventListener("click", (e) => { 
+                    e.stopPropagation(); 
+                    showDeleteModal(url, container); 
+                });
+                
                 container.appendChild(img);
                 container.appendChild(deleteBtn);
                 preview.appendChild(container);
             });
+            
+            const currentCount = data.galeria.length;
+            atualizarInterfaceGaleria(currentCount);
         }
 
         // SIDEBAR
@@ -733,8 +1012,13 @@
         const sidebarState = localStorage.getItem('sidebarOpen');
         if (isMobile() && sidebarState === 'true') { sidebar.classList.add('active'); sidebarToggleBtn.classList.add('opened'); sidebarToggleBtn.innerHTML = '◀'; if (overlay) overlay.classList.add('active'); }
         window.addEventListener('resize', function () { if (!isMobile()) { sidebar.classList.remove('active'); sidebarToggleBtn.classList.remove('opened'); sidebarToggleBtn.innerHTML = '▶'; if (overlay) overlay.classList.remove('active'); } });
+        
         setupModalEvents();
         setupPontosTooltip();
+        
+        if (galleryEmpty) {
+            galleryEmpty.addEventListener('click', abrirSeletorImagem);
+        }
     </script>
 </body>
 

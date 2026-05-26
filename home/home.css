@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800&display=swap");
 /* ===== RESET ===== */
@@ -22,9 +23,9 @@ body {
   transform: translateX(-50%) translateY(100px);
   background: #1a1a2e;
   color: white;
-  padding: 12px 24px;
+  padding: 8px 18px;
   border-radius: 50px;
-  font-size: 14px;
+  font-size: 12px;
   z-index: 10000;
   opacity: 0;
   transition: all 0.3s ease;
@@ -33,6 +34,8 @@ body {
   gap: 10px;
   pointer-events: none;
   font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+  max-width: 90vw;
 }
 
 .toast-msg.show {
@@ -53,9 +56,27 @@ body {
 }
 
 .toast-msg i {
-  font-size: 20px;
+  font-size: 16px;
 }
 
+.toast-msg span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .toast-msg {
+    white-space: normal;
+    text-align: center;
+    max-width: 85vw;
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+  .toast-msg span {
+    white-space: normal;
+  }
+}
 /* ===== MODAL FOTO PERFIL ===== */
 .modal-foto-perfil {
   display: none;
@@ -243,32 +264,33 @@ nav .search-box input {
   font-weight: bold;
 }
 
-/* ===== BOTAO UNICO PARA ABRIR/FECHAR SIDEBAR ===== */
+/* ===== BOTAO UNICO PARA ABRIR/FECHAR SIDEBAR - BOLINHA METADE FORA ===== */
 .sidebar-toggle-btn {
   position: fixed;
-  left: 0;
+  left: -15px;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(4, 71, 0, 0.9);
+  background: rgba(4, 71, 0, 0.85);
   color: white;
   border: none;
-  border-radius: 0 12px 12px 0;
-  width: 32px;
-  height: 64px;
-  font-size: 18px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
   cursor: pointer;
   z-index: 1002;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(4px);
 }
 
 .sidebar-toggle-btn:hover {
   background: rgb(2, 51, 0);
-  width: 36px;
+  transform: translateY(-50%) scale(1.05);
+  left: -12px;
 }
 
 .sidebar-toggle-btn:active {
@@ -328,71 +350,6 @@ nav .search-box input {
   height: 5vh;
 }
 
-/* ===== GALERIA - ESTILOS RESPONSIVOS ===== */
-#preview {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px !important;
-  padding: 10px 0;
-}
-
-.preview-img-container {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background-color: #f5f5f5;
-}
-
-.preview-img-container:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.preview-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  -o-object-fit: cover !important;
-     object-fit: cover !important;
-  border-radius: 12px;
-}
-
-.delete-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  background-color: #4CAF50;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
-  z-index: 10;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  color: white;
-  font-size: 16px;
-}
-
-.preview-img-container:hover .delete-btn {
-  opacity: 1;
-}
-
-.delete-btn:hover {
-  background-color: #45a049;
-  transform: scale(1.1);
-}
-
 /* ===== MODAL CONFIRMACAO ===== */
 .modal-confirm {
   display: none;
@@ -438,48 +395,6 @@ nav .search-box input {
   padding: 8px 20px;
   border-radius: 8px;
   cursor: pointer;
-}
-
-/* ===== BOTOES DA GALERIA ===== */
-.label-file {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  min-width: 150px;
-  padding: 10px 15px;
-  background-color: rgb(17, 94, 13);
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.label-file:hover {
-  background-color: rgb(13, 75, 10);
-}
-
-#saveBtn {
-  background-color: rgb(17, 94, 13);
-  width: auto;
-  min-width: 150px;
-  height: 40px;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: "Poppins", sans-serif;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-#saveBtn:hover {
-  background-color: rgb(13, 75, 10);
-}
-
-#fileInput {
-  display: none;
 }
 
 /* ===== USUARIO ===== */
@@ -803,6 +718,12 @@ nav .search-box input {
   animation: modalSlideIn 0.3s ease;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.modal-relatorio-content::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes modalSlideIn {
@@ -965,11 +886,12 @@ nav .search-box input {
 }
 
 .modal-relatorio-footer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
   padding: 20px 25px;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 0 0 24px 24px;
-  display: flex;
-  justify-content: center;
 }
 
 .btn-fechar-modal {
@@ -991,6 +913,25 @@ nav .search-box input {
   transform: scale(1.02);
 }
 
+/* ===== BOTÃO EXCLUIR NO MODAL ===== */
+.btn-excluir-modal {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 40px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.btn-excluir-modal:hover {
+  background: #b91c1c;
+  transform: scale(1.02);
+}
+
 /* ===== DESKTOP - Sidebar sempre visivel ===== */
 @media (min-width: 769px) {
   .sidebar {
@@ -1004,8 +945,8 @@ nav .search-box input {
     margin-left: 250px;
   }
   #logoimg {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
   }
   .main-content-perfil {
     margin-left: 270px;
@@ -1040,16 +981,21 @@ nav .search-box input {
   }
   .sidebar-toggle-btn {
     display: flex;
-    left: 0;
+    left: -15px;
     top: 50%;
     transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border-radius: 50%;
+    background: rgba(4, 71, 0, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
-  .sidebar.active ~ .sidebar-toggle-btn,
   .sidebar-toggle-btn.opened {
-    left: 75%;
+    left: calc(75% - 15px);
+    background: rgb(2, 51, 0);
     transform: translateY(-50%);
-    border-radius: 12px 0 0 12px;
-    background: rgba(2, 51, 0, 0.95);
+    border-radius: 50%;
   }
   nav {
     width: 100%;
@@ -1058,8 +1004,8 @@ nav .search-box input {
     justify-content: center;
   }
   #logoimg {
-    height: 40px;
-    width: 30px;
+    height: 55px;
+    width: 55px;
   }
   nav .search-box {
     width: 50%;
@@ -1071,7 +1017,10 @@ nav .search-box input {
     margin-left: 0;
     width: 100%;
     flex-direction: column;
-    padding-top: 0;
+    padding-top: 20px;
+  }
+  .usuario {
+    margin-top: 5px;
   }
   .footer {
     margin-left: 0;
@@ -1100,15 +1049,6 @@ nav .search-box input {
   .stats-container {
     gap: 40px;
   }
-  #preview {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 12px;
-  }
-  .delete-btn {
-    width: 28px;
-    height: 28px;
-    opacity: 1;
-  }
   .pontos-tooltip {
     padding: 8px 12px;
     font-size: 0.75rem;
@@ -1117,16 +1057,23 @@ nav .search-box input {
     font-size: 1rem;
   }
 }
+/* Ajuste para telas muito pequenas */
 @media (max-width: 480px) {
   .sidebar {
     width: 80%;
   }
+  .sidebar-toggle-btn {
+    left: -12px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
   .sidebar-toggle-btn.opened {
-    left: 80%;
+    left: calc(80% - 14px);
   }
   #logoimg {
-    height: 25px;
-    width: 25px;
+    height: 45px;
+    width: 45px;
   }
   nav .search-box {
     width: 100%;
@@ -1145,10 +1092,6 @@ nav .search-box input {
   .stat-number {
     font-size: 18px;
   }
-  #preview {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
-  }
   .modal-content {
     padding: 20px;
     max-width: 280px;
@@ -1156,7 +1099,11 @@ nav .search-box input {
   .modal-buttons button {
     padding: 6px 20px;
   }
+  .main-content-perfil {
+    padding-top: 15px;
+  }
 }
+/* ===== FOOTER RESPONSIVO ===== */
 @media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
@@ -1168,4 +1115,169 @@ nav .search-box input {
   .footer-logo {
     text-align: center;
   }
-}/*# sourceMappingURL=home.css.map */
+}
+/* ===== ESTILOS DA GALERIA ===== */
+.gallery-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+  border-radius: 20px;
+  border: 2px dashed #cbd5e1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.gallery-empty:hover {
+  border-color: #4CAF50;
+  background: #f1f5f9;
+}
+
+.gallery-empty p {
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.gallery-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#saveBtn {
+  background-color: rgb(17, 94, 13);
+  min-width: 150px;
+  height: 40px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: 0 20px;
+}
+
+#saveBtn:hover {
+  background-color: rgb(13, 75, 10);
+}
+
+.add-image-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.add-image-btn:hover {
+  background: #388E3C;
+  transform: scale(1.05);
+}
+
+/* Preview - grid de imagens */
+#preview {
+  display: none;
+  margin-top: 15px;
+}
+
+#preview.has-images {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.preview-img-container {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #f5f5f5;
+}
+
+.preview-img-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.preview-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+  border-radius: 12px;
+}
+
+/* Botão de excluir imagem - FORÇADO A APARECER */
+.preview-img-container .delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 14px;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.preview-img-container .delete-btn:hover {
+  background-color: #e74c3c;
+  transform: scale(1.1);
+}
+
+/* Garantir que o botão apareça em todas as telas */
+@media (max-width: 768px) {
+  .preview-img-container .delete-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    opacity: 1 !important;
+    display: flex !important;
+  }
+  .gallery-actions {
+    justify-content: center;
+  }
+  #preview.has-images {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+}
+@media (max-width: 480px) {
+  #preview.has-images {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+}
+/* Teste - botão vermelho para depuração (remover depois que funcionar) */
+/* .preview-img-container .delete-btn {
+    background-color: #ff0000 !important;
+} *//*# sourceMappingURL=home.css.map */

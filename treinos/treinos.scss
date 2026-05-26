@@ -24,9 +24,9 @@ body {
     transform: translateX(-50%) translateY(100px);
     background: #1a1a2e;
     color: white;
-    padding: 12px 24px;
+    padding: 8px 18px;
     border-radius: 50px;
-    font-size: 14px;
+    font-size: 12px;
     z-index: 10000;
     opacity: 0;
     transition: all 0.3s ease;
@@ -35,12 +35,32 @@ body {
     gap: 10px;
     pointer-events: none;
     font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    max-width: 90vw;
 }
 .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .toast-msg.success { background: linear-gradient(135deg, #11998e, #38ef7d); }
 .toast-msg.error { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
 .toast-msg.warning { background: linear-gradient(135deg, #f2994a, #f2c94c); }
-.toast-msg i { font-size: 20px; }
+.toast-msg i { font-size: 16px; }
+.toast-msg span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+    .toast-msg {
+        white-space: normal;
+        text-align: center;
+        max-width: 85vw;
+        padding: 8px 16px;
+        font-size: 11px;
+    }
+    .toast-msg span {
+        white-space: normal;
+    }
+}
 
 /* ===== NAVBAR ===== */
 nav {
@@ -134,32 +154,37 @@ nav {
     font-weight: bold;
 }
 
-/* ===== BOTÃO SIDEBAR ===== */
+/* ===== BOTÃO SIDEBAR - BOLINHA METADE FORA ===== */
 .sidebar-toggle-btn {
     position: fixed;
-    left: 0;
+    left: -15px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(4, 71, 0, 0.9);
+    background: rgba(4, 71, 0, 0.85);
     color: white;
     border: none;
-    border-radius: 0 12px 12px 0;
-    width: 32px;
-    height: 64px;
-    font-size: 18px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
     cursor: pointer;
     z-index: 1002;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(4px);
 }
 
 .sidebar-toggle-btn:hover {
     background: rgb(2, 51, 0);
-    width: 36px;
+    transform: translateY(-50%) scale(1.05);
+    left: -12px;
+}
+
+.sidebar-toggle-btn:active {
+    transform: translateY(-50%) scale(0.95);
 }
 
 /* ===== OVERLAY ===== */
@@ -197,8 +222,8 @@ nav {
     }
 
     #logoimg {
-        height: 50px;
-        width: 50px;
+        height: 60px;
+        width: 60px;
     }
 
     .treinos {
@@ -237,16 +262,22 @@ nav {
 
     .sidebar-toggle-btn {
         display: flex;
-        left: 0;
+        left: -15px;
         top: 50%;
         transform: translateY(-50%);
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        border-radius: 50%;
+        background: rgba(4, 71, 0, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .sidebar-toggle-btn.opened {
-        left: 75%;
+        left: calc(75% - 15px);
+        background: rgb(2, 51, 0);
         transform: translateY(-50%);
-        border-radius: 12px 0 0 12px;
-        background: rgba(2, 51, 0, 0.95);
+        border-radius: 50%;
     }
 
     nav {
@@ -257,8 +288,8 @@ nav {
     }
 
     #logoimg {
-        height: 40px;
-        width: 40px;
+        height: 55px;
+        width: 55px;
     }
 
     .treinos {
@@ -268,6 +299,29 @@ nav {
         margin-right: auto;
         padding: 20px 15px 30px 15px;
         border-radius: 25px;
+    }
+}
+
+/* Ajuste para telas muito pequenas */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 80%;
+    }
+
+    .sidebar-toggle-btn {
+        left: -12px;
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .sidebar-toggle-btn.opened {
+        left: calc(80% - 14px);
+    }
+
+    #logoimg {
+        height: 45px;
+        width: 45px;
     }
 }
 
@@ -496,7 +550,7 @@ nav {
     box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
 }
 
-/* ===== INFORMAÇÕES DO TREINO - CORRIGIDO SEM FUNDO DUPLICADO ===== */
+/* ===== INFORMAÇÕES DO TREINO ===== */
 .infos_treinos {
     display: none;
     flex-direction: column;
@@ -529,7 +583,7 @@ nav {
     margin-bottom: 8px;
 }
 
-/* Inputs - mantendo o estilo original */
+/* Inputs */
 .infos_treinos .input-rounded {
     width: 100%;
     max-width: 100%;
@@ -549,7 +603,7 @@ nav {
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
-/* Grupos de opções - mantendo o estilo original */
+/* Grupos de opções */
 .tipo, .visibilidade {
     display: flex;
     flex-wrap: wrap;
