@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidade | Escorphy</title>
+    <link rel="stylesheet" href="home/home.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="img/a.png">
+    <style>
+        /* Estilos da comunidade */
+        .comunidade-container {
+            max-width: 800px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+        }
+
+        /* Feed de atividades */
+        .feed-post {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-user-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .post-user-email {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .follow-btn {
+            background: none;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 6px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .follow-btn.following {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+        .post-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .post-desc {
+            color: #475569;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            padding: 12px 20px;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+        }
+
+        .stat-action:hover {
+            color: #4CAF50;
+        }
+
+        .stat-action.liked {
+            color: #ef4444;
+        }
+
+        .stat-action i {
+            font-size: 20px;
+        }
+
+        .comentarios-section {
+            padding: 15px 20px;
+            background: #f8fafc;
+        }
+
+        .comentario-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comentario-item:last-child {
+            border-bottom: none;
+        }
+
+        .comentario-nome {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1e293b;
+        }
+
+        .comentario-texto {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .comentario-data {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .add-comentario {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-comentario input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .add-comentario input:focus {
+            border-color: #4CAF50;
+        }
+
+        .add-comentario button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        /* Barra de pesquisa */
+        .search-users-container {
+            background: white;
+            border-radius: 60px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .search-users-container i {
+            font-size: 22px;
+            color: #94a3b8;
+        }
+
+        .search-users-container input {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .search-users-container input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-users-container input:focus {
+            outline: none;
+        }
+
+        .search-results {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: #f8fafc;
+        }
+
+        .search-result-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .search-result-email {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .search-follow-btn {
+            background: none;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 6px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .search-follow-btn.following {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* Seção de usuários */
+        .usuarios-sugeridos {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .usuarios-sugeridos h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+            font-size: 16px;
+        }
+
+        .usuario-sugerido {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .usuario-sugerido:last-child {
+            border-bottom: none;
+        }
+
+        /* Tabs */
+        .comunidade-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            margin-bottom: -2px;
+        }
+
+        /* Desafios */
+        .desafio-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .desafio-titulo {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .desafio-meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+
+        .desafio-progresso {
+            height: 8px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .desafio-progresso-bar {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .participar-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="home.html">
+            <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
+        </a>
+    </nav>
+
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="home.html" class="sidebar-link">Home</a></li>
+                <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
+                <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
+                <li><a href="comunidade.html" class="sidebar-link active">Comunidade</a></li>
+                <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="comunidade-container">
+        <!-- Tabs -->
+        <div class="comunidade-tabs">
+            <button class="tab-btn active" data-tab="feed">📱 Feed</button>
+            <button class="tab-btn" data-tab="seguidores">👥 Seguidores</button>
+            <button class="tab-btn" data-tab="desafios">🏆 Desafios</button>
+        </div>
+
+        <!-- Feed de atividades -->
+        <div id="feedTab" class="tab-content">
+            <div id="feedList"></div>
+        </div>
+
+        <!-- Usuários para seguir -->
+        <div id="seguidoresTab" class="tab-content" style="display: none;">
+            <div class="usuarios-sugeridos">
+                <h3>🔍 Pesquisar usuários</h3>
+                <div class="search-users-container">
+                    <i class="bx bx-search"></i>
+                    <input type="text" id="searchUserInput" placeholder="Buscar por nome ou email...">
+                </div>
+                <div id="searchResults" class="search-results" style="display: none;"></div>
+                
+                <h3 style="margin-top: 20px;">👥 Sugestões para você</h3>
+                <div id="usuariosList"></div>
+            </div>
+            <div class="usuarios-sugeridos">
+                <h3>✅ Seguindo</h3>
+                <div id="seguindoList"></div>
+            </div>
+        </div>
+
+        <!-- Desafios -->
+        <div id="desafiosTab" class="tab-content" style="display: none;">
+            <div id="desafiosList"></div>
+            <button id="criarDesafioBtn" style="margin-top: 20px; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 50px; cursor: pointer; width: 100%;">+ Criar Desafio</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo"><h1>ESCORPHY</h1><p>© 2025 Escorphy</p></div>
+            <div class="footer-column"><h3>Sobre</h3><ul><li><a href="sobrenos.html">Nossa Missao</a></li><li><a href="sobrenos.html#cards-section">Equipe</a></li><li><a href="#">Privacidade</a></li></ul></div>
+            <div class="footer-column"><h3>Explorar</h3><ul><li><a href="#">Funcionalidades</a></li><li><a href="#">Planos</a></li><li><a href="#">Blog</a></li></ul></div>
+            <div class="footer-column"><h3>Redes</h3><ul><li><a href="https://www.instagram.com/escorphybr">Instagram</a></li><li><a href="https://www.youtube.com/escorphy">YouTube</a></li></ul></div>
+            <div class="footer-column"><h3>Ajuda</h3><ul><li><a href="suporte.html">Suporte</a></li><li><a href="#">Fale Conosco</a></li><li><a href="#">Central de Ajuda</a></li></ul></div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let usuarioAtual = null;
+
+        function showToast(message, type = "success") {
+            // Usar toast do sistema ou alert temporário
+            console.log(message);
+            // Criar um toast simples
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+            toast.style.color = 'white';
+            toast.style.padding = '10px 20px';
+            toast.style.borderRadius = '50px';
+            toast.style.fontSize = '14px';
+            toast.style.zIndex = '10000';
+            toast.style.fontFamily = 'Poppins, sans-serif';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Carregar usuário atual
+        async function carregarUsuarioAtual() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                const { data } = await supabaseClient
+                    .from('usuarios')
+                    .select('id, nome, email')
+                    .eq('email', user.email)
+                    .single();
+                usuarioAtual = data;
+            }
+            return usuarioAtual;
+        }
+
+        // Carregar feed de atividades (treinos públicos)
+        async function carregarFeed() {
+            const feedDiv = document.getElementById('feedList');
+            feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Carregando...</div>';
+            
+            const { data: atividades, error } = await supabaseClient
+                .from('atividades')
+                .select(`
+                    *,
+                    usuarios:email_usuario (id, nome, email, foto_perfil_url)
+                `)
+                .eq('visibilidade', 'publico')
+                .order('data', { ascending: false })
+                .limit(30);
+            
+            if (error) {
+                console.error(error);
+                feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Erro ao carregar feed</div>';
+                return;
+            }
+            
+            if (!atividades || atividades.length === 0) {
+                feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Nenhum treino público ainda. Comece a compartilhar seus treinos!</div>';
+                return;
+            }
+            
+            let curtidasUsuario = [];
+            if (usuarioAtual) {
+                const { data: curtidas } = await supabaseClient
+                    .from('curtidas')
+                    .select('atividade_id')
+                    .eq('usuario_id', usuarioAtual.id);
+                curtidasUsuario = curtidas || [];
+            }
+            
+            feedDiv.innerHTML = '';
+            
+            for (const atividade of atividades) {
+                const isLiked = curtidasUsuario.some(c => c.atividade_id === atividade.id);
+                const usuarioInfo = atividade.usuarios || { nome: 'Usuário', email: atividade.email_usuario };
+                
+                const { data: comentarios } = await supabaseClient
+                    .from('comentarios')
+                    .select('*, usuarios:usuario_id(id, nome)')
+                    .eq('atividade_id', atividade.id)
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                const { count: curtidasCount } = await supabaseClient
+                    .from('curtidas')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('atividade_id', atividade.id);
+                
+                // Verificar se já segue
+                let isFollowing = false;
+                if (usuarioAtual && usuarioInfo.id !== usuarioAtual.id) {
+                    const { data: followCheck } = await supabaseClient
+                        .from('seguidores')
+                        .select('id')
+                        .eq('seguidor_id', usuarioAtual.id)
+                        .eq('seguindo_id', usuarioInfo.id)
+                        .maybeSingle();
+                    isFollowing = !!followCheck;
+                }
+                
+                const postHtml = `
+                    <div class="feed-post" data-id="${atividade.id}">
+                        <div class="post-header">
+                            <div class="post-avatar" style="background-image: url('${usuarioInfo.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
+                                ${!usuarioInfo.foto_perfil_url ? (usuarioInfo.nome?.charAt(0).toUpperCase() || 'U') : ''}
+                            </div>
+                            <div class="post-user-info">
+                                <div class="post-user-name">${usuarioInfo.nome || 'Usuário'}</div>
+                                <div class="post-user-email">${atividade.data ? new Date(atividade.data).toLocaleDateString('pt-BR') : ''}</div>
+                            </div>
+                            ${usuarioAtual && usuarioInfo.id !== usuarioAtual.id ? `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-email="${atividade.email_usuario}" data-id="${usuarioInfo.id}">${isFollowing ? 'Seguindo' : 'Seguir'}</button>` : ''}
+                        </div>
+                        <div class="post-content">
+                            <div class="post-title">🏃 ${atividade.titulo || 'Treino'}</div>
+                            <div class="post-desc">${atividade.descricao || ''}</div>
+                            <div style="background: #f1f5f9; padding: 10px; border-radius: 12px;">
+                                📏 Distância: ${atividade.trajeto?.summary?.distance ? (atividade.trajeto.summary.distance / 1000).toFixed(2) : '0'} km
+                                ${atividade.tipo ? ` | 🏷️ ${atividade.tipo}` : ''}
+                                ${atividade.intensidade ? ` | ⚡ Intensidade: ${atividade.intensidade}/10` : ''}
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="stat-action like-btn ${isLiked ? 'liked' : ''}" data-id="${atividade.id}">
+                                <i class="bx ${isLiked ? 'bxs-heart' : 'bx-heart'}"></i>
+                                <span>${curtidasCount || 0}</span>
+                            </div>
+                            <div class="stat-action comment-toggle" data-id="${atividade.id}">
+                                <i class="bx bx-comment"></i>
+                                <span>${comentarios?.length || 0}</span>
+                            </div>
+                        </div>
+                        <div class="comentarios-section" id="comentarios-${atividade.id}" style="display: none;">
+                            <div class="comentarios-lista">
+                                ${comentarios?.map(c => `
+                                    <div class="comentario-item">
+                                        <div class="comentario-nome">${c.usuarios?.nome || 'Usuário'}</div>
+                                        <div class="comentario-texto">${c.comentario}</div>
+                                        <div class="comentario-data">${new Date(c.created_at).toLocaleDateString('pt-BR')}</div>
+                                    </div>
+                                `).join('') || '<div style="text-align: center; padding: 10px;">Nenhum comentário ainda</div>'}
+                            </div>
+                            <div class="add-comentario">
+                                <input type="text" placeholder="Escreva um comentário..." id="comentario-input-${atividade.id}">
+                                <button class="enviar-comentario" data-id="${atividade.id}">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                feedDiv.innerHTML += postHtml;
+            }
+            
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', () => curtirTreino(btn.dataset.id, btn));
+            });
+            
+            document.querySelectorAll('.comment-toggle').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const comentariosDiv = document.getElementById(`comentarios-${btn.dataset.id}`);
+                    comentariosDiv.style.display = comentariosDiv.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+            
+            document.querySelectorAll('.enviar-comentario').forEach(btn => {
+                btn.addEventListener('click', () => comentarTreino(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.follow-btn').forEach(btn => {
+                btn.addEventListener('click', () => seguirUsuario(btn.dataset.email, btn, btn.dataset.id));
+            });
+        }
+        
+        async function curtirTreino(atividadeId, btnElement) {
+            if (!usuarioAtual) {
+                showToast("Faça login para curtir!", "warning");
+                return;
+            }
+            
+            const isLiked = btnElement.classList.contains('liked');
+            
+            if (isLiked) {
+                const { error } = await supabaseClient
+                    .from('curtidas')
+                    .delete()
+                    .eq('usuario_id', usuarioAtual.id)
+                    .eq('atividade_id', atividadeId);
+                
+                if (!error) {
+                    btnElement.classList.remove('liked');
+                    const span = btnElement.querySelector('span');
+                    span.textContent = parseInt(span.textContent) - 1;
+                    btnElement.innerHTML = '<i class="bx bx-heart"></i> <span>' + span.textContent + '</span>';
+                }
+            } else {
+                const { error } = await supabaseClient
+                    .from('curtidas')
+                    .insert({ usuario_id: usuarioAtual.id, atividade_id: atividadeId });
+                
+                if (!error) {
+                    btnElement.classList.add('liked');
+                    const span = btnElement.querySelector('span');
+                    span.textContent = parseInt(span.textContent) + 1;
+                    btnElement.innerHTML = '<i class="bx bxs-heart"></i> <span>' + span.textContent + '</span>';
+                    
+                    const { data: atividade } = await supabaseClient
+                        .from('atividades')
+                        .select('email_usuario')
+                        .eq('id', atividadeId)
+                        .single();
+                    
+                    if (atividade && atividade.email_usuario !== usuarioAtual.email) {
+                        const { data: usuarioDono } = await supabaseClient
+                            .from('usuarios')
+                            .select('id')
+                            .eq('email', atividade.email_usuario)
+                            .single();
+                        
+                        if (usuarioDono) {
+                            await supabaseClient.from('notificacoes').insert({
+                                usuario_id: usuarioDono.id,
+                                tipo: 'curtida',
+                                remetente_id: usuarioAtual.id,
+                                atividade_id: atividadeId
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        
+        async function comentarTreino(atividadeId) {
+            if (!usuarioAtual) {
+                showToast("Faça login para comentar!", "warning");
+                return;
+            }
+            
+            const input = document.getElementById(`comentario-input-${atividadeId}`);
+            const comentario = input.value.trim();
+            
+            if (!comentario) return;
+            
+            const { error } = await supabaseClient
+                .from('comentarios')
+                .insert({
+                    usuario_id: usuarioAtual.id,
+                    atividade_id: atividadeId,
+                    comentario: comentario
+                });
+            
+            if (!error) {
+                input.value = '';
+                showToast("Comentário adicionado!", "success");
+                carregarFeed();
+            }
+        }
+        
+        async function seguirUsuario(email, btnElement, seguindoId) {
+            if (!usuarioAtual) {
+                showToast("Faça login para seguir!", "warning");
+                return;
+            }
+            
+            const isFollowing = btnElement.classList.contains('following');
+            
+            if (isFollowing) {
+                const { error } = await supabaseClient
+                    .from('seguidores')
+                    .delete()
+                    .eq('seguidor_id', usuarioAtual.id)
+                    .eq('seguindo_id', seguindoId);
+                
+                if (!error) {
+                    btnElement.classList.remove('following');
+                    btnElement.textContent = 'Seguir';
+                    showToast("Você deixou de seguir este usuário", "success");
+                }
+            } else {
+                const { error } = await supabaseClient
+                    .from('seguidores')
+                    .insert({ seguidor_id: usuarioAtual.id, seguindo_id: seguindoId });
+                
+                if (!error) {
+                    btnElement.classList.add('following');
+                    btnElement.textContent = 'Seguindo';
+                    showToast("Agora você está seguindo este usuário!", "success");
+                    
+                    await supabaseClient.from('notificacoes').insert({
+                        usuario_id: seguindoId,
+                        tipo: 'seguidor',
+                        remetente_id: usuarioAtual.id
+                    });
+                }
+            }
+        }
+        
+        // Carregar usuários para seguir
+        async function carregarUsuarios() {
+            if (!usuarioAtual) return;
+            
+            const { data: usuarios, error } = await supabaseClient
+                .from('usuarios')
+                .select('id, nome, email, foto_perfil_url')
+                .neq('id', usuarioAtual.id)
+                .limit(10);
+            
+            if (error) return;
+            
+            let seguindoIds = [];
+            const { data: seguindo } = await supabaseClient
+                .from('seguidores')
+                .select('seguindo_id')
+                .eq('seguidor_id', usuarioAtual.id);
+            seguindoIds = seguindo?.map(s => s.seguindo_id) || [];
+            
+            const usuariosDiv = document.getElementById('usuariosList');
+            if (!usuarios || usuarios.length === 0) {
+                usuariosDiv.innerHTML = '<div style="text-align: center; padding: 20px;">Nenhum usuário encontrado</div>';
+                return;
+            }
+            
+            usuariosDiv.innerHTML = usuarios.map(u => `
+                <div class="usuario-sugerido">
+                    <div class="post-avatar" style="width: 40px; height: 40px;">${u.nome?.charAt(0).toUpperCase() || 'U'}</div>
+                    <div style="flex:1">
+                        <div style="font-weight:500">${u.nome || 'Usuário'}</div>
+                        <div style="font-size:12px; color:#94a3b8">${u.email}</div>
+                    </div>
+                    <button class="follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}" data-email="${u.email}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('#usuariosList .follow-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const targetId = btn.dataset.id;
+                    const targetEmail = btn.dataset.email;
+                    const isFollowing = btn.classList.contains('following');
+                    
+                    if (isFollowing) {
+                        await supabaseClient
+                            .from('seguidores')
+                            .delete()
+                            .eq('seguidor_id', usuarioAtual.id)
+                            .eq('seguindo_id', targetId);
+                        btn.classList.remove('following');
+                        btn.textContent = 'Seguir';
+                        showToast("Você deixou de seguir este usuário", "success");
+                    } else {
+                        await supabaseClient
+                            .from('seguidores')
+                            .insert({ seguidor_id: usuarioAtual.id, seguindo_id: targetId });
+                        btn.classList.add('following');
+                        btn.textContent = 'Seguindo';
+                        showToast("Agora você está seguindo este usuário!", "success");
+                        
+                        await supabaseClient.from('notificacoes').insert({
+                            usuario_id: targetId,
+                            tipo: 'seguidor',
+                            remetente_id: usuarioAtual.id
+                        });
+                    }
+                    carregarSeguindo();
+                    carregarFeed();
+                });
+            });
+        }
+        
+        // Carregar lista de quem o usuário está seguindo
+        async function carregarSeguindo() {
+            if (!usuarioAtual) return;
+            
+            const { data: seguindo, error } = await supabaseClient
+                .from('seguidores')
+                .select('seguindo_id, usuarios:seguindo_id(id, nome, email, foto_perfil_url)')
+                .eq('seguidor_id', usuarioAtual.id);
+            
+            if (error) return;
+            
+            const seguindoDiv = document.getElementById('seguindoList');
+            if (!seguindo || seguindo.length === 0) {
+                seguindoDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #94a3b8;">Você ainda não segue ninguém</div>';
+                return;
+            }
+            
+            seguindoDiv.innerHTML = seguindo.map(s => {
+                const user = s.usuarios;
+                return `
+                    <div class="search-result-item">
+                        <div class="search-result-avatar" style="background-image: url('${user?.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
+                            ${!user?.foto_perfil_url ? (user?.nome?.charAt(0).toUpperCase() || 'U') : ''}
+                        </div>
+                        <div class="search-result-info">
+                            <div class="search-result-name">${user?.nome || 'Usuário'}</div>
+                            <div class="search-result-email">${user?.email}</div>
+                        </div>
+                        <button class="search-follow-btn unfollow-btn" data-id="${user?.id}">Deixar de seguir</button>
+                    </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('#seguindoList .unfollow-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await supabaseClient
+                        .from('seguidores')
+                        .delete()
+                        .eq('seguidor_id', usuarioAtual.id)
+                        .eq('seguindo_id', btn.dataset.id);
+                    showToast("Você deixou de seguir este usuário", "success");
+                    carregarSeguindo();
+                    carregarUsuarios();
+                    carregarFeed();
+                });
+            });
+        }
+        
+        // Função de pesquisa de usuários
+        let searchTimeout;
+        
+        async function pesquisarUsuarios(termo) {
+            if (!termo || termo.length < 2) {
+                document.getElementById('searchResults').style.display = 'none';
+                return;
+            }
+            
+            if (!usuarioAtual) return;
+            
+            const { data: usuarios, error } = await supabaseClient
+                .from('usuarios')
+                .select('id, nome, email, foto_perfil_url')
+                .neq('id', usuarioAtual.id)
+                .ilike('nome', `%${termo}%`);
+            
+            if (error) {
+                console.error(error);
+                return;
+            }
+            
+            if (!usuarios || usuarios.length === 0) {
+                document.getElementById('searchResults').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #94a3b8;">
+                        Nenhum usuário encontrado
+                    </div>
+                `;
+                document.getElementById('searchResults').style.display = 'block';
+                return;
+            }
+            
+            let seguindoIds = [];
+            const { data: seguindo } = await supabaseClient
+                .from('seguidores')
+                .select('seguindo_id')
+                .eq('seguidor_id', usuarioAtual.id);
+            seguindoIds = seguindo?.map(s => s.seguindo_id) || [];
+            
+            document.getElementById('searchResults').innerHTML = usuarios.map(u => `
+                <div class="search-result-item">
+                    <div class="search-result-avatar" style="background-image: url('${u.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
+                        ${!u.foto_perfil_url ? (u.nome?.charAt(0).toUpperCase() || 'U') : ''}
+                    </div>
+                    <div class="search-result-info">
+                        <div class="search-result-name">${u.nome || 'Usuário'}</div>
+                        <div class="search-result-email">${u.email}</div>
+                    </div>
+                    <button class="search-follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}" data-email="${u.email}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
+                </div>
+            `).join('');
+            
+            document.getElementById('searchResults').style.display = 'block';
+            
+            document.querySelectorAll('#searchResults .search-follow-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const targetId = btn.dataset.id;
+                    const isFollowing = btn.classList.contains('following');
+                    
+                    if (isFollowing) {
+                        await supabaseClient
+                            .from('seguidores')
+                            .delete()
+                            .eq('seguidor_id', usuarioAtual.id)
+                            .eq('seguindo_id', targetId);
+                        btn.classList.remove('following');
+                        btn.textContent = 'Seguir';
+                        showToast("Deixou de seguir usuário", 'success');
+                    } else {
+                        await supabaseClient
+                            .from('seguidores')
+                            .insert({ seguidor_id: usuarioAtual.id, seguindo_id: targetId });
+                        btn.classList.add('following');
+                        btn.textContent = 'Seguindo';
+                        
+                        await supabaseClient.from('notificacoes').insert({
+                            usuario_id: targetId,
+                            tipo: 'seguidor',
+                            remetente_id: usuarioAtual.id
+                        });
+                        showToast("Agora você segue este usuário!", 'success');
+                    }
+                    
+                    carregarUsuarios();
+                    carregarSeguindo();
+                    carregarFeed();
+                });
+            });
+        }
+        
+        // Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                
+                const tabId = btn.dataset.tab;
+                if (tabId === 'feed') document.getElementById('feedTab').style.display = 'block';
+                if (tabId === 'seguidores') document.getElementById('seguidoresTab').style.display = 'block';
+                if (tabId === 'desafios') document.getElementById('desafiosTab').style.display = 'block';
+            });
+        });
+        
+        // Sidebar
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function isMobile() { return window.innerWidth <= 768; }
+        
+        function toggleSidebar() {
+            if (!isMobile()) return;
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                sidebarToggleBtn.classList.add('opened');
+                sidebarToggleBtn.innerHTML = '◀';
+                if (overlay) overlay.classList.add('active');
+                localStorage.setItem('sidebarOpen', 'true');
+            } else {
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                if (overlay) overlay.classList.remove('active');
+                localStorage.setItem('sidebarOpen', 'false');
+            }
+        }
+        
+        window.logout = async function() {
+            await supabaseClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = "index.html";
+        };
+        
+        sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
+        
+        // Evento de pesquisa
+        const searchInput = document.getElementById('searchUserInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const termo = e.target.value;
+                searchTimeout = setTimeout(() => {
+                    pesquisarUsuarios(termo);
+                }, 300);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !document.getElementById('searchResults')?.contains(e.target)) {
+                    document.getElementById('searchResults').style.display = 'none';
+                }
+            });
+        }
+        
+        // Inicializar
+        async function init() {
+            await carregarUsuarioAtual();
+            await carregarFeed();
+            if (usuarioAtual) {
+                await carregarUsuarios();
+                await carregarSeguindo();
+            }
+        }
+        
+        init();
+    </script>
+</body>
+</html>
