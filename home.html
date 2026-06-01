@@ -40,131 +40,6 @@
         .preview-img-container {
             position: relative;
         }
-
-        /* Estilos para notificações */
-        .notification-icon {
-            position: relative;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        .notification-icon i {
-            font-size: 24px;
-            color: #333;
-            transition: color 0.2s;
-        }
-
-        .notification-icon:hover i {
-            color: #4CAF50;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            min-width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4px;
-        }
-
-        .notification-dropdown {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 320px;
-            max-height: 400px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            z-index: 1100;
-            display: none;
-            overflow: hidden;
-        }
-
-        .notification-dropdown.show {
-            display: block;
-        }
-
-        .notification-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .notification-list {
-            max-height: 350px;
-            overflow-y: auto;
-        }
-
-        .notification-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-
-        .notification-item:hover {
-            background: #f8fafc;
-        }
-
-        .notification-item.unread {
-            background: #ecfdf5;
-        }
-
-        .notification-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4CAF50, #2e7d32);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-text {
-            font-size: 13px;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-
-        .notification-time {
-            font-size: 10px;
-            color: #94a3b8;
-        }
-
-        .notification-empty {
-            text-align: center;
-            padding: 30px;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        @media (max-width: 768px) {
-            .notification-dropdown {
-                width: 90%;
-                right: 5%;
-                left: 5%;
-            }
-        }
     </style>
 </head>
 
@@ -385,106 +260,6 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-
-        // ========== NOTIFICAÇÕES ==========
-        async function carregarNotificacoes() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return;
-            
-            const { data: usuarioAtual } = await supabaseClient
-                .from('usuarios')
-                .select('id')
-                .eq('email', user.email)
-                .single();
-            
-            if (!usuarioAtual) return;
-            
-            const { data: notificacoes, error } = await supabaseClient
-                .from('notificacoes')
-                .select('*, remetente:remetente_id(id, nome, foto_perfil_url)')
-                .eq('usuario_id', usuarioAtual.id)
-                .order('created_at', { ascending: false })
-                .limit(20);
-            
-            if (error) return;
-            
-            // Contar não lidas
-            const naoLidas = notificacoes?.filter(n => !n.lida).length || 0;
-            const badge = document.getElementById('notificationBadge');
-            if (naoLidas > 0) {
-                badge.style.display = 'flex';
-                badge.textContent = naoLidas > 9 ? '9+' : naoLidas;
-            } else {
-                badge.style.display = 'none';
-            }
-            
-            // Renderizar lista
-            const listDiv = document.getElementById('notificationList');
-            if (!notificacoes || notificacoes.length === 0) {
-                listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificação</div>';
-                return;
-            }
-            
-            listDiv.innerHTML = notificacoes.map(n => {
-                let texto = '';
-                switch(n.tipo) {
-                    case 'seguidor':
-                        texto = `${n.remetente?.nome || 'Alguém'} começou a te seguir!`;
-                        break;
-                    case 'curtida':
-                        texto = `${n.remetente?.nome || 'Alguém'} curtiu seu treino!`;
-                        break;
-                    case 'comentario':
-                        texto = `${n.remetente?.nome || 'Alguém'} comentou no seu treino!`;
-                        break;
-                    default:
-                        texto = 'Nova notificação';
-                }
-                return `
-                    <div class="notification-item ${!n.lida ? 'unread' : ''}" data-id="${n.id}">
-                        <div class="notification-avatar">
-                            ${n.remetente?.nome?.charAt(0).toUpperCase() || 'U'}
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-text">${texto}</div>
-                            <div class="notification-time">${formatarTempo(n.created_at)}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            // Marcar como lidas ao clicar
-            document.querySelectorAll('.notification-item').forEach(item => {
-                item.addEventListener('click', async () => {
-                    const id = item.dataset.id;
-                    await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
-                    carregarNotificacoes();
-                });
-            });
-        }
-
-        function formatarTempo(data) {
-            const agora = new Date();
-            const notif = new Date(data);
-            const diff = Math.floor((agora - notif) / 1000);
-            
-            if (diff < 60) return 'agora';
-            if (diff < 3600) return `${Math.floor(diff / 60)} min`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)} h`;
-            return `${Math.floor(diff / 86400)} d`;
-        }
-
-        // Dropdown de notificações
-        document.getElementById('notificationIcon')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-            carregarNotificacoes();
-        });
-
-        document.addEventListener('click', () => {
-            document.getElementById('notificationDropdown')?.classList.remove('show');
-        });
 
         // FOTO DE PERFIL
         const fotoPerfilModal = document.getElementById('fotoPerfilModal');
@@ -1216,6 +991,103 @@
             const currentCount = data.galeria.length;
             atualizarInterfaceGaleria(currentCount);
         }
+
+        // ========== NOTIFICAÇÕES ==========
+        async function carregarNotificacoes() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            
+            const { data: usuarioAtual } = await supabaseClient
+                .from('usuarios')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+            
+            if (!usuarioAtual) return;
+            
+            const { data: notificacoes, error } = await supabaseClient
+                .from('notificacoes')
+                .select('*, remetente:remetente_id(id, nome, foto_perfil_url)')
+                .eq('usuario_id', usuarioAtual.id)
+                .order('created_at', { ascending: false })
+                .limit(20);
+            
+            if (error) return;
+            
+            const naoLidas = notificacoes?.filter(n => !n.lida).length || 0;
+            const badge = document.getElementById('notificationBadge');
+            if (naoLidas > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = naoLidas > 9 ? '9+' : naoLidas;
+            } else {
+                badge.style.display = 'none';
+            }
+            
+            const listDiv = document.getElementById('notificationList');
+            if (!notificacoes || notificacoes.length === 0) {
+                listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificação</div>';
+                return;
+            }
+            
+            listDiv.innerHTML = notificacoes.map(n => {
+                let texto = '';
+                switch(n.tipo) {
+                    case 'seguidor':
+                        texto = `${n.remetente?.nome || 'Alguém'} começou a te seguir!`;
+                        break;
+                    case 'curtida':
+                        texto = `${n.remetente?.nome || 'Alguém'} curtiu seu treino!`;
+                        break;
+                    case 'comentario':
+                        texto = `${n.remetente?.nome || 'Alguém'} comentou no seu treino!`;
+                        break;
+                    default:
+                        texto = 'Nova notificação';
+                }
+                return `
+                    <div class="notification-item ${!n.lida ? 'unread' : ''}" data-id="${n.id}">
+                        <div class="notification-avatar">
+                            ${n.remetente?.nome?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">${texto}</div>
+                            <div class="notification-time">${formatarTempo(n.created_at)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', async () => {
+                    const id = item.dataset.id;
+                    await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
+                    carregarNotificacoes();
+                });
+            });
+        }
+
+        function formatarTempo(data) {
+            const agora = new Date();
+            const notif = new Date(data);
+            const diff = Math.floor((agora - notif) / 1000);
+            
+            if (diff < 60) return 'agora';
+            if (diff < 3600) return `${Math.floor(diff / 60)} min`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)} h`;
+            return `${Math.floor(diff / 86400)} d`;
+        }
+
+        // Dropdown de notificações
+        document.getElementById('notificationIcon')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+            carregarNotificacoes();
+        });
+
+        document.addEventListener('click', () => {
+            document.getElementById('notificationDropdown')?.classList.remove('show');
+        });
 
         // SIDEBAR
         const sidebar = document.getElementById('sidebar');

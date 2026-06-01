@@ -998,20 +998,20 @@ nav .search-box input {
     border-radius: 50%;
   }
   nav {
-    width: 100%;
-    margin-left: 0;
-    padding: 8px 16px;
-    justify-content: center;
+    justify-content: space-between !important;
+    padding: 8px 16px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    margin-left: auto !important;
   }
   #logoimg {
     height: 55px;
     width: 55px;
-  }
-  nav .search-box {
-    width: 50%;
-  }
-  nav .search-box input {
-    width: 100%;
   }
   .main-content-perfil {
     margin-left: 0;
@@ -1056,6 +1056,28 @@ nav .search-box input {
   .tooltip-pontos-valor {
     font-size: 1rem;
   }
+  /* Notificações no mobile */
+  .notification-icon {
+    margin-right: 0 !important;
+  }
+  .notification-icon i {
+    font-size: 22px !important;
+  }
+  .notification-badge {
+    top: -6px !important;
+    right: -8px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    font-size: 9px !important;
+  }
+  .notification-dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    right: 10px !important;
+    left: auto !important;
+    width: 320px !important;
+    max-width: calc(100vw - 20px) !important;
+  }
 }
 /* Ajuste para telas muito pequenas */
 @media (max-width: 480px) {
@@ -1075,13 +1097,15 @@ nav .search-box input {
     height: 45px;
     width: 45px;
   }
-  nav .search-box {
-    width: 100%;
+  .notification-icon i {
+    font-size: 20px !important;
   }
-  .botaomais {
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
+  .notification-badge {
+    top: -5px !important;
+    right: -6px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    font-size: 8px !important;
   }
   .stats-container {
     gap: 30px;
@@ -1277,10 +1301,6 @@ nav .search-box input {
     gap: 10px;
   }
 }
-/* Teste - botão vermelho para depuração (remover depois que funcionar) */
-/* .preview-img-container .delete-btn {
-    background-color: #ff0000 !important;
-} */
 /* ===== BARRA DE PESQUISA DE USUÁRIOS - COMUNIDADE ===== */
 .search-users-container {
   background: white;
@@ -1402,6 +1422,9 @@ nav .search-box input {
   position: relative;
   cursor: pointer;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .notification-icon i {
@@ -1513,12 +1536,4 @@ nav .search-box input {
   padding: 30px;
   color: #94a3b8;
   font-size: 13px;
-}
-
-@media (max-width: 768px) {
-  .notification-dropdown {
-    width: 90%;
-    right: 5%;
-    left: 5%;
-  }
 }/*# sourceMappingURL=home.css.map */
