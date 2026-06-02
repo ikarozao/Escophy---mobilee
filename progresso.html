@@ -7,6 +7,7 @@
     <title>Progresso | Escorphy</title>
     <link rel="stylesheet" href="progresso/progresso.css">
     <link rel="icon" type="image/png" href="img/a.png">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -31,9 +32,22 @@
                 <li><a href="home.html" class="sidebar-link">Home</a></li>
                 <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
                 <li><a href="progresso.html" class="sidebar-link active">Progresso</a></li>
-                <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
-                <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+                <li><a href="comunidade.html" class="sidebar-link">Comunidade</a></li>
             </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link" id="logoutBtn">Sair</a>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE SAÍDA -->
+    <div id="modalLogout" class="modal-logout">
+        <div class="modal-content">
+            <p>Tem certeza que deseja sair?</p>
+            <div class="modal-buttons">
+                <button class="btn-confirm" id="confirmLogout">Sim</button>
+                <button class="btn-cancel" id="cancelLogout">Não</button>
+            </div>
         </div>
     </div>
 
@@ -59,9 +73,9 @@
                                 <div class="meta-select-group">
                                     <label>Modalidade:</label>
                                     <select class="meta-modalidade">
-                                        <option value="corrida"> Corrida</option>
-                                        <option value="caminhada">Caminhada</option>
-                                        <option value="ciclismo">Ciclismo</option>
+                                        <option value="corrida">🏃 Corrida</option>
+                                        <option value="caminhada">🚶 Caminhada</option>
+                                        <option value="ciclismo">🚲 Ciclismo</option>
                                     </select>
                                 </div>
                                 <div class="meta-input-group">
@@ -162,6 +176,105 @@
         const modalidadeIcones = { 'corrida': '🏃', 'caminhada': '🚶', 'ciclismo': '🚲' };
         const modalidadeNomes = { 'corrida': 'Corrida', 'caminhada': 'Caminhada', 'ciclismo': 'Ciclismo' };
 
+        // Função showToast (igual ao home)
+        function showToast(message, type = "success") {
+            let toast = document.getElementById('toastMessage');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toastMessage';
+                toast.className = 'toast-msg';
+                toast.innerHTML = '<i class="bx"></i><span id="toastText"></span>';
+                document.body.appendChild(toast);
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    .toast-msg {
+                        position: fixed;
+                        bottom: 30px;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(100px);
+                        background: #333;
+                        color: white;
+                        padding: 12px 24px;
+                        border-radius: 50px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        z-index: 10000;
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                        pointer-events: none;
+                        font-size: 14px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }
+                    .toast-msg.show {
+                        transform: translateX(-50%) translateY(0);
+                        opacity: 1;
+                    }
+                    .toast-msg.success { background: #4CAF50; }
+                    .toast-msg.error { background: #f44336; }
+                    .toast-msg.warning { background: #ff9800; }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            const toastText = document.getElementById('toastText');
+            const toastIcon = toast.querySelector('i');
+            
+            toast.classList.remove('show', 'success', 'error', 'warning');
+            
+            if (type === 'success') {
+                toastIcon.className = 'bx bx-check-circle';
+                toast.classList.add('success');
+            } else if (type === 'error') {
+                toastIcon.className = 'bx bx-error-circle';
+                toast.classList.add('error');
+            } else {
+                toastIcon.className = 'bx bx-info-circle';
+                toast.classList.add('warning');
+            }
+            
+            toastText.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Modal de logout
+        const modalLogout = document.getElementById('modalLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
+
+        function showLogoutModal() {
+            modalLogout.style.display = 'flex';
+        }
+
+        function hideLogoutModal() {
+            modalLogout.style.display = 'none';
+        }
+
+        async function realizarLogout() {
+            await supabaseClient.auth.signOut();
+            localStorage.removeItem("usuarioEmail");
+            showToast("Logout realizado com sucesso!", "success");
+            setTimeout(() => { window.location.href = "index.html"; }, 1000);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showLogoutModal();
+        });
+
+        confirmLogout.addEventListener('click', () => {
+            hideLogoutModal();
+            realizarLogout();
+        });
+
+        cancelLogout.addEventListener('click', hideLogoutModal);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modalLogout) hideLogoutModal();
+        });
+
         // Verificar autenticação
         (async function () {
             console.log("=== INICIANDO PÁGINA DE PROGRESSO ===");
@@ -173,8 +286,8 @@
             }
             
             if (!user) {
-                alert("Usuário não logado!");
-                window.location.href = "index.html";
+                showToast("Usuário não logado! Redirecionando...", "error");
+                setTimeout(() => { window.location.href = "index.html"; }, 1500);
                 return;
             }
             
@@ -288,7 +401,7 @@
             document.getElementById('btnAdicionarMeta').onclick = () => {
                 const totalMetas = document.querySelectorAll('.meta-card').length;
                 if (totalMetas < 3) adicionarMetaCard(totalMetas);
-                else alert("Você pode adicionar no máximo 3 metas por mês!");
+                else showToast("Você pode adicionar no máximo 3 metas por mês!", "warning");
             };
         }
 
@@ -324,7 +437,7 @@
         window.removerMeta = function(index) {
             const cards = document.querySelectorAll('.meta-card');
             if (cards.length <= 1) {
-                alert("Você precisa ter pelo menos uma meta!");
+                showToast("Você precisa ter pelo menos uma meta!", "warning");
                 return;
             }
             const cardToRemove = document.querySelector(`.meta-card[data-meta-index="${index}"]`);
@@ -359,7 +472,7 @@
                 const modalidade = card.querySelector('.meta-modalidade').value;
                 const valor = parseFloat(card.querySelector('.meta-valor').value);
                 if (!valor || valor <= 0) {
-                    alert(`Por favor, defina um valor válido para a Meta ${idx + 1}`);
+                    showToast(`Por favor, defina um valor válido para a Meta ${idx + 1}`, "warning");
                     hasError = true;
                     return;
                 }
@@ -396,12 +509,12 @@
                 
                 if (error) {
                     console.error("Erro ao salvar meta:", error);
-                    alert("Erro ao salvar meta no banco de dados: " + error.message);
+                    showToast("Erro ao salvar meta no banco de dados!", "error");
                     return;
                 }
             }
             
-            alert("Metas salvas com sucesso!");
+            showToast("Metas salvas com sucesso!", "success");
             // Recarregar metas do banco
             await carregarMetas();
         });
@@ -585,12 +698,6 @@
                 })();
             }
         }
-
-        window.logout = async function() {
-            await supabaseClient.auth.signOut();
-            localStorage.removeItem("usuarioEmail");
-            window.location.href = "index.html";
-        };
 
         // ========== CONTROLE DA SIDEBAR ==========
         const sidebar = document.getElementById('sidebar');

@@ -8,14 +8,12 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="img/a.png">
     <style>
-        /* Estilos da comunidade */
         .comunidade-container {
             max-width: 800px;
-            margin: 80px auto 40px;
+            margin: 30px auto 40px;
             padding: 0 20px;
         }
 
-        /* Feed de atividades */
         .feed-post {
             background: white;
             border-radius: 20px;
@@ -54,11 +52,6 @@
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 4px;
-        }
-
-        .post-user-email {
-            font-size: 12px;
-            color: #94a3b8;
         }
 
         .follow-btn {
@@ -124,67 +117,6 @@
             font-size: 20px;
         }
 
-        .comentarios-section {
-            padding: 15px 20px;
-            background: #f8fafc;
-        }
-
-        .comentario-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .comentario-item:last-child {
-            border-bottom: none;
-        }
-
-        .comentario-nome {
-            font-weight: 600;
-            font-size: 13px;
-            color: #1e293b;
-        }
-
-        .comentario-texto {
-            font-size: 13px;
-            color: #475569;
-            margin-top: 4px;
-        }
-
-        .comentario-data {
-            font-size: 10px;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-
-        .add-comentario {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .add-comentario input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 50px;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .add-comentario input:focus {
-            border-color: #4CAF50;
-        }
-
-        .add-comentario button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 50px;
-            cursor: pointer;
-        }
-
-        /* Barra de pesquisa */
         .search-users-container {
             background: white;
             border-radius: 60px;
@@ -194,7 +126,6 @@
             align-items: center;
             gap: 12px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .search-users-container i {
@@ -212,14 +143,6 @@
             font-family: "Poppins", sans-serif;
         }
 
-        .search-users-container input::placeholder {
-            color: #94a3b8;
-        }
-
-        .search-users-container input:focus {
-            outline: none;
-        }
-
         .search-results {
             background: white;
             border-radius: 20px;
@@ -228,7 +151,6 @@
             border: 1px solid #e2e8f0;
             max-height: 400px;
             overflow-y: auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .search-result-item {
@@ -237,11 +159,6 @@
             gap: 12px;
             padding: 12px 16px;
             border-bottom: 1px solid #f0f0f0;
-            transition: all 0.2s;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
         }
 
         .search-result-item:hover {
@@ -252,7 +169,6 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            object-fit: cover;
             background: linear-gradient(135deg, #4CAF50, #2e7d32);
             display: flex;
             align-items: center;
@@ -269,12 +185,6 @@
         .search-result-name {
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 2px;
-        }
-
-        .search-result-email {
-            font-size: 12px;
-            color: #94a3b8;
         }
 
         .search-follow-btn {
@@ -286,7 +196,6 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.2s;
         }
 
         .search-follow-btn.following {
@@ -294,7 +203,6 @@
             color: white;
         }
 
-        /* Seção de usuários */
         .usuarios-sugeridos {
             background: white;
             border-radius: 20px;
@@ -321,85 +229,174 @@
             border-bottom: none;
         }
 
-        /* Tabs */
         .comunidade-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
+            gap: 5px;
+            margin-bottom: 25px;
+            background: #f1f5f9;
+            padding: 5px;
+            border-radius: 60px;
         }
 
         .tab-btn {
-            background: none;
+            flex: 1;
+            background: transparent;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 14px;
             color: #64748b;
-            transition: all 0.2s;
+            border-radius: 50px;
+            font-family: "Poppins", sans-serif;
         }
 
         .tab-btn.active {
+            background: white;
             color: #4CAF50;
-            border-bottom: 2px solid #4CAF50;
-            margin-bottom: -2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-        /* Desafios */
-        .desafio-card {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a2e;
             color: white;
-        }
-
-        .desafio-titulo {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .desafio-meta {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 15px;
-        }
-
-        .desafio-progresso {
-            height: 8px;
-            background: #334155;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .desafio-progresso-bar {
-            height: 100%;
-            background: #4CAF50;
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
-
-        .participar-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 20px;
+            padding: 12px 24px;
             border-radius: 50px;
-            cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
         }
+        .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-msg.success { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .toast-msg.error { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+
+        .modal-logout {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 12000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-logout .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 300px;
+        }
+        .modal-logout .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .modal-logout .btn-confirm { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; }
+        .modal-logout .btn-cancel { background: #95a5a6; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-icon i { font-size: 24px; color: #333; }
+        .notification-icon:hover i { color: #4CAF50; }
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+        .notification-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 320px;
+            max-height: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 1100;
+            display: none;
+            overflow: hidden;
+        }
+        .notification-dropdown.show { display: block; }
+        .notification-header { padding: 15px 20px; border-bottom: 1px solid #e2e8f0; font-weight: 600; }
+        .notification-list { max-height: 350px; overflow-y: auto; }
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        .notification-item:hover { background: #f8fafc; }
+        .notification-item.unread { background: #ecfdf5; }
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .notification-content { flex: 1; }
+        .notification-text { font-size: 13px; color: #1e293b; margin-bottom: 4px; }
+        .notification-time { font-size: 10px; color: #94a3b8; }
+        .notification-empty { text-align: center; padding: 30px; color: #94a3b8; }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav>
         <a href="home.html">
             <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
         </a>
+        <div class="nav-right">
+            <div class="notification-icon" id="notificationIcon">
+                <i class="bx bx-bell"></i>
+                <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+            </div>
+        </div>
     </nav>
+
+    <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-header">Notificações</div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-empty">Carregando...</div>
+        </div>
+    </div>
 
     <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -411,47 +408,56 @@
                 <li><a href="treino1.html" class="sidebar-link">Treinos</a></li>
                 <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
                 <li><a href="comunidade.html" class="sidebar-link active">Comunidade</a></li>
-                <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
             </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link" id="logoutBtn">Sair</a>
+        </div>
+    </div>
+
+    <div id="modalLogout" class="modal-logout">
+        <div class="modal-content">
+            <p>Tem certeza que deseja sair?</p>
+            <div class="modal-buttons">
+                <button class="btn-confirm" id="confirmLogout">Sim</button>
+                <button class="btn-cancel" id="cancelLogout">Não</button>
+            </div>
         </div>
     </div>
 
     <div class="comunidade-container">
-        <!-- Tabs -->
         <div class="comunidade-tabs">
-            <button class="tab-btn active" data-tab="feed">📱 Feed</button>
-            <button class="tab-btn" data-tab="seguidores">👥 Seguidores</button>
-            <button class="tab-btn" data-tab="desafios">🏆 Desafios</button>
+            <button class="tab-btn active" data-tab="feed">Feed</button>
+            <button class="tab-btn" data-tab="seguidores">Seguidores</button>
+            <button class="tab-btn" data-tab="desafios">Desafios</button>
         </div>
 
-        <!-- Feed de atividades -->
         <div id="feedTab" class="tab-content">
             <div id="feedList"></div>
         </div>
 
-        <!-- Usuários para seguir -->
         <div id="seguidoresTab" class="tab-content" style="display: none;">
             <div class="usuarios-sugeridos">
-                <h3>🔍 Pesquisar usuários</h3>
+                <h3>Pesquisar usuários</h3>
                 <div class="search-users-container">
                     <i class="bx bx-search"></i>
-                    <input type="text" id="searchUserInput" placeholder="Buscar por nome ou email...">
+                    <input type="text" id="searchUserInput" placeholder="Buscar por nome...">
                 </div>
                 <div id="searchResults" class="search-results" style="display: none;"></div>
                 
-                <h3 style="margin-top: 20px;">👥 Sugestões para você</h3>
+                <h3 style="margin-top: 20px;">Sugestões para você</h3>
                 <div id="usuariosList"></div>
             </div>
             <div class="usuarios-sugeridos">
-                <h3>✅ Seguindo</h3>
+                <h3>Seguindo</h3>
                 <div id="seguindoList"></div>
             </div>
         </div>
 
-        <!-- Desafios -->
         <div id="desafiosTab" class="tab-content" style="display: none;">
-            <div id="desafiosList"></div>
-            <button id="criarDesafioBtn" style="margin-top: 20px; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 50px; cursor: pointer; width: 100%;">+ Criar Desafio</button>
+            <div id="desafiosList">
+                <div style="text-align: center; padding: 40px; color: #94a3b8;">Em breve mais desafios!</div>
+            </div>
         </div>
     </div>
 
@@ -474,122 +480,223 @@
         let usuarioAtual = null;
 
         function showToast(message, type = "success") {
-            // Usar toast do sistema ou alert temporário
-            console.log(message);
-            // Criar um toast simples
-            const toast = document.createElement('div');
-            toast.style.position = 'fixed';
-            toast.style.bottom = '30px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
-            toast.style.color = 'white';
-            toast.style.padding = '10px 20px';
-            toast.style.borderRadius = '50px';
-            toast.style.fontSize = '14px';
-            toast.style.zIndex = '10000';
-            toast.style.fontFamily = 'Poppins, sans-serif';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            let toast = document.getElementById('toastMessage');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toastMessage';
+                toast.className = 'toast-msg';
+                toast.innerHTML = '<i class="bx"></i><span id="toastText"></span>';
+                document.body.appendChild(toast);
+            }
+            const toastText = document.getElementById('toastText');
+            const toastIcon = toast.querySelector('i');
+            toast.classList.remove('show', 'success', 'error');
+            if (type === 'success') {
+                toastIcon.className = 'bx bx-check-circle';
+                toast.classList.add('success');
+            } else {
+                toastIcon.className = 'bx bx-error-circle';
+                toast.classList.add('error');
+            }
+            toastText.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Carregar usuário atual
+        async function carregarNotificacoes() {
+            if (!usuarioAtual) return;
+            const { data: notificacoes, error } = await supabaseClient
+                .from('notificacoes')
+                .select('*')
+                .eq('usuario_id', usuarioAtual.id)
+                .order('created_at', { ascending: false });
+            if (error) return;
+            
+            const naoLidas = notificacoes?.filter(n => !n.lida).length || 0;
+            const badge = document.getElementById('notificationBadge');
+            if (naoLidas > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = naoLidas > 9 ? '9+' : naoLidas;
+            } else {
+                badge.style.display = 'none';
+            }
+            
+            const listDiv = document.getElementById('notificationList');
+            if (!notificacoes || notificacoes.length === 0) {
+                listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificação</div>';
+                return;
+            }
+            
+            listDiv.innerHTML = notificacoes.map(n => {
+                let texto = '';
+                switch(n.tipo) {
+                    case 'seguidor': texto = `Alguém começou a te seguir!`; break;
+                    case 'curtida': texto = `Alguém curtiu seu treino!`; break;
+                    case 'comentario': texto = `Alguém comentou no seu treino!`; break;
+                    default: texto = 'Nova notificação';
+                }
+                return `
+                    <div class="notification-item ${!n.lida ? 'unread' : ''}" data-id="${n.id}">
+                        <div class="notification-avatar">U</div>
+                        <div class="notification-content">
+                            <div class="notification-text">${texto}</div>
+                            <div class="notification-time">${new Date(n.created_at).toLocaleDateString('pt-BR')}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', async () => {
+                    const id = item.dataset.id;
+                    await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
+                    carregarNotificacoes();
+                });
+            });
+        }
+
+        document.getElementById('notificationIcon')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('notificationDropdown').classList.toggle('show');
+            carregarNotificacoes();
+        });
+        document.addEventListener('click', () => {
+            document.getElementById('notificationDropdown')?.classList.remove('show');
+        });
+
+        // LOGOUT
+        const modalLogout = document.getElementById('modalLogout');
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalLogout.style.display = 'flex';
+        });
+        document.getElementById('confirmLogout')?.addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            localStorage.clear();
+            modalLogout.style.display = 'none';
+            window.location.href = "index.html";
+        });
+        document.getElementById('cancelLogout')?.addEventListener('click', () => {
+            modalLogout.style.display = 'none';
+        });
+
         async function carregarUsuarioAtual() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
-                const { data } = await supabaseClient
+                // Usar maybeSingle() em vez de single() para evitar erro 406
+                const { data, error } = await supabaseClient
                     .from('usuarios')
                     .select('id, nome, email')
-                    .eq('email', user.email)
-                    .single();
-                usuarioAtual = data;
+                    .eq('id', user.id)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error("Erro ao buscar usuário:", error);
+                } else if (data) {
+                    usuarioAtual = data;
+                    console.log("Usuário atual carregado:", usuarioAtual);
+                } else {
+                    // Se não encontrou pelo ID, tenta pelo email
+                    const { data: dataByEmail } = await supabaseClient
+                        .from('usuarios')
+                        .select('id, nome, email')
+                        .eq('email', user.email)
+                        .maybeSingle();
+                    usuarioAtual = dataByEmail;
+                    console.log("Usuário carregado por email:", usuarioAtual);
+                }
             }
             return usuarioAtual;
         }
 
-        // Carregar feed de atividades (treinos públicos)
         async function carregarFeed() {
             const feedDiv = document.getElementById('feedList');
             feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Carregando...</div>';
             
             const { data: atividades, error } = await supabaseClient
                 .from('atividades')
-                .select(`
-                    *,
-                    usuarios:email_usuario (id, nome, email, foto_perfil_url)
-                `)
+                .select('*')
                 .eq('visibilidade', 'publico')
                 .order('data', { ascending: false })
                 .limit(30);
             
             if (error) {
-                console.error(error);
+                console.error("Erro ao carregar atividades:", error);
                 feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Erro ao carregar feed</div>';
                 return;
             }
             
             if (!atividades || atividades.length === 0) {
-                feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Nenhum treino público ainda. Comece a compartilhar seus treinos!</div>';
+                feedDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Nenhum treino público ainda.</div>';
                 return;
-            }
-            
-            let curtidasUsuario = [];
-            if (usuarioAtual) {
-                const { data: curtidas } = await supabaseClient
-                    .from('curtidas')
-                    .select('atividade_id')
-                    .eq('usuario_id', usuarioAtual.id);
-                curtidasUsuario = curtidas || [];
             }
             
             feedDiv.innerHTML = '';
             
             for (const atividade of atividades) {
-                const isLiked = curtidasUsuario.some(c => c.atividade_id === atividade.id);
-                const usuarioInfo = atividade.usuarios || { nome: 'Usuário', email: atividade.email_usuario };
+                let nomeUsuario = 'Usuário';
+                let usuarioId = null;
                 
-                const { data: comentarios } = await supabaseClient
-                    .from('comentarios')
-                    .select('*, usuarios:usuario_id(id, nome)')
-                    .eq('atividade_id', atividade.id)
-                    .order('created_at', { ascending: false })
-                    .limit(5);
+                if (atividade.email_usuario) {
+                    // Buscar usuário pelo email
+                    const { data: usuarioInfo, error: userError } = await supabaseClient
+                        .from('usuarios')
+                        .select('id, nome')
+                        .eq('email', atividade.email_usuario)
+                        .maybeSingle();
+                    
+                    if (usuarioInfo && !userError) {
+                        nomeUsuario = usuarioInfo.nome || 'Usuário';
+                        usuarioId = usuarioInfo.id;
+                    }
+                }
                 
                 const { count: curtidasCount } = await supabaseClient
                     .from('curtidas')
                     .select('*', { count: 'exact', head: true })
                     .eq('atividade_id', atividade.id);
                 
-                // Verificar se já segue
+                let isLiked = false;
+                if (usuarioAtual) {
+                    const { data: curtida } = await supabaseClient
+                        .from('curtidas')
+                        .select('id')
+                        .eq('usuario_id', usuarioAtual.id)
+                        .eq('atividade_id', atividade.id)
+                        .maybeSingle();
+                    isLiked = !!curtida;
+                }
+                
                 let isFollowing = false;
-                if (usuarioAtual && usuarioInfo.id !== usuarioAtual.id) {
+                if (usuarioAtual && usuarioId && usuarioId !== usuarioAtual.id) {
                     const { data: followCheck } = await supabaseClient
                         .from('seguidores')
                         .select('id')
                         .eq('seguidor_id', usuarioAtual.id)
-                        .eq('seguindo_id', usuarioInfo.id)
+                        .eq('seguindo_id', usuarioId)
                         .maybeSingle();
                     isFollowing = !!followCheck;
                 }
                 
+                const distancia = atividade.trajeto?.summary?.distance ? (atividade.trajeto.summary.distance / 1000).toFixed(2) : 
+                                 atividade.trajeto?.distance ? (atividade.trajeto.distance / 1000).toFixed(2) : '0';
+                
                 const postHtml = `
-                    <div class="feed-post" data-id="${atividade.id}">
+                    <div class="feed-post" data-atividade-id="${atividade.id}" data-usuario-id="${usuarioId || ''}">
                         <div class="post-header">
-                            <div class="post-avatar" style="background-image: url('${usuarioInfo.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
-                                ${!usuarioInfo.foto_perfil_url ? (usuarioInfo.nome?.charAt(0).toUpperCase() || 'U') : ''}
-                            </div>
+                            <div class="post-avatar">${nomeUsuario.charAt(0).toUpperCase()}</div>
                             <div class="post-user-info">
-                                <div class="post-user-name">${usuarioInfo.nome || 'Usuário'}</div>
+                                <div class="post-user-name">${nomeUsuario}</div>
                                 <div class="post-user-email">${atividade.data ? new Date(atividade.data).toLocaleDateString('pt-BR') : ''}</div>
                             </div>
-                            ${usuarioAtual && usuarioInfo.id !== usuarioAtual.id ? `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-email="${atividade.email_usuario}" data-id="${usuarioInfo.id}">${isFollowing ? 'Seguindo' : 'Seguir'}</button>` : ''}
+                            ${usuarioAtual && usuarioId && usuarioId !== usuarioAtual.id ? 
+                                `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-user-id="${usuarioId}">${isFollowing ? 'Seguindo' : 'Seguir'}</button>` : ''}
                         </div>
                         <div class="post-content">
                             <div class="post-title">🏃 ${atividade.titulo || 'Treino'}</div>
                             <div class="post-desc">${atividade.descricao || ''}</div>
                             <div style="background: #f1f5f9; padding: 10px; border-radius: 12px;">
-                                📏 Distância: ${atividade.trajeto?.summary?.distance ? (atividade.trajeto.summary.distance / 1000).toFixed(2) : '0'} km
+                                📏 Distância: ${distancia} km
                                 ${atividade.tipo ? ` | 🏷️ ${atividade.tipo}` : ''}
                                 ${atividade.intensidade ? ` | ⚡ Intensidade: ${atividade.intensidade}/10` : ''}
                             </div>
@@ -599,25 +706,6 @@
                                 <i class="bx ${isLiked ? 'bxs-heart' : 'bx-heart'}"></i>
                                 <span>${curtidasCount || 0}</span>
                             </div>
-                            <div class="stat-action comment-toggle" data-id="${atividade.id}">
-                                <i class="bx bx-comment"></i>
-                                <span>${comentarios?.length || 0}</span>
-                            </div>
-                        </div>
-                        <div class="comentarios-section" id="comentarios-${atividade.id}" style="display: none;">
-                            <div class="comentarios-lista">
-                                ${comentarios?.map(c => `
-                                    <div class="comentario-item">
-                                        <div class="comentario-nome">${c.usuarios?.nome || 'Usuário'}</div>
-                                        <div class="comentario-texto">${c.comentario}</div>
-                                        <div class="comentario-data">${new Date(c.created_at).toLocaleDateString('pt-BR')}</div>
-                                    </div>
-                                `).join('') || '<div style="text-align: center; padding: 10px;">Nenhum comentário ainda</div>'}
-                            </div>
-                            <div class="add-comentario">
-                                <input type="text" placeholder="Escreva um comentário..." id="comentario-input-${atividade.id}">
-                                <button class="enviar-comentario" data-id="${atividade.id}">Enviar</button>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -625,159 +713,121 @@
             }
             
             document.querySelectorAll('.like-btn').forEach(btn => {
-                btn.addEventListener('click', () => curtirTreino(btn.dataset.id, btn));
-            });
-            
-            document.querySelectorAll('.comment-toggle').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const comentariosDiv = document.getElementById(`comentarios-${btn.dataset.id}`);
-                    comentariosDiv.style.display = comentariosDiv.style.display === 'none' ? 'block' : 'none';
+                btn.addEventListener('click', async () => {
+                    if (!usuarioAtual) {
+                        showToast("Faça login para curtir!", "error");
+                        return;
+                    }
+                    const atividadeId = btn.dataset.id;
+                    const isLiked = btn.classList.contains('liked');
+                    
+                    if (isLiked) {
+                        const { error } = await supabaseClient
+                            .from('curtidas')
+                            .delete()
+                            .eq('usuario_id', usuarioAtual.id)
+                            .eq('atividade_id', atividadeId);
+                        if (!error) {
+                            btn.classList.remove('liked');
+                            const span = btn.querySelector('span');
+                            span.textContent = parseInt(span.textContent) - 1;
+                            btn.innerHTML = '<i class="bx bx-heart"></i> <span>' + span.textContent + '</span>';
+                        }
+                    } else {
+                        const { error } = await supabaseClient
+                            .from('curtidas')
+                            .insert({ usuario_id: usuarioAtual.id, atividade_id: atividadeId });
+                        if (!error) {
+                            btn.classList.add('liked');
+                            const span = btn.querySelector('span');
+                            span.textContent = parseInt(span.textContent) + 1;
+                            btn.innerHTML = '<i class="bx bxs-heart"></i> <span>' + span.textContent + '</span>';
+                            
+                            // Buscar dono da atividade para notificação
+                            const { data: atividade } = await supabaseClient
+                                .from('atividades')
+                                .select('email_usuario')
+                                .eq('id', atividadeId)
+                                .maybeSingle();
+                            
+                            if (atividade && atividade.email_usuario !== usuarioAtual.email) {
+                                const { data: usuarioDono } = await supabaseClient
+                                    .from('usuarios')
+                                    .select('id')
+                                    .eq('email', atividade.email_usuario)
+                                    .maybeSingle();
+                                
+                                if (usuarioDono) {
+                                    await supabaseClient.from('notificacoes').insert({
+                                        usuario_id: usuarioDono.id,
+                                        tipo: 'curtida',
+                                        remetente_id: usuarioAtual.id,
+                                        atividade_id: atividadeId,
+                                        lida: false
+                                    });
+                                    carregarNotificacoes();
+                                }
+                            }
+                        }
+                    }
                 });
-            });
-            
-            document.querySelectorAll('.enviar-comentario').forEach(btn => {
-                btn.addEventListener('click', () => comentarTreino(btn.dataset.id));
             });
             
             document.querySelectorAll('.follow-btn').forEach(btn => {
-                btn.addEventListener('click', () => seguirUsuario(btn.dataset.email, btn, btn.dataset.id));
-            });
-        }
-        
-        async function curtirTreino(atividadeId, btnElement) {
-            if (!usuarioAtual) {
-                showToast("Faça login para curtir!", "warning");
-                return;
-            }
-            
-            const isLiked = btnElement.classList.contains('liked');
-            
-            if (isLiked) {
-                const { error } = await supabaseClient
-                    .from('curtidas')
-                    .delete()
-                    .eq('usuario_id', usuarioAtual.id)
-                    .eq('atividade_id', atividadeId);
-                
-                if (!error) {
-                    btnElement.classList.remove('liked');
-                    const span = btnElement.querySelector('span');
-                    span.textContent = parseInt(span.textContent) - 1;
-                    btnElement.innerHTML = '<i class="bx bx-heart"></i> <span>' + span.textContent + '</span>';
-                }
-            } else {
-                const { error } = await supabaseClient
-                    .from('curtidas')
-                    .insert({ usuario_id: usuarioAtual.id, atividade_id: atividadeId });
-                
-                if (!error) {
-                    btnElement.classList.add('liked');
-                    const span = btnElement.querySelector('span');
-                    span.textContent = parseInt(span.textContent) + 1;
-                    btnElement.innerHTML = '<i class="bx bxs-heart"></i> <span>' + span.textContent + '</span>';
+                btn.addEventListener('click', async () => {
+                    if (!usuarioAtual) {
+                        showToast("Faça login para seguir!", "error");
+                        return;
+                    }
+                    const seguindoId = btn.dataset.userId;
+                    const isFollowing = btn.classList.contains('following');
                     
-                    const { data: atividade } = await supabaseClient
-                        .from('atividades')
-                        .select('email_usuario')
-                        .eq('id', atividadeId)
-                        .single();
-                    
-                    if (atividade && atividade.email_usuario !== usuarioAtual.email) {
-                        const { data: usuarioDono } = await supabaseClient
-                            .from('usuarios')
-                            .select('id')
-                            .eq('email', atividade.email_usuario)
-                            .single();
-                        
-                        if (usuarioDono) {
+                    if (isFollowing) {
+                        const { error } = await supabaseClient
+                            .from('seguidores')
+                            .delete()
+                            .eq('seguidor_id', usuarioAtual.id)
+                            .eq('seguindo_id', seguindoId);
+                        if (!error) {
+                            btn.classList.remove('following');
+                            btn.textContent = 'Seguir';
+                            showToast("Você deixou de seguir este usuário", "success");
+                        }
+                    } else {
+                        const { error } = await supabaseClient
+                            .from('seguidores')
+                            .insert({ seguidor_id: usuarioAtual.id, seguindo_id: seguindoId });
+                        if (!error) {
+                            btn.classList.add('following');
+                            btn.textContent = 'Seguindo';
+                            showToast("Agora você está seguindo este usuário!", "success");
+                            
                             await supabaseClient.from('notificacoes').insert({
-                                usuario_id: usuarioDono.id,
-                                tipo: 'curtida',
+                                usuario_id: seguindoId,
+                                tipo: 'seguidor',
                                 remetente_id: usuarioAtual.id,
-                                atividade_id: atividadeId
+                                lida: false
                             });
+                            carregarNotificacoes();
                         }
                     }
-                }
-            }
-        }
-        
-        async function comentarTreino(atividadeId) {
-            if (!usuarioAtual) {
-                showToast("Faça login para comentar!", "warning");
-                return;
-            }
-            
-            const input = document.getElementById(`comentario-input-${atividadeId}`);
-            const comentario = input.value.trim();
-            
-            if (!comentario) return;
-            
-            const { error } = await supabaseClient
-                .from('comentarios')
-                .insert({
-                    usuario_id: usuarioAtual.id,
-                    atividade_id: atividadeId,
-                    comentario: comentario
                 });
-            
-            if (!error) {
-                input.value = '';
-                showToast("Comentário adicionado!", "success");
-                carregarFeed();
-            }
+            });
         }
-        
-        async function seguirUsuario(email, btnElement, seguindoId) {
-            if (!usuarioAtual) {
-                showToast("Faça login para seguir!", "warning");
-                return;
-            }
-            
-            const isFollowing = btnElement.classList.contains('following');
-            
-            if (isFollowing) {
-                const { error } = await supabaseClient
-                    .from('seguidores')
-                    .delete()
-                    .eq('seguidor_id', usuarioAtual.id)
-                    .eq('seguindo_id', seguindoId);
-                
-                if (!error) {
-                    btnElement.classList.remove('following');
-                    btnElement.textContent = 'Seguir';
-                    showToast("Você deixou de seguir este usuário", "success");
-                }
-            } else {
-                const { error } = await supabaseClient
-                    .from('seguidores')
-                    .insert({ seguidor_id: usuarioAtual.id, seguindo_id: seguindoId });
-                
-                if (!error) {
-                    btnElement.classList.add('following');
-                    btnElement.textContent = 'Seguindo';
-                    showToast("Agora você está seguindo este usuário!", "success");
-                    
-                    await supabaseClient.from('notificacoes').insert({
-                        usuario_id: seguindoId,
-                        tipo: 'seguidor',
-                        remetente_id: usuarioAtual.id
-                    });
-                }
-            }
-        }
-        
-        // Carregar usuários para seguir
+
         async function carregarUsuarios() {
             if (!usuarioAtual) return;
             
             const { data: usuarios, error } = await supabaseClient
                 .from('usuarios')
-                .select('id, nome, email, foto_perfil_url')
+                .select('id, nome')
                 .neq('id', usuarioAtual.id)
                 .limit(10);
             
-            if (error) return;
+            if (error) {
+                console.error("Erro ao carregar usuários:", error);
+                return;
+            }
             
             let seguindoIds = [];
             const { data: seguindo } = await supabaseClient
@@ -795,18 +845,14 @@
             usuariosDiv.innerHTML = usuarios.map(u => `
                 <div class="usuario-sugerido">
                     <div class="post-avatar" style="width: 40px; height: 40px;">${u.nome?.charAt(0).toUpperCase() || 'U'}</div>
-                    <div style="flex:1">
-                        <div style="font-weight:500">${u.nome || 'Usuário'}</div>
-                        <div style="font-size:12px; color:#94a3b8">${u.email}</div>
-                    </div>
-                    <button class="follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}" data-email="${u.email}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
+                    <div style="flex:1"><strong>${u.nome || 'Usuário'}</strong></div>
+                    <button class="follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
                 </div>
             `).join('');
             
             document.querySelectorAll('#usuariosList .follow-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const targetId = btn.dataset.id;
-                    const targetEmail = btn.dataset.email;
                     const isFollowing = btn.classList.contains('following');
                     
                     if (isFollowing) {
@@ -829,47 +875,53 @@
                         await supabaseClient.from('notificacoes').insert({
                             usuario_id: targetId,
                             tipo: 'seguidor',
-                            remetente_id: usuarioAtual.id
+                            remetente_id: usuarioAtual.id,
+                            lida: false
                         });
+                        carregarNotificacoes();
                     }
                     carregarSeguindo();
-                    carregarFeed();
                 });
             });
         }
-        
-        // Carregar lista de quem o usuário está seguindo
+
         async function carregarSeguindo() {
             if (!usuarioAtual) return;
             
             const { data: seguindo, error } = await supabaseClient
                 .from('seguidores')
-                .select('seguindo_id, usuarios:seguindo_id(id, nome, email, foto_perfil_url)')
+                .select('seguindo_id')
                 .eq('seguidor_id', usuarioAtual.id);
             
             if (error) return;
             
-            const seguindoDiv = document.getElementById('seguindoList');
             if (!seguindo || seguindo.length === 0) {
-                seguindoDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #94a3b8;">Você ainda não segue ninguém</div>';
+                document.getElementById('seguindoList').innerHTML = '<div style="text-align: center; padding: 20px;">Você ainda não segue ninguém</div>';
                 return;
             }
             
-            seguindoDiv.innerHTML = seguindo.map(s => {
-                const user = s.usuarios;
-                return `
-                    <div class="search-result-item">
-                        <div class="search-result-avatar" style="background-image: url('${user?.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
-                            ${!user?.foto_perfil_url ? (user?.nome?.charAt(0).toUpperCase() || 'U') : ''}
-                        </div>
-                        <div class="search-result-info">
-                            <div class="search-result-name">${user?.nome || 'Usuário'}</div>
-                            <div class="search-result-email">${user?.email}</div>
-                        </div>
-                        <button class="search-follow-btn unfollow-btn" data-id="${user?.id}">Deixar de seguir</button>
+            const usuariosSeguindo = [];
+            for (const s of seguindo) {
+                const { data: user, error: userError } = await supabaseClient
+                    .from('usuarios')
+                    .select('id, nome')
+                    .eq('id', s.seguindo_id)
+                    .maybeSingle();
+                if (user && !userError) {
+                    usuariosSeguindo.push(user);
+                }
+            }
+            
+            const seguindoDiv = document.getElementById('seguindoList');
+            seguindoDiv.innerHTML = usuariosSeguindo.map(user => `
+                <div class="search-result-item">
+                    <div class="search-result-avatar">${user.nome?.charAt(0).toUpperCase() || 'U'}</div>
+                    <div class="search-result-info">
+                        <div class="search-result-name">${user.nome || 'Usuário'}</div>
                     </div>
-                `;
-            }).join('');
+                    <button class="search-follow-btn unfollow-btn" data-id="${user.id}">Deixar de seguir</button>
+                </div>
+            `).join('');
             
             document.querySelectorAll('#seguindoList .unfollow-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -881,39 +933,28 @@
                     showToast("Você deixou de seguir este usuário", "success");
                     carregarSeguindo();
                     carregarUsuarios();
-                    carregarFeed();
                 });
             });
         }
-        
-        // Função de pesquisa de usuários
+
         let searchTimeout;
-        
         async function pesquisarUsuarios(termo) {
             if (!termo || termo.length < 2) {
                 document.getElementById('searchResults').style.display = 'none';
                 return;
             }
-            
             if (!usuarioAtual) return;
             
             const { data: usuarios, error } = await supabaseClient
                 .from('usuarios')
-                .select('id, nome, email, foto_perfil_url')
+                .select('id, nome')
                 .neq('id', usuarioAtual.id)
                 .ilike('nome', `%${termo}%`);
             
-            if (error) {
-                console.error(error);
-                return;
-            }
+            if (error) return;
             
             if (!usuarios || usuarios.length === 0) {
-                document.getElementById('searchResults').innerHTML = `
-                    <div style="text-align: center; padding: 20px; color: #94a3b8;">
-                        Nenhum usuário encontrado
-                    </div>
-                `;
+                document.getElementById('searchResults').innerHTML = `<div style="text-align: center; padding: 20px;">Nenhum usuário encontrado</div>`;
                 document.getElementById('searchResults').style.display = 'block';
                 return;
             }
@@ -927,17 +968,13 @@
             
             document.getElementById('searchResults').innerHTML = usuarios.map(u => `
                 <div class="search-result-item">
-                    <div class="search-result-avatar" style="background-image: url('${u.foto_perfil_url || ''}'); background-size: cover; background-position: center;">
-                        ${!u.foto_perfil_url ? (u.nome?.charAt(0).toUpperCase() || 'U') : ''}
-                    </div>
+                    <div class="search-result-avatar">${u.nome?.charAt(0).toUpperCase() || 'U'}</div>
                     <div class="search-result-info">
                         <div class="search-result-name">${u.nome || 'Usuário'}</div>
-                        <div class="search-result-email">${u.email}</div>
                     </div>
-                    <button class="search-follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}" data-email="${u.email}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
+                    <button class="search-follow-btn ${seguindoIds.includes(u.id) ? 'following' : ''}" data-id="${u.id}">${seguindoIds.includes(u.id) ? 'Seguindo' : 'Seguir'}</button>
                 </div>
             `).join('');
-            
             document.getElementById('searchResults').style.display = 'block';
             
             document.querySelectorAll('#searchResults .search-follow-btn').forEach(btn => {
@@ -960,44 +997,37 @@
                             .insert({ seguidor_id: usuarioAtual.id, seguindo_id: targetId });
                         btn.classList.add('following');
                         btn.textContent = 'Seguindo';
-                        
                         await supabaseClient.from('notificacoes').insert({
                             usuario_id: targetId,
                             tipo: 'seguidor',
-                            remetente_id: usuarioAtual.id
+                            remetente_id: usuarioAtual.id,
+                            lida: false
                         });
+                        carregarNotificacoes();
                         showToast("Agora você segue este usuário!", 'success');
                     }
-                    
                     carregarUsuarios();
                     carregarSeguindo();
-                    carregarFeed();
                 });
             });
         }
-        
-        // Tabs
+
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
                 document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-                
                 const tabId = btn.dataset.tab;
                 if (tabId === 'feed') document.getElementById('feedTab').style.display = 'block';
                 if (tabId === 'seguidores') document.getElementById('seguidoresTab').style.display = 'block';
                 if (tabId === 'desafios') document.getElementById('desafiosTab').style.display = 'block';
             });
         });
-        
-        // Sidebar
+
         const sidebar = document.getElementById('sidebar');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const overlay = document.getElementById('sidebarOverlay');
-        
         function isMobile() { return window.innerWidth <= 768; }
-        
         function toggleSidebar() {
             if (!isMobile()) return;
             sidebar.classList.toggle('active');
@@ -1005,52 +1035,38 @@
                 sidebarToggleBtn.classList.add('opened');
                 sidebarToggleBtn.innerHTML = '◀';
                 if (overlay) overlay.classList.add('active');
-                localStorage.setItem('sidebarOpen', 'true');
             } else {
                 sidebarToggleBtn.classList.remove('opened');
                 sidebarToggleBtn.innerHTML = '▶';
                 if (overlay) overlay.classList.remove('active');
-                localStorage.setItem('sidebarOpen', 'false');
             }
         }
-        
-        window.logout = async function() {
-            await supabaseClient.auth.signOut();
-            localStorage.clear();
-            window.location.href = "index.html";
-        };
-        
-        sidebarToggleBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
-        
-        // Evento de pesquisa
+        sidebarToggleBtn?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
+
         const searchInput = document.getElementById('searchUserInput');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
                 const termo = e.target.value;
-                searchTimeout = setTimeout(() => {
-                    pesquisarUsuarios(termo);
-                }, 300);
+                searchTimeout = setTimeout(() => pesquisarUsuarios(termo), 300);
             });
-            
             document.addEventListener('click', (e) => {
                 if (!searchInput.contains(e.target) && !document.getElementById('searchResults')?.contains(e.target)) {
                     document.getElementById('searchResults').style.display = 'none';
                 }
             });
         }
-        
-        // Inicializar
+
         async function init() {
             await carregarUsuarioAtual();
             await carregarFeed();
             if (usuarioAtual) {
                 await carregarUsuarios();
                 await carregarSeguindo();
+                await carregarNotificacoes();
             }
         }
-        
         init();
     </script>
 </body>

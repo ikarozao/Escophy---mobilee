@@ -129,7 +129,7 @@
       transform: translateY(-2px);
     }
 
-    /* Card de distância moderno - MAIS BONITO */
+    /* Card de distância moderno */
     .distancia-card-moderno {
       background: linear-gradient(135deg, #ffffff 0%, #f8faf8 100%);
       border-radius: 28px;
@@ -170,7 +170,7 @@
       vertical-align: middle;
     }
 
-    /* Botões com ícones - COR DO SITE */
+    /* Botões com ícones */
     .control-icons {
       display: flex;
       justify-content: center;
@@ -213,6 +213,49 @@
       background: linear-gradient(135deg, #dc2626, #b91c1c);
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
     }
+
+    /* Modal de logout */
+    .modal-logout {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 12000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-logout .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 300px;
+    }
+    .modal-logout .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .modal-logout .btn-confirm {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .modal-logout .btn-cancel {
+      background: #95a5a6;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -236,6 +279,17 @@
     </div>
   </div>
 
+  <!-- MODAL DE CONFIRMAÇÃO DE SAÍDA -->
+  <div id="modalLogout" class="modal-logout">
+    <div class="modal-content">
+      <p>Tem certeza que deseja sair?</p>
+      <div class="modal-buttons">
+        <button class="btn-confirm" id="confirmLogout">Sim</button>
+        <button class="btn-cancel" id="cancelLogout">Não</button>
+      </div>
+    </div>
+  </div>
+
   <!-- NAVBAR -->
   <nav>
     <a href="home.html">
@@ -253,9 +307,11 @@
         <li><a href="home.html" class="sidebar-link">Home</a></li>
         <li><a href="treino1.html" class="sidebar-link active">Treinos</a></li>
         <li><a href="progresso.html" class="sidebar-link">Progresso</a></li>
-        <li><a href="configuracoes.html" class="sidebar-link">Configurações</a></li>
-        <li><a href="#" onclick="logout()" class="sidebar-link">Sair</a></li>
+        <li><a href="comunidade.html" class="sidebar-link">Comunidade</a></li>
       </ul>
+    </div>
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-link" id="logoutBtn">Sair</a>
     </div>
   </div>
 
@@ -296,7 +352,7 @@
       });
     </script>
 
-    <!-- Card de distância moderno (embaixo dos ícones) -->
+    <!-- Card de distância moderno -->
     <div class="distancia-card-moderno">
       <p><i class="bx bx-map"></i> Distância percorrida</p>
       <span id="distance">0 km</span>
@@ -305,7 +361,7 @@
     <!-- Mapa -->
     <div id="map"></div>
 
-    <!-- Botões de controle com ícones - COR DO SITE -->
+    <!-- Botões de controle -->
     <div class="control-icons">
       <button id="startBtn" class="control-btn btn-play" title="Iniciar rota">
         <i class="bx bx-play"></i>
@@ -452,6 +508,42 @@
     const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // ========== MODAL DE LOGOUT ==========
+    const modalLogout = document.getElementById('modalLogout');
+    const confirmLogout = document.getElementById('confirmLogout');
+    const cancelLogout = document.getElementById('cancelLogout');
+
+    function showLogoutModal() {
+      modalLogout.style.display = 'flex';
+    }
+
+    function hideLogoutModal() {
+      modalLogout.style.display = 'none';
+    }
+
+    async function realizarLogout() {
+      await supabaseClient.auth.signOut();
+      localStorage.clear();
+      showToast("Logout realizado com sucesso!", "success");
+      setTimeout(() => { window.location.href = "index.html"; }, 1000);
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      showLogoutModal();
+    });
+
+    confirmLogout.addEventListener('click', () => {
+      hideLogoutModal();
+      realizarLogout();
+    });
+
+    cancelLogout.addEventListener('click', hideLogoutModal);
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modalLogout) hideLogoutModal();
+    });
 
     let userPositions = [];
     let polyline;
@@ -733,13 +825,6 @@
       
       renderizarAcessorios();
     });
-
-    window.logout = async function() {
-      await supabaseClient.auth.signOut();
-      localStorage.clear();
-      showToast("Logout realizado com sucesso!", "success");
-      setTimeout(() => { window.location.href = "index.html"; }, 1000);
-    };
 
     // Sidebar
     const sidebar = document.getElementById('sidebar');

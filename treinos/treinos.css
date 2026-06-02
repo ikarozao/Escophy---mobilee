@@ -115,20 +115,23 @@ nav {
 .sidebar {
   position: fixed;
   left: 0;
-  top: 60px;
+  top: 0;
   width: 250px;
-  height: calc(100vh - 60px);
+  height: 100vh;
   background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.712));
   color: white;
   z-index: 1000;
   overflow-y: auto;
   transition: transform 0.3s ease;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-nav {
   padding: 10px 0;
   display: block;
+  flex: 1;
 }
 
 .sidebar-nav ul {
@@ -168,6 +171,22 @@ nav {
   background: rgba(255, 255, 255, 0.2);
   border-left-color: white;
   font-weight: bold;
+}
+
+/* Footer da sidebar com o botão sair */
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: auto;
+}
+
+.sidebar-footer .sidebar-link {
+  color: #ff6b6b;
+}
+
+.sidebar-footer .sidebar-link:hover {
+  background: rgba(255, 107, 107, 0.2);
+  border-left-color: #ff6b6b;
 }
 
 /* ===== BOTÃO SIDEBAR - BOLINHA METADE FORA ===== */
@@ -226,6 +245,7 @@ nav {
 @media (min-width: 769px) {
   .sidebar {
     transform: translateX(0) !important;
+    top: 0;
   }
   .sidebar-toggle-btn {
     display: none !important;
@@ -262,6 +282,7 @@ nav {
     max-width: 300px;
     top: 60px;
     height: calc(100vh - 60px);
+    z-index: 1002;
   }
   .sidebar.active {
     transform: translateX(0);
@@ -277,6 +298,7 @@ nav {
     border-radius: 50%;
     background: rgba(4, 71, 0, 0.9);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1003;
   }
   .sidebar-toggle-btn.opened {
     left: calc(75% - 15px);
@@ -289,6 +311,7 @@ nav {
     margin-left: 0;
     padding: 8px 16px;
     justify-content: center;
+    z-index: 1001;
   }
   #logoimg {
     height: 55px;
@@ -307,6 +330,8 @@ nav {
 @media (max-width: 480px) {
   .sidebar {
     width: 80%;
+    top: 60px;
+    height: calc(100vh - 60px);
   }
   .sidebar-toggle-btn {
     left: -12px;
