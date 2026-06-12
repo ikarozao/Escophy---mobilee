@@ -785,6 +785,7 @@
         const endPoint = userPositions[userPositions.length - 1];
         const trajetoCompleto = { positions: userPositions, summary: { totalPoints: userPositions.length, startTime: userPositions[0]?.timestamp, endTime: userPositions[userPositions.length - 1]?.timestamp, distance: calcularDistanciaTotal(userPositions) } };
 
+        // CORREÇÃO: O nome correto da coluna é "acessorios" (com O), não "accessories"
         const { data, error } = await supabaseClient
           .from("atividades")
           .insert([{
@@ -794,7 +795,7 @@
             tipo: tipo,
             intensidade: parseInt(intensidade),
             visibilidade: visibilidade.toLowerCase(),
-            accessories: acessoriosJSON,
+            acessorios: acessoriosJSON,  // CORRIGIDO: acessorios ao invés de accessories
             trajeto: trajetoCompleto,
             trajeto_inicial1: startPoint.lat,
             trajeto_inicial2: startPoint.lng,

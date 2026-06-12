@@ -20,7 +20,6 @@
     <img class="bg-img" src="img/edit 4.jpg" alt="Imagem 2" />
   </div>
 
-  <!-- TOAST DE NOTIFICAÇÃO -->
   <div id="toast-notification" class="toast-notification">
     <div class="toast-content">
       <i id="toast-icon" class="bx"></i>
@@ -29,7 +28,6 @@
   </div>
 
   <main class="container">
-    <!-- formulário de Login -->
     <form id="login-form" class="form active">
       <h1>Login</h1>
       <div class="input-box">
@@ -40,15 +38,12 @@
         <input id="senha-login" placeholder="Senha" type="password" required />
         <i class="bx bx-show toggle-password" data-target="senha-login"></i>
       </div>
-
       <button class="login" type="submit">Login</button>
-
       <div class="register-link">
         <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
       </div>
     </form>
 
-    <!-- formulário de Cadastro -->
     <form id="register-form" class="form">
       <h1>Cadastro</h1>
       <div class="input-box">
@@ -64,7 +59,6 @@
         <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
       </div>
 
-      <!-- CHECKBOX COM TERMOS -->
       <div class="terms-box">
         <label class="checkbox-container">
           <input type="checkbox" id="terms-checkbox" required>
@@ -73,7 +67,6 @@
         </label>
       </div>
 
-      <!-- BALÃO DOS TERMOS (inicialmente escondido) -->
       <div id="terms-ballon" class="terms-ballon">
         <div class="ballon-content">
           <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
@@ -92,18 +85,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
 
   <script>
-    // =========================
-    // FUNÇÃO DO TOAST (balão de notificação)
-    // =========================
     function showToast(message, type = "error") {
       const toast = document.getElementById("toast-notification");
       const toastMessage = document.getElementById("toast-message");
       const toastIcon = document.getElementById("toast-icon");
       
-      // Remove classes anteriores
       toast.classList.remove("success", "error", "warning", "show");
       
-      // Define ícone e classe baseado no tipo
       if (type === "success") {
         toastIcon.className = "bx bx-check-circle";
         toast.classList.add("success");
@@ -118,15 +106,11 @@
       toastMessage.textContent = message;
       toast.classList.add("show");
       
-      // Esconde automaticamente após 3 segundos
       setTimeout(() => {
         toast.classList.remove("show");
       }, 3000);
     }
 
-    // =========================
-    // Carrossel
-    // =========================
     const images = document.querySelectorAll(".bg-img");
     let current = 0;
 
@@ -136,9 +120,6 @@
       images[current].classList.add("active");
     }, 8000);
 
-    // =========================
-    // Alternar forms
-    // =========================
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
     const showRegister = document.getElementById("show-register");
@@ -156,9 +137,6 @@
       loginForm.classList.add("active");
     });
 
-    // =========================
-    // BALÃO DOS TERMOS
-    // =========================
     const termsLink = document.getElementById("terms-link");
     const termsBallon = document.getElementById("terms-ballon");
     const closeBallon = document.getElementById("close-ballon");
@@ -172,7 +150,6 @@
       termsBallon.classList.remove("active");
     });
 
-    // Fechar balão clicando fora
     window.addEventListener("click", (e) => {
       if (termsBallon.classList.contains("active")) {
         if (!termsBallon.contains(e.target) && e.target !== termsLink) {
@@ -181,20 +158,15 @@
       }
     });
 
-    // =========================
-    // Supabase
-    // =========================
     const SUPABASE_URL = "https://yuupbtrljazrrwizzafd.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_wHu7RW-F1J8ralIQoIbTyA_H6fldLYG";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
 
     const supabaseClient = supabase.createClient(
       SUPABASE_URL,
       SUPABASE_ANON_KEY
     );
 
-    // =========================
     // LOGIN
-    // =========================
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -202,50 +174,41 @@
       const senha = document.getElementById("senha-login").value;
 
       try {
-        const { data, error } =
-          await supabaseClient.auth.signInWithPassword({
-            email,
-            password: senha,
-          });
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password: senha,
+        });
 
         if (error) {
-          console.error(error);
-          showToast("Email ou senha incorretos!", "error");
+          if (error.message.includes("Invalid login credentials")) {
+            showToast("Email ou senha incorretos!", "error");
+          } else {
+            showToast(error.message, "error");
+          }
           return;
         }
 
-        const { data: usuario } = await supabaseClient
-          .from("usuarios")
-          .select("nome")
-          .eq("id", data.user.id)
-          .single();
-
         localStorage.setItem("usuarioId", data.user.id);
         localStorage.setItem("usuarioEmail", data.user.email);
+        
+        const nomeUsuario = data.user.user_metadata?.name || email.split('@')[0];
+        localStorage.setItem("usuarioLogado", nomeUsuario);
 
-        if (usuario?.nome) {
-          localStorage.setItem("usuarioLogado", usuario.nome);
-        }
-
-        console.log("✅ Login OK");
         showToast("Login realizado com sucesso!", "success");
+        
         setTimeout(() => {
           window.location.href = "home.html";
         }, 1500);
 
       } catch (err) {
-        console.error(err);
         showToast("Erro ao fazer login!", "error");
       }
     });
 
-    // =========================
-    // CADASTRO (com validação do checkbox)
-    // =========================
+    // CADASTRO
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Verificar se o checkbox foi marcado
       const termsCheckbox = document.getElementById("terms-checkbox");
       if (!termsCheckbox.checked) {
         showToast("Você precisa concordar com os termos para se cadastrar!", "warning");
@@ -256,37 +219,56 @@
       const email = document.getElementById("email-cadastro").value;
       const senha = document.getElementById("senha-cadastro").value;
 
+      if (!nome || !email || !senha) {
+        showToast("Preencha todos os campos!", "warning");
+        return;
+      }
+
       try {
         const { data, error } = await supabaseClient.auth.signUp({
           email,
           password: senha,
+          options: {
+            data: {
+              name: nome
+            }
+          }
         });
 
         if (error) {
-          console.error(error);
-          showToast(error.message, "error");
+          if (error.message.includes("User already registered")) {
+            showToast("Este email já está cadastrado! Faça login.", "warning");
+          } else if (error.message.includes("Password should be at least 6 characters")) {
+            showToast("A senha deve ter pelo menos 6 caracteres!", "warning");
+          } else {
+            showToast(error.message, "error");
+          }
           return;
         }
 
         const user = data.user;
 
-        console.log("Auth user id:", user.id);
+        if (!user) {
+          showToast("Erro ao criar usuário!", "error");
+          return;
+        }
 
+        // Tenta inserir na tabela usuarios
         const { error: insertError } = await supabaseClient
           .from("usuarios")
-          .insert([
-            {
-              id: user.id,
-              nome,
-              email,
-              created_at: new Date().toISOString()
-            }
-          ]);
+          .insert({
+            id: user.id,
+            nome: nome,
+            email: email,
+            pontos_mes: 0,
+            created_at: new Date().toISOString()
+          });
 
         if (insertError) {
-          console.error(insertError);
-          showToast("Erro ao salvar usuário!", "error");
-          return;
+          // Se o erro for de duplicate, ignora
+          if (!insertError.message.includes("duplicate")) {
+            console.log("Erro no insert:", insertError);
+          }
         }
 
         localStorage.setItem("usuarioId", user.id);
@@ -294,6 +276,7 @@
         localStorage.setItem("usuarioLogado", nome);
 
         showToast("✅ Cadastro realizado com sucesso!", "success");
+        
         setTimeout(() => {
           window.location.href = "home.html";
         }, 1500);
@@ -304,9 +287,6 @@
       }
     });
 
-    // =========================
-    // Mostrar senha
-    // =========================
     document.querySelectorAll(".toggle-password").forEach((icon) => {
       icon.addEventListener("click", () => {
         const inputId = icon.getAttribute("data-target");
