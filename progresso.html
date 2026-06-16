@@ -239,6 +239,74 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
+        // ===== NOVAS FUNÇÕES PARA ATUALIZAÇÃO AUTOMÁTICA =====
+
+        // Função para atualizar o progresso das metas (chamada após adicionar um treino)
+        async function atualizarProgressoMetas() {
+            console.log("🔄 Atualizando progresso das metas...");
+            
+            if (!userGlobalId) {
+                console.error("Usuário não encontrado");
+                return;
+            }
+            
+            const mesAtual = new Date().getMonth() + 1;
+            const anoAtual = new Date().getFullYear();
+            
+            // Buscar metas atuais
+            const { data: metasDB, error } = await supabaseClient
+                .from('metas_mensais')
+                .select('*')
+                .eq('usuario_id', userGlobalId)
+                .eq('ano', anoAtual)
+                .eq('mes', mesAtual);
+            
+            if (error || !metasDB || metasDB.length === 0) {
+                console.log("Nenhuma meta para atualizar");
+                return;
+            }
+            
+            let metaAlcancada = false;
+            
+            // Atualizar cada meta
+            for (let meta of metasDB) {
+                const kmAtual = await calcularKmPorModalidade(meta.modalidade);
+                const porcentagem = (kmAtual / meta.meta_km) * 100;
+                const porcentagemFinal = Math.min(porcentagem, 100);
+                
+                // Verificar se atingiu 100% (e antes não estava)
+                const metaAnterior = metasUsuario.find(m => m.id === meta.id);
+                if (porcentagemFinal >= 100 && (!metaAnterior || metaAnterior.porcentagem < 100)) {
+                    metaAlcancada = true;
+                    // Salvar o nome da modalidade para a notificação
+                    const nomeModalidade = modalidadeNomes[meta.modalidade] || meta.modalidade;
+                    const icone = modalidadeIcones[meta.modalidade] || '🎯';
+                    
+                    // Mostrar notificação especial
+                    setTimeout(() => {
+                        showToast(`🎉 Meta de ${nomeModalidade} ALCANÇADA! ${icone} Você completou ${meta.meta_km} km!`, "success");
+                    }, 500);
+                }
+                
+                // Atualizar no banco
+                await supabaseClient
+                    .from('metas_mensais')
+                    .update({ 
+                        atual_km: kmAtual, 
+                        porcentagem: porcentagemFinal 
+                    })
+                    .eq('id', meta.id);
+            }
+            
+            // Recarregar as metas para atualizar a interface
+            await carregarMetas();
+            
+            // Se não houve meta alcançada, mostrar toast de progresso atualizado
+            if (!metaAlcancada) {
+                showToast("📊 Progresso das metas atualizado!", "success");
+            }
+        }
+
         // Modal de logout
         const modalLogout = document.getElementById('modalLogout');
         const confirmLogout = document.getElementById('confirmLogout');
@@ -329,8 +397,12 @@
             await carregarMetas();
             await carregarTreinos();
             await carregarFiltroMeses();
+            
+            // Configurar listener para atualizações em tempo real (opcional)
+            // setupRealtimeListener();
         })();
 
+        // ===== FUNÇÃO MELHORADA DE CARREGAR METAS =====
         async function carregarMetas() {
             const mesAtual = new Date().getMonth() + 1;
             const anoAtual = new Date().getFullYear();
@@ -369,11 +441,26 @@
                 }));
                 
                 // Atualizar quilometragem atual de cada meta
+                let algumaMetaAlcancada = false;
+                
                 for (let meta of metasUsuario) {
                     const kmAtual = await calcularKmPorModalidade(meta.modalidade);
+                    const porcentagemAntiga = meta.porcentagem;
                     meta.atualKm = kmAtual;
                     meta.porcentagem = (kmAtual / meta.metaKm) * 100;
                     if (meta.porcentagem > 100) meta.porcentagem = 100;
+                    
+                    // Verificar se acabou de atingir 100%
+                    if (meta.porcentagem >= 100 && porcentagemAntiga < 100) {
+                        algumaMetaAlcancada = true;
+                        const nomeModalidade = modalidadeNomes[meta.modalidade] || meta.modalidade;
+                        const icone = modalidadeIcones[meta.modalidade] || '🎯';
+                        
+                        // Mostrar notificação com delay para não sobrecarregar
+                        setTimeout(() => {
+                            showToast(`🎉 Meta de ${nomeModalidade} ALCANÇADA! ${icone} Você completou ${meta.metaKm} km!`, "success");
+                        }, 300);
+                    }
                     
                     // Atualizar no banco
                     await supabaseClient
@@ -385,6 +472,13 @@
                 exibirMetas();
                 document.getElementById('modalMetas').style.display = 'none';
                 document.getElementById('metasSection').style.display = 'block';
+                
+                // Se alguma meta foi alcançada ao carregar, mostrar um toast geral
+                if (algumaMetaAlcancada) {
+                    setTimeout(() => {
+                        showToast("🏆 Parabéns! Você alcançou suas metas mensais!", "success");
+                    }, 1000);
+                }
             } else {
                 // Primeira vez no mês - mostrar modal
                 console.log("Nenhuma meta encontrada, mostrando modal");
@@ -545,13 +639,16 @@
             return kmTotal;
         }
 
+        // ===== FUNÇÃO MELHORADA DE EXIBIR METAS =====
         function exibirMetas() {
             const carrossel = document.getElementById('metasCarrossel');
             const indicators = document.getElementById('carrosselIndicators');
+            
             if (!metasUsuario || metasUsuario.length === 0) {
                 carrossel.innerHTML = '<div class="sem-metas">Nenhuma meta definida para este mês</div>';
                 return;
             }
+            
             carrossel.innerHTML = '';
             indicators.innerHTML = '';
             
@@ -577,25 +674,73 @@
                 
                 const indicator = document.createElement('span');
                 indicator.className = `carrossel-indicator ${index === currentMetaIndex ? 'active' : ''}`;
-                indicator.addEventListener('click', () => { currentMetaIndex = index; atualizarCarrossel(); });
+                indicator.addEventListener('click', () => { 
+                    currentMetaIndex = index; 
+                    atualizarCarrossel(); 
+                });
                 indicators.appendChild(indicator);
             });
             
+            // Configurar navegação do carrossel
+            document.getElementById('carrosselPrev').onclick = () => { 
+                if (currentMetaIndex > 0) { 
+                    currentMetaIndex--; 
+                    atualizarCarrossel(); 
+                } 
+            };
+            document.getElementById('carrosselNext').onclick = () => { 
+                if (currentMetaIndex < metasUsuario.length - 1) { 
+                    currentMetaIndex++; 
+                    atualizarCarrossel(); 
+                } 
+            };
+            
+            // Resetar o índice se estiver fora dos limites
+            if (currentMetaIndex >= metasUsuario.length) {
+                currentMetaIndex = 0;
+            }
+            
             atualizarCarrossel();
-            document.getElementById('carrosselPrev').onclick = () => { if (currentMetaIndex > 0) { currentMetaIndex--; atualizarCarrossel(); } };
-            document.getElementById('carrosselNext').onclick = () => { if (currentMetaIndex < metasUsuario.length - 1) { currentMetaIndex++; atualizarCarrossel(); } };
         }
 
+        // ===== CORREÇÃO DO CARROSSEL =====
         function atualizarCarrossel() {
             const carrossel = document.getElementById('metasCarrossel');
             const cards = document.querySelectorAll('.meta-carrossel-card');
             const indicators = document.querySelectorAll('.carrossel-indicator');
-            const cardWidth = cards[0]?.offsetWidth || 300;
-            carrossel.style.transform = `translateX(-${currentMetaIndex * (cardWidth + 20)}px)`;
+            
+            if (cards.length === 0) return;
+            
+            // Calcular a largura correta do card + gap
+            const cardWidth = cards[0]?.offsetWidth || 280;
+            const gap = 20;
+            const totalWidth = cardWidth + gap;
+            
+            // Limitar o índice atual
+            if (currentMetaIndex < 0) currentMetaIndex = 0;
+            if (currentMetaIndex >= cards.length) currentMetaIndex = cards.length - 1;
+            
+            // Aplicar a transformação
+            carrossel.style.transform = `translateX(-${currentMetaIndex * totalWidth}px)`;
+            
+            // Atualizar indicadores
             indicators.forEach((ind, idx) => {
                 if (idx === currentMetaIndex) ind.classList.add('active');
                 else ind.classList.remove('active');
             });
+            
+            // Atualizar visibilidade das setas
+            const prevBtn = document.getElementById('carrosselPrev');
+            const nextBtn = document.getElementById('carrosselNext');
+            
+            if (prevBtn) {
+                prevBtn.style.opacity = currentMetaIndex === 0 ? '0.3' : '1';
+                prevBtn.style.cursor = currentMetaIndex === 0 ? 'default' : 'pointer';
+            }
+            if (nextBtn) {
+                nextBtn.style.opacity = currentMetaIndex === cards.length - 1 ? '0.3' : '1';
+                nextBtn.style.cursor = currentMetaIndex === cards.length - 1 ? 'default' : 'pointer';
+            }
         }
 
         async function carregarTreinos() {

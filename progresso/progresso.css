@@ -273,6 +273,51 @@ nav {
     .floating-buttons-container {
         margin-left: 0;
     }
+    
+    /* ===== ESCONDER SETAS E INDICADORES DO CARROSSEL NO MOBILE ===== */
+    .carrossel-nav {
+        display: none !important;
+    }
+    
+    .carrossel-indicators {
+        display: none !important;
+    }
+    
+    /* Permitir scroll no carrossel */
+    .metas-carrossel {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        padding: 10px 5px;
+        gap: 15px;
+        transition: none;
+    }
+    
+    .meta-carrossel-card {
+        scroll-snap-align: start;
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    /* Esconder scrollbar mas manter funcionalidade */
+    .metas-carrossel::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-thumb {
+        background: #4CAF50;
+        border-radius: 10px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-thumb:hover {
+        background: #388E3C;
+    }
 }
 
 /* ===== CONTEÚDO PRINCIPAL ===== */
@@ -463,11 +508,22 @@ nav {
     font-size: 1.5rem;
 }
 
+/* ===== CORREÇÃO DO CARROSSEL ===== */
 .metas-carrossel-container {
     position: relative;
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding: 0 10px;
+}
+
+.metas-carrossel {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1;
+    padding: 10px 5px;
+    overflow: visible;
 }
 
 .carrossel-nav {
@@ -481,23 +537,24 @@ nav {
     font-size: 18px;
     flex-shrink: 0;
     transition: all 0.3s;
+    z-index: 10;
+    position: relative;
 }
 
-.carrossel-nav:hover {
+.carrossel-nav:hover:not(:disabled) {
     background: #066d00;
     transform: scale(1.05);
 }
 
-.metas-carrossel {
-    display: flex;
-    gap: 20px;
-    transition: transform 0.3s ease;
-    flex: 1;
-    padding: 10px;
+.carrossel-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
 }
 
+/* Garantir que os cards não quebrem */
 .meta-carrossel-card {
     min-width: 280px;
+    max-width: 280px;
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-radius: 20px;
     padding: 25px;
@@ -790,4 +847,75 @@ nav {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #388E3C;
+}
+
+/* ===== RESPONSIVIDADE DO CARROSSEL ===== */
+@media (max-width: 768px) {
+    .meta-carrossel-card {
+        min-width: 240px;
+        max-width: 240px;
+        padding: 20px;
+    }
+    
+    /* Esconder as setas de navegação no mobile */
+    .carrossel-nav {
+        display: none !important;
+    }
+    
+    /* Esconder os indicadores (pontinhos) no mobile */
+    .carrossel-indicators {
+        display: none !important;
+    }
+    
+    /* Permitir scroll horizontal com o dedo */
+    .metas-carrossel {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        gap: 15px;
+        padding: 10px 5px;
+        transition: none;
+    }
+    
+    .meta-carrossel-card {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+    
+    /* Estilizar a scrollbar para ficar mais sutil */
+    .metas-carrossel::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-thumb {
+        background: #4CAF50;
+        border-radius: 10px;
+    }
+    
+    .metas-carrossel::-webkit-scrollbar-thumb:hover {
+        background: #388E3C;
+    }
+}
+
+/* ===== DESKTOP - manter as setas e indicadores ===== */
+@media (min-width: 769px) {
+    .carrossel-nav {
+        display: flex !important;
+    }
+    
+    .carrossel-indicators {
+        display: flex !important;
+    }
+    
+    .metas-carrossel {
+        overflow: visible;
+        scroll-snap-type: none;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 }
