@@ -256,6 +256,40 @@
       border-radius: 8px;
       cursor: pointer;
     }
+
+    /* Indicador de gravação */
+    .recording-indicator {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: #fee2e2;
+      border-radius: 50px;
+      color: #dc2626;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .recording-indicator.active {
+      display: flex;
+    }
+    .recording-indicator .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #dc2626;
+      animation: blink 1s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
   </style>
 </head>
 
@@ -356,6 +390,13 @@
     <div class="distancia-card-moderno">
       <p><i class="bx bx-map"></i> Distância percorrida</p>
       <span id="distance">0 km</span>
+    </div>
+
+    <!-- Indicador de gravação -->
+    <div id="recordingIndicator" class="recording-indicator">
+      <span class="dot"></span>
+      <span>Gravando rota...</span>
+      <span id="pointsCount">0 pontos</span>
     </div>
 
     <!-- Mapa -->
@@ -545,6 +586,42 @@
       if (e.target === modalLogout) hideLogoutModal();
     });
 
+    // ========== WAKELOCK PARA MANTER A TELA LIGADA ==========
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          showToast("Tela mantida ativa para gravação!", "success");
+          console.log("WakeLock ativado!");
+          
+          // Listener para quando o wake lock for liberado
+          wakeLock.addEventListener('release', () => {
+            console.log('WakeLock foi liberado');
+          });
+        } else {
+          console.log("WakeLock API não suportada");
+        }
+      } catch (err) {
+        console.error("Erro ao ativar WakeLock:", err);
+        showToast("Não foi possível manter a tela ativa", "warning");
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (wakeLock) {
+        try {
+          await wakeLock.release();
+          wakeLock = null;
+          console.log("WakeLock liberado!");
+        } catch (err) {
+          console.error("Erro ao liberar WakeLock:", err);
+        }
+      }
+    }
+
+    // ========== VARIÁVEIS DE RASTREAMENTO ==========
     let userPositions = [];
     let polyline;
     let startMarker;
@@ -574,6 +651,17 @@
       return R * c;
     }
 
+    function atualizarIndicador() {
+      const indicator = document.getElementById('recordingIndicator');
+      const pointsSpan = document.getElementById('pointsCount');
+      if (tracking) {
+        indicator.classList.add('active');
+        pointsSpan.textContent = userPositions.length + ' pontos';
+      } else {
+        indicator.classList.remove('active');
+      }
+    }
+
     function startTracking() {
       if (navigator.geolocation) {
         if (tracking) {
@@ -585,27 +673,60 @@
         if (polyline) polyline.remove();
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
+        
+        // Ativar WakeLock para manter a tela ligada
+        requestWakeLock();
+        
+        // Atualizar indicador
+        atualizarIndicador();
 
         watchId = navigator.geolocation.watchPosition(
           function (position) {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
+            
+            // Verificar se a posição é válida (precisão razoável)
+            if (position.coords.accuracy > 100) {
+              // Se a precisão for muito baixa, ignorar
+              console.log("Precisão baixa, ignorando:", position.coords.accuracy);
+              return;
+            }
+            
             userPositions.push({ lat, lng: lon, timestamp: new Date().toISOString(), accuracy: position.coords.accuracy });
             const distanciaTotal = calcularDistanciaTotal(userPositions);
             document.getElementById("distance").innerText = (distanciaTotal / 1000).toFixed(2) + " km";
             window.mainMap.panTo([lat, lon]);
+            
             if (userPositions.length === 1) {
               startMarker = L.marker([lat, lon]).addTo(window.mainMap).bindPopup("Início do percurso").openPopup();
             }
+            
             const latLngs = userPositions.map(pos => [pos.lat, pos.lng]);
             if (polyline) polyline.setLatLngs(latLngs);
             else polyline = L.polyline(latLngs, { color: '#4CAF50', weight: 5, opacity: 0.8 }).addTo(window.mainMap);
+            
+            // Atualizar contador de pontos
+            atualizarIndicador();
           },
           function (error) {
-            showToast("Erro ao obter localização: " + error.message, "error");
+            console.error("Erro GPS:", error);
+            if (error.code === 1) {
+              showToast("Permissão de localização negada!", "error");
+            } else if (error.code === 3) {
+              showToast("Sinal GPS perdido, tentando reconectar...", "warning");
+            } else {
+              showToast("Erro ao obter localização: " + error.message, "error");
+            }
           },
-          { enableHighAccuracy: true, timeout: 40000, maximumAge: 0 }
+          { 
+            enableHighAccuracy: true, 
+            timeout: 30000, 
+            maximumAge: 5000,
+            // Opção importante: continuar recebendo atualizações mesmo em segundo plano
+          }
         );
+        
+        showToast("Rota iniciada! Mantenha a tela ligada.", "success");
       } else {
         showToast("Geolocalização não suportada no seu navegador", "error");
       }
@@ -615,10 +736,18 @@
       if (tracking) {
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
+        
+        // Liberar WakeLock
+        releaseWakeLock();
+        
+        // Atualizar indicador
+        atualizarIndicador();
+        
         if (userPositions.length > 0) {
           const lastPoint = userPositions[userPositions.length - 1];
           endMarker = L.marker([lastPoint.lat, lastPoint.lng]).addTo(window.mainMap).bindPopup("Fim do percurso").openPopup();
-          showToast(`Rota finalizada! ${(calcularDistanciaTotal(userPositions) / 1000).toFixed(2)} km percorridos`, "success");
+          const distancia = (calcularDistanciaTotal(userPositions) / 1000).toFixed(2);
+          showToast(`Rota finalizada! ${distancia} km percorridos`, "success");
         } else {
           showToast("Nenhuma rota registrada", "warning");
         }
@@ -785,7 +914,6 @@
         const endPoint = userPositions[userPositions.length - 1];
         const trajetoCompleto = { positions: userPositions, summary: { totalPoints: userPositions.length, startTime: userPositions[0]?.timestamp, endTime: userPositions[userPositions.length - 1]?.timestamp, distance: calcularDistanciaTotal(userPositions) } };
 
-        // CORREÇÃO: O nome correto da coluna é "acessorios" (com O), não "accessories"
         const { data, error } = await supabaseClient
           .from("atividades")
           .insert([{
@@ -795,7 +923,7 @@
             tipo: tipo,
             intensidade: parseInt(intensidade),
             visibilidade: visibilidade.toLowerCase(),
-            acessorios: acessoriosJSON,  // CORRIGIDO: acessorios ao invés de accessories
+            acessorios: acessoriosJSON,
             trajeto: trajetoCompleto,
             trajeto_inicial1: startPoint.lat,
             trajeto_inicial2: startPoint.lng,
@@ -822,6 +950,7 @@
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
         document.getElementById("distance").innerText = "0 km";
+        atualizarIndicador();
       });
       
       renderizarAcessorios();
@@ -852,6 +981,15 @@
     const sidebarState = localStorage.getItem('sidebarOpen');
     if (isMobile() && sidebarState === 'true') toggleSidebar();
     window.addEventListener('resize', () => { if (!isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
+
+    // ========== RECUPERAR POSIÇÃO SE A PÁGINA FOR RECARREGADA ==========
+    // Se a página for recarregada enquanto está gravando, tentar recuperar
+    window.addEventListener('beforeunload', () => {
+      if (tracking) {
+        // Tentar liberar o wake lock antes de fechar
+        releaseWakeLock();
+      }
+    });
   </script>
 </body>
 

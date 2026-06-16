@@ -22,6 +22,5 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
-  "categories": ["health", "fitness", "sports"]
+  "permissions": ["geolocation", "wake-lock"]
 }
