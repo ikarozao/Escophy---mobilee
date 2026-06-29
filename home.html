@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <style>
+        /* ===== BOTÃO DE EXCLUIR GALERIA ===== */
         .delete-btn {
             position: absolute;
             top: 5px;
@@ -30,16 +31,15 @@
             opacity: 1 !important;
             visibility: visible !important;
         }
-        
         .delete-btn:hover {
             background-color: #e74c3c;
             transform: scale(1.1);
         }
-        
         .preview-img-container {
             position: relative;
         }
 
+        /* ===== MODAL DE LOGIN ===== */
         .modal-login-required {
             display: none;
             position: fixed;
@@ -53,11 +53,9 @@
             align-items: center;
             animation: fadeIn 0.3s ease;
         }
-
         .modal-login-required.active {
             display: flex;
         }
-
         .modal-login-content {
             background: white;
             border-radius: 20px;
@@ -68,31 +66,26 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideUp 0.3s ease;
         }
-
         .modal-login-icon {
             font-size: 64px;
             color: #4CAF50;
             margin-bottom: 20px;
         }
-
         .modal-login-content h3 {
             font-size: 24px;
             color: #333;
             margin-bottom: 15px;
         }
-
         .modal-login-content p {
             color: #666;
             margin-bottom: 25px;
             line-height: 1.5;
         }
-
         .modal-login-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
         }
-
         .btn-login-action {
             background-color: #4CAF50;
             color: white;
@@ -103,12 +96,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .btn-login-action:hover {
             background-color: #45a049;
             transform: scale(1.05);
         }
-
         .btn-cancel-action {
             background-color: #e74c3c;
             color: white;
@@ -119,64 +110,236 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .btn-cancel-action:hover {
             background-color: #c0392b;
             transform: scale(1.05);
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .loading-overlay {
+        /* ===== TELA DE VERIFICANDO LOGIN ===== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0faf5, #e8f5ee);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.6s ease;
+            opacity: 1;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-screen-content {
+            text-align: center;
+            color: #1a4a2e;
+            padding: 20px;
+        }
+        .loading-screen-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #c8e6d4;
+            border-top: 4px solid #2e7d52;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        .loading-screen-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: #1a4a2e;
+            letter-spacing: 0.5px;
+        }
+        .loading-screen-subtitle {
+            font-size: 14px;
+            color: #4a7a5e;
+            margin-top: 4px;
+            font-weight: 300;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== NOTIFICAÇÕES ===== */
+        .notification-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 340px;
+            max-height: 450px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 1100;
+            display: none;
+            overflow: hidden;
+        }
+        .notification-dropdown.show { display: block; }
+        .notification-header { 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification-header .btn-apagar-todas {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .notification-header .btn-apagar-todas:hover {
+            background: #fef2f2;
+        }
+        .notification-list { max-height: 350px; overflow-y: auto; }
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            position: relative;
+        }
+        .notification-item:hover { background: #f8fafc; }
+        .notification-item.unread { background: #ecfdf5; }
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+        .notification-content { flex: 1; min-width: 0; }
+        .notification-text { font-size: 13px; color: #1e293b; margin-bottom: 4px; }
+        .notification-time { font-size: 10px; color: #94a3b8; }
+        .notification-empty { text-align: center; padding: 30px; color: #94a3b8; }
+        .btn-delete-notificacao {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-delete-notificacao:hover {
+            color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* ===== MODAL DE CONFIRMAÇÃO BALÃO ===== */
+        .modal-confirmacao {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255,255,255,0.9);
-            z-index: 3000;
+            background: rgba(0,0,0,0.5);
+            z-index: 15000;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            backdrop-filter: blur(4px);
         }
-
-        .loading-overlay.active {
+        .modal-confirmacao.active {
             display: flex;
         }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .modal-confirmacao-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 35px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalPop 0.3s ease;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
-
-        .loading-text {
-            margin-top: 20px;
-            color: #4CAF50;
-            font-size: 16px;
+        .modal-confirmacao-icon {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+        .modal-confirmacao-content h3 {
+            font-size: 20px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .modal-confirmacao-content p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .modal-confirmacao-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .modal-confirmacao-buttons .btn-confirmar {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Poppins", sans-serif;
+        }
+        .modal-confirmacao-buttons .btn-confirmar:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+        .modal-confirmacao-buttons .btn-cancelar {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Poppins", sans-serif;
+        }
+        .modal-confirmacao-buttons .btn-cancelar:hover {
+            background: #cbd5e1;
+            transform: scale(1.05);
         }
 
         #nomeUsuario {
@@ -187,16 +350,828 @@
             padding: 10px 0;
             word-break: break-word;
         }
+
+        /* ===== FOOTER MODERNO MINIMALISTA ===== */
+        .footer {
+            background: #ffffff;
+            padding: 40px 20px 16px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-brand h2 {
+            font-family: "Staatliches", sans-serif;
+            font-size: 24px;
+            color: #1a4a2e;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: #6b8a76;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+            max-width: 260px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 8px;
+        }
+
+        .footer-social a {
+            color: #6b8a76;
+            font-size: 18px;
+            transition: color 0.2s;
+            text-decoration: none;
+            padding: 4px;
+        }
+
+        .footer-social a:hover {
+            color: #1a4a2e;
+        }
+
+        .footer-column h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a4a2e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 10px 0;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-column ul li a {
+            color: #6b8a76;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #1a4a2e;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: #8aa596;
+            margin: 0;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bottom-links a {
+            font-size: 12px;
+            color: #8aa596;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #1a4a2e;
+        }
+
+        /* ===== FOOTER RESPONSIVO ===== */
+        @media (max-width: 1024px) {
+            .footer-container {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer {
+                padding: 28px 16px 12px;
+                margin-top: 24px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+                padding-bottom: 16px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+                text-align: center;
+            }
+
+            .footer-brand p {
+                max-width: 100%;
+                font-size: 12px;
+                margin: 0 auto 8px;
+            }
+
+            .footer-brand h2 {
+                font-size: 20px;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-column {
+                text-align: center;
+            }
+
+            .footer-column h4 {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+
+            .footer-column ul li a {
+                font-size: 12px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 4px;
+                padding-top: 10px;
+            }
+
+            .footer-bottom p {
+                font-size: 11px;
+            }
+
+            .footer-bottom-links {
+                gap: 12px;
+            }
+
+            .footer-bottom-links a {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer {
+                padding: 20px 12px 10px;
+                margin-top: 16px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding-bottom: 12px;
+            }
+
+            .footer-brand h2 {
+                font-size: 18px;
+            }
+
+            .footer-brand p {
+                font-size: 11px;
+            }
+
+            .footer-social a {
+                font-size: 16px;
+            }
+
+            .footer-column h4 {
+                font-size: 10px;
+                margin-bottom: 4px;
+            }
+
+            .footer-column ul li a {
+                font-size: 11px;
+            }
+
+            .footer-bottom p {
+                font-size: 10px;
+            }
+
+            .footer-bottom-links a {
+                font-size: 10px;
+            }
+
+            .footer-bottom-links {
+                gap: 10px;
+            }
+        }
+
+        /* Desktop com sidebar */
+        @media (min-width: 769px) {
+            .footer {
+                margin-left: 250px;
+                width: calc(100% - 250px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .notification-dropdown {
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: 340px;
+            }
+            .modal-confirmacao-content {
+                padding: 24px 20px;
+            }
+            .modal-confirmacao-content h3 {
+                font-size: 18px;
+            }
+            .loading-screen-title {
+                font-size: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .modal-confirmacao-content {
+                padding: 20px 16px;
+            }
+            .modal-confirmacao-content h3 {
+                font-size: 16px;
+            }
+            .modal-confirmacao-buttons .btn-confirmar,
+            .modal-confirmacao-buttons .btn-cancelar {
+                padding: 8px 20px;
+                font-size: 13px;
+            }
+            .loading-screen-title {
+                font-size: 18px;
+            }
+            .loading-screen-subtitle {
+                font-size: 13px;
+            }
+        }
+
+        /* ===== MODAL POLÍTICA DE PRIVACIDADE ===== */
+        .modal-privacidade {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-privacidade.active {
+            display: flex;
+        }
+
+        .modal-privacidade-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px 45px;
+            position: relative;
+            animation: modalPop 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-privacidade-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-privacidade-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .modal-privacidade-content::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 10px;
+        }
+
+        .modal-privacidade-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: rgba(0,0,0,0.05);
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .modal-privacidade-close:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .modal-privacidade-content h1 {
+            font-size: 28px;
+            color: #1a4a2e;
+            margin: 0 0 5px 0;
+            font-family: "Staatliches", sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .modal-privacidade-content .subtitle {
+            font-size: 14px;
+            color: #6b8a76;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .modal-privacidade-content h2 {
+            font-size: 18px;
+            color: #1a4a2e;
+            margin: 25px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .modal-privacidade-content h3 {
+            font-size: 15px;
+            color: #2e7d52;
+            margin: 18px 0 8px 0;
+            font-weight: 600;
+        }
+
+        .modal-privacidade-content p {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.7;
+            margin: 0 0 10px 0;
+        }
+
+        .modal-privacidade-content ul {
+            margin: 10px 0 15px 20px;
+            padding: 0;
+        }
+
+        .modal-privacidade-content ul li {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 4px;
+        }
+
+        .modal-privacidade-content .last-update {
+            font-size: 13px;
+            color: #8aa596;
+            font-style: italic;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e8ece8;
+        }
+
+        .modal-privacidade-content .btn-fechar-modal-priv {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-family: "Poppins", sans-serif;
+            width: 100%;
+        }
+
+        .modal-privacidade-content .btn-fechar-modal-priv:hover {
+            background: #2e7d52;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .modal-privacidade-content {
+                padding: 25px 20px;
+                max-height: 85vh;
+            }
+            .modal-privacidade-content h1 {
+                font-size: 22px;
+            }
+            .modal-privacidade-content h2 {
+                font-size: 16px;
+            }
+            .modal-privacidade-content p,
+            .modal-privacidade-content ul li {
+                font-size: 13px;
+            }
+            .modal-privacidade-close {
+                width: 32px;
+                height: 32px;
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-privacidade-content {
+                padding: 20px 16px;
+                max-height: 80vh;
+            }
+            .modal-privacidade-content h1 {
+                font-size: 19px;
+            }
+            .modal-privacidade-content h2 {
+                font-size: 15px;
+            }
+            .modal-privacidade-content p,
+            .modal-privacidade-content ul li {
+                font-size: 12px;
+            }
+        }
+
+        /* ===== MODAL EDITAR PERFIL ===== */
+        .modal-editar-perfil {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 18000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .modal-editar-perfil.active {
+            display: flex;
+        }
+
+        .modal-editar-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            padding: 35px 40px;
+            position: relative;
+            animation: modalPop 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-editar-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .modal-editar-close:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .modal-editar-content h2 {
+            font-size: 24px;
+            color: #1a4a2e;
+            margin: 0 0 25px 0;
+            font-family: "Staatliches", sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .modal-editar-content .input-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-editar-content .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a4a2e;
+            margin-bottom: 6px;
+        }
+
+        .modal-editar-content .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: "Poppins", sans-serif;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        .modal-editar-content .input-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+            background: white;
+        }
+
+        .modal-editar-content .input-group input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-salvar-perfil {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Poppins", sans-serif;
+            margin-top: 10px;
+        }
+
+        .btn-salvar-perfil:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-salvar-perfil:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-alterar-senha {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Poppins", sans-serif;
+            margin-top: 10px;
+        }
+
+        .btn-alterar-senha:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-alterar-senha:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 20px 0;
+        }
+
+        /* ===== MODAL ALTERAR SENHA ===== */
+        .modal-alterar-senha {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 19000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .modal-alterar-senha.active {
+            display: flex;
+        }
+
+        .modal-senha-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 450px;
+            width: 100%;
+            padding: 35px 40px;
+            position: relative;
+            animation: modalPop 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-senha-content h2 {
+            font-size: 22px;
+            color: #1a4a2e;
+            margin: 0 0 8px 0;
+            font-family: "Staatliches", sans-serif;
+        }
+
+        .modal-senha-content p {
+            font-size: 14px;
+            color: #6b8a76;
+            margin-bottom: 20px;
+        }
+
+        .modal-senha-content .input-group {
+            margin-bottom: 16px;
+        }
+
+        .modal-senha-content .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a4a2e;
+            margin-bottom: 6px;
+        }
+
+        .modal-senha-content .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: "Poppins", sans-serif;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        .modal-senha-content .input-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+            background: white;
+        }
+
+        .btn-enviar-codigo {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .btn-enviar-codigo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-enviar-codigo:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-verificar-codigo {
+            width: 100%;
+            padding: 14px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Poppins", sans-serif;
+            margin-top: 10px;
+        }
+
+        .btn-verificar-codigo:hover {
+            background: #2e7d52;
+        }
+
+        .btn-verificar-codigo:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .senha-status {
+            font-size: 13px;
+            color: #6b8a76;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .senha-status.success {
+            color: #4CAF50;
+        }
+
+        .senha-status.error {
+            color: #ef4444;
+        }
+
+        /* ===== BOTÃO LÁPIS - POSIÇÃO CORRETA ===== */
+        .usuario {
+            position: relative;
+        }
+
+        .btn-editar-perfil {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #4CAF50;
+            transition: all 0.3s;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .btn-editar-perfil:hover {
+            background: rgba(76, 175, 80, 0.15);
+            transform: scale(1.1);
+        }
+
+        .usuario-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-right: 40px;
+        }
+
+        @media (max-width: 480px) {
+            .modal-editar-content,
+            .modal-senha-content {
+                padding: 25px 20px;
+            }
+            .modal-editar-content h2 {
+                font-size: 20px;
+            }
+            .btn-editar-perfil {
+                top: 10px;
+                right: 10px;
+                font-size: 18px;
+                width: 32px;
+                height: 32px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <div class="loading-text">Verificando login...</div>
+    <!-- ===== TELA DE VERIFICANDO LOGIN ===== -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-screen-content">
+            <div class="loading-screen-spinner"></div>
+            <div class="loading-screen-title">Verificando login...</div>
+            <div class="loading-screen-subtitle">Aguarde um momento</div>
+        </div>
     </div>
 
+    <!-- ===== MODAL DE LOGIN ===== -->
     <div class="modal-login-required" id="modalLoginRequired">
         <div class="modal-login-content">
             <div class="modal-login-icon">
@@ -211,6 +1186,7 @@
         </div>
     </div>
 
+    <!-- ===== NAVEGAÇÃO ===== -->
     <nav>
         <a href="home.html">
             <div class="bar_n"><img id="logoimg" src="img/Figura estilizada em movimento.png" alt=""></div>
@@ -223,13 +1199,31 @@
         </div>
     </nav>
 
+    <!-- ===== NOTIFICAÇÕES ===== -->
     <div class="notification-dropdown" id="notificationDropdown">
-        <div class="notification-header">Notificações</div>
+        <div class="notification-header">
+            <span>Notificações</span>
+            <button class="btn-apagar-todas" id="btnApagarTodasNotificacoes">🗑 Apagar todas</button>
+        </div>
         <div class="notification-list" id="notificationList">
             <div class="notification-empty">Carregando...</div>
         </div>
     </div>
 
+    <!-- ===== MODAL CONFIRMAÇÃO ===== -->
+    <div id="modalConfirmacao" class="modal-confirmacao">
+        <div class="modal-confirmacao-content">
+            <div class="modal-confirmacao-icon">⚠️</div>
+            <h3 id="modalConfirmacaoTitulo">Tem certeza?</h3>
+            <p id="modalConfirmacaoMensagem">Esta ação não pode ser desfeita.</p>
+            <div class="modal-confirmacao-buttons">
+                <button class="btn-cancelar" id="modalConfirmacaoCancelar">Cancelar</button>
+                <button class="btn-confirmar" id="modalConfirmacaoConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
     <button class="sidebar-toggle-btn" id="sidebarToggleBtn">▶</button>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -247,6 +1241,7 @@
         </div>
     </div>
 
+    <!-- ===== MODAL LOGOUT ===== -->
     <div id="modalLogout" class="modal-logout">
         <div class="modal-content">
             <p>Tem certeza que deseja sair?</p>
@@ -257,16 +1252,18 @@
         </div>
     </div>
 
+    <!-- ===== MODAL CONFIRMAR EXCLUSÃO GALERIA ===== -->
     <div id="confirmModal" class="modal-confirm">
         <div class="modal-content">
             <p>Tem certeza que deseja excluir esta imagem?</p>
             <div class="modal-buttons">
                 <button class="btn-confirm" id="confirmDelete">Sim</button>
-                <button class="btn-cancel" id="cancelDelete">Nao</button>
+                <button class="btn-cancel" id="cancelDelete">Não</button>
             </div>
         </div>
     </div>
 
+    <!-- ===== MODAL CONFIRMAR EXCLUSÃO TREINO ===== -->
     <div id="confirmExcluirTreinoModal" class="modal-confirm">
         <div class="modal-content">
             <p>⚠️ Tem certeza que deseja excluir este treino?</p>
@@ -278,6 +1275,7 @@
         </div>
     </div>
 
+    <!-- ===== MODAL RELATÓRIO TREINO ===== -->
     <div id="modalRelatorio" class="modal-relatorio">
         <div class="modal-relatorio-content">
             <div class="modal-relatorio-header">
@@ -292,6 +1290,7 @@
         </div>
     </div>
 
+    <!-- ===== MODAL FOTO PERFIL ===== -->
     <div id="fotoPerfilModal" class="modal-foto-perfil">
         <div class="modal-foto-content">
             <div class="modal-foto-header">
@@ -309,6 +1308,88 @@
         </div>
     </div>
 
+    <!-- ===== MODAL POLÍTICA DE PRIVACIDADE ===== -->
+    <div id="modalPrivacidade" class="modal-privacidade">
+        <div class="modal-privacidade-content">
+            <button class="modal-privacidade-close" id="fecharModalPrivacidade">&times;</button>
+            <h1>ESCORPHY</h1>
+            <span class="subtitle">Política de Privacidade e Termos de Uso</span>
+            <p style="color: #8aa596; font-size: 13px; margin-bottom: 20px;">Última atualização: 23 de junho de 2026.</p>
+            <h2>1. INTRODUÇÃO</h2>
+            <p>Este documento estabelece a Política de Privacidade e os Termos de Uso da plataforma Escorphy...</p>
+            <div class="last-update">📄 Documento atualizado em 23 de junho de 2026.</div>
+            <button class="btn-fechar-modal-priv" id="fecharModalPrivacidadeBtn">Li e concordo</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL EDITAR PERFIL ===== -->
+    <div id="modalEditarPerfil" class="modal-editar-perfil">
+        <div class="modal-editar-content">
+            <button class="modal-editar-close" id="fecharModalEditar">&times;</button>
+            <h2>✏️ Editar Perfil</h2>
+            
+            <div class="input-group">
+                <label>Nome</label>
+                <input type="text" id="edit-nome" placeholder="Seu nome">
+            </div>
+            
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="edit-email" disabled>
+            </div>
+            
+            <div class="input-group">
+                <label>Telefone</label>
+                <input type="tel" id="edit-telefone" placeholder="(11) 99999-9999">
+            </div>
+            
+            <div class="input-group">
+                <label>Data de Nascimento</label>
+                <input type="date" id="edit-data-nascimento">
+            </div>
+            
+            <hr class="divider">
+            
+            <button class="btn-alterar-senha" id="btnAlterarSenha">🔑 Alterar Senha</button>
+            
+            <button class="btn-salvar-perfil" id="btnSalvarPerfil">💾 Salvar Alterações</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL ALTERAR SENHA ===== -->
+    <div id="modalAlterarSenha" class="modal-alterar-senha">
+        <div class="modal-senha-content">
+            <button class="modal-editar-close" id="fecharModalSenha">&times;</button>
+            <h2>🔑 Alterar Senha</h2>
+            <p>Digite seu email para receber um código de verificação</p>
+            
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="senha-email" placeholder="seu@email.com">
+            </div>
+            
+            <button class="btn-enviar-codigo" id="btnEnviarCodigo">📧 Enviar Código</button>
+            
+            <div id="senha-step2" style="display: none; margin-top: 20px;">
+                <div class="input-group">
+                    <label>Código de Verificação</label>
+                    <input type="text" id="codigo-verificacao" placeholder="Digite o código recebido">
+                </div>
+                <div class="input-group">
+                    <label>Nova Senha</label>
+                    <input type="password" id="nova-senha" placeholder="Nova senha (mínimo 6 caracteres)">
+                </div>
+                <div class="input-group">
+                    <label>Confirmar Nova Senha</label>
+                    <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
+                </div>
+                <button class="btn-verificar-codigo" id="btnVerificarCodigo">✅ Verificar e Alterar Senha</button>
+                <div id="senha-status" class="senha-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
     <div id="toastMessage" class="toast-msg">
         <i class="bx"></i>
         <span id="toastText"></span>
@@ -316,10 +1397,16 @@
 
     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <div class="main-content-perfil">
         <div class="column left-column">
             <article class="usuario">
-                <div>
+                <!-- BOTÃO LÁPIS NO CANTO SUPERIOR DIREITO -->
+                <button class="btn-editar-perfil" id="btnAbrirEditarPerfil" title="Editar perfil">
+                    <i class="bx bx-pencil"></i>
+                </button>
+                
+                <div class="usuario-header">
                     <h2 id="nomeUsuario">Olá, carregando...</h2>
                 </div>
 
@@ -330,7 +1417,7 @@
                     <div class="pontos-tooltip" id="pontosTooltip">
                         <div class="tooltip-content">
                             <span class="tooltip-pontos-icon">⭐</span>
-                            <span class="tooltip-pontos-label">Pontos neste mes:</span>
+                            <span class="tooltip-pontos-label">Pontos neste mês:</span>
                             <span class="tooltip-pontos-valor" id="pontosMes">0</span>
                         </div>
                         <div class="tooltip-arrow"></div>
@@ -343,7 +1430,7 @@
                         <span class="stat-number" id="contTreinos">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Publicacoes</span>
+                        <span class="stat-label">Publicações</span>
                         <span class="stat-number" id="contPublicacoes">0</span>
                     </div>
                     <div class="stat-item">
@@ -359,7 +1446,7 @@
             </article>
 
             <section class="feed">
-                <h2>Videos sugeridos</h2>
+                <h2>Vídeos sugeridos</h2>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/LsvhNS4w8zc" allowfullscreen></iframe></div></article>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/0JDIeCiexgI" allowfullscreen></iframe></div></article>
                 <article class="post"><div class="youtube-video-container"><iframe src="https://www.youtube.com/embed/MiCmcdcF_Ss" allowfullscreen></iframe></div></article>
@@ -384,20 +1471,52 @@
         </div>
     </div>
 
+    <!-- ===== FOOTER MODERNO MINIMALISTA ===== -->
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-logo"><h1>ESCORPHY</h1><p>© 2025 Escorphy</p></div>
-            <div class="footer-column"><h3>Sobre</h3><ul><li><a href="sobrenos.html">Nossa Missao</a></li><li><a href="sobrenos.html#cards-section">Equipe</a></li><li><a href="#">Privacidade</a></li></ul></div>
-            <div class="footer-column"><h3>Explorar</h3><ul><li><a href="#">Funcionalidades</a></li><li><a href="#">Planos</a></li><li><a href="#">Blog</a></li></ul></div>
-            <div class="footer-column"><h3>Redes</h3><ul><li><a href="https://www.instagram.com/escorphybr">Instagram</a></li><li><a href="https://www.youtube.com/escorphy">YouTube</a></li></ul></div>
-            <div class="footer-column"><h3>Ajuda</h3><ul><li><a href="suporte.html">Suporte</a></li><li><a href="https://wa.me/+5544998121630">Fale Conosco</a></li><li><a href="#">Central de Ajuda</a></li></ul></div>
+            <div class="footer-brand">
+                <h2>ESCORPHY</h2>
+                <p>Transformando vidas através do esporte.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/escorphybr" target="_blank" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
+                    <a href="https://www.youtube.com/escorphy" target="_blank" aria-label="YouTube"><i class="bx bxl-youtube"></i></a>
+                    <a href="https://wa.me/+5544998121630" target="_blank" aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Sobre</h4>
+                <ul>
+                    <li><a href="sobrenos.html">Missão</a></li>
+                    <li><a href="sobrenos.html#cards-section">Equipe</a></li>
+                    <li><a href="#" id="linkPrivacidade">Privacidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Ajuda</h4>
+                <ul>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="https://wa.me/+5544998121630">Fale Conosco</a></li>
+                    <li><a href="#" id="linkPrivacidade2">Política de Privacidade</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Escorphy</p>
+            <div class="footer-bottom-links">
+                <a href="#" id="linkPrivacidade3">Privacidade</a>
+                <a href="#" id="linkTermos">Termos de Uso</a>
+                <a href="#" id="linkCookies">Cookies</a>
+            </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <script>
         const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
+        const supabaseKey =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         let userEmailGlobal = null;
@@ -406,16 +1525,59 @@
         let currentTreinoId = null;
         let currentTreinoItem = null;
         let currentUserId = null;
+        let codigoEnviado = null;
+        let codigoEmail = null;
 
         const MAX_GALLERY_IMAGES = 2;
+        var acaoConfirmacao = null;
 
-        function showToast(message, type = "success") {
+        // ===== MODAL PRIVACIDADE =====
+        function abrirModalPrivacidade() {
+            document.getElementById('modalPrivacidade').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalPrivacidade() {
+            document.getElementById('modalPrivacidade').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('linkPrivacidade')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkPrivacidade2')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkPrivacidade3')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkTermos')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkCookies')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+
+        document.getElementById('fecharModalPrivacidade')?.addEventListener('click', fecharModalPrivacidade);
+        document.getElementById('fecharModalPrivacidadeBtn')?.addEventListener('click', fecharModalPrivacidade);
+        document.getElementById('modalPrivacidade')?.addEventListener('click', function(e) {
+            if (e.target === this) fecharModalPrivacidade();
+        });
+
+        // ===== TOAST =====
+        function showToast(message, type) {
+            type = type || "success";
             const toast = document.getElementById('toastMessage');
             const toastText = document.getElementById('toastText');
             const toastIcon = toast.querySelector('i');
-            
+
             toast.classList.remove('show', 'success', 'error', 'warning');
-            
+
             if (type === 'success') {
                 toastIcon.className = 'bx bx-check-circle';
                 toast.classList.add('success');
@@ -426,12 +1588,37 @@
                 toastIcon.className = 'bx bx-info-circle';
                 toast.classList.add('warning');
             }
-            
+
             toastText.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(function() { toast.classList.remove('show'); }, 3000);
         }
 
+        // ===== MODAL DE CONFIRMAÇÃO =====
+        function mostrarModalConfirmacao(titulo, mensagem, aoConfirmar) {
+            document.getElementById('modalConfirmacaoTitulo').textContent = titulo;
+            document.getElementById('modalConfirmacaoMensagem').textContent = mensagem;
+            acaoConfirmacao = aoConfirmar;
+            document.getElementById('modalConfirmacao').classList.add('active');
+        }
+
+        function fecharModalConfirmacao() {
+            document.getElementById('modalConfirmacao').classList.remove('active');
+            acaoConfirmacao = null;
+        }
+
+        document.getElementById('modalConfirmacaoCancelar').addEventListener('click', fecharModalConfirmacao);
+        document.getElementById('modalConfirmacaoConfirmar').addEventListener('click', function() {
+            if (typeof acaoConfirmacao === 'function') {
+                acaoConfirmacao();
+            }
+            fecharModalConfirmacao();
+        });
+        document.getElementById('modalConfirmacao').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalConfirmacao();
+        });
+
+        // ===== MODAL LOGIN =====
         function showLoginRequiredModal() {
             document.getElementById('modalLoginRequired').classList.add('active');
         }
@@ -443,7 +1630,7 @@
         function redirectToLogin() {
             hideLoginRequiredModal();
             showToast("Redirecionando para o login...", "warning");
-            setTimeout(() => { window.location.href = "index.html"; }, 1000);
+            setTimeout(function() { window.location.href = "index.html"; }, 1000);
         }
 
         function cancelAndStay() {
@@ -451,83 +1638,114 @@
             showToast("Por favor, faça login para acessar o conteúdo.", "warning");
         }
 
+        document.getElementById('btnFazerLogin')?.addEventListener('click', redirectToLogin);
+        document.getElementById('btnCancelarLogin')?.addEventListener('click', cancelAndStay);
+
+        // ===== ESCONDER TELA DE LOADING =====
+        function esconderLoading() {
+            var el = document.getElementById('loadingScreen');
+            if (el) el.classList.add('hidden');
+            setTimeout(function() {
+                if (el) el.style.display = 'none';
+            }, 700);
+        }
+
+        // ===== VERIFICAR LOGIN E CARREGAR DADOS =====
         async function checkLoginAndLoad() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
             try {
-                loadingOverlay.classList.add('active');
-                
-                const { data: { user }, error } = await supabaseClient.auth.getUser();
-                
+                var sessionEmail = localStorage.getItem("usuarioEmail");
+
+                if (sessionEmail) {
+                    userEmailGlobal = sessionEmail;
+                    await Promise.all([
+                        carregarPerfil(),
+                        carregarTreinos(),
+                        carregarGaleria(),
+                        calcularPontosDoMes(),
+                        carregarNotificacoes()
+                    ]);
+                    esconderLoading();
+                    return true;
+                }
+
+                var { data: { user }, error } = await supabaseClient.auth.getUser();
+
                 if (error || !user) {
                     console.log("Usuário não logado");
-                    loadingOverlay.classList.remove('active');
-                    showLoginRequiredModal();
+                    esconderLoading();
+                    setTimeout(function() {
+                        showLoginRequiredModal();
+                    }, 500);
                     return false;
                 }
-                
+
                 console.log("Usuário logado:", user.email);
                 userEmailGlobal = user.email;
                 localStorage.setItem("usuarioEmail", user.email);
-                
-                await carregarPerfil();
-                await carregarTreinos();
-                await carregarGaleria();
-                await calcularPontosDoMes();
-                await carregarNotificacoes();
-                
-                loadingOverlay.classList.remove('active');
+
+                await Promise.all([
+                    carregarPerfil(),
+                    carregarTreinos(),
+                    carregarGaleria(),
+                    calcularPontosDoMes(),
+                    carregarNotificacoes()
+                ]);
+
+                esconderLoading();
                 return true;
-                
+
             } catch (err) {
                 console.error("Erro na verificação:", err);
-                loadingOverlay.classList.remove('active');
-                showLoginRequiredModal();
+                esconderLoading();
+                setTimeout(function() {
+                    showLoginRequiredModal();
+                }, 500);
                 return false;
             }
         }
 
+        // ===== LOGOUT =====
         const modalLogout = document.getElementById('modalLogout');
         const confirmLogout = document.getElementById('confirmLogout');
         const cancelLogout = document.getElementById('cancelLogout');
 
         function showLogoutModal() { modalLogout.style.display = 'flex'; }
+
         function hideLogoutModal() { modalLogout.style.display = 'none'; }
 
         async function realizarLogout() {
             await supabaseClient.auth.signOut();
             localStorage.clear();
             showToast("Logout realizado com sucesso!", "success");
-            setTimeout(() => { window.location.href = "index.html"; }, 1000);
+            setTimeout(function() { window.location.href = "index.html"; }, 1000);
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             showLogoutModal();
         });
 
-        confirmLogout.addEventListener('click', () => {
+        confirmLogout.addEventListener('click', function() {
             hideLogoutModal();
             realizarLogout();
         });
 
         cancelLogout.addEventListener('click', hideLogoutModal);
-        window.addEventListener('click', (e) => { if (e.target === modalLogout) hideLogoutModal(); });
+        window.addEventListener('click', function(e) { if (e.target === modalLogout) hideLogoutModal(); });
 
-        document.getElementById('btnFazerLogin')?.addEventListener('click', redirectToLogin);
-        document.getElementById('btnCancelarLogin')?.addEventListener('click', cancelAndStay);
-
+        // ===== FOTO PERFIL =====
         const fotoPerfilModal = document.getElementById('fotoPerfilModal');
         const closeFotoModal = document.getElementById('closeFotoModal');
 
-        window.abrirModalFoto = function() { 
+        window.abrirModalFoto = function() {
             if (userEmailGlobal) fotoPerfilModal.classList.add('active');
             else showToast("Faça login para alterar a foto!", "warning");
         }
+
         function fecharModalFoto() { fotoPerfilModal.classList.remove('active'); }
-        
+
         closeFotoModal.addEventListener('click', fecharModalFoto);
-        window.addEventListener('click', (e) => { if (e.target === fotoPerfilModal) fecharModalFoto(); });
+        window.addEventListener('click', function(e) { if (e.target === fotoPerfilModal) fecharModalFoto(); });
 
         async function carregarFotoPerfil() {
             const imgPerfil = document.getElementById('imgPerfil');
@@ -545,33 +1763,33 @@
                     let fotoUrl = usuario.foto_perfil_url;
                     if (!fotoUrl.startsWith('http')) {
                         const fileName = fotoUrl.split('/').pop();
-                        fotoUrl = `https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/${fileName}`;
+                        fotoUrl = 'https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/' + fileName;
                     }
                     imgPerfil.src = fotoUrl + '?t=' + new Date().getTime();
                 } else {
                     imgPerfil.src = "img/perfil-removebg-preview.png";
                 }
-            } catch(e) {
+            } catch (e) {
                 imgPerfil.src = "img/perfil-removebg-preview.png";
             }
         }
 
         const uploadFotoPerfil = document.getElementById('uploadFotoPerfil');
         if (uploadFotoPerfil) {
-            uploadFotoPerfil.addEventListener('change', async (e) => {
+            uploadFotoPerfil.addEventListener('change', async function(e) {
                 const file = e.target.files[0];
                 if (!file) return;
 
                 const { data: { user } } = await supabaseClient.auth.getUser();
-                if (!user) { showToast("Usuario nao identificado!", "error"); return; }
+                if (!user) { showToast("Usuário não identificado!", "error"); return; }
 
-                if (!file.type.startsWith('image/')) { showToast("Selecione uma imagem valida!", "warning"); return; }
+                if (!file.type.startsWith('image/')) { showToast("Selecione uma imagem válida!", "warning"); return; }
                 if (file.size > 2 * 1024 * 1024) { showToast("Imagem muito grande! Max 2MB", "warning"); return; }
 
                 showToast("Enviando foto...", "success");
 
                 const fileExt = file.name.split('.').pop();
-                const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+                const fileName = user.id + '_' + Date.now() + '.' + fileExt;
 
                 const { error: uploadError } = await supabaseClient.storage
                     .from('perfil')
@@ -583,7 +1801,7 @@
                     return;
                 }
 
-                const fotoUrl = `https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/${fileName}`;
+                const fotoUrl = 'https://yuupbtrljazrrwizzafd.supabase.co/storage/v1/object/public/perfil/' + fileName;
 
                 const { error: dbError } = await supabaseClient
                     .from('usuarios')
@@ -592,7 +1810,7 @@
 
                 if (dbError) {
                     console.error("Erro no banco:", dbError);
-                    showToast("Erro ao salvar referencia da foto!", "error");
+                    showToast("Erro ao salvar referência da foto!", "error");
                     return;
                 }
 
@@ -602,7 +1820,9 @@
             });
         }
 
-        // CARREGAR PERFIL - CORRIGIDO
+        // ===== CARREGAR PERFIL =====
+        let dadosUsuarioAtual = null;
+
         async function carregarPerfil() {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
@@ -612,8 +1832,7 @@
                 }
 
                 console.log("Usuário logado:", user.email);
-                
-                // Buscar dados do usuário na tabela
+
                 const { data: usuario, error } = await supabaseClient
                     .from('usuarios')
                     .select('*')
@@ -624,33 +1843,30 @@
                     console.error("Erro ao buscar usuário:", error);
                 }
 
-                // Nome do usuário (prioriza o da tabela, depois metadata, depois email)
+                dadosUsuarioAtual = usuario;
+
                 let nomeUsuario = user.email.split('@')[0];
                 if (usuario?.nome) {
                     nomeUsuario = usuario.nome;
                 } else if (user.user_metadata?.name) {
                     nomeUsuario = user.user_metadata.name;
                 }
-                
-                // Exibe o nome na tela
-                document.getElementById('nomeUsuario').textContent = `Olá, ${nomeUsuario}`;
-                console.log("Nome exibido:", `Olá, ${nomeUsuario}`);
-                
-                // Salva o ID do usuário
+
+                document.getElementById('nomeUsuario').textContent = 'Olá, ' + nomeUsuario;
+                console.log("Nome exibido:", 'Olá, ' + nomeUsuario);
+
                 currentUserId = user.id;
                 userEmailGlobal = user.email;
-                
-                // Conta os treinos
+
                 const { count: totalTreinos, error: countError } = await supabaseClient
                     .from('atividades')
                     .select('*', { count: 'exact', head: true })
                     .eq('email_usuario', user.email);
-                
+
                 if (!countError) {
                     document.getElementById('contTreinos').textContent = totalTreinos || 0;
                 }
-                
-                // Exibir pontos e publicacoes se existirem
+
                 if (usuario) {
                     document.getElementById('contPublicacoes').textContent = usuario.publicacoes || '0';
                     document.getElementById('contPontos').textContent = usuario.pontos_mes || '0';
@@ -660,26 +1876,291 @@
                     document.getElementById('contPontos').textContent = '0';
                     document.getElementById('pontosMes').textContent = '0';
                 }
-                
+
                 await carregarFotoPerfil();
-                
+
                 localStorage.setItem("usuarioLogado", nomeUsuario);
                 localStorage.setItem("usuarioIdTabela", user.id);
                 localStorage.setItem("usuarioEmail", user.email);
-                
-            } catch (error) { 
+
+            } catch (error) {
                 console.error('Erro em carregarPerfil:', error);
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
-                    document.getElementById('nomeUsuario').textContent = `Olá, ${user.email.split('@')[0]}`;
+                    document.getElementById('nomeUsuario').textContent = 'Olá, ' + user.email.split('@')[0];
                 }
             }
         }
 
-        (async function () {
-            await checkLoginAndLoad();
-        })();
+        // ===== EDITAR PERFIL =====
+        const modalEditar = document.getElementById('modalEditarPerfil');
+        const modalSenha = document.getElementById('modalAlterarSenha');
 
+        document.getElementById('btnAbrirEditarPerfil')?.addEventListener('click', function() {
+            abrirModalEditar();
+        });
+
+        document.getElementById('fecharModalEditar')?.addEventListener('click', function() {
+            fecharModalEditar();
+        });
+
+        modalEditar?.addEventListener('click', function(e) {
+            if (e.target === this) fecharModalEditar();
+        });
+
+        document.getElementById('fecharModalSenha')?.addEventListener('click', function() {
+            fecharModalSenha();
+        });
+
+        modalSenha?.addEventListener('click', function(e) {
+            if (e.target === this) fecharModalSenha();
+        });
+
+        function abrirModalEditar() {
+            if (!dadosUsuarioAtual) {
+                showToast("Carregando dados do usuário...", "warning");
+                return;
+            }
+            
+            document.getElementById('edit-nome').value = dadosUsuarioAtual.nome || '';
+            document.getElementById('edit-email').value = dadosUsuarioAtual.email || '';
+            document.getElementById('edit-telefone').value = dadosUsuarioAtual.telefone || '';
+            document.getElementById('edit-data-nascimento').value = dadosUsuarioAtual.data_nascimento || '';
+            
+            modalEditar.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalEditar() {
+            modalEditar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function abrirModalSenha() {
+            fecharModalEditar();
+            document.getElementById('senha-email').value = userEmailGlobal || '';
+            document.getElementById('senha-step2').style.display = 'none';
+            document.getElementById('senha-status').textContent = '';
+            document.getElementById('senha-status').className = 'senha-status';
+            modalSenha.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalSenha() {
+            modalSenha.classList.remove('active');
+            document.body.style.overflow = '';
+            codigoEnviado = null;
+            codigoEmail = null;
+        }
+
+        // ===== SALVAR ALTERAÇÕES DO PERFIL =====
+        document.getElementById('btnSalvarPerfil')?.addEventListener('click', async function() {
+            const nome = document.getElementById('edit-nome').value;
+            const telefone = document.getElementById('edit-telefone').value;
+            const dataNascimento = document.getElementById('edit-data-nascimento').value;
+
+            if (!userEmailGlobal) {
+                showToast("Usuário não logado!", "error");
+                return;
+            }
+
+            if (!nome || nome.trim() === '') {
+                showToast("O nome não pode estar vazio!", "warning");
+                return;
+            }
+
+            this.disabled = true;
+            this.textContent = 'Salvando...';
+
+            try {
+                // 1. Atualizar nome no Auth
+                const { error: authError } = await supabaseClient.auth.updateUser({
+                    data: {
+                        name: nome
+                    }
+                });
+
+                if (authError) {
+                    console.error("Erro ao atualizar auth:", authError);
+                    showToast("Erro ao atualizar nome!", "error");
+                    this.disabled = false;
+                    this.textContent = '💾 Salvar Alterações';
+                    return;
+                }
+
+                // 2. Atualizar na tabela usuarios
+                const { error } = await supabaseClient
+                    .from('usuarios')
+                    .update({
+                        nome: nome,
+                        telefone: telefone || null,
+                        data_nascimento: dataNascimento || null
+                    })
+                    .eq('email', userEmailGlobal);
+
+                if (error) {
+                    console.error("Erro ao atualizar:", error);
+                    showToast("Erro ao salvar alterações!", "error");
+                    return;
+                }
+
+                if (dadosUsuarioAtual) {
+                    dadosUsuarioAtual.nome = nome;
+                    dadosUsuarioAtual.telefone = telefone;
+                    dadosUsuarioAtual.data_nascimento = dataNascimento;
+                }
+
+                document.getElementById('nomeUsuario').textContent = 'Olá, ' + nome;
+                localStorage.setItem("usuarioLogado", nome);
+
+                showToast("✅ Alterações salvas com sucesso!", "success");
+                fecharModalEditar();
+
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao salvar!", "error");
+            } finally {
+                this.disabled = false;
+                this.textContent = '💾 Salvar Alterações';
+            }
+        });
+
+        // ===== ALTERAR SENHA =====
+        document.getElementById('btnAlterarSenha')?.addEventListener('click', function() {
+            abrirModalSenha();
+        });
+
+        document.getElementById('btnEnviarCodigo')?.addEventListener('click', async function() {
+            const email = document.getElementById('senha-email').value;
+
+            if (!email) {
+                showToast("Digite seu email!", "warning");
+                return;
+            }
+
+            this.disabled = true;
+            this.textContent = 'Enviando...';
+
+            try {
+                const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+                codigoEnviado = codigo;
+                codigoEmail = email;
+
+                // ENVIA O CÓDIGO POR EMAIL (não imprime no console)
+                const emailResponse = await fetch('https://api.resend.com/emails', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer re_sua_chave_aqui', // Coloque sua chave do Resend
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        from: 'Escorphy <no-reply@escorphy.com>',
+                        to: email,
+                        subject: '🔑 Código de verificação - Escorphy',
+                        html: `
+                            <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 30px; background: #f0faf5; border-radius: 16px; border: 1px solid #4CAF50;">
+                                <h2 style="color: #1a4a2e; text-align: center;">🔑 Código de Verificação</h2>
+                                <p style="color: #333; text-align: center;">Olá,</p>
+                                <p style="color: #333; text-align: center;">Você solicitou a alteração da sua senha no <strong>Escorphy</strong>.</p>
+                                <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0; border: 2px dashed #4CAF50;">
+                                    <span style="font-size: 32px; font-weight: bold; color: #1a4a2e; letter-spacing: 4px;">${codigo}</span>
+                                </div>
+                                <p style="color: #6b8a76; text-align: center; font-size: 13px;">Este código é válido por 10 minutos.</p>
+                                <p style="color: #6b8a76; text-align: center; font-size: 13px;">Se você não solicitou esta alteração, ignore este email.</p>
+                                <hr style="border: none; border-top: 1px solid #c8e6d4; margin: 20px 0;">
+                                <p style="color: #8aa596; text-align: center; font-size: 12px;">© 2025 Escorphy - Transformando vidas através do esporte.</p>
+                            </div>
+                        `
+                    })
+                });
+
+                if (!emailResponse.ok) {
+                    console.error("Erro ao enviar email:", await emailResponse.text());
+                    showToast("Erro ao enviar email! Tente novamente.", "error");
+                    this.disabled = false;
+                    this.textContent = '📧 Enviar Código';
+                    return;
+                }
+
+                showToast(`📧 Código enviado para ${email}!`, "success");
+
+                document.getElementById('senha-step2').style.display = 'block';
+                document.getElementById('senha-status').textContent = '✅ Código enviado! Verifique seu email.';
+                document.getElementById('senha-status').className = 'senha-status success';
+
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao enviar código!", "error");
+            } finally {
+                this.disabled = false;
+                this.textContent = '📧 Enviar Código';
+            }
+        });
+
+        document.getElementById('btnVerificarCodigo')?.addEventListener('click', async function() {
+            const codigo = document.getElementById('codigo-verificacao').value;
+            const novaSenha = document.getElementById('nova-senha').value;
+            const confirmarSenha = document.getElementById('confirmar-senha').value;
+            const status = document.getElementById('senha-status');
+
+            if (!codigo) {
+                status.textContent = 'Digite o código de verificação!';
+                status.className = 'senha-status error';
+                return;
+            }
+
+            if (codigo !== codigoEnviado) {
+                status.textContent = '❌ Código inválido!';
+                status.className = 'senha-status error';
+                return;
+            }
+
+            if (novaSenha.length < 6) {
+                status.textContent = 'A senha deve ter pelo menos 6 caracteres!';
+                status.className = 'senha-status error';
+                return;
+            }
+
+            if (novaSenha !== confirmarSenha) {
+                status.textContent = 'As senhas não coincidem!';
+                status.className = 'senha-status error';
+                return;
+            }
+
+            this.disabled = true;
+            this.textContent = 'Alterando...';
+
+            try {
+                const { error } = await supabaseClient.auth.updateUser({
+                    password: novaSenha
+                });
+
+                if (error) {
+                    console.error("Erro ao alterar senha:", error);
+                    status.textContent = '❌ Erro ao alterar senha!';
+                    status.className = 'senha-status error';
+                    return;
+                }
+
+                status.textContent = '✅ Senha alterada com sucesso!';
+                status.className = 'senha-status success';
+                showToast("✅ Senha alterada com sucesso!", "success");
+
+                setTimeout(() => {
+                    fecharModalSenha();
+                }, 2000);
+
+            } catch (err) {
+                console.error(err);
+                status.textContent = '❌ Erro ao alterar senha!';
+                status.className = 'senha-status error';
+            } finally {
+                this.disabled = false;
+                this.textContent = '✅ Verificar e Alterar Senha';
+            }
+        });
+
+        // ===== PONTOS =====
         async function verificarEResetarPontos() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
@@ -687,17 +2168,19 @@
             const agora = new Date();
             const mesAtual = agora.getMonth();
             const anoAtual = agora.getFullYear();
-            const chaveReset = `ultimoReset_${user.email}`;
+            const chaveReset = 'ultimoReset_' + user.email;
             const ultimoReset = localStorage.getItem(chaveReset);
 
             if (!ultimoReset) {
-                localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
+                localStorage.setItem(chaveReset, anoAtual + '-' + mesAtual);
                 return;
             }
 
-            const [ultimoAno, ultimoMes] = ultimoReset.split('-');
-            
-            if (parseInt(ultimoAno) !== anoAtual || parseInt(ultimoMes) !== mesAtual) {
+            var partes = ultimoReset.split('-');
+            var ultimoAno = parseInt(partes[0]);
+            var ultimoMes = parseInt(partes[1]);
+
+            if (ultimoAno !== anoAtual || ultimoMes !== mesAtual) {
                 const { data: usuarioData } = await supabaseClient
                     .from('usuarios')
                     .select('id')
@@ -709,8 +2192,8 @@
                         .from('usuarios')
                         .update({ pontos_mes: 0 })
                         .eq('id', usuarioData.id);
-                    
-                    localStorage.setItem(chaveReset, `${anoAtual}-${mesAtual}`);
+
+                    localStorage.setItem(chaveReset, anoAtual + '-' + mesAtual);
                     document.getElementById('contPontos').textContent = '0';
                     document.getElementById('pontosMes').textContent = '0';
                 }
@@ -738,85 +2221,92 @@
 
             if (error) { console.error('Erro:', error); return 0; }
 
-            let pontosTotais = 0;
+            var pontosTotais = 0;
 
             if (atividades && atividades.length > 0) {
-                atividades.forEach(atividade => {
-                    let distanciaMetros = 0;
+                for (var i = 0; i < atividades.length; i++) {
+                    var atividade = atividades[i];
+                    var distanciaMetros = 0;
                     if (atividade.trajeto?.summary?.distance) distanciaMetros = atividade.trajeto.summary.distance;
                     else if (atividade.trajeto?.distance) distanciaMetros = atividade.trajeto.distance;
                     pontosTotais += calcularPontosPorDistancia(distanciaMetros / 1000);
-                });
+                }
             }
 
-            const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).maybeSingle();
-            if (usuarioData) await supabaseClient.from('usuarios').update({ pontos_mes: pontosTotais }).eq('id', usuarioData.id);
+            const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email)
+                .maybeSingle();
+            if (usuarioData) await supabaseClient.from('usuarios').update({ pontos_mes: pontosTotais }).eq('id', usuarioData
+                .id);
 
             document.getElementById('contPontos').textContent = pontosTotais;
             document.getElementById('pontosMes').textContent = pontosTotais;
             return pontosTotais;
         }
 
+        // ===== TREINOS =====
         function formatarDistancia(treino) {
-            if (treino.trajeto?.summary?.distance) return `${(treino.trajeto.summary.distance / 1000).toFixed(2)} km`;
-            if (treino.trajeto?.distance) return `${(treino.trajeto.distance / 1000).toFixed(2)} km`;
-            return "Distancia nao disponivel";
+            if (treino.trajeto?.summary?.distance) return (treino.trajeto.summary.distance / 1000).toFixed(2) + ' km';
+            if (treino.trajeto?.distance) return (treino.trajeto.distance / 1000).toFixed(2) + ' km';
+            return "Distância não disponível";
         }
 
-        function getIntensidadeCor(intensidade) { 
-            if (intensidade <= 3) return '#27ae60'; 
-            if (intensidade <= 7) return '#f39c12'; 
-            return '#e74c3c'; 
+        function getIntensidadeCor(intensidade) {
+            if (intensidade <= 3) return '#27ae60';
+            if (intensidade <= 7) return '#f39c12';
+            return '#e74c3c';
         }
 
-        function getIntensidadeTexto(intensidade) { 
-            if (intensidade <= 3) return 'Leve'; 
-            if (intensidade <= 7) return 'Moderado'; 
-            return 'Intenso'; 
+        function getIntensidadeTexto(intensidade) {
+            if (intensidade <= 3) return 'Leve';
+            if (intensidade <= 7) return 'Moderado';
+            return 'Intenso';
         }
 
-        let treinoAtualId = null;
-        let treinoAtualItem = null;
+        var treinoAtualId = null;
+        var treinoAtualItem = null;
 
         function exibirRelatorioTreino(treino, id, elementoLi) {
             const modal = document.getElementById('modalRelatorio');
             const modalTitulo = document.getElementById('modalTituloTreino');
             const modalBody = document.getElementById('modalBody');
-            
+
             treinoAtualId = id;
             treinoAtualItem = elementoLi;
-            
-            let dataFormatada = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Data nao disponivel";
+
+            var dataFormatada = treino.data ? new Date(treino.data).toLocaleDateString('pt-BR', { day: '2-digit',
+                month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Data não disponível";
             const distanciaTexto = formatarDistancia(treino);
             const intensidade = treino.intensidade || 0;
-            
-            modalTitulo.textContent = treino.titulo || "Treino sem titulo";
-            
-            let acessoriosHtml = '';
+
+            modalTitulo.textContent = treino.titulo || "Treino sem título";
+
+            var acessoriosHtml = '';
             if (treino.acessorios) {
                 if (typeof treino.acessorios === 'object' && treino.acessorios.length > 0) {
-                    acessoriosHtml = treino.acessorios.map(a => 
-                        `<div class="acessorio-item">${a.nome}${a.especificacao ? `: ${a.especificacao}` : ''}</div>`
-                    ).join('');
+                    for (var i = 0; i < treino.acessorios.length; i++) {
+                        var a = treino.acessorios[i];
+                        acessoriosHtml += '<div class="acessorio-item">' + a.nome + (a.especificacao ? ': ' + a
+                            .especificacao : '') + '</div>';
+                    }
                 } else if (typeof treino.acessorios === 'string' && treino.acessorios !== 'Nenhum') {
-                    acessoriosHtml = `<div class="acessorio-item">${treino.acessorios}</div>`;
+                    acessoriosHtml = '<div class="acessorio-item">' + treino.acessorios + '</div>';
                 }
             }
-            
+
             modalBody.innerHTML = `
-                <div class="data-treino">📅 ${dataFormatada}</div>
-                <div class="relatorio-section"><div class="relatorio-label">DISTANCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">DESCRICAO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descricao fornecida"}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">NIVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nivel ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
-                <div class="relatorio-section"><div class="relatorio-label">INFORMACOES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Nao especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Publico'}</span></div></div>
-                ${acessoriosHtml ? `<div class="relatorio-section"><div class="relatorio-label">ACESSORIOS UTILIZADOS</div><div class="relatorio-value">${acessoriosHtml}</div></div>` : ''}
-            `;
+                    <div class="data-treino">📅 ${dataFormatada}</div>
+                    <div class="relatorio-section"><div class="relatorio-label">DISTÂNCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
+                    <div class="relatorio-section"><div class="relatorio-label">DESCRIÇÃO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descrição fornecida"}</div></div>
+                    <div class="relatorio-section"><div class="relatorio-label">NÍVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nível ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
+                    <div class="relatorio-section"><div class="relatorio-label">INFORMAÇÕES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Não especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Público'}</span></div></div>
+                    ${acessoriosHtml ? `<div class="relatorio-section"><div class="relatorio-label">ACESSÓRIOS UTILIZADOS</div><div class="relatorio-value">${acessoriosHtml}</div></div>` : ''}
+                `;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
-        function fecharModalRelatorio() { 
-            document.getElementById('modalRelatorio').classList.remove('active'); 
+
+        function fecharModalRelatorio() {
+            document.getElementById('modalRelatorio').classList.remove('active');
             document.body.style.overflow = '';
             treinoAtualId = null;
             treinoAtualItem = null;
@@ -827,24 +2317,24 @@
                 showToast("Nenhum treino selecionado!", "error");
                 return;
             }
-            
+
             try {
                 const { error } = await supabaseClient
                     .from('atividades')
                     .delete()
                     .eq('id', treinoAtualId);
-                
+
                 if (error) {
                     console.error("Erro ao excluir:", error);
                     showToast("Erro ao excluir treino!", "error");
                     return;
                 }
-                
+
                 if (treinoAtualItem) treinoAtualItem.remove();
-                
-                const treinosRestantes = document.querySelectorAll('#listaTreinos li').length;
+
+                var treinosRestantes = document.querySelectorAll('#listaTreinos li').length;
                 document.getElementById('contTreinos').textContent = treinosRestantes;
-                
+
                 fecharModalRelatorio();
                 showToast("Treino excluído com sucesso!", "success");
             } catch (err) {
@@ -869,17 +2359,26 @@
             lista.innerHTML = '';
 
             if (atividades && atividades.length > 0) {
-                atividades.forEach(atividade => {
-                    const item = document.createElement('li');
-                    let dataTexto = atividade.data ? ` - ${new Date(atividade.data).toLocaleDateString('pt-BR')}` : '';
-                    let distanciaPreview = '';
-                    if (atividade.trajeto?.summary?.distance) distanciaPreview = ` 🏃 ${(atividade.trajeto.summary.distance / 1000).toFixed(1)}km`;
-                    else if (atividade.trajeto?.distance) distanciaPreview = ` 🏃 ${(atividade.trajeto.distance / 1000).toFixed(1)}km`;
-                    item.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><span>${atividade.titulo}${dataTexto}</span>${distanciaPreview ? `<span style="font-size: 0.85rem; color: #e74c3c;">${distanciaPreview}</span>` : ''}</div>`;
+                for (var i = 0; i < atividades.length; i++) {
+                    var atividade = atividades[i];
+                    var item = document.createElement('li');
+                    var dataTexto = atividade.data ? ' - ' + new Date(atividade.data).toLocaleDateString('pt-BR') : '';
+                    var distanciaPreview = '';
+                    if (atividade.trajeto?.summary?.distance) distanciaPreview = ' 🏃 ' + (atividade.trajeto.summary
+                        .distance / 1000).toFixed(1) + 'km';
+                    else if (atividade.trajeto?.distance) distanciaPreview = ' 🏃 ' + (atividade.trajeto.distance / 1000)
+                        .toFixed(1) + 'km';
+                    item.innerHTML =
+                        '<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><span>' +
+                        atividade.titulo + dataTexto + '</span>' + (distanciaPreview ?
+                            '<span style="font-size: 0.85rem; color: #e74c3c;">' + distanciaPreview + '</span>' : '') +
+                        '</div>';
                     item.style.cursor = "pointer";
-                    item.addEventListener('click', () => exibirRelatorioTreino(atividade, atividade.id, item));
+                    (function(atividade, id, item) {
+                        item.addEventListener('click', function() { exibirRelatorioTreino(atividade, id, item); });
+                    })(atividade, atividade.id, item);
                     lista.appendChild(item);
-                });
+                }
             } else { lista.innerHTML = '<li>Nenhum treino encontrado. Clique no + para registrar!</li>'; }
         }
 
@@ -891,30 +2390,35 @@
             const confirmExcluirModal = document.getElementById('confirmExcluirTreinoModal');
             const confirmExcluirBtn = document.getElementById('confirmExcluirTreinoBtn');
             const cancelExcluirBtn = document.getElementById('cancelExcluirTreinoBtn');
-            
+
             if (closeBtn) closeBtn.addEventListener('click', fecharModalRelatorio);
             if (footerCloseBtn) footerCloseBtn.addEventListener('click', fecharModalRelatorio);
-            
+
             if (excluirBtn) {
-                excluirBtn.addEventListener('click', () => {
+                excluirBtn.addEventListener('click', function() {
                     if (treinoAtualId) confirmExcluirModal.style.display = "flex";
                     else showToast("Nenhum treino selecionado!", "warning");
                 });
             }
-            
-            if (confirmExcluirBtn) confirmExcluirBtn.addEventListener('click', async () => {
+
+            if (confirmExcluirBtn) confirmExcluirBtn.addEventListener('click', async function() {
                 confirmExcluirModal.style.display = "none";
                 await excluirTreino();
             });
-            
-            if (cancelExcluirBtn) cancelExcluirBtn.addEventListener('click', () => confirmExcluirModal.style.display = "none");
-            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) fecharModalRelatorio(); });
-            if (confirmExcluirModal) confirmExcluirModal.addEventListener('click', (e) => { if (e.target === confirmExcluirModal) confirmExcluirModal.style.display = "none"; });
-            
-            document.addEventListener('keydown', (e) => {
+
+            if (cancelExcluirBtn) cancelExcluirBtn.addEventListener('click', function() { confirmExcluirModal.style
+                    .display = "none"; });
+            if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) fecharModalRelatorio(); });
+            if (confirmExcluirModal) confirmExcluirModal.addEventListener('click', function(e) { if (e.target ===
+                    confirmExcluirModal) confirmExcluirModal.style.display = "none"; });
+
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    if (modal?.classList.contains('active')) fecharModalRelatorio();
-                    if (confirmExcluirModal?.style.display === 'flex') confirmExcluirModal.style.display = "none";
+                    if (modal && modal.classList.contains('active')) fecharModalRelatorio();
+                    if (confirmExcluirModal && confirmExcluirModal.style.display === 'flex') confirmExcluirModal.style
+                        .display = "none";
+                    if (modalEditar && modalEditar.classList.contains('active')) fecharModalEditar();
+                    if (modalSenha && modalSenha.classList.contains('active')) fecharModalSenha();
                 }
             });
         }
@@ -923,12 +2427,14 @@
             const container = document.getElementById('fotoPerfilContainer');
             const tooltip = document.getElementById('pontosTooltip');
             if (!container || !tooltip) return;
-            let timeoutId;
-            container.addEventListener('mouseenter', () => { clearTimeout(timeoutId); tooltip.classList.add('show'); });
-            container.addEventListener('mouseleave', () => { timeoutId = setTimeout(() => tooltip.classList.remove('show'), 300); });
+            var timeoutId;
+            container.addEventListener('mouseenter', function() { clearTimeout(timeoutId);
+                tooltip.classList.add('show'); });
+            container.addEventListener('mouseleave', function() { timeoutId = setTimeout(function() { tooltip.classList
+                        .remove('show'); }, 300); });
         }
 
-        // GALERIA
+        // ===== GALERIA =====
         const fileInput = document.getElementById("fileInput");
         const preview = document.getElementById("preview");
         const saveBtn = document.getElementById("saveBtn");
@@ -958,88 +2464,97 @@
             modalConfirm.style.display = "flex";
         }
 
-        function hideModal() { modalConfirm.style.display = "none"; currentImageToDelete = null; }
+        function hideModal() { modalConfirm.style.display = "none";
+            currentImageToDelete = null; }
 
         async function excluirImagem() {
             if (!currentImageToDelete) return;
-            const { url, container } = currentImageToDelete;
+            var url = currentImageToDelete.url;
+            var container = currentImageToDelete.container;
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { showToast("Usuario nao identificado!", "error"); hideModal(); return; }
-            
-            const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).maybeSingle();
-            if (!usuarioData) { 
-                const userId = user.id;
-                const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
+            if (!user) { showToast("Usuário não identificado!", "error");
+                hideModal(); return; }
+
+            const { data: usuarioData } = await supabaseClient.from('usuarios').select('id').eq('email', user.email)
+                .maybeSingle();
+            if (!usuarioData) {
+                var userId = user.id;
+                const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria")
+                    .eq("usuario_id", userId).maybeSingle();
                 if (!fetchError && galeriaData) {
-                    const novasUrls = galeriaData.galeria.filter(imgUrl => imgUrl !== url);
+                    var novasUrls = galeriaData.galeria.filter(function(imgUrl) { return imgUrl !== url; });
                     await supabaseClient.from("fotos").upsert({ usuario_id: userId, galeria: novasUrls }, { onConflict: "usuario_id" });
                     container.remove();
-                    const remainingImages = document.querySelectorAll('#preview .preview-img-container').length;
+                    var remainingImages = document.querySelectorAll('#preview .preview-img-container').length;
                     atualizarInterfaceGaleria(remainingImages);
-                    showToast("Imagem excluida com sucesso!", "success");
+                    showToast("Imagem excluída com sucesso!", "success");
                 }
                 hideModal();
                 return;
             }
-            
-            const userId = usuarioData.id;
-            const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
-            if (fetchError) { showToast("Erro ao buscar galeria!", "error"); hideModal(); return; }
+
+            var userId = usuarioData.id;
+            const { data: galeriaData, error: fetchError } = await supabaseClient.from("fotos").select("galeria")
+                .eq("usuario_id", userId).maybeSingle();
+            if (fetchError) { showToast("Erro ao buscar galeria!", "error");
+                hideModal(); return; }
             if (galeriaData) {
-                const novasUrls = galeriaData.galeria.filter(imgUrl => imgUrl !== url);
+                var novasUrls = galeriaData.galeria.filter(function(imgUrl) { return imgUrl !== url; });
                 await supabaseClient.from("fotos").update({ galeria: novasUrls }).eq("usuario_id", userId);
             }
             container.remove();
-            const remainingImages = document.querySelectorAll('#preview .preview-img-container').length;
+            var remainingImages = document.querySelectorAll('#preview .preview-img-container').length;
             atualizarInterfaceGaleria(remainingImages);
-            showToast("Imagem excluida com sucesso!", "success");
+            showToast("Imagem excluída com sucesso!", "success");
             hideModal();
         }
 
         confirmDeleteBtn.addEventListener("click", excluirImagem);
         cancelDeleteBtn.addEventListener("click", hideModal);
-        window.addEventListener("click", (event) => { if (event.target === modalConfirm) hideModal(); });
+        window.addEventListener("click", function(event) { if (event.target === modalConfirm) hideModal(); });
 
         function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
+            return new Promise(function(resolve, reject) {
+                var reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
+                reader.onload = function() { resolve(reader.result); };
+                reader.onerror = function(error) { reject(error); };
             });
         }
 
         function abrirSeletorImagem() {
             if (!userEmailGlobal) { showToast("Faça login para adicionar fotos!", "warning"); return; }
-            const currentImages = document.querySelectorAll('#preview .preview-img-container').length;
-            if (currentImages >= MAX_GALLERY_IMAGES) { showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning"); return; }
+            var currentImages = document.querySelectorAll('#preview .preview-img-container').length;
+            if (currentImages >= MAX_GALLERY_IMAGES) { showToast('Limite de ' + MAX_GALLERY_IMAGES +
+                    ' fotos na galeria atingido!', "warning"); return; }
             fileInput.click();
         }
 
-        fileInput.addEventListener("change", async (event) => {
-            const files = Array.from(event.target.files);
+        fileInput.addEventListener("change", async function(event) {
+            var files = Array.from(event.target.files);
             if (files.length === 0) return;
-            
+
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { showToast("Usuario nao identificado!", "error"); return; }
-            
-            const currentImages = document.querySelectorAll('#preview .preview-img-container').length;
-            
+            if (!user) { showToast("Usuário não identificado!", "error"); return; }
+
+            var currentImages = document.querySelectorAll('#preview .preview-img-container').length;
+
             if (currentImages + files.length > MAX_GALLERY_IMAGES) {
-                showToast(`Voce atingiu o limite de ${MAX_GALLERY_IMAGES} fotos na galeria`, "warning");
+                showToast('Você atingiu o limite de ' + MAX_GALLERY_IMAGES + ' fotos na galeria', "warning");
                 fileInput.value = "";
                 return;
             }
-            
-            for (const file of files) {
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
                 if (!file.type.startsWith('image/')) { showToast("Selecione apenas imagens!", "warning"); continue; }
                 if (file.size > 2 * 1024 * 1024) { showToast("Imagem muito grande! Max 2MB", "warning"); continue; }
-                
+
                 try {
-                    const base64 = await fileToBase64(file);
+                    var base64 = await fileToBase64(file);
                     selectedFilesBase64.push(base64);
-                    
-                    const container = document.createElement("div");
+
+                    var container = document.createElement("div");
                     container.className = "preview-img-container";
                     container.style.position = "relative";
                     container.style.width = "100%";
@@ -1047,8 +2562,8 @@
                     container.style.overflow = "hidden";
                     container.style.borderRadius = "12px";
                     container.style.backgroundColor = "#f5f5f5";
-                    
-                    const img = document.createElement("img");
+
+                    var img = document.createElement("img");
                     img.src = base64;
                     img.style.position = "absolute";
                     img.style.top = "0";
@@ -1056,8 +2571,8 @@
                     img.style.width = "100%";
                     img.style.height = "100%";
                     img.style.objectFit = "cover";
-                    
-                    const deleteBtn = document.createElement("button");
+
+                    var deleteBtn = document.createElement("button");
                     deleteBtn.className = "delete-btn";
                     deleteBtn.innerHTML = '✖';
                     deleteBtn.style.position = "absolute";
@@ -1076,76 +2591,86 @@
                     deleteBtn.style.color = "white";
                     deleteBtn.style.fontSize = "14px";
                     deleteBtn.style.fontWeight = "bold";
-                    
-                    deleteBtn.addEventListener("click", (e) => { e.stopPropagation(); showDeleteModal(base64, container); });
-                    
+
+                    (function(container, base64) {
+                        deleteBtn.addEventListener("click", function(e) { e.stopPropagation();
+                            showDeleteModal(base64, container); });
+                    })(container, base64);
+
                     container.appendChild(img);
                     container.appendChild(deleteBtn);
                     preview.appendChild(container);
-                    
+
                 } catch (err) { console.error("Erro ao converter imagem:", err); }
             }
             fileInput.value = "";
-            const currentCount = document.querySelectorAll('#preview .preview-img-container').length;
+            var currentCount = document.querySelectorAll('#preview .preview-img-container').length;
             atualizarInterfaceGaleria(currentCount);
         });
 
-        addImageBtn.addEventListener("click", () => {
+        addImageBtn.addEventListener("click", function() {
             if (!userEmailGlobal) { showToast("Faça login para adicionar fotos!", "warning"); return; }
-            const currentCount = document.querySelectorAll('#preview .preview-img-container').length;
-            if (currentCount >= MAX_GALLERY_IMAGES) { showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning"); return; }
+            var currentCount = document.querySelectorAll('#preview .preview-img-container').length;
+            if (currentCount >= MAX_GALLERY_IMAGES) { showToast('Limite de ' + MAX_GALLERY_IMAGES +
+                    ' fotos na galeria atingido!', "warning"); return; }
             fileInput.click();
         });
 
-        saveBtn.addEventListener("click", async () => {
+        saveBtn.addEventListener("click", async function() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { showToast("Usuario nao identificado!", "error"); return; }
-            
+            if (!user) { showToast("Usuário não identificado!", "error"); return; }
+
             if (selectedFilesBase64.length === 0) { showToast("Selecione pelo menos uma imagem!", "warning"); return; }
-            
-            const userId = user.id;
-            
-            const { data: galeriaAtual, error: fetchError } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
-            let currentImageCount = galeriaAtual?.galeria?.length || 0;
-            
+
+            var userId = user.id;
+
+            const { data: galeriaAtual, error: fetchError } = await supabaseClient.from("fotos").select("galeria")
+                .eq("usuario_id", userId).maybeSingle();
+            var currentImageCount = galeriaAtual?.galeria?.length || 0;
+
             if (currentImageCount + selectedFilesBase64.length > MAX_GALLERY_IMAGES) {
-                showToast(`Limite de ${MAX_GALLERY_IMAGES} fotos na galeria atingido!`, "warning");
+                showToast('Limite de ' + MAX_GALLERY_IMAGES + ' fotos na galeria atingido!', "warning");
                 return;
             }
-            
+
             try {
-                let galeriaFinal = [...selectedFilesBase64];
-                if (galeriaAtual?.galeria) galeriaFinal = [...galeriaAtual.galeria, ...selectedFilesBase64];
-                
-                const { error } = await supabaseClient.from("fotos").upsert({ usuario_id: userId, galeria: galeriaFinal }, { onConflict: "usuario_id" });
-                
-                if (error) { console.error("Erro do Supabase:", error); showToast("Erro ao salvar galeria!", "error"); return; }
-                
+                var galeriaFinal = selectedFilesBase64.slice();
+                if (galeriaAtual?.galeria) galeriaFinal = galeriaAtual.galeria.concat(selectedFilesBase64);
+
+                const { error } = await supabaseClient.from("fotos").upsert({ usuario_id: userId, galeria: galeriaFinal },
+                    { onConflict: "usuario_id" });
+
+                if (error) { console.error("Erro do Supabase:", error);
+                    showToast("Erro ao salvar galeria!", "error"); return; }
+
                 showToast("Galeria salva com sucesso!", "success");
                 selectedFilesBase64 = [];
                 await carregarGaleria();
-            } catch (err) { console.error("Erro inesperado:", err); showToast("Erro inesperado!", "error"); }
+            } catch (err) { console.error("Erro inesperado:", err);
+                showToast("Erro inesperado!", "error"); }
         });
 
         async function carregarGaleria() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
-            
-            const userId = user.id;
-            const { data, error } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId).maybeSingle();
-            
+
+            var userId = user.id;
+            const { data, error } = await supabaseClient.from("fotos").select("galeria").eq("usuario_id", userId)
+                .maybeSingle();
+
             if (error) { console.error("Erro ao buscar galeria:", error); return; }
-            
-            if (!data || !data.galeria || data.galeria.length === 0) { 
+
+            if (!data || !data.galeria || data.galeria.length === 0) {
                 preview.innerHTML = '';
                 atualizarInterfaceGaleria(0);
-                return; 
+                return;
             }
-            
+
             preview.innerHTML = "";
-            
-            data.galeria.forEach((url) => {
-                const container = document.createElement("div");
+
+            for (var i = 0; i < data.galeria.length; i++) {
+                var url = data.galeria[i];
+                var container = document.createElement("div");
                 container.className = "preview-img-container";
                 container.style.position = "relative";
                 container.style.width = "100%";
@@ -1153,8 +2678,8 @@
                 container.style.overflow = "hidden";
                 container.style.borderRadius = "12px";
                 container.style.backgroundColor = "#f5f5f5";
-                
-                const img = document.createElement("img");
+
+                var img = document.createElement("img");
                 img.src = url;
                 img.style.position = "absolute";
                 img.style.top = "0";
@@ -1162,8 +2687,8 @@
                 img.style.width = "100%";
                 img.style.height = "100%";
                 img.style.objectFit = "cover";
-                
-                const deleteBtn = document.createElement("button");
+
+                var deleteBtn = document.createElement("button");
                 deleteBtn.className = "delete-btn";
                 deleteBtn.innerHTML = '✖';
                 deleteBtn.style.position = "absolute";
@@ -1182,100 +2707,194 @@
                 deleteBtn.style.color = "white";
                 deleteBtn.style.fontSize = "14px";
                 deleteBtn.style.fontWeight = "bold";
-                
-                deleteBtn.addEventListener("click", (e) => { e.stopPropagation(); showDeleteModal(url, container); });
-                
+
+                (function(container, url) {
+                    deleteBtn.addEventListener("click", function(e) { e.stopPropagation();
+                        showDeleteModal(url, container); });
+                })(container, url);
+
                 container.appendChild(img);
                 container.appendChild(deleteBtn);
                 preview.appendChild(container);
-            });
-            
+            }
+
             atualizarInterfaceGaleria(data.galeria.length);
         }
 
-        // NOTIFICAÇÕES
+        // ===== NOTIFICAÇÕES =====
+        function formatarTempo(data) {
+            var agora = new Date();
+            var notif = new Date(data);
+            var diff = Math.floor((agora - notif) / 1000);
+            if (diff < 60) return 'agora';
+            if (diff < 3600) return Math.floor(diff / 60) + ' min';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' h';
+            return Math.floor(diff / 86400) + ' d';
+        }
+
+        async function apagarNotificacao(id) {
+            if (!userEmailGlobal) return;
+
+            const { data: usuarioAtual } = await supabaseClient.from('usuarios').select('id').eq('email', userEmailGlobal)
+                .maybeSingle();
+            if (!usuarioAtual) return;
+
+            var result = await supabaseClient
+                .from('notificacoes')
+                .delete()
+                .eq('id', id)
+                .eq('usuario_id', usuarioAtual.id);
+
+            if (!result.error) {
+                showToast('Notificação apagada!', 'success');
+                carregarNotificacoes();
+            } else {
+                showToast('Erro ao apagar notificação', 'error');
+            }
+        }
+
+        async function apagarTodasNotificacoes() {
+            if (!userEmailGlobal) return;
+
+            const { data: usuarioAtual } = await supabaseClient.from('usuarios').select('id').eq('email', userEmailGlobal)
+                .maybeSingle();
+            if (!usuarioAtual) return;
+
+            mostrarModalConfirmacao(
+                'Apagar todas as notificações?',
+                'Tem certeza que deseja apagar todas as notificações? Esta ação não pode ser desfeita.',
+                async function() {
+                    var result = await supabaseClient
+                        .from('notificacoes')
+                        .delete()
+                        .eq('usuario_id', usuarioAtual.id);
+
+                    if (!result.error) {
+                        showToast('Todas as notificações foram apagadas!', 'success');
+                        carregarNotificacoes();
+                    } else {
+                        showToast('Erro ao apagar notificações', 'error');
+                    }
+                }
+            );
+        }
+
         async function carregarNotificacoes() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
-            
-            const { data: usuarioAtual } = await supabaseClient.from('usuarios').select('id').eq('email', user.email).maybeSingle();
+
+            const { data: usuarioAtual } = await supabaseClient.from('usuarios').select('id').eq('email', user.email)
+                .maybeSingle();
             if (!usuarioAtual) return;
-            
+
             const { data: notificacoes, error } = await supabaseClient
                 .from('notificacoes')
                 .select('*, remetente:remetente_id(id, nome, foto_perfil_url)')
                 .eq('usuario_id', usuarioAtual.id)
                 .order('created_at', { ascending: false })
                 .limit(20);
-            
+
             if (error) return;
-            
-            const naoLidas = notificacoes?.filter(n => !n.lida).length || 0;
-            const badge = document.getElementById('notificationBadge');
+
+            var naoLidas = 0;
+            if (notificacoes) {
+                for (var i = 0; i < notificacoes.length; i++) {
+                    if (!notificacoes[i].lida) naoLidas++;
+                }
+            }
+            var badge = document.getElementById('notificationBadge');
             if (naoLidas > 0) {
                 badge.style.display = 'flex';
                 badge.textContent = naoLidas > 9 ? '9+' : naoLidas;
             } else {
                 badge.style.display = 'none';
             }
-            
-            const listDiv = document.getElementById('notificationList');
+
+            var listDiv = document.getElementById('notificationList');
             if (!notificacoes || notificacoes.length === 0) {
                 listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificação</div>';
                 return;
             }
-            
-            listDiv.innerHTML = notificacoes.map(n => {
-                let texto = '';
-                switch(n.tipo) {
-                    case 'seguidor': texto = `${n.remetente?.nome || 'Alguém'} começou a te seguir!`; break;
-                    case 'curtida': texto = `${n.remetente?.nome || 'Alguém'} curtiu seu treino!`; break;
-                    case 'comentario': texto = `${n.remetente?.nome || 'Alguém'} comentou no seu treino!`; break;
-                    default: texto = 'Nova notificação';
+
+            var html = '';
+            for (var j = 0; j < notificacoes.length; j++) {
+                var n = notificacoes[j];
+                var nomeRemetente = n.remetente?.nome || 'Alguém';
+                var texto = '';
+                switch (n.tipo) {
+                    case 'seguidor':
+                        texto = nomeRemetente + ' começou a te seguir!';
+                        break;
+                    case 'curtida':
+                        texto = nomeRemetente + ' curtiu seu treino!';
+                        break;
+                    case 'comentario':
+                        texto = nomeRemetente + ' comentou no seu treino!';
+                        break;
+                    default:
+                        texto = 'Nova notificação';
                 }
-                return `
-                    <div class="notification-item ${!n.lida ? 'unread' : ''}" data-id="${n.id}">
-                        <div class="notification-avatar">${n.remetente?.nome?.charAt(0).toUpperCase() || 'U'}</div>
-                        <div class="notification-content">
-                            <div class="notification-text">${texto}</div>
-                            <div class="notification-time">${formatarTempo(n.created_at)}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.querySelectorAll('.notification-item').forEach(item => {
-                item.addEventListener('click', async () => {
-                    const id = item.dataset.id;
-                    await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
-                    carregarNotificacoes();
-                });
-            });
+                var unreadClass = n.lida ? '' : 'unread';
+                var inicial = nomeRemetente.charAt(0).toUpperCase();
+
+                html += '<div class="notification-item ' + unreadClass + '" data-id="' + n.id + '">';
+                html += '<div class="notification-avatar">' + inicial + '</div>';
+                html += '<div class="notification-content">';
+                html += '<div class="notification-text">' + texto + '</div>';
+                html += '<div class="notification-time">' + formatarTempo(n.created_at) + '</div>';
+                html += '</div>';
+                html += '<button class="btn-delete-notificacao" data-id="' + n.id + '" title="Apagar notificação">✕</button>';
+                html += '</div>';
+            }
+            listDiv.innerHTML = html;
+
+            var items = document.querySelectorAll('.notification-item');
+            for (var k = 0; k < items.length; k++) {
+                (function(item) {
+                    item.addEventListener('click', async function(e) {
+                        if (e.target.classList.contains('btn-delete-notificacao')) return;
+                        var id = item.dataset.id;
+                        await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
+                        carregarNotificacoes();
+                    });
+                })(items[k]);
+            }
+
+            var deleteBtns = document.querySelectorAll('.btn-delete-notificacao');
+            for (var l = 0; l < deleteBtns.length; l++) {
+                (function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var id = btn.dataset.id;
+                        mostrarModalConfirmacao(
+                            'Apagar notificação?',
+                            'Tem certeza que deseja apagar esta notificação?',
+                            function() { apagarNotificacao(id); }
+                        );
+                    });
+                })(deleteBtns[l]);
+            }
         }
 
-        function formatarTempo(data) {
-            const agora = new Date();
-            const notif = new Date(data);
-            const diff = Math.floor((agora - notif) / 1000);
-            if (diff < 60) return 'agora';
-            if (diff < 3600) return `${Math.floor(diff / 60)} min`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)} h`;
-            return `${Math.floor(diff / 86400)} d`;
-        }
+        document.getElementById('btnApagarTodasNotificacoes')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            apagarTodasNotificacoes();
+        });
 
-        document.getElementById('notificationIcon')?.addEventListener('click', (e) => {
+        document.getElementById('notificationIcon')?.addEventListener('click', function(e) {
             e.stopPropagation();
             if (!userEmailGlobal) { showToast("Faça login para ver notificações!", "warning"); return; }
             document.getElementById('notificationDropdown').classList.toggle('show');
             carregarNotificacoes();
         });
 
-        document.addEventListener('click', () => { document.getElementById('notificationDropdown')?.classList.remove('show'); });
+        document.addEventListener('click', function() { document.getElementById('notificationDropdown')?.classList.remove(
+                'show'); });
 
-        // SIDEBAR
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const overlay = document.getElementById('sidebarOverlay');
+        // ===== SIDEBAR =====
+        var sidebar = document.getElementById('sidebar');
+        var sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        var overlay = document.getElementById('sidebarOverlay');
 
         function isMobile() { return window.innerWidth <= 768; }
 
@@ -1296,15 +2915,38 @@
         }
 
         if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);
-        if (overlay) overlay.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) { sidebar.classList.remove('active'); sidebarToggleBtn.classList.remove('opened'); sidebarToggleBtn.innerHTML = '▶'; overlay.classList.remove('active'); localStorage.setItem('sidebarOpen', 'false'); } });
-        const sidebarState = localStorage.getItem('sidebarOpen');
-        if (isMobile() && sidebarState === 'true') { sidebar.classList.add('active'); sidebarToggleBtn.classList.add('opened'); sidebarToggleBtn.innerHTML = '◀'; if (overlay) overlay.classList.add('active'); }
-        window.addEventListener('resize', function () { if (!isMobile()) { sidebar.classList.remove('active'); sidebarToggleBtn.classList.remove('opened'); sidebarToggleBtn.innerHTML = '▶'; if (overlay) overlay.classList.remove('active'); } });
-        
+        if (overlay) overlay.addEventListener('click', function() {
+            if (isMobile() && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                overlay.classList.remove('active');
+                localStorage.setItem('sidebarOpen', 'false');
+            }
+        });
+        var sidebarState = localStorage.getItem('sidebarOpen');
+        if (isMobile() && sidebarState === 'true') {
+            sidebar.classList.add('active');
+            sidebarToggleBtn.classList.add('opened');
+            sidebarToggleBtn.innerHTML = '◀';
+            if (overlay) overlay.classList.add('active');
+        }
+        window.addEventListener('resize', function() {
+            if (!isMobile()) {
+                sidebar.classList.remove('active');
+                sidebarToggleBtn.classList.remove('opened');
+                sidebarToggleBtn.innerHTML = '▶';
+                if (overlay) overlay.classList.remove('active');
+            }
+        });
+
+        // ===== INICIALIZAÇÃO =====
         setupModalEvents();
         setupPontosTooltip();
-        
+
         if (galleryEmpty) galleryEmpty.addEventListener('click', abrirSeletorImagem);
+
+        checkLoginAndLoad();
     </script>
 </body>
 

@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="img/a.png" />
   <link rel="manifest" href="/manifest.json" />
-<meta name="theme-color" content="#4CAF50" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Escophy" />
-<link rel="apple-touch-icon" href="/img/icon-192.png" />
+  <meta name="theme-color" content="#4CAF50" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Escorphy" />
+  <link rel="apple-touch-icon" href="/img/icon-192.png" />
 </head>
 
 <body>
@@ -61,7 +61,15 @@
         <i class="bx bx-envelope"></i>
       </div>
       <div class="input-box">
-        <input id="senha-cadastro" placeholder="Senha" type="password" required />
+        <input id="telefone-cadastro" placeholder="Telefone (ex: DDD + Número)" type="tel" />
+        <i class="bx bx-phone"></i>
+      </div>
+      <div class="input-box">
+        <input id="data-nascimento" placeholder="Data de Nascimento" type="date" />
+        <i class="bx bx-calendar"></i>
+      </div>
+      <div class="input-box">
+        <input id="senha-cadastro" placeholder="Senha (mínimo 6 caracteres)" type="password" required />
         <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
       </div>
 
@@ -75,7 +83,7 @@
 
       <div id="terms-ballon" class="terms-ballon">
         <div class="ballon-content">
-          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
+          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, telefone, data de nascimento, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
           <button id="close-ballon" class="close-ballon">Entendi</button>
         </div>
       </div>
@@ -223,10 +231,12 @@
 
       const nome = document.getElementById("nome-cadastro").value;
       const email = document.getElementById("email-cadastro").value;
+      const telefone = document.getElementById("telefone-cadastro").value || null;
+      const dataNascimento = document.getElementById("data-nascimento").value || null;
       const senha = document.getElementById("senha-cadastro").value;
 
       if (!nome || !email || !senha) {
-        showToast("Preencha todos os campos!", "warning");
+        showToast("Preencha todos os campos obrigatórios!", "warning");
         return;
       }
 
@@ -236,7 +246,9 @@
           password: senha,
           options: {
             data: {
-              name: nome
+              name: nome,
+              telefone: telefone,
+              data_nascimento: dataNascimento
             }
           }
         });
@@ -259,19 +271,19 @@
           return;
         }
 
-        // Tenta inserir na tabela usuarios
         const { error: insertError } = await supabaseClient
           .from("usuarios")
           .insert({
             id: user.id,
             nome: nome,
             email: email,
+            telefone: telefone,
+            data_nascimento: dataNascimento,
             pontos_mes: 0,
             created_at: new Date().toISOString()
           });
 
         if (insertError) {
-          // Se o erro for de duplicate, ignora
           if (!insertError.message.includes("duplicate")) {
             console.log("Erro no insert:", insertError);
           }
@@ -307,11 +319,19 @@
         }
       });
     });
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
-    });
-  }
+
+    // SERVICE WORKER
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('Service Worker registrado com sucesso!');
+          })
+          .catch(function(error) {
+            console.log('Erro ao registrar Service Worker:', error);
+          });
+      });
+    }
   </script>
 
 </body>

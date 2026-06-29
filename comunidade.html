@@ -367,8 +367,8 @@
             position: absolute;
             top: 60px;
             right: 20px;
-            width: 320px;
-            max-height: 400px;
+            width: 340px;
+            max-height: 450px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -377,7 +377,29 @@
             overflow: hidden;
         }
         .notification-dropdown.show { display: block; }
-        .notification-header { padding: 15px 20px; border-bottom: 1px solid #e2e8f0; font-weight: 600; }
+        .notification-header { 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification-header .btn-apagar-todas {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .notification-header .btn-apagar-todas:hover {
+            background: #fef2f2;
+        }
         .notification-list { max-height: 350px; overflow-y: auto; }
         .notification-item {
             display: flex;
@@ -386,6 +408,7 @@
             padding: 12px 16px;
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
+            position: relative;
         }
         .notification-item:hover { background: #f8fafc; }
         .notification-item.unread { background: #ecfdf5; }
@@ -400,11 +423,118 @@
             color: white;
             font-weight: bold;
             flex-shrink: 0;
+            font-size: 16px;
         }
-        .notification-content { flex: 1; }
+        .notification-content { flex: 1; min-width: 0; }
         .notification-text { font-size: 13px; color: #1e293b; margin-bottom: 4px; }
         .notification-time { font-size: 10px; color: #94a3b8; }
         .notification-empty { text-align: center; padding: 30px; color: #94a3b8; }
+        .btn-delete-notificacao {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-delete-notificacao:hover {
+            color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* ===== MODAL DE CONFIRMAÇÃO BALÃO ===== */
+        .modal-confirmacao {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 15000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-confirmacao.active {
+            display: flex;
+        }
+        .modal-confirmacao-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 35px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-confirmacao-icon {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+        .modal-confirmacao-content h3 {
+            font-size: 20px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .modal-confirmacao-content p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .modal-confirmacao-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .modal-confirmacao-buttons .btn-confirmar {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Poppins", sans-serif;
+        }
+        .modal-confirmacao-buttons .btn-confirmar:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+        .modal-confirmacao-buttons .btn-cancelar {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Poppins", sans-serif;
+        }
+        .modal-confirmacao-buttons .btn-cancelar:hover {
+            background: #cbd5e1;
+            transform: scale(1.05);
+        }
 
         .seguidores-grid {
             display: grid;
@@ -450,8 +580,11 @@
         }
 
         .seguidor-email {
-            font-size: 12px;
+            font-size: 11px;
             color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .loading-spinner {
@@ -489,7 +622,315 @@
         .post-tipo.caminhada { background: #d1fae5; color: #059669; }
         .post-tipo.ciclismo { background: #fef3c7; color: #d97706; }
 
-        /* Desktop */
+        .comunidade-container {
+            max-width: 800px;
+            margin: 30px auto 40px;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .sidebar-toggle-btn {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(4, 71, 0, 0.85);
+            color: white;
+            border: none;
+            border-radius: 0 50% 50% 0;
+            width: 28px;
+            height: 40px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1003;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-toggle-btn.opened {
+            left: calc(75% - 28px);
+            border-radius: 50% 0 0 50%;
+        }
+
+       /* ===== FOOTER MODERNO MINIMALISTA - FIXADO NO FINAL ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 60px;
+}
+
+/* Conteúdo principal deve crescer */
+.main-content-perfil,
+.comunidade-container {
+    flex: 1 0 auto;
+}
+
+.footer {
+    background: #ffffff;
+    padding: 32px 20px 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.footer-brand h2 {
+    font-family: "Staatliches", sans-serif;
+    font-size: 24px;
+    color: #1a4a2e;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.5px;
+}
+
+.footer-brand p {
+    font-size: 13px;
+    color: #6b8a76;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+    max-width: 260px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 8px;
+}
+
+.footer-social a {
+    color: #6b8a76;
+    font-size: 18px;
+    transition: color 0.2s;
+    text-decoration: none;
+    padding: 4px;
+}
+
+.footer-social a:hover {
+    color: #1a4a2e;
+}
+
+.footer-column h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a4a2e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 10px 0;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-column ul li a {
+    color: #6b8a76;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.footer-column ul li a:hover {
+    color: #1a4a2e;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.footer-bottom p {
+    font-size: 12px;
+    color: #8aa596;
+    margin: 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 16px;
+}
+
+.footer-bottom-links a {
+    font-size: 12px;
+    color: #8aa596;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-bottom-links a:hover {
+    color: #1a4a2e;
+}
+
+/* ===== FOOTER RESPONSIVO ===== */
+@media (max-width: 1024px) {
+    .footer-container {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 24px 16px 12px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding-bottom: 16px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    .footer-brand p {
+        max-width: 100%;
+        font-size: 12px;
+        margin: 0 auto 8px;
+    }
+
+    .footer-brand h2 {
+        font-size: 20px;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+
+    .footer-column h4 {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+
+    .footer-column ul li a {
+        font-size: 12px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+        padding-top: 10px;
+    }
+
+    .footer-bottom p {
+        font-size: 11px;
+    }
+
+    .footer-bottom-links {
+        gap: 12px;
+    }
+
+    .footer-bottom-links a {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 16px 12px 10px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-bottom: 12px;
+    }
+
+    .footer-brand h2 {
+        font-size: 18px;
+    }
+
+    .footer-brand p {
+        font-size: 11px;
+    }
+
+    .footer-social a {
+        font-size: 16px;
+    }
+
+    .footer-column h4 {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+
+    .footer-column ul li a {
+        font-size: 11px;
+    }
+
+    .footer-bottom p {
+        font-size: 10px;
+    }
+
+    .footer-bottom-links a {
+        font-size: 10px;
+    }
+
+    .footer-bottom-links {
+        gap: 10px;
+    }
+}
+
+/* ===== DESKTOP COM SIDEBAR ===== */
+@media (min-width: 769px) {
+    body {
+        padding-left: 250px;
+    }
+    
+    .footer {
+        width: calc(100% - 250px);
+        max-width: calc(100% - 250px);
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-left: 0;
+    }
+    
+    .footer {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+    }
+}
+
+        /* Desktop com sidebar */
         @media (min-width: 769px) {
             .sidebar {
                 transform: translateX(0) !important;
@@ -513,7 +954,6 @@
             }
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -523,37 +963,454 @@
                 height: calc(100vh - 60px);
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1002;
+                position: fixed;
+                left: 0;
+                background: linear-gradient(135deg, rgb(4, 71, 0), rgba(4, 71, 0, 0.712));
+                color: white;
+                overflow-y: auto;
             }
             .sidebar.active {
                 transform: translateX(0);
             }
+            
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1001;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+
             .sidebar-toggle-btn {
                 display: flex;
-                z-index: 1003;
             }
             .sidebar-toggle-btn.opened {
-                left: calc(75% - 15px);
-                transform: translateY(-50%);
+                left: calc(75% - 28px);
             }
+
             nav {
                 width: 100%;
                 margin-left: 0;
                 justify-content: center;
                 z-index: 1001;
             }
+
             .comunidade-container {
                 margin-left: 0;
-                padding: 15px;
+                padding: 15px 12px;
+                width: 100%;
+                box-sizing: border-box;
             }
+
             .footer {
                 margin-left: 0;
+                width: 100%;
             }
+
             .comunidade-tabs {
                 border-radius: 30px;
                 padding: 4px;
+                gap: 4px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
             .tab-btn {
                 padding: 10px 12px;
+                font-size: 12px;
+                white-space: nowrap;
+                flex: 1 0 auto;
+                min-width: 60px;
+            }
+
+            .feed-post {
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+
+            .post-header {
+                padding: 12px 14px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .post-avatar {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .post-user-name {
+                font-size: 14px;
+            }
+
+            .post-content {
+                padding: 14px;
+            }
+
+            .post-title {
+                font-size: 16px;
+            }
+
+            .post-desc {
+                font-size: 14px;
+            }
+
+            .post-stats {
+                padding: 10px 14px;
+                gap: 16px;
+            }
+
+            .stat-action i {
+                font-size: 18px;
+            }
+
+            .stat-action {
+                font-size: 13px;
+            }
+
+            .usuarios-sugeridos {
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            .seguidor-item {
+                padding: 10px 12px;
+            }
+
+            .seguidor-avatar {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .search-users-container {
+                padding: 10px 16px;
+                border-radius: 60px;
+            }
+
+            .search-users-container i {
+                font-size: 18px;
+            }
+
+            .search-users-container input {
+                font-size: 14px;
+            }
+
+            .search-result-item {
+                padding: 10px 12px;
+            }
+
+            .search-result-avatar {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .follow-btn {
+                padding: 4px 12px;
+                font-size: 11px;
+            }
+            .follow-btn i {
+                font-size: 14px;
+            }
+
+            .search-follow-btn {
+                padding: 4px 14px;
+                font-size: 11px;
+            }
+
+            .search-follow-btn i {
+                font-size: 14px;
+            }
+
+            .toast-msg {
+                padding: 10px 18px;
+                font-size: 12px;
+                max-width: 90vw;
+                white-space: normal;
+                text-align: center;
+                bottom: 20px;
+            }
+            
+            .notification-dropdown {
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: 340px;
+            }
+
+            .modal-confirmacao-content {
+                padding: 24px 20px;
+            }
+            .modal-confirmacao-content h3 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .comunidade-container {
+                padding: 10px 8px;
+            }
+
+            .tab-btn {
+                font-size: 11px;
+                padding: 8px 10px;
+                min-width: 50px;
+            }
+
+            .post-header {
+                padding: 10px 10px;
+            }
+
+            .post-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+            }
+
+            .post-user-name {
+                font-size: 13px;
+            }
+
+            .post-content {
+                padding: 10px;
+            }
+
+            .post-title {
+                font-size: 14px;
+            }
+
+            .post-desc {
+                font-size: 13px;
+            }
+
+            .post-stats {
+                padding: 8px 10px;
+                gap: 12px;
+            }
+
+            .stat-action i {
+                font-size: 16px;
+            }
+
+            .stat-action {
+                font-size: 12px;
+            }
+
+            .follow-btn {
+                padding: 3px 10px;
+                font-size: 10px;
+            }
+            .follow-btn i {
+                font-size: 12px;
+            }
+
+            .sidebar {
+                width: 80%;
+            }
+            .sidebar-toggle-btn.opened {
+                left: calc(80% - 28px);
+            }
+
+            .toast-msg {
+                font-size: 11px;
+                padding: 8px 14px;
+                max-width: 92vw;
+                bottom: 16px;
+            }
+
+            .modal-confirmacao-content {
+                padding: 20px 16px;
+            }
+            .modal-confirmacao-content h3 {
+                font-size: 16px;
+            }
+            .modal-confirmacao-buttons .btn-confirmar,
+            .modal-confirmacao-buttons .btn-cancelar {
+                padding: 8px 20px;
+                font-size: 13px;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .seguidores-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ===== MODAL POLÍTICA DE PRIVACIDADE ===== */
+        .modal-privacidade {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-privacidade.active {
+            display: flex;
+        }
+
+        .modal-privacidade-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px 45px;
+            position: relative;
+            animation: modalPop 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-privacidade-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-privacidade-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .modal-privacidade-content::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 10px;
+        }
+
+        .modal-privacidade-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: rgba(0,0,0,0.05);
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .modal-privacidade-close:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .modal-privacidade-content h1 {
+            font-size: 28px;
+            color: #1a4a2e;
+            margin: 0 0 5px 0;
+            font-family: "Staatliches", sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .modal-privacidade-content .subtitle {
+            font-size: 14px;
+            color: #6b8a76;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .modal-privacidade-content h2 {
+            font-size: 18px;
+            color: #1a4a2e;
+            margin: 25px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .modal-privacidade-content p {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.7;
+            margin: 0 0 10px 0;
+        }
+
+        .modal-privacidade-content .last-update {
+            font-size: 13px;
+            color: #8aa596;
+            font-style: italic;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e8ece8;
+        }
+
+        .modal-privacidade-content .btn-fechar-modal-priv {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-family: "Poppins", sans-serif;
+            width: 100%;
+        }
+
+        .modal-privacidade-content .btn-fechar-modal-priv:hover {
+            background: #2e7d52;
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .modal-privacidade-content {
+                padding: 25px 20px;
+                max-height: 85vh;
+            }
+            .modal-privacidade-content h1 {
+                font-size: 22px;
+            }
+            .modal-privacidade-content h2 {
+                font-size: 16px;
+            }
+            .modal-privacidade-content p {
+                font-size: 13px;
+            }
+            .modal-privacidade-close {
+                width: 32px;
+                height: 32px;
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-privacidade-content {
+                padding: 20px 16px;
+                max-height: 80vh;
+            }
+            .modal-privacidade-content h1 {
+                font-size: 19px;
+            }
+            .modal-privacidade-content h2 {
+                font-size: 15px;
+            }
+            .modal-privacidade-content p {
                 font-size: 12px;
             }
         }
@@ -574,7 +1431,10 @@
     </nav>
 
     <div class="notification-dropdown" id="notificationDropdown">
-        <div class="notification-header">Notificacoes</div>
+        <div class="notification-header">
+            <span>Notificações</span>
+            <button class="btn-apagar-todas" id="btnApagarTodasNotificacoes">🗑 Apagar todas</button>
+        </div>
         <div class="notification-list" id="notificationList">
             <div class="notification-empty">Carregando...</div>
         </div>
@@ -604,6 +1464,86 @@
                 <button class="btn-confirm" id="confirmLogout">Sim</button>
                 <button class="btn-cancel" id="cancelLogout">Não</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE CONFIRMAÇÃO BALÃO ===== -->
+    <div id="modalConfirmacao" class="modal-confirmacao">
+        <div class="modal-confirmacao-content">
+            <div class="modal-confirmacao-icon">⚠️</div>
+            <h3 id="modalConfirmacaoTitulo">Tem certeza?</h3>
+            <p id="modalConfirmacaoMensagem">Esta ação não pode ser desfeita.</p>
+            <div class="modal-confirmacao-buttons">
+                <button class="btn-cancelar" id="modalConfirmacaoCancelar">Cancelar</button>
+                <button class="btn-confirmar" id="modalConfirmacaoConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL POLÍTICA DE PRIVACIDADE ===== -->
+    <div id="modalPrivacidade" class="modal-privacidade">
+        <div class="modal-privacidade-content">
+            <button class="modal-privacidade-close" id="fecharModalPrivacidade">&times;</button>
+            <h1>ESCORPHY</h1>
+            <span class="subtitle">Política de Privacidade e Termos de Uso</span>
+
+            <p style="color: #8aa596; font-size: 13px; margin-bottom: 20px;">Última atualização: 23 de junho de 2026.</p>
+
+            <h2>1. INTRODUÇÃO</h2>
+            <p>Este documento estabelece a Política de Privacidade e os Termos de Uso da plataforma Escorphy, projeto educacional desenvolvido por Ikaro Lorenzo Oliveira e Antonela Schneider para registro, acompanhamento e compartilhamento de atividades físicas.</p>
+
+            <h2>2. CONTROLADORES DOS DADOS</h2>
+            <p>Os responsáveis pelo tratamento dos dados pessoais coletados pela plataforma são Ikaro Lorenzo Oliveira e Antonela Schneider.</p>
+            <p><strong>Contato:</strong> escorphyail@gmail.com</p>
+
+            <h2>3. DADOS COLETADOS</h2>
+            <p>A plataforma poderá coletar nome, endereço de e-mail, senha criptografada, foto de perfil, dados de atividades físicas, localização por GPS, informações de autenticação por conta Google e dados técnicos de navegação.</p>
+
+            <h2>4. FINALIDADE DO TRATAMENTO</h2>
+            <p>Os dados são utilizados para criação de contas, autenticação, cálculo de estatísticas, exibição de rankings, personalização da experiência do usuário e manutenção da segurança da plataforma.</p>
+
+            <h2>5. DADOS DE LOCALIZAÇÃO</h2>
+            <p>O Escorphy utiliza geolocalização por GPS para registro das atividades físicas. A localização exata é acessível apenas ao próprio usuário e não é disponibilizada publicamente.</p>
+
+            <h2>6. PUBLICAÇÕES E PRIVACIDADE</h2>
+            <p>Os usuários poderão publicar atividades físicas e fotografias. As publicações poderão ser classificadas como públicas ou privadas, conforme escolha do usuário.</p>
+
+            <h2>7. RANKINGS</h2>
+            <p>O sistema poderá exibir rankings públicos baseados na quilometragem percorrida e na pontuação acumulada, incluindo nome de usuário, foto de perfil e pontuação.</p>
+
+            <h2>8. USO POR MENORES DE IDADE</h2>
+            <p>Usuários menores de 18 anos poderão utilizar a plataforma mediante autorização de seus responsáveis legais.</p>
+
+            <h2>9. COOKIES E TECNOLOGIAS SEMELHANTES</h2>
+            <p>A plataforma utiliza cookies para autenticação, segurança, análise de desempenho e melhoria dos serviços oferecidos.</p>
+
+            <h2>10. SEGURANÇA DA INFORMAÇÃO</h2>
+            <p>São adotadas medidas técnicas e administrativas razoáveis para proteção dos dados pessoais contra acessos não autorizados, perda, alteração ou divulgação indevida.</p>
+
+            <h2>11. DIREITOS DOS TITULARES</h2>
+            <p>Nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), os usuários poderão solicitar acesso, correção ou exclusão de seus dados pessoais mediante contato pelo endereço eletrônico informado.</p>
+
+            <h2>12. EXCLUSÃO DE CONTA</h2>
+            <p>A exclusão de contas deverá ser solicitada por e-mail. Após validação da solicitação, os dados serão removidos permanentemente, observadas as exigências legais aplicáveis.</p>
+
+            <h2>13. PROPRIEDADE INTELECTUAL</h2>
+            <p>Os conteúdos publicados permanecem de propriedade de seus respectivos autores. Ao publicar conteúdo na plataforma, o usuário autoriza sua exibição dentro do ambiente do Escorphy.</p>
+
+            <h2>14. CONDUTAS PROIBIDAS</h2>
+            <p>É vedado publicar conteúdo ilícito, fraudar pontuações, utilizar informações falsas, acessar contas de terceiros ou praticar qualquer atividade que comprometa o funcionamento da plataforma.</p>
+
+            <h2>15. LIMITAÇÃO DE RESPONSABILIDADE</h2>
+            <p>As informações de desempenho, distância e calorias possuem caráter informativo. O Escorphy não garante precisão absoluta dos cálculos apresentados.</p>
+
+            <h2>16. ALTERAÇÕES</h2>
+            <p>Este documento poderá ser atualizado periodicamente. A continuidade do uso da plataforma após alterações implicará concordância com os termos atualizados.</p>
+
+            <h2>17. LEGISLAÇÃO APLICÁVEL</h2>
+            <p>Este documento é regido pela legislação brasileira, especialmente pela Lei Geral de Proteção de Dados (LGPD).</p>
+
+            <div class="last-update">📄 Documento atualizado em 23 de junho de 2026.</div>
+
+            <button class="btn-fechar-modal-priv" id="fecharModalPrivacidadeBtn">Li e concordo</button>
         </div>
     </div>
 
@@ -647,26 +1587,102 @@
         </div>
     </div>
 
+    <!-- ===== FOOTER MODERNO MINIMALISTA ===== -->
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-logo"><h1>ESCORPHY</h1><p>© 2025 Escorphy</p></div>
-            <div class="footer-column"><h3>Sobre</h3><ul><li><a href="sobrenos.html">Nossa Missao</a></li><li><a href="sobrenos.html#cards-section">Equipe</a></li><li><a href="#">Privacidade</a></li></ul></div>
-            <div class="footer-column"><h3>Explorar</h3><ul><li><a href="#">Funcionalidades</a></li><li><a href="#">Planos</a></li><li><a href="#">Blog</a></li></ul></div>
-            <div class="footer-column"><h3>Redes</h3><ul><li><a href="https://www.instagram.com/escorphybr">Instagram</a></li><li><a href="https://www.youtube.com/escorphy">YouTube</a></li></ul></div>
-            <div class="footer-column"><h3>Ajuda</h3><ul><li><a href="suporte.html">Suporte</a></li><li><a href="#">Fale Conosco</a></li><li><a href="#">Central de Ajuda</a></li></ul></div>
+            <!-- Brand -->
+            <div class="footer-brand">
+                <h2>ESCORPHY</h2>
+                <p>Transformando vidas através do esporte.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/escorphybr" target="_blank" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
+                    <a href="https://www.youtube.com/escorphy" target="_blank" aria-label="YouTube"><i class="bx bxl-youtube"></i></a>
+                    <a href="https://wa.me/+5544998121630" target="_blank" aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Colunas -->
+            <div class="footer-column">
+                <h4>Sobre</h4>
+                <ul>
+                    <li><a href="sobrenos.html">Missão</a></li>
+                    <li><a href="sobrenos.html#cards-section">Equipe</a></li>
+                    <li><a href="#" id="linkPrivacidade">Privacidade</a></li>
+                </ul>
+            </div>
+
+
+            <div class="footer-column">
+                <h4>Ajuda</h4>
+                <ul>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="https://wa.me/+5544998121630">Fale Conosco</a></li>
+                    <li><a href="#" id="linkPrivacidade2">Política de Privacidade</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Escorphy</p>
+            <div class="footer-bottom-links">
+                <a href="#" id="linkPrivacidade3">Privacidade</a>
+                <a href="#" id="linkTermos">Termos de Uso</a>
+                <a href="#" id="linkCookies">Cookies</a>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ===== CONFIGURAÇÃO SUPABASE (APENAS 1 CLIENTE) =====
+        // ===== CONFIGURAÇÃO SUPABASE =====
         const supabaseUrl = "https://yuupbtrljazrrwizzafd.supabase.co";
         const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
         let usuarioAtual = null;
+        var acaoConfirmacao = null;
 
-        function showToast(message, type = "success") {
+        // ===== MODAL PRIVACIDADE =====
+        function abrirModalPrivacidade() {
+            document.getElementById('modalPrivacidade').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalPrivacidade() {
+            document.getElementById('modalPrivacidade').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('linkPrivacidade')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkPrivacidade2')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkPrivacidade3')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkTermos')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+        document.getElementById('linkCookies')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPrivacidade();
+        });
+
+        document.getElementById('fecharModalPrivacidade')?.addEventListener('click', fecharModalPrivacidade);
+        document.getElementById('fecharModalPrivacidadeBtn')?.addEventListener('click', fecharModalPrivacidade);
+        document.getElementById('modalPrivacidade')?.addEventListener('click', function(e) {
+            if (e.target === this) fecharModalPrivacidade();
+        });
+
+        function showToast(message, type) {
+            type = type || "success";
             let toast = document.getElementById('toastMessage');
             if (!toast) {
                 toast = document.createElement('div');
@@ -692,20 +1708,76 @@
             
             toastText.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(function() { toast.classList.remove('show'); }, 3000);
         }
 
+        // ===== MODAL DE CONFIRMAÇÃO =====
+        function mostrarModalConfirmacao(titulo, mensagem, aoConfirmar) {
+            document.getElementById('modalConfirmacaoTitulo').textContent = titulo;
+            document.getElementById('modalConfirmacaoMensagem').textContent = mensagem;
+            acaoConfirmacao = aoConfirmar;
+            document.getElementById('modalConfirmacao').classList.add('active');
+        }
+
+        function fecharModalConfirmacao() {
+            document.getElementById('modalConfirmacao').classList.remove('active');
+            acaoConfirmacao = null;
+        }
+
+        document.getElementById('modalConfirmacaoCancelar').addEventListener('click', fecharModalConfirmacao);
+        document.getElementById('modalConfirmacaoConfirmar').addEventListener('click', function() {
+            if (typeof acaoConfirmacao === 'function') {
+                acaoConfirmacao();
+            }
+            fecharModalConfirmacao();
+        });
+        document.getElementById('modalConfirmacao').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalConfirmacao();
+        });
+
+        // ===== FUNÇÃO PARA BUSCAR CONTAGEM DE SEGUIDORES =====
+        async function getSeguidoresCount(usuarioId) {
+            var result = await supabaseClient
+                .from('seguidores')
+                .select('*', { count: 'exact', head: true })
+                .eq('seguindo_id', usuarioId);
+            if (result.error) return 0;
+            return result.count || 0;
+        }
+
+        // ===== FUNÇÃO PARA FORMATAR TEMPO =====
+        function formatarTempo(data) {
+            var agora = new Date();
+            var notif = new Date(data);
+            var diff = Math.floor((agora - notif) / 1000);
+            if (diff < 60) return 'agora';
+            if (diff < 3600) return Math.floor(diff / 60) + ' min';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' h';
+            return Math.floor(diff / 86400) + ' d';
+        }
+
+        // ===== CARREGAR NOTIFICAÇÕES =====
         async function carregarNotificacoes() {
             if (!usuarioAtual) return;
-            const { data: notificacoes, error } = await supabaseClient
-                .from('notificacoes')
-                .select('*')
-                .eq('usuario_id', usuarioAtual.id)
-                .order('created_at', { ascending: false });
-            if (error) return;
             
-            const naoLidas = notificacoes?.filter(n => !n.lida).length || 0;
-            const badge = document.getElementById('notificationBadge');
+            var result = await supabaseClient
+                .from('notificacoes')
+                .select('*, remetente:remetente_id(id, nome, foto_perfil_url)')
+                .eq('usuario_id', usuarioAtual.id)
+                .order('created_at', { ascending: false })
+                .limit(30);
+            
+            if (result.error) return;
+            
+            var notificacoes = result.data;
+            var naoLidas = 0;
+            if (notificacoes) {
+                for (var i = 0; i < notificacoes.length; i++) {
+                    if (!notificacoes[i].lida) naoLidas++;
+                }
+            }
+            
+            var badge = document.getElementById('notificationBadge');
             if (naoLidas > 0) {
                 badge.style.display = 'flex';
                 badge.textContent = naoLidas > 9 ? '9+' : naoLidas;
@@ -713,69 +1785,143 @@
                 badge.style.display = 'none';
             }
             
-            const listDiv = document.getElementById('notificationList');
+            var listDiv = document.getElementById('notificationList');
             if (!notificacoes || notificacoes.length === 0) {
-                listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificacao</div>';
+                listDiv.innerHTML = '<div class="notification-empty">Nenhuma notificação</div>';
                 return;
             }
             
-            listDiv.innerHTML = notificacoes.map(n => {
-                let texto = '';
+            var html = '';
+            for (var j = 0; j < notificacoes.length; j++) {
+                var n = notificacoes[j];
+                var nomeRemetente = n.remetente?.nome || 'Alguém';
+                var texto = '';
                 switch(n.tipo) {
-                    case 'seguidor': texto = 'Alguem comecou a te seguir!'; break;
-                    case 'curtida': texto = 'Alguem curtiu seu treino!'; break;
-                    case 'comentario': texto = 'Alguem comentou no seu treino!'; break;
-                    default: texto = 'Nova notificacao';
+                    case 'seguidor': texto = nomeRemetente + ' começou a te seguir!'; break;
+                    case 'curtida': texto = nomeRemetente + ' curtiu seu treino!'; break;
+                    case 'comentario': texto = nomeRemetente + ' comentou no seu treino!'; break;
+                    default: texto = 'Nova notificação';
                 }
-                return `
-                    <div class="notification-item ${!n.lida ? 'unread' : ''}" data-id="${n.id}">
-                        <div class="notification-avatar">U</div>
-                        <div class="notification-content">
-                            <div class="notification-text">${texto}</div>
-                            <div class="notification-time">${new Date(n.created_at).toLocaleDateString('pt-BR')}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                var unreadClass = n.lida ? '' : 'unread';
+                var inicial = nomeRemetente.charAt(0).toUpperCase();
+                
+                html += '<div class="notification-item ' + unreadClass + '" data-id="' + n.id + '">';
+                html += '<div class="notification-avatar">' + inicial + '</div>';
+                html += '<div class="notification-content">';
+                html += '<div class="notification-text">' + texto + '</div>';
+                html += '<div class="notification-time">' + formatarTempo(n.created_at) + '</div>';
+                html += '</div>';
+                html += '<button class="btn-delete-notificacao" data-id="' + n.id + '" title="Apagar notificação">✕</button>';
+                html += '</div>';
+            }
+            listDiv.innerHTML = html;
             
-            document.querySelectorAll('.notification-item').forEach(item => {
-                item.addEventListener('click', async () => {
-                    const id = item.dataset.id;
-                    await supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
-                    carregarNotificacoes();
-                });
-            });
+            var items = document.querySelectorAll('.notification-item');
+            for (var k = 0; k < items.length; k++) {
+                (function(item) {
+                    item.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('btn-delete-notificacao')) return;
+                        var id = item.dataset.id;
+                        supabaseClient.from('notificacoes').update({ lida: true }).eq('id', id);
+                        carregarNotificacoes();
+                    });
+                })(items[k]);
+            }
+            
+            var deleteBtns = document.querySelectorAll('.btn-delete-notificacao');
+            for (var l = 0; l < deleteBtns.length; l++) {
+                (function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var id = btn.dataset.id;
+                        mostrarModalConfirmacao(
+                            'Apagar notificação?',
+                            'Tem certeza que deseja apagar esta notificação?',
+                            function() { apagarNotificacao(id); }
+                        );
+                    });
+                })(deleteBtns[l]);
+            }
         }
 
-        document.getElementById('notificationIcon')?.addEventListener('click', (e) => {
+        // ===== APAGAR NOTIFICAÇÃO INDIVIDUAL =====
+        async function apagarNotificacao(id) {
+            if (!usuarioAtual) return;
+            var result = await supabaseClient
+                .from('notificacoes')
+                .delete()
+                .eq('id', id)
+                .eq('usuario_id', usuarioAtual.id);
+            
+            if (!result.error) {
+                showToast('Notificação apagada!', 'success');
+                carregarNotificacoes();
+            } else {
+                showToast('Erro ao apagar notificação', 'error');
+            }
+        }
+
+        // ===== APAGAR TODAS AS NOTIFICAÇÕES =====
+        async function apagarTodasNotificacoes() {
+            if (!usuarioAtual) return;
+            
+            mostrarModalConfirmacao(
+                'Apagar todas as notificações?',
+                'Tem certeza que deseja apagar todas as notificações? Esta ação não pode ser desfeita.',
+                async function() {
+                    var result = await supabaseClient
+                        .from('notificacoes')
+                        .delete()
+                        .eq('usuario_id', usuarioAtual.id);
+                    
+                    if (!result.error) {
+                        showToast('Todas as notificações foram apagadas!', 'success');
+                        carregarNotificacoes();
+                    } else {
+                        showToast('Erro ao apagar notificações', 'error');
+                    }
+                }
+            );
+        }
+
+        document.getElementById('btnApagarTodasNotificacoes')?.addEventListener('click', function(e) {
             e.stopPropagation();
-            document.getElementById('notificationDropdown').classList.toggle('show');
-            carregarNotificacoes();
-        });
-        document.addEventListener('click', () => {
-            document.getElementById('notificationDropdown')?.classList.remove('show');
+            apagarTodasNotificacoes();
         });
 
-        // LOGOUT
-        const modalLogout = document.getElementById('modalLogout');
-        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+        document.getElementById('notificationIcon')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+            carregarNotificacoes();
+        });
+        document.addEventListener('click', function() {
+            var dropdown = document.getElementById('notificationDropdown');
+            if (dropdown) dropdown.classList.remove('show');
+        });
+
+        // ===== LOGOUT =====
+        var modalLogout = document.getElementById('modalLogout');
+        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
             e.preventDefault();
             modalLogout.style.display = 'flex';
         });
-        document.getElementById('confirmLogout')?.addEventListener('click', async () => {
+        document.getElementById('confirmLogout')?.addEventListener('click', async function() {
             await supabaseClient.auth.signOut();
             localStorage.clear();
             modalLogout.style.display = 'none';
             window.location.href = "index.html";
         });
-        document.getElementById('cancelLogout')?.addEventListener('click', () => {
+        document.getElementById('cancelLogout')?.addEventListener('click', function() {
             modalLogout.style.display = 'none';
         });
 
         // ===== FUNÇÃO PARA CRIAR BOTÃO DE SEGUIR =====
-        function criarBotaoSeguir(usuarioId, isFollowing = false, tamanho = 'normal') {
-            const btn = document.createElement('button');
-            btn.className = `follow-btn ${isFollowing ? 'following' : ''}`;
+        function criarBotaoSeguir(usuarioId, isFollowing, tamanho) {
+            isFollowing = isFollowing || false;
+            tamanho = tamanho || 'normal';
+            var btn = document.createElement('button');
+            btn.className = 'follow-btn' + (isFollowing ? ' following' : '');
             btn.dataset.userId = usuarioId;
             
             if (isFollowing) {
@@ -789,9 +1935,9 @@
                 btn.style.fontSize = '11px';
             }
             
-            btn.addEventListener('click', async (e) => {
+            btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                await toggleSeguir(usuarioId, btn);
+                toggleSeguir(usuarioId, btn);
             });
             
             return btn;
@@ -809,16 +1955,16 @@
                 return;
             }
             
-            const isFollowing = btnElement.classList.contains('following');
+            var isFollowing = btnElement.classList.contains('following');
             
             if (isFollowing) {
-                const { error } = await supabaseClient
+                var result = await supabaseClient
                     .from('seguidores')
                     .delete()
                     .eq('seguidor_id', usuarioAtual.id)
                     .eq('seguindo_id', usuarioId);
                 
-                if (!error) {
+                if (!result.error) {
                     btnElement.classList.remove('following');
                     btnElement.innerHTML = '<i class="bx bx-user-plus"></i> Seguir';
                     showToast("Voce deixou de seguir este usuario", "success");
@@ -828,11 +1974,11 @@
                     await carregarSeguidores();
                 }
             } else {
-                const { error } = await supabaseClient
+                var result2 = await supabaseClient
                     .from('seguidores')
                     .insert({ seguidor_id: usuarioAtual.id, seguindo_id: usuarioId });
                 
-                if (!error) {
+                if (!result2.error) {
                     btnElement.classList.add('following');
                     btnElement.innerHTML = '<i class="bx bxs-user-check"></i> Seguindo';
                     showToast("Agora voce esta seguindo este usuario!", "success");
@@ -843,8 +1989,8 @@
                         remetente_id: usuarioAtual.id,
                         lida: false
                     });
-                    carregarNotificacoes();
                     
+                    carregarNotificacoes();
                     await carregarUsuarios();
                     await carregarSeguindo();
                     await carregarSeguidores();
@@ -854,9 +2000,9 @@
 
         // ===== CARREGAR USUÁRIO ATUAL =====
         async function carregarUsuarioAtual() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
+            var { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
-                const { data, error } = await supabaseClient
+                var { data, error } = await supabaseClient
                     .from('usuarios')
                     .select('id, nome, email')
                     .eq('id', user.id)
@@ -866,28 +2012,24 @@
                     console.error("Erro ao buscar usuario:", error);
                 } else if (data) {
                     usuarioAtual = data;
-                    console.log("Usuario atual carregado:", usuarioAtual);
                 } else {
-                    const { data: dataByEmail } = await supabaseClient
+                    var { data: dataByEmail } = await supabaseClient
                         .from('usuarios')
                         .select('id, nome, email')
                         .eq('email', user.email)
                         .maybeSingle();
                     usuarioAtual = dataByEmail;
-                    console.log("Usuario carregado por email:", usuarioAtual);
                 }
             }
             return usuarioAtual;
         }
 
-        // ===== BUSCAR TODOS OS USUÁRIOS DA TABELA 'usuarios' =====
+        // ===== BUSCAR TODOS OS USUÁRIOS =====
         async function carregarTodosUsuarios() {
             if (!usuarioAtual) return [];
             
             try {
-                console.log("Buscando usuarios da tabela 'usuarios'...");
-                
-                const { data: usuarios, error } = await supabaseClient
+                var { data: usuarios, error } = await supabaseClient
                     .from('usuarios')
                     .select('id, nome, email')
                     .order('nome');
@@ -897,13 +2039,14 @@
                     return [];
                 }
                 
-                console.log("Usuarios encontrados:", usuarios);
-                console.log("Total de usuarios:", usuarios?.length || 0);
-                
-                // Filtrar o usuário atual
-                const filtrados = usuarios?.filter(u => u.id !== usuarioAtual.id) || [];
-                console.log("Usuarios filtrados (sem o atual):", filtrados.length);
-                
+                var filtrados = [];
+                if (usuarios) {
+                    for (var i = 0; i < usuarios.length; i++) {
+                        if (usuarios[i].id !== usuarioAtual.id) {
+                            filtrados.push(usuarios[i]);
+                        }
+                    }
+                }
                 return filtrados;
             } catch (error) {
                 console.error("Erro ao carregar usuarios:", error);
@@ -913,10 +2056,10 @@
 
         // ===== CARREGAR FEED =====
         async function carregarFeed() {
-            const feedDiv = document.getElementById('feedList');
+            var feedDiv = document.getElementById('feedList');
             feedDiv.innerHTML = '<div class="loading-spinner"><i class="bx bx-loader-alt"></i><br>Carregando...</div>';
             
-            const { data: atividades, error } = await supabaseClient
+            var { data: atividades, error } = await supabaseClient
                 .from('atividades')
                 .select('*')
                 .eq('visibilidade', 'publico')
@@ -936,12 +2079,13 @@
             
             feedDiv.innerHTML = '';
             
-            for (const atividade of atividades) {
-                let nomeUsuario = 'Usuario';
-                let usuarioId = null;
+            for (var a = 0; a < atividades.length; a++) {
+                var atividade = atividades[a];
+                var nomeUsuario = 'Usuario';
+                var usuarioId = null;
                 
                 if (atividade.email_usuario) {
-                    const { data: usuarioInfo, error: userError } = await supabaseClient
+                    var { data: usuarioInfo, error: userError } = await supabaseClient
                         .from('usuarios')
                         .select('id, nome')
                         .eq('email', atividade.email_usuario)
@@ -953,14 +2097,14 @@
                     }
                 }
                 
-                const { count: curtidasCount } = await supabaseClient
+                var { count: curtidasCount } = await supabaseClient
                     .from('curtidas')
                     .select('*', { count: 'exact', head: true })
                     .eq('atividade_id', atividade.id);
                 
-                let isLiked = false;
+                var isLiked = false;
                 if (usuarioAtual) {
-                    const { data: curtida } = await supabaseClient
+                    var { data: curtida } = await supabaseClient
                         .from('curtidas')
                         .select('id')
                         .eq('usuario_id', usuarioAtual.id)
@@ -969,9 +2113,9 @@
                     isLiked = !!curtida;
                 }
                 
-                let isFollowing = false;
+                var isFollowing = false;
                 if (usuarioAtual && usuarioId && usuarioId !== usuarioAtual.id) {
-                    const { data: followCheck } = await supabaseClient
+                    var { data: followCheck } = await supabaseClient
                         .from('seguidores')
                         .select('id')
                         .eq('seguidor_id', usuarioAtual.id)
@@ -980,28 +2124,39 @@
                     isFollowing = !!followCheck;
                 }
                 
-                const distancia = atividade.trajeto?.summary?.distance ? (atividade.trajeto.summary.distance / 1000).toFixed(2) : 
-                                 atividade.trajeto?.distance ? (atividade.trajeto.distance / 1000).toFixed(2) : '0';
+                var seguidoresCount = 0;
+                if (usuarioId) {
+                    seguidoresCount = await getSeguidoresCount(usuarioId);
+                }
                 
-                const tipoClasse = atividade.tipo || '';
+                var distancia = '0';
+                if (atividade.trajeto?.summary?.distance) {
+                    distancia = (atividade.trajeto.summary.distance / 1000).toFixed(2);
+                } else if (atividade.trajeto?.distance) {
+                    distancia = (atividade.trajeto.distance / 1000).toFixed(2);
+                }
                 
-                const postDiv = document.createElement('div');
+                var tipoClasse = atividade.tipo || '';
+                
+                var postDiv = document.createElement('div');
                 postDiv.className = 'feed-post';
                 postDiv.dataset.atividadeId = atividade.id;
                 postDiv.dataset.usuarioId = usuarioId || '';
                 
-                let followBtnHtml = '';
+                var followBtnHtml = '';
                 if (usuarioAtual && usuarioId && usuarioId !== usuarioAtual.id) {
-                    const btn = criarBotaoSeguir(usuarioId, isFollowing);
+                    var btn = criarBotaoSeguir(usuarioId, isFollowing);
                     followBtnHtml = btn.outerHTML;
                 }
+                
+                var dataFormatada = atividade.data ? new Date(atividade.data).toLocaleDateString('pt-BR') : '';
                 
                 postDiv.innerHTML = `
                     <div class="post-header">
                         <div class="post-avatar">${nomeUsuario.charAt(0).toUpperCase()}</div>
                         <div class="post-user-info">
                             <div class="post-user-name">${nomeUsuario}</div>
-                            <div class="post-user-email">${atividade.data ? new Date(atividade.data).toLocaleDateString('pt-BR') : ''}</div>
+                            <div class="post-user-email"><i class="bx bx-group"></i> ${seguidoresCount} seguidores</div>
                         </div>
                         ${followBtnHtml}
                     </div>
@@ -1024,65 +2179,66 @@
                 
                 feedDiv.appendChild(postDiv);
                 
-                const likeBtn = postDiv.querySelector('.like-btn');
+                var likeBtn = postDiv.querySelector('.like-btn');
                 if (likeBtn) {
-                    likeBtn.addEventListener('click', async () => {
-                        if (!usuarioAtual) {
-                            showToast("Faca login para curtir!", "error");
-                            return;
-                        }
-                        const atividadeId = likeBtn.dataset.id;
-                        const isLikedNow = likeBtn.classList.contains('liked');
-                        
-                        if (isLikedNow) {
-                            const { error } = await supabaseClient
-                                .from('curtidas')
-                                .delete()
-                                .eq('usuario_id', usuarioAtual.id)
-                                .eq('atividade_id', atividadeId);
-                            if (!error) {
-                                likeBtn.classList.remove('liked');
-                                const span = likeBtn.querySelector('span');
-                                span.textContent = parseInt(span.textContent) - 1;
-                                likeBtn.innerHTML = '<i class="bx bx-heart"></i> <span>' + span.textContent + '</span>';
+                    (function(btn, atividadeId) {
+                        btn.addEventListener('click', async function() {
+                            if (!usuarioAtual) {
+                                showToast("Faca login para curtir!", "error");
+                                return;
                             }
-                        } else {
-                            const { error } = await supabaseClient
-                                .from('curtidas')
-                                .insert({ usuario_id: usuarioAtual.id, atividade_id: atividadeId });
-                            if (!error) {
-                                likeBtn.classList.add('liked');
-                                const span = likeBtn.querySelector('span');
-                                span.textContent = parseInt(span.textContent) + 1;
-                                likeBtn.innerHTML = '<i class="bx bxs-heart"></i> <span>' + span.textContent + '</span>';
-                                
-                                const { data: atividade } = await supabaseClient
-                                    .from('atividades')
-                                    .select('email_usuario')
-                                    .eq('id', atividadeId)
-                                    .maybeSingle();
-                                
-                                if (atividade && atividade.email_usuario !== usuarioAtual.email) {
-                                    const { data: usuarioDono } = await supabaseClient
-                                        .from('usuarios')
-                                        .select('id')
-                                        .eq('email', atividade.email_usuario)
+                            var isLikedNow = btn.classList.contains('liked');
+                            
+                            if (isLikedNow) {
+                                var { error } = await supabaseClient
+                                    .from('curtidas')
+                                    .delete()
+                                    .eq('usuario_id', usuarioAtual.id)
+                                    .eq('atividade_id', atividadeId);
+                                if (!error) {
+                                    btn.classList.remove('liked');
+                                    var span = btn.querySelector('span');
+                                    span.textContent = parseInt(span.textContent) - 1;
+                                    btn.innerHTML = '<i class="bx bx-heart"></i> <span>' + span.textContent + '</span>';
+                                }
+                            } else {
+                                var { error } = await supabaseClient
+                                    .from('curtidas')
+                                    .insert({ usuario_id: usuarioAtual.id, atividade_id: atividadeId });
+                                if (!error) {
+                                    btn.classList.add('liked');
+                                    var span = btn.querySelector('span');
+                                    span.textContent = parseInt(span.textContent) + 1;
+                                    btn.innerHTML = '<i class="bx bxs-heart"></i> <span>' + span.textContent + '</span>';
+                                    
+                                    var { data: atividade } = await supabaseClient
+                                        .from('atividades')
+                                        .select('email_usuario')
+                                        .eq('id', atividadeId)
                                         .maybeSingle();
                                     
-                                    if (usuarioDono) {
-                                        await supabaseClient.from('notificacoes').insert({
-                                            usuario_id: usuarioDono.id,
-                                            tipo: 'curtida',
-                                            remetente_id: usuarioAtual.id,
-                                            atividade_id: atividadeId,
-                                            lida: false
-                                        });
-                                        carregarNotificacoes();
+                                    if (atividade && atividade.email_usuario !== usuarioAtual.email) {
+                                        var { data: usuarioDono } = await supabaseClient
+                                            .from('usuarios')
+                                            .select('id')
+                                            .eq('email', atividade.email_usuario)
+                                            .maybeSingle();
+                                        
+                                        if (usuarioDono) {
+                                            await supabaseClient.from('notificacoes').insert({
+                                                usuario_id: usuarioDono.id,
+                                                tipo: 'curtida',
+                                                remetente_id: usuarioAtual.id,
+                                                atividade_id: atividadeId,
+                                                lida: false
+                                            });
+                                            carregarNotificacoes();
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    })(likeBtn, atividade.id);
                 }
             }
         }
@@ -1091,56 +2247,82 @@
         async function carregarUsuarios() {
             if (!usuarioAtual) return;
             
-            const usuarios = await carregarTodosUsuarios();
+            var usuarios = await carregarTodosUsuarios();
             
             if (!usuarios || usuarios.length === 0) {
                 document.getElementById('usuariosList').innerHTML = '<div style="text-align: center; padding: 20px;">Nenhum usuario encontrado</div>';
                 return;
             }
             
-            const { data: seguindo } = await supabaseClient
+            var { data: seguindo } = await supabaseClient
                 .from('seguidores')
                 .select('seguindo_id')
                 .eq('seguidor_id', usuarioAtual.id);
-            const seguindoIds = seguindo?.map(s => s.seguindo_id) || [];
+            var seguindoIds = [];
+            if (seguindo) {
+                for (var i = 0; i < seguindo.length; i++) {
+                    seguindoIds.push(seguindo[i].seguindo_id);
+                }
+            }
             
-            const usuariosDiv = document.getElementById('usuariosList');
+            var usuariosDiv = document.getElementById('usuariosList');
             usuariosDiv.innerHTML = '';
             
-            // Mostrar usuários que não são seguidos ainda (sugestões)
-            const sugeridos = usuarios
-                .filter(u => !seguindoIds.includes(u.id))
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 5);
+            var sugeridos = [];
+            for (var j = 0; j < usuarios.length; j++) {
+                var u = usuarios[j];
+                var found = false;
+                for (var k = 0; k < seguindoIds.length; k++) {
+                    if (seguindoIds[k] === u.id) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    sugeridos.push(u);
+                }
+            }
+            
+            for (var m = sugeridos.length - 1; m > 0; m--) {
+                var n = Math.floor(Math.random() * (m + 1));
+                var temp = sugeridos[m];
+                sugeridos[m] = sugeridos[n];
+                sugeridos[n] = temp;
+            }
+            
+            sugeridos = sugeridos.slice(0, 5);
             
             if (sugeridos.length === 0) {
                 usuariosDiv.innerHTML = '<div style="text-align: center; padding: 20px;">Voce ja segue todos os usuarios!</div>';
                 return;
             }
             
-            sugeridos.forEach(u => {
-                const div = document.createElement('div');
+            for (var p = 0; p < sugeridos.length; p++) {
+                var u2 = sugeridos[p];
+                var seguidoresCount = await getSeguidoresCount(u2.id);
+                
+                var div = document.createElement('div');
                 div.className = 'usuario-sugerido';
                 
-                const btn = criarBotaoSeguir(u.id, false, 'small');
+                var btn = criarBotaoSeguir(u2.id, false, 'small');
                 
                 div.innerHTML = `
-                    <div class="post-avatar" style="width: 40px; height: 40px; font-size: 14px;">${u.nome?.charAt(0).toUpperCase() || 'U'}</div>
+                    <div class="post-avatar" style="width: 40px; height: 40px; font-size: 14px;">${u2.nome?.charAt(0).toUpperCase() || 'U'}</div>
                     <div style="flex:1;">
-                        <strong>${u.nome || 'Usuario'}</strong>
-                        <div style="font-size: 11px; color: #94a3b8;">${u.email || ''}</div>
+                        <strong>${u2.nome || 'Usuario'}</strong>
+                        <div style="font-size: 11px; color: #94a3b8;"><i class="bx bx-group"></i> ${seguidoresCount} seguidores</div>
                     </div>
                 `;
                 div.appendChild(btn);
                 usuariosDiv.appendChild(div);
-            });
+            }
         }
 
         // ===== CARREGAR SEGUINDO =====
         async function carregarSeguindo() {
             if (!usuarioAtual) return;
             
-            const { data: seguindo, error } = await supabaseClient
+            var { data: seguindo, error } = await supabaseClient
                 .from('seguidores')
                 .select('seguindo_id')
                 .eq('seguidor_id', usuarioAtual.id);
@@ -1150,16 +2332,17 @@
                 return;
             }
             
-            const seguindoDiv = document.getElementById('seguindoList');
+            var seguindoDiv = document.getElementById('seguindoList');
             
             if (!seguindo || seguindo.length === 0) {
                 seguindoDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #94a3b8;">Voce ainda nao segue ninguem</div>';
                 return;
             }
             
-            const usuariosSeguindo = [];
-            for (const s of seguindo) {
-                const { data: user, error: userError } = await supabaseClient
+            var usuariosSeguindo = [];
+            for (var i = 0; i < seguindo.length; i++) {
+                var s = seguindo[i];
+                var { data: user, error: userError } = await supabaseClient
                     .from('usuarios')
                     .select('id, nome, email')
                     .eq('id', s.seguindo_id)
@@ -1171,29 +2354,32 @@
             
             seguindoDiv.innerHTML = '';
             
-            usuariosSeguindo.forEach(user => {
-                const div = document.createElement('div');
+            for (var j = 0; j < usuariosSeguindo.length; j++) {
+                var user = usuariosSeguindo[j];
+                var seguidoresCount = await getSeguidoresCount(user.id);
+                
+                var div = document.createElement('div');
                 div.className = 'seguidor-item';
                 
-                const btn = criarBotaoSeguir(user.id, true, 'small');
+                var btn = criarBotaoSeguir(user.id, true, 'small');
                 
                 div.innerHTML = `
                     <div class="seguidor-avatar">${user.nome?.charAt(0).toUpperCase() || 'U'}</div>
                     <div class="seguidor-info">
                         <div class="seguidor-nome">${user.nome || 'Usuario'}</div>
-                        <div class="seguidor-email">${user.email || ''}</div>
+                        <div class="seguidor-email"><i class="bx bx-group"></i> ${seguidoresCount} seguidores</div>
                     </div>
                 `;
                 div.appendChild(btn);
                 seguindoDiv.appendChild(div);
-            });
+            }
         }
 
         // ===== CARREGAR SEGUIDORES =====
         async function carregarSeguidores() {
             if (!usuarioAtual) return;
             
-            const { data: seguidores, error } = await supabaseClient
+            var { data: seguidores, error } = await supabaseClient
                 .from('seguidores')
                 .select('seguidor_id')
                 .eq('seguindo_id', usuarioAtual.id);
@@ -1203,16 +2389,17 @@
                 return;
             }
             
-            const seguidoresDiv = document.getElementById('seguidoresList');
+            var seguidoresDiv = document.getElementById('seguidoresList');
             
             if (!seguidores || seguidores.length === 0) {
                 seguidoresDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #94a3b8;">Nenhum seguidor ainda</div>';
                 return;
             }
             
-            const usuariosSeguidores = [];
-            for (const s of seguidores) {
-                const { data: user, error: userError } = await supabaseClient
+            var usuariosSeguidores = [];
+            for (var i = 0; i < seguidores.length; i++) {
+                var s = seguidores[i];
+                var { data: user, error: userError } = await supabaseClient
                     .from('usuarios')
                     .select('id, nome, email')
                     .eq('id', s.seguidor_id)
@@ -1224,23 +2411,40 @@
             
             seguidoresDiv.innerHTML = '';
             
-            usuariosSeguidores.forEach(user => {
-                const div = document.createElement('div');
+            for (var j = 0; j < usuariosSeguidores.length; j++) {
+                var user = usuariosSeguidores[j];
+                var seguidoresCount = await getSeguidoresCount(user.id);
+                
+                var div = document.createElement('div');
                 div.className = 'seguidor-item';
+                
+                var isFollowing = false;
+                if (usuarioAtual && user.id !== usuarioAtual.id) {
+                    var { data: followCheck } = await supabaseClient
+                        .from('seguidores')
+                        .select('id')
+                        .eq('seguidor_id', usuarioAtual.id)
+                        .eq('seguindo_id', user.id)
+                        .maybeSingle();
+                    isFollowing = !!followCheck;
+                }
+                
+                var btn = criarBotaoSeguir(user.id, isFollowing, 'small');
                 
                 div.innerHTML = `
                     <div class="seguidor-avatar">${user.nome?.charAt(0).toUpperCase() || 'U'}</div>
                     <div class="seguidor-info">
                         <div class="seguidor-nome">${user.nome || 'Usuario'}</div>
-                        <div class="seguidor-email">${user.email || ''}</div>
+                        <div class="seguidor-email"><i class="bx bx-group"></i> ${seguidoresCount} seguidores</div>
                     </div>
                 `;
+                div.appendChild(btn);
                 seguidoresDiv.appendChild(div);
-            });
+            }
         }
 
         // ===== PESQUISAR USUÁRIOS =====
-        let searchTimeout;
+        var searchTimeout;
         async function pesquisarUsuarios(termo) {
             if (!termo || termo.length < 2) {
                 document.getElementById('searchResults').style.display = 'none';
@@ -1248,7 +2452,7 @@
             }
             if (!usuarioAtual) return;
             
-            const usuarios = await carregarTodosUsuarios();
+            var usuarios = await carregarTodosUsuarios();
             
             if (!usuarios || usuarios.length === 0) {
                 document.getElementById('searchResults').innerHTML = '<div style="text-align: center; padding: 20px;">Nenhum usuario encontrado</div>';
@@ -1256,12 +2460,17 @@
                 return;
             }
             
-            const filtrados = usuarios.filter(u => 
-                u.nome?.toLowerCase().includes(termo.toLowerCase()) ||
-                u.email?.toLowerCase().includes(termo.toLowerCase())
-            );
+            var filtrados = [];
+            for (var i = 0; i < usuarios.length; i++) {
+                var u = usuarios[i];
+                var nomeMatch = u.nome && u.nome.toLowerCase().includes(termo.toLowerCase());
+                var emailMatch = u.email && u.email.toLowerCase().includes(termo.toLowerCase());
+                if (nomeMatch || emailMatch) {
+                    filtrados.push(u);
+                }
+            }
             
-            const resultsDiv = document.getElementById('searchResults');
+            var resultsDiv = document.getElementById('searchResults');
             
             if (filtrados.length === 0) {
                 resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px;">Nenhum usuario encontrado</div>';
@@ -1269,61 +2478,89 @@
                 return;
             }
             
-            const { data: seguindo } = await supabaseClient
+            var { data: seguindo } = await supabaseClient
                 .from('seguidores')
                 .select('seguindo_id')
                 .eq('seguidor_id', usuarioAtual.id);
-            const seguindoIds = seguindo?.map(s => s.seguindo_id) || [];
+            var seguindoIds = [];
+            if (seguindo) {
+                for (var k = 0; k < seguindo.length; k++) {
+                    seguindoIds.push(seguindo[k].seguindo_id);
+                }
+            }
             
             resultsDiv.innerHTML = '';
             
-            filtrados.forEach(u => {
-                const div = document.createElement('div');
+            for (var j = 0; j < filtrados.length; j++) {
+                var u2 = filtrados[j];
+                var seguidoresCount = await getSeguidoresCount(u2.id);
+                var isFollowing = false;
+                for (var m = 0; m < seguindoIds.length; m++) {
+                    if (seguindoIds[m] === u2.id) {
+                        isFollowing = true;
+                        break;
+                    }
+                }
+                var btn = criarBotaoSeguir(u2.id, isFollowing, 'small');
+                
+                var div = document.createElement('div');
                 div.className = 'search-result-item';
                 
-                const isFollowing = seguindoIds.includes(u.id);
-                const btn = criarBotaoSeguir(u.id, isFollowing, 'small');
-                
                 div.innerHTML = `
-                    <div class="search-result-avatar">${u.nome?.charAt(0).toUpperCase() || 'U'}</div>
+                    <div class="search-result-avatar">${u2.nome?.charAt(0).toUpperCase() || 'U'}</div>
                     <div class="search-result-info">
-                        <div class="search-result-name">${u.nome || 'Usuario'}</div>
-                        <div style="font-size: 11px; color: #94a3b8;">${u.email || ''}</div>
+                        <div class="search-result-name">${u2.nome || 'Usuario'}</div>
+                        <div style="font-size: 11px; color: #94a3b8;"><i class="bx bx-group"></i> ${seguidoresCount} seguidores</div>
                     </div>
                 `;
                 div.appendChild(btn);
                 resultsDiv.appendChild(div);
-            });
+            }
             
             resultsDiv.style.display = 'block';
         }
 
         // ===== TABS =====
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-                const tabId = btn.dataset.tab;
-                if (tabId === 'feed') {
-                    document.getElementById('feedTab').style.display = 'block';
-                    carregarFeed();
-                }
-                if (tabId === 'seguidores') {
-                    document.getElementById('seguidoresTab').style.display = 'block';
-                    carregarUsuarios();
-                    carregarSeguindo();
-                    carregarSeguidores();
-                }
-                if (tabId === 'desafios') document.getElementById('desafiosTab').style.display = 'block';
-            });
-        });
+        var tabBtns = document.querySelectorAll('.tab-btn');
+        for (var t = 0; t < tabBtns.length; t++) {
+            (function(btn) {
+                btn.addEventListener('click', function() {
+                    var allBtns = document.querySelectorAll('.tab-btn');
+                    for (var b = 0; b < allBtns.length; b++) {
+                        allBtns[b].classList.remove('active');
+                    }
+                    btn.classList.add('active');
+                    
+                    var tabs = document.querySelectorAll('.tab-content');
+                    for (var tab = 0; tab < tabs.length; tab++) {
+                        tabs[tab].style.display = 'none';
+                    }
+                    
+                    var tabId = btn.dataset.tab;
+                    if (tabId === 'feed') {
+                        document.getElementById('feedTab').style.display = 'block';
+                        carregarFeed();
+                    }
+                    if (tabId === 'seguidores') {
+                        document.getElementById('seguidoresTab').style.display = 'block';
+                        carregarUsuarios();
+                        carregarSeguindo();
+                        carregarSeguidores();
+                    }
+                    if (tabId === 'desafios') {
+                        document.getElementById('desafiosTab').style.display = 'block';
+                    }
+                });
+            })(tabBtns[t]);
+        }
 
         // ===== SIDEBAR =====
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const overlay = document.getElementById('sidebarOverlay');
+        var sidebar = document.getElementById('sidebar');
+        var sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        var overlay = document.getElementById('sidebarOverlay');
+        
         function isMobile() { return window.innerWidth <= 768; }
+        
         function toggleSidebar() {
             if (!isMobile()) return;
             sidebar.classList.toggle('active');
@@ -1337,19 +2574,33 @@
                 if (overlay) overlay.classList.remove('active');
             }
         }
-        sidebarToggleBtn?.addEventListener('click', toggleSidebar);
-        overlay?.addEventListener('click', () => { if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
+        
+        if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', function() { 
+            if (isMobile() && sidebar.classList.contains('active')) toggleSidebar(); 
+        });
+
+        var sidebarLinks = document.querySelectorAll('.sidebar-link');
+        for (var sl = 0; sl < sidebarLinks.length; sl++) {
+            (function(link) {
+                link.addEventListener('click', function() {
+                    if (isMobile() && sidebar.classList.contains('active')) {
+                        toggleSidebar();
+                    }
+                });
+            })(sidebarLinks[sl]);
+        }
 
         // ===== SEARCH INPUT =====
-        const searchInput = document.getElementById('searchUserInput');
+        var searchInput = document.getElementById('searchUserInput');
         if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
+            searchInput.addEventListener('input', function(e) {
                 clearTimeout(searchTimeout);
-                const termo = e.target.value;
-                searchTimeout = setTimeout(() => pesquisarUsuarios(termo), 300);
+                var termo = e.target.value;
+                searchTimeout = setTimeout(function() { pesquisarUsuarios(termo); }, 300);
             });
-            document.addEventListener('click', (e) => {
-                const results = document.getElementById('searchResults');
+            document.addEventListener('click', function(e) {
+                var results = document.getElementById('searchResults');
                 if (!searchInput.contains(e.target) && !results?.contains(e.target)) {
                     results.style.display = 'none';
                 }
