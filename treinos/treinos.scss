@@ -617,7 +617,7 @@ nav {
     margin-bottom: 22px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 }
 
 .form-group label {
@@ -625,7 +625,7 @@ nav {
     font-size: 14px;
     color: #1e293b;
     margin-bottom: 8px;
-    text-align: center;
+    text-align: left;
     display: block;
     width: 100%;
 }
@@ -633,7 +633,6 @@ nav {
 /* Inputs */
 .infos_treinos .input-rounded {
     width: 100%;
-    max-width: 650px;
     padding: 14px 20px;
     border-radius: 60px;
     border: 1.5px solid #e2e8f0;
@@ -658,7 +657,6 @@ nav {
     justify-content: center;
     gap: 12px;
     width: 100%;
-    max-width: 650px;
 }
 
 .tipo a, .visibilidade a {
@@ -1266,4 +1264,74 @@ a.active-option {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+
+/* ===== CORREÇÃO DE CENTRALIZAÇÃO (PC) ===== */
+@media (min-width:769px){
+
+.treinos{
+    align-items:center;
+}
+
+.cima,
+.carrosel-total,
+.distancia-card-moderno,
+#map,
+.control-icons,
+.infos_treinos{
+    width:100%;
+}
+
+.infos_treinos{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    max-width:650px;
+    margin:20px auto 0;
+    padding:0;
+}
+
+.infos_treinos h1{
+    width:100%;
+    text-align:center;
+}
+
+.form-group,
+.calorias-card,
+.range-container,
+.acessorios-container,
+.botao-salvar{
+    width:100%;
+    max-width:650px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+}
+
+.form-group label{
+    width:100%;
+    text-align:left;
+}
+
+.input-rounded{
+    width:100%;
+}
+
+.tipo,
+.visibilidade{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
 }
