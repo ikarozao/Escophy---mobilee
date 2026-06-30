@@ -290,6 +290,571 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.85; }
     }
+
+    /* ===== ESTILOS DO FORMULÁRIO CENTRALIZADO E CARD DE CALORIAS ===== */
+    .infos_treinos {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto 0 auto;
+      padding: 0 10px;
+      animation: fadeInScale 0.4s ease;
+    }
+
+    .infos_treinos h1 {
+      font-family: "Staatliches", sans-serif;
+      font-weight: 500;
+      font-size: 28px;
+      margin-bottom: 24px;
+      color: #044700;
+      text-align: center;
+      width: 100%;
+    }
+
+    .form-group {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1e293b;
+      margin-bottom: 8px;
+      width: 100%;
+      text-align: left;
+      padding-left: 4px;
+    }
+
+    .infos_treinos .input-rounded {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 60px;
+      border: 1.5px solid #e2e8f0;
+      background-color: #f8fafc;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .infos_treinos .input-rounded:focus {
+      border-color: #4CAF50;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+
+    .tipo, .visibilidade {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .tipo a, .visibilidade a {
+      text-decoration: none;
+      color: #475569;
+      padding: 10px 24px;
+      border-radius: 60px;
+      background-color: #f1f5f9;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      font-size: 14px;
+      flex: 0 1 auto;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .tipo a:hover, .visibilidade a:hover {
+      background-color: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    a.active-option {
+      background: linear-gradient(135deg, #4CAF50, #2e7d32) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25) !important;
+    }
+
+    .range-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .rangezi {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .rangezao {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .rangezao::-webkit-slider-track {
+      background: linear-gradient(90deg, #4CAF50, #ff9800, #ef4444);
+      height: 6px;
+      border-radius: 10px;
+    }
+
+    .rangezao::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border: 2px solid #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -6px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .rangezao::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: #4CAF50;
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: default;
+    }
+
+    .tooltip .tip {
+      visibility: hidden;
+      opacity: 0;
+      background-color: #333;
+      color: #fff;
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .tooltip:hover .tip {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* ===== CARD DE CALORIAS ===== */
+    .calorias-card {
+      background: linear-gradient(135deg, #fff5f5, #fef2f2);
+      border-radius: 20px;
+      padding: 18px 24px;
+      margin-bottom: 25px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .calorias-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.1);
+    }
+
+    .calorias-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #dc2626;
+      margin-bottom: 6px;
+    }
+
+    .calorias-header i {
+      font-size: 22px;
+    }
+
+    .calorias-valor {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .calorias-detalhes {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .acessorios-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .acessorios-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+      width: 100%;
+    }
+
+    .acessorio-item-custom {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 15px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .acessorio-item-custom:hover {
+      border-color: #4CAF50;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .acessorio-header-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .acessorio-nome-custom {
+      font-weight: 700;
+      color: #044700;
+      font-size: 14px;
+      background: rgba(76, 175, 80, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .btn-remover-acessorio {
+      background: none;
+      border: none;
+      color: #f44336;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 5px 8px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .btn-remover-acessorio:hover {
+      background: rgba(244, 67, 54, 0.1);
+      transform: scale(1.1);
+    }
+
+    .acessorio-espec-custom {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .acessorio-espec-custom:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+    }
+
+    .botao-salvar {
+      display: flex;
+      justify-content: center;
+      margin-top: 35px;
+      width: 100%;
+    }
+
+    .botao-salvar button {
+      padding: 14px 45px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #4CAF50, #2e7d32);
+      color: white;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+    }
+
+    .botao-salvar button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+    }
+
+    /* ===== FOOTER MODERNO MINIMALISTA (IGUAL AO DA HOME) ===== */
+    .footer {
+      background: #ffffff;
+      padding: 40px 20px 16px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .footer-brand h2 {
+      font-family: "Staatliches", sans-serif;
+      font-size: 24px;
+      color: #1a4a2e;
+      margin: 0 0 4px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: #6b8a76;
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+      max-width: 260px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 8px;
+    }
+
+    .footer-social a {
+      color: #6b8a76;
+      font-size: 18px;
+      transition: color 0.2s;
+      text-decoration: none;
+      padding: 4px;
+    }
+
+    .footer-social a:hover {
+      color: #1a4a2e;
+    }
+
+    .footer-column h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1a4a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 10px 0;
+    }
+
+    .footer-column ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .footer-column ul li a {
+      color: #6b8a76;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-column ul li a:hover {
+      color: #1a4a2e;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .footer-bottom p {
+      font-size: 12px;
+      color: #8aa596;
+      margin: 0;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-bottom-links a {
+      font-size: 12px;
+      color: #8aa596;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #1a4a2e;
+    }
+
+    /* ===== FOOTER RESPONSIVO ===== */
+    @media (max-width: 1024px) {
+      .footer-container {
+        grid-template-columns: 1.5fr 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        padding: 28px 16px 12px;
+        margin-top: 24px;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        padding-bottom: 16px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+        text-align: center;
+      }
+
+      .footer-brand p {
+        max-width: 100%;
+        font-size: 12px;
+        margin: 0 auto 8px;
+      }
+
+      .footer-brand h2 {
+        font-size: 20px;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+
+      .footer-column {
+        text-align: center;
+      }
+
+      .footer-column h4 {
+        font-size: 11px;
+        margin-bottom: 6px;
+      }
+
+      .footer-column ul li a {
+        font-size: 12px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+        padding-top: 10px;
+      }
+
+      .footer-bottom p {
+        font-size: 11px;
+      }
+
+      .footer-bottom-links {
+        gap: 12px;
+      }
+
+      .footer-bottom-links a {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer {
+        padding: 20px 12px 10px;
+        margin-top: 16px;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-bottom: 12px;
+      }
+
+      .footer-brand h2 {
+        font-size: 18px;
+      }
+
+      .footer-brand p {
+        font-size: 11px;
+      }
+
+      .footer-social a {
+        font-size: 16px;
+      }
+
+      .footer-column h4 {
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+
+      .footer-column ul li a {
+        font-size: 11px;
+      }
+
+      .footer-bottom p {
+        font-size: 10px;
+      }
+
+      .footer-bottom-links a {
+        font-size: 10px;
+      }
+
+      .footer-bottom-links {
+        gap: 10px;
+      }
+    }
+
+    /* Desktop com sidebar */
+    @media (min-width: 769px) {
+      .footer {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -358,19 +923,19 @@
     <ul class="carrosel-total">
       <div class="org">
         <li class="carrossel">
-          <img src="img/bike copy.png" alt="">
+          <i class="bx bx-cycling" style="font-size: 55px; color: #044700;"></i>
         </li>
         <p>Ciclismo</p>
       </div>
       <div class="org">
         <li class="carrossel">
-          <img src="img/run.png" alt="">
+          <i class="bx bx-run" style="font-size: 55px; color: #044700;"></i>
         </li>
         <p>Corrida</p>
       </div>
       <div class="org">
         <li class="carrossel">
-          <img src="img/Imagem do WhatsApp de 2025-09-15 à(s) 08.26.48_8a7c6d57.jpg" alt="">
+          <i class="bx bx-walk" style="font-size: 55px; color: #044700;"></i>
         </li>
         <p>Caminhada</p>
       </div>
@@ -412,22 +977,34 @@
       </button>
     </div>
 
-    <!-- Formulário de informações (aparece após selecionar um tipo de treino) -->
+    <!-- Formulário de informações -->
     <article id="infos_treinos" class="infos_treinos" style="display: none;">
       <h1>Informações da atividade</h1>
 
-      <div class="titulo">
-        <p>Título do treino:</p>
-        <input class="input-rounded" type="text" name="titulo" placeholder="" required>
+      <!-- Card de Calorias -->
+      <div class="calorias-card">
+        <div class="calorias-header">
+          <i class="bx bx-fire"></i>
+          <span>Calorias estimadas</span>
+        </div>
+        <div class="calorias-valor" id="caloriasEstimadas">0 kcal</div>
+        <div class="calorias-detalhes">
+          <span>Baseado na distância percorrida</span>
+        </div>
       </div>
 
-      <div class="descricao">
-        <p>Descrição do treino:</p>
-        <input class="input-rounded" type="text" name="descricao" placeholder="" required>
+      <div class="form-group">
+        <label>Título do treino</label>
+        <input class="input-rounded" type="text" name="titulo" placeholder="Ex: Corrida matinal" required>
       </div>
 
-      <div class="grupo-opcoes">
-        <p>Tipo de treino:</p>
+      <div class="form-group">
+        <label>Descrição do treino</label>
+        <input class="input-rounded" type="text" name="descricao" placeholder="Como foi o treino?" required>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de treino</label>
         <div class="tipo">
           <a href="#" role="menuitem" tabindex="0">Treino</a>
           <a href="#" role="menuitem" tabindex="0">Prova</a>
@@ -435,10 +1012,10 @@
         </div>
       </div>
 
-      <div class="grupo-opcoes">
-        <p>Nível de intensidade</p>
+      <div class="form-group">
+        <label>Nível de intensidade</label>
         <div class="range-container">
-          <input type="range" class="rangezao" min="1" max="10" step="1" value="5">
+          <input type="range" class="rangezao" id="rangeIntensidade" min="1" max="10" step="1" value="5">
           <div class="rangezi">
             <span class="tooltip">1<span class="tip">Pouco</span></span>
             <span>2</span><span>3</span><span>4</span>
@@ -449,24 +1026,20 @@
         </div>
       </div>
 
-      <div class="grupo-opcoes">
-        <p>Visibilidade do Treino:</p>
+      <div class="form-group">
+        <label>Visibilidade do Treino</label>
         <div class="visibilidade">
           <a href="#" role="menuitem" tabindex="0">Privado</a>
           <a href="#" role="menuitem" tabindex="0">Público</a>
         </div>
       </div>
 
-      <div class="grupo-opcoes">
-        <p>Adicione os acessórios:</p>
-        
+      <div class="form-group">
+        <label>Adicione os acessórios</label>
         <div class="acessorios-container">
-          <!-- Botão único para adicionar acessório -->
           <button class="btn-adicionar-acessorio-principal" id="abrirModalBtn">
             <i class="bx bx-plus-circle"></i> Adicionar acessório
           </button>
-          
-          <!-- Lista de acessórios adicionados -->
           <div id="acessoriosLista" class="acessorios-lista"></div>
         </div>
       </div>
@@ -477,42 +1050,41 @@
     </article>
   </div>
 
+  <!-- ===== FOOTER MODERNO MINIMALISTA (IGUAL AO DA HOME) ===== -->
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-logo">
-        <h1>ESCORPHY</h1>
-        <p>© 2025 Escorphy</p>
+      <div class="footer-brand">
+        <h2>ESCORPHY</h2>
+        <p>Transformando vidas através do esporte.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/escorphybr" target="_blank" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="https://www.youtube.com/escorphy" target="_blank" aria-label="YouTube"><i class="bx bxl-youtube"></i></a>
+          <a href="https://wa.me/+5544998121630" target="_blank" aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a>
+        </div>
       </div>
       <div class="footer-column">
-        <h3>Sobre</h3>
+        <h4>Sobre</h4>
         <ul>
-          <li><a href="sobrenos.html">Nossa Missão</a></li>
-          <li><a href="sobrenos.html">Equipe</a></li>
-          <li><a href="#">Privacidade</a></li>
+          <li><a href="sobrenos.html">Missão</a></li>
+          <li><a href="sobrenos.html#cards-section">Equipe</a></li>
+          <li><a href="#" id="linkPrivacidade">Privacidade</a></li>
         </ul>
       </div>
       <div class="footer-column">
-        <h3>Explorar</h3>
+        <h4>Ajuda</h4>
         <ul>
-          <li><a href="#">Funcionalidades</a></li>
-          <li><a href="#">Planos</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="suporte.html">Suporte</a></li>
+          <li><a href="https://wa.me/+5544998121630">Fale Conosco</a></li>
+          <li><a href="#" id="linkPrivacidade2">Política de Privacidade</a></li>
         </ul>
       </div>
-      <div class="footer-column">
-        <h3>Redes</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/escorphybr">Instagram</a></li>
-          <li><a href="https://www.youtube.com/escorphy">YouTube</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Ajuda</h3>
-        <ul>
-          <li><a href="#">Suporte</a></li>
-          <li><a href="#">Fale Conosco</a></li>
-          <li><a href="#">Central de Ajuda</a></li>
-        </ul>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Escorphy</p>
+      <div class="footer-bottom-links">
+        <a href="#" id="linkPrivacidade3">Privacidade</a>
+        <a href="#" id="linkTermos">Termos de Uso</a>
+        <a href="#" id="linkCookies">Cookies</a>
       </div>
     </div>
   </footer>
@@ -596,7 +1168,6 @@
           showToast("Tela mantida ativa para gravação!", "success");
           console.log("WakeLock ativado!");
           
-          // Listener para quando o wake lock for liberado
           wakeLock.addEventListener('release', () => {
             console.log('WakeLock foi liberado');
           });
@@ -619,6 +1190,57 @@
           console.error("Erro ao liberar WakeLock:", err);
         }
       }
+    }
+
+    // ========== CÁLCULO DE CALORIAS ==========
+    let pesoUsuario = 70;
+    let alturaUsuario = 170;
+
+    async function buscarDadosUsuario() {
+      try {
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
+        if (!usuarioEmail) return;
+
+        const { data, error } = await supabaseClient
+          .from('usuarios')
+          .select('peso, altura')
+          .eq('email', usuarioEmail)
+          .maybeSingle();
+
+        if (data) {
+          pesoUsuario = data.peso || 70;
+          alturaUsuario = data.altura || 170;
+          console.log("Dados do usuário carregados:", { peso: pesoUsuario, altura: alturaUsuario });
+        }
+      } catch (err) {
+        console.error("Erro ao buscar dados do usuário:", err);
+      }
+    }
+
+    function calcularCalorias(distanciaKm, peso, altura) {
+      if (!distanciaKm || distanciaKm === 0 || isNaN(distanciaKm)) return 0;
+      const fatorBase = 0.9;
+      const fatorAltura = 1 + (altura - 170) / 1000;
+      const calorias = distanciaKm * peso * fatorBase * fatorAltura;
+      return Math.round(calorias);
+    }
+
+    function atualizarCalorias(distanciaKm) {
+      const caloriasElement = document.getElementById('caloriasEstimadas');
+      if (!caloriasElement) return;
+      
+      if (!distanciaKm || distanciaKm === 0 || isNaN(distanciaKm)) {
+        caloriasElement.textContent = '0 kcal';
+        return;
+      }
+      
+      const calorias = calcularCalorias(distanciaKm, pesoUsuario, alturaUsuario);
+      caloriasElement.textContent = `${calorias} kcal`;
+    }
+
+    function atualizarDistanciaECalorias(distanciaKm) {
+      document.getElementById("distance").innerText = distanciaKm.toFixed(2) + " km";
+      atualizarCalorias(distanciaKm);
     }
 
     // ========== VARIÁVEIS DE RASTREAMENTO ==========
@@ -674,10 +1296,8 @@
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
         
-        // Ativar WakeLock para manter a tela ligada
         requestWakeLock();
         
-        // Atualizar indicador
         atualizarIndicador();
 
         watchId = navigator.geolocation.watchPosition(
@@ -685,16 +1305,15 @@
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             
-            // Verificar se a posição é válida (precisão razoável)
             if (position.coords.accuracy > 100) {
-              // Se a precisão for muito baixa, ignorar
               console.log("Precisão baixa, ignorando:", position.coords.accuracy);
               return;
             }
             
             userPositions.push({ lat, lng: lon, timestamp: new Date().toISOString(), accuracy: position.coords.accuracy });
             const distanciaTotal = calcularDistanciaTotal(userPositions);
-            document.getElementById("distance").innerText = (distanciaTotal / 1000).toFixed(2) + " km";
+            const distanciaKm = distanciaTotal / 1000;
+            atualizarDistanciaECalorias(distanciaKm);
             window.mainMap.panTo([lat, lon]);
             
             if (userPositions.length === 1) {
@@ -705,7 +1324,6 @@
             if (polyline) polyline.setLatLngs(latLngs);
             else polyline = L.polyline(latLngs, { color: '#4CAF50', weight: 5, opacity: 0.8 }).addTo(window.mainMap);
             
-            // Atualizar contador de pontos
             atualizarIndicador();
           },
           function (error) {
@@ -722,7 +1340,6 @@
             enableHighAccuracy: true, 
             timeout: 30000, 
             maximumAge: 5000,
-            // Opção importante: continuar recebendo atualizações mesmo em segundo plano
           }
         );
         
@@ -737,10 +1354,8 @@
         navigator.geolocation.clearWatch(watchId);
         tracking = false;
         
-        // Liberar WakeLock
         releaseWakeLock();
         
-        // Atualizar indicador
         atualizarIndicador();
         
         if (userPositions.length > 0) {
@@ -856,6 +1471,12 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
+      // Buscar dados do usuário para calorias
+      buscarDadosUsuario();
+      
+      // Inicializar calorias
+      atualizarCalorias(0);
+
       window.mainMap = L.map('map').setView([-24.740387, -53.767403], 16);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(window.mainMap);
 
@@ -950,6 +1571,7 @@
         if (startMarker) startMarker.remove();
         if (endMarker) endMarker.remove();
         document.getElementById("distance").innerText = "0 km";
+        atualizarCalorias(0);
         atualizarIndicador();
       });
       
@@ -982,11 +1604,8 @@
     if (isMobile() && sidebarState === 'true') toggleSidebar();
     window.addEventListener('resize', () => { if (!isMobile() && sidebar.classList.contains('active')) toggleSidebar(); });
 
-    // ========== RECUPERAR POSIÇÃO SE A PÁGINA FOR RECARREGADA ==========
-    // Se a página for recarregada enquanto está gravando, tentar recuperar
     window.addEventListener('beforeunload', () => {
       if (tracking) {
-        // Tentar liberar o wake lock antes de fechar
         releaseWakeLock();
       }
     });

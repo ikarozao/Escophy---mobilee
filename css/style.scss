@@ -551,3 +551,40 @@ body {
     font-size: 13px;
   }
 }
+/* ===== CAMPOS DE PESO E ALTURA LADO A LADO ===== */
+.input-group-physical {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-box.half {
+    flex: 1;
+    width: 50%;
+}
+
+.input-box.half input {
+    padding: 12px 20px 12px 45px;
+}
+
+/* Ícones específicos */
+.input-box.half .bx-weight {
+    left: 15px;
+}
+
+.input-box.half .bx-ruler {
+    left: 15px;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .input-group-physical {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-box.half {
+        width: 100%;
+    }
+}

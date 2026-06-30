@@ -1157,6 +1157,193 @@
                 height: 32px;
             }
         }
+
+        /* ===== MODAL PDF ===== */
+        .modal-pdf {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 30000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-pdf.active {
+            display: flex;
+        }
+        .modal-pdf-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 95vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        .modal-pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+            flex-shrink: 0;
+        }
+        .modal-pdf-header h2 {
+            font-size: 18px;
+            color: #1a4a2e;
+            margin: 0;
+            font-family: "Staatliches", sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .modal-pdf-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+            padding: 0 8px;
+        }
+        .modal-pdf-close:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+        .modal-pdf-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            background: #fcfcfc;
+            min-height: 300px;
+            max-height: 70vh;
+        }
+        .modal-pdf-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-pdf-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .modal-pdf-body::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 10px;
+        }
+
+        /* Estilo do conteúdo do PDF dentro do modal */
+        .pdf-content {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #222;
+            line-height: 1.7;
+        }
+        .pdf-content h1 {
+            font-size: 24px;
+            color: #1a4a2e;
+            text-align: center;
+            margin: 0 0 20px 0;
+            font-family: "Staatliches", sans-serif;
+            letter-spacing: 1px;
+        }
+        .pdf-content h2 {
+            font-size: 17px;
+            color: #1a4a2e;
+            margin: 20px 0 8px 0;
+            font-weight: 600;
+        }
+        .pdf-content h3 {
+            font-size: 15px;
+            color: #2e7d52;
+            margin: 14px 0 6px 0;
+            font-weight: 600;
+        }
+        .pdf-content p {
+            font-size: 14px;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        .pdf-content ul {
+            margin: 8px 0 12px 20px;
+            padding: 0;
+        }
+        .pdf-content ul li {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .pdf-content .pdf-footer {
+            font-size: 12px;
+            color: #8aa596;
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #e8ece8;
+        }
+        .modal-pdf-footer {
+            padding: 12px 24px;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .modal-pdf-footer .btn-fechar-pdf {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Poppins", sans-serif;
+        }
+        .modal-pdf-footer .btn-fechar-pdf:hover {
+            background: #2e7d52;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .modal-pdf-content {
+                max-height: 98vh;
+            }
+            .modal-pdf-body {
+                padding: 16px;
+                max-height: 60vh;
+            }
+            .pdf-content h1 {
+                font-size: 20px;
+            }
+            .pdf-content h2 {
+                font-size: 15px;
+            }
+            .pdf-content p,
+            .pdf-content ul li {
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 480px) {
+            .modal-pdf-body {
+                padding: 12px;
+                max-height: 50vh;
+            }
+            .pdf-content h1 {
+                font-size: 17px;
+            }
+            .pdf-content h2 {
+                font-size: 14px;
+            }
+            .pdf-content p,
+            .pdf-content ul li {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 
@@ -1316,8 +1503,8 @@
             <span class="subtitle">Política de Privacidade e Termos de Uso</span>
             <p style="color: #8aa596; font-size: 13px; margin-bottom: 20px;">Última atualização: 23 de junho de 2026.</p>
             <h2>1. INTRODUÇÃO</h2>
-            <p>Este documento estabelece a Política de Privacidade e os Termos de Uso da plataforma Escorphy...</p>
-            <div class="last-update">📄 Documento atualizado em 23 de junho de 2026.</div>
+            <p>Este documento estabelece a Política de Privacidade e os Termos de Uso da plataforma Escorply...</p>
+            <div class="last-update">Documento atualizado em 23 de junho de 2026.</div>
             <button class="btn-fechar-modal-priv" id="fecharModalPrivacidadeBtn">Li e concordo</button>
         </div>
     </div>
@@ -1326,7 +1513,7 @@
     <div id="modalEditarPerfil" class="modal-editar-perfil">
         <div class="modal-editar-content">
             <button class="modal-editar-close" id="fecharModalEditar">&times;</button>
-            <h2>✏️ Editar Perfil</h2>
+            <h2>Editar Perfil</h2>
             
             <div class="input-group">
                 <label>Nome</label>
@@ -1350,9 +1537,9 @@
             
             <hr class="divider">
             
-            <button class="btn-alterar-senha" id="btnAlterarSenha">🔑 Alterar Senha</button>
+            <button class="btn-alterar-senha" id="btnAlterarSenha">Alterar Senha</button>
             
-            <button class="btn-salvar-perfil" id="btnSalvarPerfil">💾 Salvar Alterações</button>
+            <button class="btn-salvar-perfil" id="btnSalvarPerfil">Salvar Alterações</button>
         </div>
     </div>
 
@@ -1360,7 +1547,7 @@
     <div id="modalAlterarSenha" class="modal-alterar-senha">
         <div class="modal-senha-content">
             <button class="modal-editar-close" id="fecharModalSenha">&times;</button>
-            <h2>🔑 Alterar Senha</h2>
+            <h2>Alterar Senha</h2>
             <p>Digite seu email para receber um código de verificação</p>
             
             <div class="input-group">
@@ -1368,7 +1555,7 @@
                 <input type="email" id="senha-email" placeholder="seu@email.com">
             </div>
             
-            <button class="btn-enviar-codigo" id="btnEnviarCodigo">📧 Enviar Código</button>
+            <button class="btn-enviar-codigo" id="btnEnviarCodigo">Enviar Código</button>
             
             <div id="senha-step2" style="display: none; margin-top: 20px;">
                 <div class="input-group">
@@ -1383,7 +1570,7 @@
                     <label>Confirmar Nova Senha</label>
                     <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
                 </div>
-                <button class="btn-verificar-codigo" id="btnVerificarCodigo">✅ Verificar e Alterar Senha</button>
+                <button class="btn-verificar-codigo" id="btnVerificarCodigo">Verificar e Alterar Senha</button>
                 <div id="senha-status" class="senha-status"></div>
             </div>
         </div>
@@ -1510,6 +1697,24 @@
         </div>
     </footer>
 
+    <!-- ===== MODAL PDF (Política de Privacidade e Termos) ===== -->
+    <div id="modalPdf" class="modal-pdf">
+        <div class="modal-pdf-content">
+            <div class="modal-pdf-header">
+                <h2 id="pdfModalTitle">📄 Política de Privacidade e Termos de Uso</h2>
+                <button class="modal-pdf-close" id="fecharModalPdf">&times;</button>
+            </div>
+            <div class="modal-pdf-body" id="pdfBody">
+                <div class="pdf-content">
+                    <!-- O conteúdo será injetado via JavaScript -->
+                </div>
+            </div>
+            <div class="modal-pdf-footer">
+                <button class="btn-fechar-pdf" id="fecharModalPdfBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== SCRIPTS ===== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
@@ -1531,42 +1736,129 @@
         const MAX_GALLERY_IMAGES = 2;
         var acaoConfirmacao = null;
 
-        // ===== MODAL PRIVACIDADE =====
-        function abrirModalPrivacidade() {
-            document.getElementById('modalPrivacidade').classList.add('active');
+        // ===== CONTEÚDO DO PDF PARA EXIBIÇÃO NO MODAL =====
+        const pdfContentHTML = `
+            <h1>ESCORPHY</h1>
+            <p style="text-align:center; color:#6b8a76; font-size:14px; margin-top:-10px;">Política de Privacidade e Termos de Uso</p>
+            <p style="text-align:center; color:#8aa596; font-size:13px; margin-bottom:25px;">Última atualização: 23 de junho de 2026.</p>
+
+            <h2>1. INTRODUÇÃO</h2>
+            <p>Este documento estabelece a Política de Privacidade e os Termos de Uso da plataforma Escorply, projeto educacional desenvolvido por Ikaro Lorenzo Oliveira e Antonela Schneider para registro, acompanhamento e compartilhamento de atividades físicas.</p>
+
+            <h2>2. CONTROLADORES DOS DADOS</h2>
+            <p>Os responsáveis pelo tratamento dos dados pessoais coletados pela plataforma são Ikaro Lorenzo Oliveira e Antonela Schneider. Contato: escorplyail@gmail.com</p>
+
+            <h2>3. DADOS COLETADOS</h2>
+            <p>A plataforma poderá coletar nome, endereço de e-mail, senha criptografada, foto de perfil, dados de atividades físicas, localização por GPS, informações de autenticação por conta Google e dados técnicos de navegação.</p>
+
+            <h2>4. FINALIDADE DO TRATAMENTO</h2>
+            <p>Os dados são utilizados para criação de contas, autenticação, cálculo de estatísticas, exibição de rankings, personalização da experiência do usuário e manutenção da segurança da plataforma.</p>
+
+            <h2>5. DADOS DE LOCALIZAÇÃO</h2>
+            <p>O Escorply utiliza geolocalização por GPS para registro das atividades físicas. A localização exata é acessível apenas ao próprio usuário e não é disponibilizada publicamente.</p>
+
+            <h2>6. PUBLICAÇÕES E PRIVACIDADE</h2>
+            <p>Os usuários poderão publicar atividades físicas e fotografias. As publicações poderão ser classificadas como públicas ou privadas, conforme escolha do usuário.</p>
+
+            <h2>7. RANKINGS</h2>
+            <p>O sistema poderá exibir rankings públicos baseados na quilometragem percorrida e na pontuação acumulada, incluindo nome de usuário, foto de perfil e pontuação.</p>
+
+            <h2>8. USO POR MENORES DE IDADE</h2>
+            <p>Usuários menores de 18 anos poderão utilizar a plataforma mediante autorização de seus responsáveis legais.</p>
+
+            <h2>9. COOKIES E TECNOLOGIAS SEMELHANTES</h2>
+            <p>A plataforma utiliza cookies para melhorar a experiência do usuário, autenticação e análise de uso. O usuário pode gerenciar suas preferências de cookies através das configurações do navegador.</p>
+
+            <h2>10. SEGURANÇA DA INFORMAÇÃO</h2>
+            <p>São adotadas medidas técnicas e administrativas razoáveis para proteção dos dados pessoais contra acessos não autorizados, perda, alteração ou divulgação indevida.</p>
+
+            <h2>11. DIREITOS DOS TITULARES</h2>
+            <p>Nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), os usuários poderão solicitar acesso, correção ou exclusão de seus dados pessoais mediante contato pelo endereço eletrônico informado.</p>
+
+            <h2>12. EXCLUSÃO DE CONTA</h2>
+            <p>A exclusão de contas deverá ser solicitada por e-mail. Após validação da solicitação, os dados serão removidos permanentemente, observadas as exigências legais aplicáveis.</p>
+
+            <h2>13. PROPRIEDADE INTELECTUAL</h2>
+            <p>Os conteúdos publicados permanecem de propriedade de seus respectivos autores. Ao publicar conteúdo na plataforma, o usuário autoriza sua exibição dentro do ambiente do Escorply.</p>
+
+            <h2>14. CONDUTAS PROIBIDAS</h2>
+            <p>É vedado publicar conteúdo ilícito, fraudar pontuações, utilizar informações falsas, acessar contas de terceiros ou praticar qualquer atividade que comprometa o funcionamento da plataforma.</p>
+
+            <h2>15. LIMITAÇÃO DE RESPONSABILIDADE</h2>
+            <p>As informações de desempenho, distância e calorias possuem caráter informativo. O Escorply não garante precisão absoluta dos cálculos apresentados.</p>
+
+            <h2>16. ALTERAÇÕES</h2>
+            <p>Este documento poderá ser atualizado periodicamente. A continuidade do uso da plataforma após alterações implicará concordância com os termos atualizados.</p>
+
+            <h2>17. LEGISLAÇÃO APLICÁVEL</h2>
+            <p>Este documento é regido pela legislação brasileira, especialmente pela Lei Geral de Proteção de Dados (LGPD).</p>
+
+            <div class="pdf-footer">📄 Documento atualizado em 23 de junho de 2026. © 2025 Escorphy - Todos os direitos reservados.</div>
+        `;
+
+        // ===== MODAL PDF =====
+        function abrirModalPdf(titulo) {
+            const modal = document.getElementById('modalPdf');
+            const title = document.getElementById('pdfModalTitle');
+            const body = document.getElementById('pdfBody');
+            
+            if (titulo) {
+                title.textContent = titulo;
+            } else {
+                title.textContent = '📄 Política de Privacidade e Termos de Uso';
+            }
+            
+            // Injetar o conteúdo do PDF
+            body.innerHTML = `<div class="pdf-content">${pdfContentHTML}</div>`;
+            
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function fecharModalPrivacidade() {
-            document.getElementById('modalPrivacidade').classList.remove('active');
+        function fecharModalPdf() {
+            document.getElementById('modalPdf').classList.remove('active');
             document.body.style.overflow = '';
         }
 
+        // Event listeners para abrir o PDF
         document.getElementById('linkPrivacidade')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPrivacidade();
-        });
-        document.getElementById('linkPrivacidade2')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            abrirModalPrivacidade();
-        });
-        document.getElementById('linkPrivacidade3')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            abrirModalPrivacidade();
-        });
-        document.getElementById('linkTermos')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            abrirModalPrivacidade();
-        });
-        document.getElementById('linkCookies')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            abrirModalPrivacidade();
+            abrirModalPdf('📄 Política de Privacidade');
         });
 
-        document.getElementById('fecharModalPrivacidade')?.addEventListener('click', fecharModalPrivacidade);
-        document.getElementById('fecharModalPrivacidadeBtn')?.addEventListener('click', fecharModalPrivacidade);
-        document.getElementById('modalPrivacidade')?.addEventListener('click', function(e) {
-            if (e.target === this) fecharModalPrivacidade();
+        document.getElementById('linkPrivacidade2')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPdf('📄 Política de Privacidade');
+        });
+
+        document.getElementById('linkPrivacidade3')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPdf('📄 Política de Privacidade');
+        });
+
+        document.getElementById('linkTermos')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPdf('📄 Termos de Uso');
+        });
+
+        document.getElementById('linkCookies')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalPdf('🍪 Política de Cookies');
+        });
+
+        // Fechar modal PDF
+        document.getElementById('fecharModalPdf')?.addEventListener('click', fecharModalPdf);
+        document.getElementById('fecharModalPdfBtn')?.addEventListener('click', fecharModalPdf);
+        document.getElementById('modalPdf')?.addEventListener('click', function(e) {
+            if (e.target === this) fecharModalPdf();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('modalPdf').classList.contains('active')) {
+                    fecharModalPdf();
+                }
+            }
         });
 
         // ===== TOAST =====
@@ -1984,7 +2276,7 @@
                     console.error("Erro ao atualizar auth:", authError);
                     showToast("Erro ao atualizar nome!", "error");
                     this.disabled = false;
-                    this.textContent = '💾 Salvar Alterações';
+                    this.textContent = ' Salvar Alterações';
                     return;
                 }
 
@@ -2013,7 +2305,7 @@
                 document.getElementById('nomeUsuario').textContent = 'Olá, ' + nome;
                 localStorage.setItem("usuarioLogado", nome);
 
-                showToast("✅ Alterações salvas com sucesso!", "success");
+                showToast("Alterações salvas com sucesso!", "success");
                 fecharModalEditar();
 
             } catch (err) {

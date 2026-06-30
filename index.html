@@ -52,6 +52,8 @@
 
     <form id="register-form" class="form">
       <h1>Cadastro</h1>
+      
+      <!-- Dados Pessoais -->
       <div class="input-box">
         <input id="nome-cadastro" placeholder="Nome" type="text" required />
         <i class="bx bx-user"></i>
@@ -68,6 +70,19 @@
         <input id="data-nascimento" placeholder="Data de Nascimento" type="date" />
         <i class="bx bx-calendar"></i>
       </div>
+
+      <!-- Dados Físicos (Peso e Altura) -->
+      <div class="input-group-physical">
+        <div class="input-box half">
+          <input id="peso-cadastro" placeholder="Peso (kg)" type="number" step="0.1" min="20" max="300" required />
+          <i class="bx bx-weight"></i>
+        </div>
+        <div class="input-box half">
+          <input id="altura-cadastro" placeholder="Altura (cm)" type="number" step="0.1" min="50" max="250" required />
+          <i class="bx bx-ruler"></i>
+        </div>
+      </div>
+
       <div class="input-box">
         <input id="senha-cadastro" placeholder="Senha (mínimo 6 caracteres)" type="password" required />
         <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
@@ -83,7 +98,7 @@
 
       <div id="terms-ballon" class="terms-ballon">
         <div class="ballon-content">
-          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, telefone, data de nascimento, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
+          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, telefone, data de nascimento, peso, altura, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
           <button id="close-ballon" class="close-ballon">Entendi</button>
         </div>
       </div>
@@ -233,10 +248,23 @@
       const email = document.getElementById("email-cadastro").value;
       const telefone = document.getElementById("telefone-cadastro").value || null;
       const dataNascimento = document.getElementById("data-nascimento").value || null;
+      const peso = document.getElementById("peso-cadastro").value || null;
+      const altura = document.getElementById("altura-cadastro").value || null;
       const senha = document.getElementById("senha-cadastro").value;
 
       if (!nome || !email || !senha) {
         showToast("Preencha todos os campos obrigatórios!", "warning");
+        return;
+      }
+
+      // Validar peso e altura
+      if (peso && (peso < 20 || peso > 300)) {
+        showToast("Peso inválido! Digite um valor entre 20 e 300 kg.", "warning");
+        return;
+      }
+
+      if (altura && (altura < 50 || altura > 250)) {
+        showToast("Altura inválida! Digite um valor entre 50 e 250 cm.", "warning");
         return;
       }
 
@@ -248,7 +276,9 @@
             data: {
               name: nome,
               telefone: telefone,
-              data_nascimento: dataNascimento
+              data_nascimento: dataNascimento,
+              peso: peso ? parseFloat(peso) : null,
+              altura: altura ? parseFloat(altura) : null
             }
           }
         });
@@ -279,6 +309,8 @@
             email: email,
             telefone: telefone,
             data_nascimento: dataNascimento,
+            peso: peso ? parseFloat(peso) : 70.00,
+            altura: altura ? parseFloat(altura) : 170.00,
             pontos_mes: 0,
             created_at: new Date().toISOString()
           });
