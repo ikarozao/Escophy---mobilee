@@ -1138,7 +1138,6 @@
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-            padding-right: 40px;
         }
 
         @media (max-width: 480px) {
@@ -1344,6 +1343,24 @@
                 font-size: 12px;
             }
         }
+
+        /* ===== ESTILOS PARA PESO E ALTURA NO MODAL ===== */
+        .input-group-physical {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .input-group-physical .input-group {
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .input-group-physical {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
     </style>
 </head>
 
@@ -1364,7 +1381,7 @@
             <div class="modal-login-icon">
                 <i class='bx bx-error-circle'></i>
             </div>
-            <h3>⚠️ Usuário não logado!</h3>
+            <h3>Usuário não logado!</h3>
             <p>Você precisa estar logado para acessar esta página. Faça login para continuar.</p>
             <div class="modal-login-buttons">
                 <button class="btn-login-action" id="btnFazerLogin">Fazer Login</button>
@@ -1390,7 +1407,7 @@
     <div class="notification-dropdown" id="notificationDropdown">
         <div class="notification-header">
             <span>Notificações</span>
-            <button class="btn-apagar-todas" id="btnApagarTodasNotificacoes">🗑 Apagar todas</button>
+            <button class="btn-apagar-todas" id="btnApagarTodasNotificacoes">Apagar todas</button>
         </div>
         <div class="notification-list" id="notificationList">
             <div class="notification-empty">Carregando...</div>
@@ -1453,7 +1470,7 @@
     <!-- ===== MODAL CONFIRMAR EXCLUSÃO TREINO ===== -->
     <div id="confirmExcluirTreinoModal" class="modal-confirm">
         <div class="modal-content">
-            <p>⚠️ Tem certeza que deseja excluir este treino?</p>
+            <p>Tem certeza que deseja excluir este treino?</p>
             <p style="font-size: 12px; color: #666; margin-top: 5px;">Esta ação não pode ser desfeita.</p>
             <div class="modal-buttons">
                 <button class="btn-confirm" id="confirmExcluirTreinoBtn">Sim, excluir</button>
@@ -1471,7 +1488,7 @@
             </div>
             <div class="modal-relatorio-body" id="modalBody"></div>
             <div class="modal-relatorio-footer">
-                <button class="btn-excluir-modal" id="excluirTreinoBtn">🗑 Excluir treino</button>
+                <button class="btn-excluir-modal" id="excluirTreinoBtn">Excluir treino</button>
                 <button class="btn-fechar-modal" id="footerCloseBtn">Fechar</button>
             </div>
         </div>
@@ -1533,6 +1550,17 @@
             <div class="input-group">
                 <label>Data de Nascimento</label>
                 <input type="date" id="edit-data-nascimento">
+            </div>
+
+            <div class="input-group-physical">
+                <div class="input-group">
+                    <label>Peso (kg)</label>
+                    <input type="number" id="edit-peso" placeholder="70" step="0.1" min="20" max="300">
+                </div>
+                <div class="input-group">
+                    <label>Altura (cm)</label>
+                    <input type="number" id="edit-altura" placeholder="170" step="0.1" min="50" max="250">
+                </div>
             </div>
             
             <hr class="divider">
@@ -1701,7 +1729,7 @@
     <div id="modalPdf" class="modal-pdf">
         <div class="modal-pdf-content">
             <div class="modal-pdf-header">
-                <h2 id="pdfModalTitle">📄 Política de Privacidade e Termos de Uso</h2>
+                <h2 id="pdfModalTitle">Política de Privacidade e Termos de Uso</h2>
                 <button class="modal-pdf-close" id="fecharModalPdf">&times;</button>
             </div>
             <div class="modal-pdf-body" id="pdfBody">
@@ -1793,7 +1821,7 @@
             <h2>17. LEGISLAÇÃO APLICÁVEL</h2>
             <p>Este documento é regido pela legislação brasileira, especialmente pela Lei Geral de Proteção de Dados (LGPD).</p>
 
-            <div class="pdf-footer">📄 Documento atualizado em 23 de junho de 2026. © 2025 Escorphy - Todos os direitos reservados.</div>
+            <div class="pdf-footer">Documento atualizado em 23 de junho de 2026. © 2025 Escorphy - Todos os direitos reservados.</div>
         `;
 
         // ===== MODAL PDF =====
@@ -1805,10 +1833,9 @@
             if (titulo) {
                 title.textContent = titulo;
             } else {
-                title.textContent = '📄 Política de Privacidade e Termos de Uso';
+                title.textContent = 'Política de Privacidade e Termos de Uso';
             }
             
-            // Injetar o conteúdo do PDF
             body.innerHTML = `<div class="pdf-content">${pdfContentHTML}</div>`;
             
             modal.classList.add('active');
@@ -1820,33 +1847,31 @@
             document.body.style.overflow = '';
         }
 
-        // Event listeners para abrir o PDF
         document.getElementById('linkPrivacidade')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPdf('📄 Política de Privacidade');
+            abrirModalPdf('Política de Privacidade');
         });
 
         document.getElementById('linkPrivacidade2')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPdf('📄 Política de Privacidade');
+            abrirModalPdf('Política de Privacidade');
         });
 
         document.getElementById('linkPrivacidade3')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPdf('📄 Política de Privacidade');
+            abrirModalPdf('Política de Privacidade');
         });
 
         document.getElementById('linkTermos')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPdf('📄 Termos de Uso');
+            abrirModalPdf('Termos de Uso');
         });
 
         document.getElementById('linkCookies')?.addEventListener('click', function(e) {
             e.preventDefault();
-            abrirModalPdf('🍪 Política de Cookies');
+            abrirModalPdf('Política de Cookies');
         });
 
-        // Fechar modal PDF
         document.getElementById('fecharModalPdf')?.addEventListener('click', fecharModalPdf);
         document.getElementById('fecharModalPdfBtn')?.addEventListener('click', fecharModalPdf);
         document.getElementById('modalPdf')?.addEventListener('click', function(e) {
@@ -2218,6 +2243,8 @@
             document.getElementById('edit-email').value = dadosUsuarioAtual.email || '';
             document.getElementById('edit-telefone').value = dadosUsuarioAtual.telefone || '';
             document.getElementById('edit-data-nascimento').value = dadosUsuarioAtual.data_nascimento || '';
+            document.getElementById('edit-peso').value = dadosUsuarioAtual.peso || '';
+            document.getElementById('edit-altura').value = dadosUsuarioAtual.altura || '';
             
             modalEditar.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2250,6 +2277,8 @@
             const nome = document.getElementById('edit-nome').value;
             const telefone = document.getElementById('edit-telefone').value;
             const dataNascimento = document.getElementById('edit-data-nascimento').value;
+            const peso = document.getElementById('edit-peso').value;
+            const altura = document.getElementById('edit-altura').value;
 
             if (!userEmailGlobal) {
                 showToast("Usuário não logado!", "error");
@@ -2258,6 +2287,17 @@
 
             if (!nome || nome.trim() === '') {
                 showToast("O nome não pode estar vazio!", "warning");
+                return;
+            }
+
+            // Validar peso e altura
+            if (peso && (peso < 20 || peso > 300)) {
+                showToast("Peso inválido! Digite entre 20 e 300 kg.", "warning");
+                return;
+            }
+
+            if (altura && (altura < 50 || altura > 250)) {
+                showToast("Altura inválida! Digite entre 50 e 250 cm.", "warning");
                 return;
             }
 
@@ -2276,18 +2316,28 @@
                     console.error("Erro ao atualizar auth:", authError);
                     showToast("Erro ao atualizar nome!", "error");
                     this.disabled = false;
-                    this.textContent = ' Salvar Alterações';
+                    this.textContent = 'Salvar Alterações';
                     return;
                 }
 
                 // 2. Atualizar na tabela usuarios
+                const updateData = {
+                    nome: nome,
+                    telefone: telefone || null,
+                    data_nascimento: dataNascimento || null
+                };
+
+                // Adicionar peso e altura se foram preenchidos
+                if (peso !== '' && peso !== null && peso !== undefined) {
+                    updateData.peso = parseFloat(peso);
+                }
+                if (altura !== '' && altura !== null && altura !== undefined) {
+                    updateData.altura = parseFloat(altura);
+                }
+
                 const { error } = await supabaseClient
                     .from('usuarios')
-                    .update({
-                        nome: nome,
-                        telefone: telefone || null,
-                        data_nascimento: dataNascimento || null
-                    })
+                    .update(updateData)
                     .eq('email', userEmailGlobal);
 
                 if (error) {
@@ -2296,10 +2346,13 @@
                     return;
                 }
 
+                // Atualizar dados locais
                 if (dadosUsuarioAtual) {
                     dadosUsuarioAtual.nome = nome;
                     dadosUsuarioAtual.telefone = telefone;
                     dadosUsuarioAtual.data_nascimento = dataNascimento;
+                    if (peso !== '' && peso !== null) dadosUsuarioAtual.peso = parseFloat(peso);
+                    if (altura !== '' && altura !== null) dadosUsuarioAtual.altura = parseFloat(altura);
                 }
 
                 document.getElementById('nomeUsuario').textContent = 'Olá, ' + nome;
@@ -2313,7 +2366,7 @@
                 showToast("Erro ao salvar!", "error");
             } finally {
                 this.disabled = false;
-                this.textContent = '💾 Salvar Alterações';
+                this.textContent = 'Salvar Alterações';
             }
         });
 
@@ -2338,20 +2391,19 @@
                 codigoEnviado = codigo;
                 codigoEmail = email;
 
-                // ENVIA O CÓDIGO POR EMAIL (não imprime no console)
                 const emailResponse = await fetch('https://api.resend.com/emails', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer re_sua_chave_aqui', // Coloque sua chave do Resend
+                        'Authorization': 'Bearer re_pXckJspR_HkvaToGzcxqjGvo48xZVLFAt',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        from: 'Escorphy <no-reply@escorphy.com>',
+                        from: 'onboarding@resend.dev',
                         to: email,
-                        subject: '🔑 Código de verificação - Escorphy',
+                        subject: 'Código de verificação - Escorphy',
                         html: `
                             <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 30px; background: #f0faf5; border-radius: 16px; border: 1px solid #4CAF50;">
-                                <h2 style="color: #1a4a2e; text-align: center;">🔑 Código de Verificação</h2>
+                                <h2 style="color: #1a4a2e; text-align: center;">Código de Verificação</h2>
                                 <p style="color: #333; text-align: center;">Olá,</p>
                                 <p style="color: #333; text-align: center;">Você solicitou a alteração da sua senha no <strong>Escorphy</strong>.</p>
                                 <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0; border: 2px dashed #4CAF50;">
@@ -2370,14 +2422,14 @@
                     console.error("Erro ao enviar email:", await emailResponse.text());
                     showToast("Erro ao enviar email! Tente novamente.", "error");
                     this.disabled = false;
-                    this.textContent = '📧 Enviar Código';
+                    this.textContent = 'Enviar Código';
                     return;
                 }
 
-                showToast(`📧 Código enviado para ${email}!`, "success");
+                showToast("Código enviado para " + email + "!", "success");
 
                 document.getElementById('senha-step2').style.display = 'block';
-                document.getElementById('senha-status').textContent = '✅ Código enviado! Verifique seu email.';
+                document.getElementById('senha-status').textContent = 'Código enviado! Verifique seu email.';
                 document.getElementById('senha-status').className = 'senha-status success';
 
             } catch (err) {
@@ -2385,7 +2437,7 @@
                 showToast("Erro ao enviar código!", "error");
             } finally {
                 this.disabled = false;
-                this.textContent = '📧 Enviar Código';
+                this.textContent = 'Enviar Código';
             }
         });
 
@@ -2402,7 +2454,7 @@
             }
 
             if (codigo !== codigoEnviado) {
-                status.textContent = '❌ Código inválido!';
+                status.textContent = 'Código inválido!';
                 status.className = 'senha-status error';
                 return;
             }
@@ -2429,14 +2481,14 @@
 
                 if (error) {
                     console.error("Erro ao alterar senha:", error);
-                    status.textContent = '❌ Erro ao alterar senha!';
+                    status.textContent = 'Erro ao alterar senha!';
                     status.className = 'senha-status error';
                     return;
                 }
 
-                status.textContent = '✅ Senha alterada com sucesso!';
+                status.textContent = 'Senha alterada com sucesso!';
                 status.className = 'senha-status success';
-                showToast("✅ Senha alterada com sucesso!", "success");
+                showToast("Senha alterada com sucesso!", "success");
 
                 setTimeout(() => {
                     fecharModalSenha();
@@ -2444,11 +2496,11 @@
 
             } catch (err) {
                 console.error(err);
-                status.textContent = '❌ Erro ao alterar senha!';
+                status.textContent = 'Erro ao alterar senha!';
                 status.className = 'senha-status error';
             } finally {
                 this.disabled = false;
-                this.textContent = '✅ Verificar e Alterar Senha';
+                this.textContent = 'Verificar e Alterar Senha';
             }
         });
 
@@ -2586,11 +2638,11 @@
             }
 
             modalBody.innerHTML = `
-                    <div class="data-treino">📅 ${dataFormatada}</div>
+                    <div class="data-treino">${dataFormatada}</div>
                     <div class="relatorio-section"><div class="relatorio-label">DISTÂNCIA PERCORRIDA</div><div class="relatorio-value relatorio-value-large">${distanciaTexto}</div></div>
                     <div class="relatorio-section"><div class="relatorio-label">DESCRIÇÃO</div><div class="relatorio-value">${treino.descricao || "Nenhuma descrição fornecida"}</div></div>
                     <div class="relatorio-section"><div class="relatorio-label">NÍVEL DE INTENSIDADE</div><div class="intensidade-bar"><div class="intensidade-fill" style="width: ${(intensidade / 10) * 100}%; background: ${getIntensidadeCor(intensidade)};"></div><div class="intensidade-labels"><span>Leve</span><span>Moderado</span><span>Intenso</span></div></div><div class="relatorio-value" style="margin-top: 10px; font-weight: bold;">Nível ${intensidade}/10 - ${getIntensidadeTexto(intensidade)}</div></div>
-                    <div class="relatorio-section"><div class="relatorio-label">INFORMAÇÕES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">🏃 ${treino.tipo || "Não especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? '🔒 Privado' : '🌍 Público'}</span></div></div>
+                    <div class="relatorio-section"><div class="relatorio-label">INFORMAÇÕES DO TREINO</div><div class="relatorio-value"><span class="badge-treino badge-tipo">${treino.tipo || "Não especificado"}</span><span class="badge-treino ${treino.visibilidade === 'privado' ? 'badge-privado' : 'badge-publico'}">${treino.visibilidade === 'privado' ? 'Privado' : 'Público'}</span></div></div>
                     ${acessoriosHtml ? `<div class="relatorio-section"><div class="relatorio-label">ACESSÓRIOS UTILIZADOS</div><div class="relatorio-value">${acessoriosHtml}</div></div>` : ''}
                 `;
             modal.classList.add('active');
@@ -2656,9 +2708,9 @@
                     var item = document.createElement('li');
                     var dataTexto = atividade.data ? ' - ' + new Date(atividade.data).toLocaleDateString('pt-BR') : '';
                     var distanciaPreview = '';
-                    if (atividade.trajeto?.summary?.distance) distanciaPreview = ' 🏃 ' + (atividade.trajeto.summary
+                    if (atividade.trajeto?.summary?.distance) distanciaPreview = ' ' + (atividade.trajeto.summary
                         .distance / 1000).toFixed(1) + 'km';
-                    else if (atividade.trajeto?.distance) distanciaPreview = ' 🏃 ' + (atividade.trajeto.distance / 1000)
+                    else if (atividade.trajeto?.distance) distanciaPreview = ' ' + (atividade.trajeto.distance / 1000)
                         .toFixed(1) + 'km';
                     item.innerHTML =
                         '<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><span>' +
