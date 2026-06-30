@@ -1903,4 +1903,44 @@ nav .search-box input {
     margin-left: 0;
     width: 100%;
   }
+}
+.btn-verificar-codigo {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: "Poppins", sans-serif;
+  margin-top: 10px;
+}
+
+.btn-verificar-codigo:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.btn-verificar-codigo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.senha-status {
+  font-size: 13px;
+  color: #6b8a76;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.senha-status.success {
+  color: #4CAF50;
+}
+
+.senha-status.error {
+  color: #ef4444;
 }/*# sourceMappingURL=home.css.map */

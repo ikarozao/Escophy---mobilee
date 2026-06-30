@@ -1004,12 +1004,6 @@
             font-family: "Staatliches", sans-serif;
         }
 
-        .modal-senha-content p {
-            font-size: 14px;
-            color: #6b8a76;
-            margin-bottom: 20px;
-        }
-
         .modal-senha-content .input-group {
             margin-bottom: 16px;
         }
@@ -1039,35 +1033,10 @@
             background: white;
         }
 
-        .btn-enviar-codigo {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: "Poppins", sans-serif;
-        }
-
-        .btn-enviar-codigo:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-        }
-
-        .btn-enviar-codigo:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         .btn-verificar-codigo {
             width: 100%;
             padding: 14px;
-            background: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
             border: none;
             border-radius: 12px;
@@ -1080,12 +1049,14 @@
         }
 
         .btn-verificar-codigo:hover {
-            background: #2e7d52;
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
         }
 
         .btn-verificar-codigo:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
 
         .senha-status {
@@ -1576,31 +1547,18 @@
         <div class="modal-senha-content">
             <button class="modal-editar-close" id="fecharModalSenha">&times;</button>
             <h2>Alterar Senha</h2>
-            <p>Digite seu email para receber um código de verificação</p>
             
             <div class="input-group">
-                <label>Email</label>
-                <input type="email" id="senha-email" placeholder="seu@email.com">
+                <label>Nova Senha</label>
+                <input type="password" id="nova-senha" placeholder="Nova senha (mínimo 6 caracteres)">
+            </div>
+            <div class="input-group">
+                <label>Confirmar Nova Senha</label>
+                <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
             </div>
             
-            <button class="btn-enviar-codigo" id="btnEnviarCodigo">Enviar Código</button>
-            
-            <div id="senha-step2" style="display: none; margin-top: 20px;">
-                <div class="input-group">
-                    <label>Código de Verificação</label>
-                    <input type="text" id="codigo-verificacao" placeholder="Digite o código recebido">
-                </div>
-                <div class="input-group">
-                    <label>Nova Senha</label>
-                    <input type="password" id="nova-senha" placeholder="Nova senha (mínimo 6 caracteres)">
-                </div>
-                <div class="input-group">
-                    <label>Confirmar Nova Senha</label>
-                    <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
-                </div>
-                <button class="btn-verificar-codigo" id="btnVerificarCodigo">Verificar e Alterar Senha</button>
-                <div id="senha-status" class="senha-status"></div>
-            </div>
+            <button class="btn-verificar-codigo" id="btnAlterarSenhaSubmit">Alterar Senha</button>
+            <div id="senha-status" class="senha-status"></div>
         </div>
     </div>
 
@@ -2256,9 +2214,8 @@
         }
 
         function abrirModalSenha() {
-            fecharModalEditar();
-            document.getElementById('senha-email').value = userEmailGlobal || '';
-            document.getElementById('senha-step2').style.display = 'none';
+            document.getElementById('nova-senha').value = '';
+            document.getElementById('confirmar-senha').value = '';
             document.getElementById('senha-status').textContent = '';
             document.getElementById('senha-status').className = 'senha-status';
             modalSenha.classList.add('active');
@@ -2375,89 +2332,11 @@
             abrirModalSenha();
         });
 
-        document.getElementById('btnEnviarCodigo')?.addEventListener('click', async function() {
-            const email = document.getElementById('senha-email').value;
-
-            if (!email) {
-                showToast("Digite seu email!", "warning");
-                return;
-            }
-
-            this.disabled = true;
-            this.textContent = 'Enviando...';
-
-            try {
-                const codigo = Math.floor(100000 + Math.random() * 900000).toString();
-                codigoEnviado = codigo;
-                codigoEmail = email;
-
-                const emailResponse = await fetch('https://api.resend.com/emails', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer re_pXckJspR_HkvaToGzcxqjGvo48xZVLFAt',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        from: 'onboarding@resend.dev',
-                        to: email,
-                        subject: 'Código de verificação - Escorphy',
-                        html: `
-                            <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 30px; background: #f0faf5; border-radius: 16px; border: 1px solid #4CAF50;">
-                                <h2 style="color: #1a4a2e; text-align: center;">Código de Verificação</h2>
-                                <p style="color: #333; text-align: center;">Olá,</p>
-                                <p style="color: #333; text-align: center;">Você solicitou a alteração da sua senha no <strong>Escorphy</strong>.</p>
-                                <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0; border: 2px dashed #4CAF50;">
-                                    <span style="font-size: 32px; font-weight: bold; color: #1a4a2e; letter-spacing: 4px;">${codigo}</span>
-                                </div>
-                                <p style="color: #6b8a76; text-align: center; font-size: 13px;">Este código é válido por 10 minutos.</p>
-                                <p style="color: #6b8a76; text-align: center; font-size: 13px;">Se você não solicitou esta alteração, ignore este email.</p>
-                                <hr style="border: none; border-top: 1px solid #c8e6d4; margin: 20px 0;">
-                                <p style="color: #8aa596; text-align: center; font-size: 12px;">© 2025 Escorphy - Transformando vidas através do esporte.</p>
-                            </div>
-                        `
-                    })
-                });
-
-                if (!emailResponse.ok) {
-                    console.error("Erro ao enviar email:", await emailResponse.text());
-                    showToast("Erro ao enviar email! Tente novamente.", "error");
-                    this.disabled = false;
-                    this.textContent = 'Enviar Código';
-                    return;
-                }
-
-                showToast("Código enviado para " + email + "!", "success");
-
-                document.getElementById('senha-step2').style.display = 'block';
-                document.getElementById('senha-status').textContent = 'Código enviado! Verifique seu email.';
-                document.getElementById('senha-status').className = 'senha-status success';
-
-            } catch (err) {
-                console.error(err);
-                showToast("Erro ao enviar código!", "error");
-            } finally {
-                this.disabled = false;
-                this.textContent = 'Enviar Código';
-            }
-        });
-
-        document.getElementById('btnVerificarCodigo')?.addEventListener('click', async function() {
-            const codigo = document.getElementById('codigo-verificacao').value;
+        // ===== ALTERAR SENHA (sem email) =====
+        document.getElementById('btnAlterarSenhaSubmit')?.addEventListener('click', async function() {
             const novaSenha = document.getElementById('nova-senha').value;
             const confirmarSenha = document.getElementById('confirmar-senha').value;
             const status = document.getElementById('senha-status');
-
-            if (!codigo) {
-                status.textContent = 'Digite o código de verificação!';
-                status.className = 'senha-status error';
-                return;
-            }
-
-            if (codigo !== codigoEnviado) {
-                status.textContent = 'Código inválido!';
-                status.className = 'senha-status error';
-                return;
-            }
 
             if (novaSenha.length < 6) {
                 status.textContent = 'A senha deve ter pelo menos 6 caracteres!';
@@ -2483,12 +2362,14 @@
                     console.error("Erro ao alterar senha:", error);
                     status.textContent = 'Erro ao alterar senha!';
                     status.className = 'senha-status error';
+                    this.disabled = false;
+                    this.textContent = 'Alterar Senha';
                     return;
                 }
 
-                status.textContent = 'Senha alterada com sucesso!';
+                status.textContent = 'Sua senha foi alterada com sucesso!';
                 status.className = 'senha-status success';
-                showToast("Senha alterada com sucesso!", "success");
+                showToast("Sua senha foi alterada com sucesso!", "success");
 
                 setTimeout(() => {
                     fecharModalSenha();
@@ -2500,7 +2381,7 @@
                 status.className = 'senha-status error';
             } finally {
                 this.disabled = false;
-                this.textContent = 'Verificar e Alterar Senha';
+                this.textContent = 'Alterar Senha';
             }
         });
 
