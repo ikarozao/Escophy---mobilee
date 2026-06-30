@@ -34,6 +34,7 @@
   </div>
 
   <main class="container">
+    <!-- LOGIN -->
     <form id="login-form" class="form active">
       <h1>Login</h1>
       <div class="input-box">
@@ -50,60 +51,83 @@
       </div>
     </form>
 
+    <!-- CADASTRO COM 3 ETAPAS -->
     <form id="register-form" class="form">
       <h1>Cadastro</h1>
-      
-      <!-- Dados Pessoais -->
-      <div class="input-box">
-        <input id="nome-cadastro" placeholder="Nome" type="text" required />
-        <i class="bx bx-user"></i>
-      </div>
-      <div class="input-box">
-        <input id="email-cadastro" placeholder="Email" type="email" required />
-        <i class="bx bx-envelope"></i>
-      </div>
-      <div class="input-box">
-        <input id="telefone-cadastro" placeholder="Telefone (ex: DDD + Número)" type="tel" />
-        <i class="bx bx-phone"></i>
-      </div>
-      <div class="input-box">
-        <input id="data-nascimento" placeholder="Data de Nascimento" type="date" />
-        <i class="bx bx-calendar"></i>
+
+      <!-- Indicador de etapas -->
+      <div class="steps-indicator">
+        <span class="step active" id="step1-indicator">1</span>
+        <span class="step-line"></span>
+        <span class="step" id="step2-indicator">2</span>
+        <span class="step-line"></span>
+        <span class="step" id="step3-indicator">3</span>
       </div>
 
-      <!-- Dados Físicos (Peso e Altura) -->
-      <div class="input-group-physical">
-        <div class="input-box half">
+      <!-- ETAPA 1: Nome, Email e Senha -->
+      <div id="step1" class="step-content active">
+        <div class="input-box">
+          <input id="nome-cadastro" placeholder="Nome" type="text" required />
+          <i class="bx bx-user"></i>
+        </div>
+        <div class="input-box">
+          <input id="email-cadastro" placeholder="Email" type="email" required />
+          <i class="bx bx-envelope"></i>
+        </div>
+        <div class="input-box">
+          <input id="senha-cadastro" placeholder="Senha (mínimo 6 caracteres)" type="password" required />
+          <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
+        </div>
+        <button type="button" class="btn-next" id="step1-next">Próximo ➜</button>
+      </div>
+
+      <!-- ETAPA 2: Telefone e Data de Nascimento -->
+      <div id="step2" class="step-content">
+        <div class="input-box">
+          <input id="telefone-cadastro" placeholder="Telefone (ex: DDD + Número)" type="tel" />
+          <i class="bx bx-phone"></i>
+        </div>
+        <div class="input-box">
+          <input id="data-nascimento" placeholder="Data de Nascimento" type="date" />
+          <i class="bx bx-calendar"></i>
+        </div>
+        <div class="step-buttons">
+          <button type="button" class="btn-prev" id="step2-prev">◀ Voltar</button>
+          <button type="button" class="btn-next" id="step2-next">Próximo ➜</button>
+        </div>
+      </div>
+
+      <!-- ETAPA 3: Peso e Altura + Termos -->
+      <div id="step3" class="step-content">
+        <div class="input-box">
           <input id="peso-cadastro" placeholder="Peso (kg)" type="number" step="0.1" min="20" max="300" required />
           <i class="bx bx-weight"></i>
         </div>
-        <div class="input-box half">
+        <div class="input-box">
           <input id="altura-cadastro" placeholder="Altura (cm)" type="number" step="0.1" min="50" max="250" required />
           <i class="bx bx-ruler"></i>
         </div>
-      </div>
 
-      <div class="input-box">
-        <input id="senha-cadastro" placeholder="Senha (mínimo 6 caracteres)" type="password" required />
-        <i class="bx bx-show toggle-password" data-target="senha-cadastro"></i>
-      </div>
+        <div class="terms-box">
+          <label class="checkbox-container">
+            <input type="checkbox" id="terms-checkbox" required>
+            <span class="checkmark"></span>
+            <span class="terms-text">Concordo com os <span id="terms-link" class="terms-link">termos</span></span>
+          </label>
+        </div>
 
-      <div class="terms-box">
-        <label class="checkbox-container">
-          <input type="checkbox" id="terms-checkbox" required>
-          <span class="checkmark"></span>
-          <span class="terms-text">Concordo com os <span id="terms-link" class="terms-link">termos</span></span>
-        </label>
-      </div>
+        <div id="terms-ballon" class="terms-ballon">
+          <div class="ballon-content">
+            <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, telefone, data de nascimento, peso, altura, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
+            <button id="close-ballon" class="close-ballon">Entendi</button>
+          </div>
+        </div>
 
-      <div id="terms-ballon" class="terms-ballon">
-        <div class="ballon-content">
-          <p>Ao criar sua conta no Escorphy, você concorda com nossos Termos de Uso e Política de Privacidade, autorizando o tratamento dos seus dados pessoais, incluindo nome, e-mail, telefone, data de nascimento, peso, altura, informações de atividade física e localização GPS, conforme necessário para funcionamento da plataforma. Você declara estar ciente de que suas atividades poderão ser armazenadas e exibidas conforme suas configurações de privacidade.</p>
-          <button id="close-ballon" class="close-ballon">Entendi</button>
+        <div class="step-buttons">
+          <button type="button" class="btn-prev" id="step3-prev">◀ Voltar</button>
+          <button class="login" type="submit" id="cadastro-btn">Cadastrar</button>
         </div>
       </div>
-
-      <button class="login" type="submit" id="cadastro-btn">Cadastrar</button>
 
       <div class="register-link">
         <p>Já tem uma conta? <a href="#" id="show-login">Login</a></p>
@@ -114,6 +138,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
 
   <script>
+    // ========== TOAST ==========
     function showToast(message, type = "error") {
       const toast = document.getElementById("toast-notification");
       const toastMessage = document.getElementById("toast-message");
@@ -140,6 +165,7 @@
       }, 3000);
     }
 
+    // ========== BACKGROUND CAROUSEL ==========
     const images = document.querySelectorAll(".bg-img");
     let current = 0;
 
@@ -149,6 +175,7 @@
       images[current].classList.add("active");
     }, 8000);
 
+    // ========== LOGIN / REGISTER TOGGLE ==========
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
     const showRegister = document.getElementById("show-register");
@@ -158,6 +185,7 @@
       e.preventDefault();
       loginForm.classList.remove("active");
       registerForm.classList.add("active");
+      goToStep(1);
     });
 
     showLogin?.addEventListener("click", (e) => {
@@ -166,6 +194,7 @@
       loginForm.classList.add("active");
     });
 
+    // ========== TERMS BALLOON ==========
     const termsLink = document.getElementById("terms-link");
     const termsBallon = document.getElementById("terms-ballon");
     const closeBallon = document.getElementById("close-ballon");
@@ -187,6 +216,77 @@
       }
     });
 
+    // ========== STEP SYSTEM ==========
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    const stepContents = {
+      1: document.getElementById("step1"),
+      2: document.getElementById("step2"),
+      3: document.getElementById("step3")
+    };
+
+    const stepIndicators = {
+      1: document.getElementById("step1-indicator"),
+      2: document.getElementById("step2-indicator"),
+      3: document.getElementById("step3-indicator")
+    };
+
+    function goToStep(step) {
+      for (let i = 1; i <= totalSteps; i++) {
+        stepContents[i].classList.remove("active");
+        stepIndicators[i].classList.remove("active");
+        stepIndicators[i].classList.remove("completed");
+      }
+
+      for (let i = 1; i < step; i++) {
+        stepIndicators[i].classList.add("completed");
+      }
+
+      stepContents[step].classList.add("active");
+      stepIndicators[step].classList.add("active");
+      currentStep = step;
+    }
+
+    // ========== STEP 1 → 2 ==========
+    document.getElementById("step1-next")?.addEventListener("click", () => {
+      const nome = document.getElementById("nome-cadastro").value;
+      const email = document.getElementById("email-cadastro").value;
+      const senha = document.getElementById("senha-cadastro").value;
+
+      if (!nome || !email || !senha) {
+        showToast("Preencha todos os campos!", "warning");
+        return;
+      }
+
+      if (!email.includes("@") || !email.includes(".")) {
+        showToast("Digite um email válido!", "warning");
+        return;
+      }
+
+      if (senha.length < 6) {
+        showToast("A senha deve ter pelo menos 6 caracteres!", "warning");
+        return;
+      }
+
+      goToStep(2);
+    });
+
+    // ========== STEP 2 → 3 ==========
+    document.getElementById("step2-next")?.addEventListener("click", () => {
+      goToStep(3);
+    });
+
+    // ========== VOLTAR ETAPAS ==========
+    document.getElementById("step2-prev")?.addEventListener("click", () => {
+      goToStep(1);
+    });
+
+    document.getElementById("step3-prev")?.addEventListener("click", () => {
+      goToStep(2);
+    });
+
+    // ========== SUPABASE ==========
     const SUPABASE_URL = "https://yuupbtrljazrrwizzafd.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1dXBidHJsamF6cnJ3aXp6YWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MjIzMzMsImV4cCI6MjA3NjQ5ODMzM30.trZvyDgPnhenuPiKxChZbVLcBQI3rOm8OsjtgAzoAm0";
 
@@ -195,7 +295,7 @@
       SUPABASE_ANON_KEY
     );
 
-    // LOGIN
+    // ========== LOGIN ==========
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -234,7 +334,7 @@
       }
     });
 
-    // CADASTRO
+    // ========== CADASTRO ==========
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -248,23 +348,22 @@
       const email = document.getElementById("email-cadastro").value;
       const telefone = document.getElementById("telefone-cadastro").value || null;
       const dataNascimento = document.getElementById("data-nascimento").value || null;
-      const peso = document.getElementById("peso-cadastro").value || null;
-      const altura = document.getElementById("altura-cadastro").value || null;
+      const peso = document.getElementById("peso-cadastro").value;
+      const altura = document.getElementById("altura-cadastro").value;
       const senha = document.getElementById("senha-cadastro").value;
 
-      if (!nome || !email || !senha) {
-        showToast("Preencha todos os campos obrigatórios!", "warning");
+      if (!peso || !altura) {
+        showToast("Preencha Peso e Altura!", "warning");
         return;
       }
 
-      // Validar peso e altura
-      if (peso && (peso < 20 || peso > 300)) {
-        showToast("Peso inválido! Digite um valor entre 20 e 300 kg.", "warning");
+      if (peso < 20 || peso > 300) {
+        showToast("Peso inválido! Digite entre 20 e 300 kg.", "warning");
         return;
       }
 
-      if (altura && (altura < 50 || altura > 250)) {
-        showToast("Altura inválida! Digite um valor entre 50 e 250 cm.", "warning");
+      if (altura < 50 || altura > 250) {
+        showToast("Altura inválida! Digite entre 50 e 250 cm.", "warning");
         return;
       }
 
@@ -277,8 +376,8 @@
               name: nome,
               telefone: telefone,
               data_nascimento: dataNascimento,
-              peso: peso ? parseFloat(peso) : null,
-              altura: altura ? parseFloat(altura) : null
+              peso: parseFloat(peso),
+              altura: parseFloat(altura)
             }
           }
         });
@@ -286,8 +385,6 @@
         if (error) {
           if (error.message.includes("User already registered")) {
             showToast("Este email já está cadastrado! Faça login.", "warning");
-          } else if (error.message.includes("Password should be at least 6 characters")) {
-            showToast("A senha deve ter pelo menos 6 caracteres!", "warning");
           } else {
             showToast(error.message, "error");
           }
@@ -309,16 +406,14 @@
             email: email,
             telefone: telefone,
             data_nascimento: dataNascimento,
-            peso: peso ? parseFloat(peso) : 70.00,
-            altura: altura ? parseFloat(altura) : 170.00,
+            peso: parseFloat(peso),
+            altura: parseFloat(altura),
             pontos_mes: 0,
             created_at: new Date().toISOString()
           });
 
         if (insertError) {
-          if (!insertError.message.includes("duplicate")) {
-            console.log("Erro no insert:", insertError);
-          }
+          console.error("Erro no insert:", insertError);
         }
 
         localStorage.setItem("usuarioId", user.id);
@@ -337,6 +432,7 @@
       }
     });
 
+    // ========== TOGGLE PASSWORD ==========
     document.querySelectorAll(".toggle-password").forEach((icon) => {
       icon.addEventListener("click", () => {
         const inputId = icon.getAttribute("data-target");
@@ -352,7 +448,7 @@
       });
     });
 
-    // SERVICE WORKER
+    // ========== SERVICE WORKER ==========
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')

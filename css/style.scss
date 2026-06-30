@@ -57,8 +57,7 @@ body {
     background-color: rgba(255, 255, 255, 0.801);
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 12px;
-    color:  #000000;
-    
+    color: #000000;
     padding: 30px 40px;
     box-shadow: rgba(0, 0, 0, 0.568) 0px 4px 12px;
     backdrop-filter: blur(50px);
@@ -111,7 +110,6 @@ body {
     padding: 20px 45px 20px 20px;
     border-radius: 40px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    
 }
 
 .input-box input::placeholder {
@@ -235,9 +233,9 @@ body {
         margin-top: 8px;
     }
 }
+
 /* ===== REMOVER VÍDEOS COMPLETAMENTE NO CELULAR ===== */
 @media (max-width: 768px) {
-    /* Esconde a seção inteira de vídeos */
     section.feed,
     .feed {
         display: none !important;
@@ -249,342 +247,442 @@ body {
         overflow: hidden !important;
     }
     
-    /* Remove qualquer margem/padding da coluna esquerda que possa sobrar */
     .left-column {
         width: 100% !important;
         margin: 0 !important;
         padding-bottom: 20px !important;
     }
     
-    /* Ajusta o layout principal para empilhar as colunas */
     .main-content-perfil {
         flex-direction: column !important;
         gap: 25px !important;
     }
     
-    /* Ajusta a coluna direita */
     .column-right-column {
         width: 100% !important;
     }
 }
 
-
 /* ===== CHECKBOX PERSONALIZADO ===== */
 .terms-box {
-  margin: 15px 0 10px 0;
+    margin: 15px 0 10px 0;
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding-left: 30px;
-  cursor: pointer;
-  font-size: 14px;
-  user-select: none;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+    gap: 8px;
 }
 
 .checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
 .checkmark {
-  position: absolute;
-  left: 0;
-  height: 18px;
-  width: 18px;
-  background-color: transparent;
-  border: 2px solid #000000;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+    position: absolute;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
 .checkbox-container:hover input ~ .checkmark {
-  background-color: rgba(4, 71, 0, 0.1);
+    background-color: rgba(4, 71, 0, 0.1);
 }
 
 .checkbox-container input:checked ~ .checkmark {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+    background-color: #4CAF50;
+    border-color: #4CAF50;
 }
 
 .checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
+    content: "";
+    position: absolute;
+    display: none;
 }
 
 .checkbox-container input:checked ~ .checkmark:after {
-  display: block;
+    display: block;
 }
 
 .checkbox-container .checkmark:after {
-  left: 5px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .terms-text {
-  color: #000000;
-  font-size: 13px;
+    color: #000000;
+    font-size: 13px;
 }
 
 .terms-link {
-  color: #4CAF50;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.3s;
+    color: #4CAF50;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s;
 }
 
 .terms-link:hover {
-  color: #2e7d32;
+    color: #2e7d32;
 }
 
 /* ===== BALÃO DOS TERMOS ===== */
 .terms-ballon {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  width: 90%;
-  max-width: 500px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
 .terms-ballon.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .ballon-content {
-  padding: 25px;
-  background: linear-gradient(135deg, #fff, #f5f5f5);
-  border-radius: 16px;
-  border: 1px solid rgba(76, 175, 80, 0.3);
+    padding: 25px;
+    background: linear-gradient(135deg, #fff, #f5f5f5);
+    border-radius: 16px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
 .ballon-content p {
-  color: #333;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  text-align: justify;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
 }
 
 .close-ballon {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
 .close-ballon:hover {
-  background: linear-gradient(135deg, #45a049, #3d8b40);
-  transform: scale(1.02);
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: scale(1.02);
 }
 
 /* Overlay para o balão */
 .terms-ballon.active::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
-/* Responsivo */
 @media (max-width: 480px) {
-  .ballon-content {
-    padding: 18px;
-  }
-  
-  .ballon-content p {
-    font-size: 12px;
-  }
-  
-  .close-ballon {
-    padding: 10px;
-    font-size: 14px;
-  }
-  
-  .terms-text {
-    font-size: 11px;
-  }
+    .ballon-content {
+        padding: 18px;
+    }
+    
+    .ballon-content p {
+        font-size: 12px;
+    }
+    
+    .close-ballon {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .terms-text {
+        font-size: 11px;
+    }
 }
 
-/* ===== TOAST NOTIFICATION (BALÃO DE NOTIFICAÇÃO) ===== */
+/* ===== TOAST NOTIFICATION ===== */
 .toast-notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  transform: translateX(120%);
-  transition: transform 0.3s ease;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
 }
 
 .toast-notification.show {
-  transform: translateX(0);
+    transform: translateX(0);
 }
 
 .toast-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: white;
-  padding: 14px 20px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  min-width: 280px;
-  max-width: 400px;
-  animation: slideIn 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
 }
 
 .toast-content i {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 .toast-content span {
-  font-size: 14px;
-  color: #333;
-  flex: 1;
+    font-size: 14px;
+    color: #333;
+    flex: 1;
 }
 
-/* Toast de Sucesso */
 .toast-notification.success .toast-content {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  border-left: 4px solid #2e7d32;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    border-left: 4px solid #2e7d32;
 }
 
-.toast-notification.success .toast-content i {
-  color: white;
-}
-
+.toast-notification.success .toast-content i,
 .toast-notification.success .toast-content span {
-  color: white;
+    color: white;
 }
 
-/* Toast de Erro */
 .toast-notification.error .toast-content {
-  background: linear-gradient(135deg, #f44336, #d32f2f);
-  border-left: 4px solid #b71c1c;
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    border-left: 4px solid #b71c1c;
 }
 
-.toast-notification.error .toast-content i {
-  color: white;
-}
-
+.toast-notification.error .toast-content i,
 .toast-notification.error .toast-content span {
-  color: white;
+    color: white;
 }
 
-/* Toast de Aviso */
 .toast-notification.warning .toast-content {
-  background: linear-gradient(135deg, #ff9800, #f57c00);
-  border-left: 4px solid #e65100;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    border-left: 4px solid #e65100;
 }
 
-.toast-notification.warning .toast-content i {
-  color: white;
-}
-
+.toast-notification.warning .toast-content i,
 .toast-notification.warning .toast-content span {
-  color: white;
+    color: white;
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-/* Responsivo para mobile */
 @media (max-width: 480px) {
-  .toast-notification {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-  }
-  
-  .toast-content {
-    min-width: auto;
-    width: calc(100% - 20px);
-    padding: 12px 16px;
-  }
-  
-  .toast-content i {
-    font-size: 20px;
-  }
-  
-  .toast-content span {
-    font-size: 13px;
-  }
-}
-/* ===== CAMPOS DE PESO E ALTURA LADO A LADO ===== */
-.input-group-physical {
-    display: flex;
-    gap: 15px;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.input-box.half {
-    flex: 1;
-    width: 50%;
-}
-
-.input-box.half input {
-    padding: 12px 20px 12px 45px;
-}
-
-/* Ícones específicos */
-.input-box.half .bx-weight {
-    left: 15px;
-}
-
-.input-box.half .bx-ruler {
-    left: 15px;
-}
-
-/* Responsivo */
-@media (max-width: 480px) {
-    .input-group-physical {
-        flex-direction: column;
-        gap: 10px;
+    .toast-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
     }
     
-    .input-box.half {
-        width: 100%;
+    .toast-content {
+        min-width: auto;
+        width: calc(100% - 20px);
+        padding: 12px 16px;
+    }
+    
+    .toast-content i {
+        font-size: 20px;
+    }
+    
+    .toast-content span {
+        font-size: 13px;
+    }
+}
+
+/* ===== INDICADOR DE ETAPAS ===== */
+.steps-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.step.active {
+    background: #4CAF50;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.25);
+}
+
+.step.completed {
+    background: #4CAF50;
+    color: white;
+}
+
+.step.completed::after {
+    content: "✓";
+    font-size: 16px;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: #e0e0e0;
+    min-width: 20px;
+    transition: background 0.3s ease;
+}
+
+.step.active ~ .step-line,
+.step.completed ~ .step-line {
+    background: #4CAF50;
+}
+
+/* ===== CONTEÚDO DAS ETAPAS ===== */
+.step-content {
+    display: none;
+    width: 100%;
+    animation: fadeInStep 0.4s ease;
+}
+
+.step-content.active {
+    display: block;
+}
+
+@keyframes fadeInStep {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== BOTÕES DE NAVEGAÇÃO ===== */
+.step-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-next {
+    background: linear-gradient(135deg, #4CAF50, #2e7d32);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    flex: 1;
+}
+
+.btn-next:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-prev {
+    background: #e0e0e0;
+    color: #555;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    flex: 1;
+}
+
+.btn-prev:hover {
+    background: #d0d0d0;
+    transform: scale(1.02);
+}
+
+/* ===== BOTÃO CADASTRAR NA ETAPA 3 ===== */
+#step3 .login {
+    flex: 1;
+}
+
+#step3 .step-buttons {
+    margin-top: 15px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+    .steps-indicator {
+        gap: 5px;
+    }
+    
+    .step {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .step-line {
+        min-width: 15px;
+    }
+    
+    .btn-next,
+    .btn-prev {
+        padding: 10px 20px;
+        font-size: 13px;
     }
 }

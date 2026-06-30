@@ -231,7 +231,6 @@ body {
 }
 /* ===== REMOVER VÍDEOS COMPLETAMENTE NO CELULAR ===== */
 @media (max-width: 768px) {
-  /* Esconde a seção inteira de vídeos */
   section.feed,
   .feed {
     display: none !important;
@@ -242,18 +241,15 @@ body {
     min-height: 0 !important;
     overflow: hidden !important;
   }
-  /* Remove qualquer margem/padding da coluna esquerda que possa sobrar */
   .left-column {
     width: 100% !important;
     margin: 0 !important;
     padding-bottom: 20px !important;
   }
-  /* Ajusta o layout principal para empilhar as colunas */
   .main-content-perfil {
     flex-direction: column !important;
     gap: 25px !important;
   }
-  /* Ajusta a coluna direita */
   .column-right-column {
     width: 100% !important;
   }
@@ -410,7 +406,6 @@ body {
   z-index: -1;
 }
 
-/* Responsivo */
 @media (max-width: 480px) {
   .ballon-content {
     padding: 18px;
@@ -426,7 +421,7 @@ body {
     font-size: 11px;
   }
 }
-/* ===== TOAST NOTIFICATION (BALÃO DE NOTIFICAÇÃO) ===== */
+/* ===== TOAST NOTIFICATION ===== */
 .toast-notification {
   position: fixed;
   top: 20px;
@@ -463,44 +458,32 @@ body {
   flex: 1;
 }
 
-/* Toast de Sucesso */
 .toast-notification.success .toast-content {
   background: linear-gradient(135deg, #4CAF50, #45a049);
   border-left: 4px solid #2e7d32;
 }
 
-.toast-notification.success .toast-content i {
-  color: white;
-}
-
+.toast-notification.success .toast-content i,
 .toast-notification.success .toast-content span {
   color: white;
 }
 
-/* Toast de Erro */
 .toast-notification.error .toast-content {
   background: linear-gradient(135deg, #f44336, #d32f2f);
   border-left: 4px solid #b71c1c;
 }
 
-.toast-notification.error .toast-content i {
-  color: white;
-}
-
+.toast-notification.error .toast-content i,
 .toast-notification.error .toast-content span {
   color: white;
 }
 
-/* Toast de Aviso */
 .toast-notification.warning .toast-content {
   background: linear-gradient(135deg, #ff9800, #f57c00);
   border-left: 4px solid #e65100;
 }
 
-.toast-notification.warning .toast-content i {
-  color: white;
-}
-
+.toast-notification.warning .toast-content i,
 .toast-notification.warning .toast-content span {
   color: white;
 }
@@ -515,7 +498,6 @@ body {
     transform: translateX(0);
   }
 }
-/* Responsivo para mobile */
 @media (max-width: 480px) {
   .toast-notification {
     top: 10px;
@@ -534,39 +516,153 @@ body {
     font-size: 13px;
   }
 }
-/* ===== CAMPOS DE PESO E ALTURA LADO A LADO ===== */
-.input-group-physical {
+/* ===== INDICADOR DE ETAPAS ===== */
+.steps-indicator {
   display: flex;
-  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
   width: 100%;
-  margin-bottom: 15px;
 }
 
-.input-box.half {
+.step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.step.active {
+  background: #4CAF50;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.25);
+}
+
+.step.completed {
+  background: #4CAF50;
+  color: white;
+}
+
+.step.completed::after {
+  content: "✓";
+  font-size: 16px;
+}
+
+.step-line {
   flex: 1;
-  width: 50%;
+  height: 2px;
+  background: #e0e0e0;
+  min-width: 20px;
+  transition: background 0.3s ease;
 }
 
-.input-box.half input {
-  padding: 12px 20px 12px 45px;
+.step.active ~ .step-line,
+.step.completed ~ .step-line {
+  background: #4CAF50;
 }
 
-/* Ícones específicos */
-.input-box.half .bx-weight {
-  left: 15px;
+/* ===== CONTEÚDO DAS ETAPAS ===== */
+.step-content {
+  display: none;
+  width: 100%;
+  animation: fadeInStep 0.4s ease;
 }
 
-.input-box.half .bx-ruler {
-  left: 15px;
+.step-content.active {
+  display: block;
 }
 
-/* Responsivo */
-@media (max-width: 480px) {
-  .input-group-physical {
-    flex-direction: column;
-    gap: 10px;
+@keyframes fadeInStep {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  .input-box.half {
-    width: 100%;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== BOTÕES DE NAVEGAÇÃO ===== */
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #4CAF50, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  flex: 1;
+}
+
+.btn-next:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-prev {
+  background: #e0e0e0;
+  color: #555;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  flex: 1;
+}
+
+.btn-prev:hover {
+  background: #d0d0d0;
+  transform: scale(1.02);
+}
+
+/* ===== BOTÃO CADASTRAR NA ETAPA 3 ===== */
+#step3 .login {
+  flex: 1;
+}
+
+#step3 .step-buttons {
+  margin-top: 15px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+  .steps-indicator {
+    gap: 5px;
+  }
+  .step {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .step-line {
+    min-width: 15px;
+  }
+  .btn-next,
+  .btn-prev {
+    padding: 10px 20px;
+    font-size: 13px;
   }
 }/*# sourceMappingURL=style.css.map */
